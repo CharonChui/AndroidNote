@@ -65,7 +65,8 @@ contentView.startAnimation(set); // 播放一组动画.
 ```
 
 6.Frame动画    
-- 在`drawable`目录下新建一个`xml`文件，内容如下:
+- 在`drawable`目录下新建一个`xml`文件，内容如下:     
+
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <animation-list xmlns:android="http://schemas.android.com/apk/res/android"
@@ -77,8 +78,10 @@ contentView.startAnimation(set); // 播放一组动画.
         android:drawable="@drawable/desktop_rocket_launch_2"
         android:duration="100"/>
 </animation-list>
+
 ```
-- 播放Frame动画
+- 播放Frame动画      
+
 ```java
 AnimationDrawable rocketAnimation;
 public void onCreate(Bundle savedInstanceState) {
@@ -93,6 +96,7 @@ public void start(View view) {
            rocketAnimation.start();  //播放
       }
 }
+
 ```
 
 ------------------------------------------
