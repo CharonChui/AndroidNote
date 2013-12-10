@@ -14,7 +14,7 @@ android update project -n Test -p D:/workspace/Test -s -t 1
 
 2.将签名文件keystore复制到工程根目录下,并且在根目录下新建`ant.properties`内容如下(配置签名文件):
 ```
-　　key.store=keystore.keystore //把签名放到根目录中     
+　　key.store=keystore.keystore //把签名放到根目录中   
 　　key.alias=ifeng
 　　key.store.password=ifeng123
 　　key.alias.password=ifeng123
