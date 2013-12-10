@@ -148,35 +148,35 @@ public class ToastUtil {
 }
 ```
 
-**
+*
 在某些Pad上面Toast显示出来后就不会自动消失，在这些Pad上`toastView.getParent()会为nul`这样就导致无法移除。可以将`cancelOldAlert()`以及`cancelCurrentAlert()`进行如下修改。
-**
+*
 ```java
-    private void cancelOldAlert() {
-        if (oldView != null) { // 去掉 oldView.getParent() != null 这个参数，然后加上try catch代码块，解决在部分Pad上oldView.getParent()不准确的问题 
-            try {
-                mWindowManager.removeView(oldView);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+private void cancelOldAlert() {
+    if (oldView != null) { // 去掉 oldView.getParent() != null 这个参数，然后加上try catch代码块，解决在部分Pad上oldView.getParent()不准确的问题 
+        try {
+            mWindowManager.removeView(oldView);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
+}
 
-    public void cancelCurrentAlert() {
-        if (toastView != null) {
-            try {
-                mWindowManager.removeView(toastView);// 去掉 oldView.getParent() != null 这个参数，然后加上try catch代码块，解决在部分Pad上oldView.getParent()不准确的问题 
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else if (oldView != null) {
-            try {
-                mWindowManager.removeView(oldView);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+public void cancelCurrentAlert() {
+    if (toastView != null) {
+        try {
+            mWindowManager.removeView(toastView);// 去掉 oldView.getParent() != null 这个参数，然后加上try catch代码块，解决在部分Pad上oldView.getParent()不准确的问题 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    } else if (oldView != null) {
+        try {
+            mWindowManager.removeView(oldView);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
+}
 ```
 
 - 邮箱 ：charon.chui@gmail.com  
