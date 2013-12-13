@@ -1,6 +1,6 @@
-Home¼ü¼àÌı
+Homeé”®ç›‘å¬
 ================
-1. Home¼üÊÇÒ»¸öÏµÍ³µÄ°´Å¥£¬ÎÒÃÇÎŞ·¨Í¨¹ı`onKeyDown`½øĞĞÀ¹½Ø£¬ËüÊÇÀ¹½Ø²»µ½µÄ£¬ÎÒÃÇÖ»ÄÜµÃµ½ËûÔÚÊ²Ã´Ê±ºò±»°´ÏÂÁË¡£¾ÍÊÇÍ¨¹ı¹ã²¥½ÓÊÕÕß
+1. Homeé”®æ˜¯ä¸€ä¸ªç³»ç»Ÿçš„æŒ‰é’®ï¼Œæˆ‘ä»¬æ— æ³•é€šè¿‡`onKeyDown`è¿›è¡Œæ‹¦æˆªï¼Œå®ƒæ˜¯æ‹¦æˆªä¸åˆ°çš„ï¼Œæˆ‘ä»¬åªèƒ½å¾—åˆ°ä»–åœ¨ä»€ä¹ˆæ—¶å€™è¢«æŒ‰ä¸‹äº†ã€‚å°±æ˜¯é€šè¿‡å¹¿æ’­æ¥æ”¶è€…
 ```java
     public class HomeKeyEventBroadCastReceiver extends BroadcastReceiver {
         static final String SYSTEM_REASON = "reason";
@@ -14,22 +14,22 @@ Home¼ü¼àÌı
                 String reason = intent.getStringExtra(SYSTEM_REASON);
                 if (reason != null) {
                     if (reason.equals(SYSTEM_HOME_KEY)) {
-                        // home key´¦Àíµã
+                        // home keyå¤„ç†ç‚¹
  
                     } else if (reason.equals(SYSTEM_RECENT_APPS)) {
-                        // long home key´¦Àíµã
+                        // long home keyå¤„ç†ç‚¹
                     }
                 }
             }
         }
     }
  ```
-2. ÔÚActivityÖĞÈ¥×¢²áÕâ¸ö¹ã²¥½ÓÊÕÕß
+2. åœ¨Activityä¸­å»æ³¨å†Œè¿™ä¸ªå¹¿æ’­æ¥æ”¶è€…
         receiver = new HomeKeyEventBroadCastReceiver();
         registerReceiver(receiver, new IntentFilter(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
 
-3. ÔÚActivityÏú»ÙµÄ·½·¨ÖĞÈ¥È¡Ïû×¢²á
+3. åœ¨Activityé”€æ¯çš„æ–¹æ³•ä¸­å»å–æ¶ˆæ³¨å†Œ
         unRegisterReceiver(receiver);
 
-- ÓÊÏä £ºcharon.chui@gmail.com  
+- é‚®ç®± ï¼šcharon.chui@gmail.com  
 - Good Luck! 

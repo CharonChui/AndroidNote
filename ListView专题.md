@@ -29,19 +29,19 @@ mPullLoadListView.setAdapter(adapter);
 ```
 - `Fragment`中添加下面代码就可以了。         
 ```java
-View loadingView = View.inflate(getActivity(), R.layout.loading, null);
-//添加到同一布局体系中
-getActivity().addContentView(loadingView,
-		  new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT ));
-mPullLoadListView.setEmptyView(loadingView);
-mPullLoadListView.setAdapter(adapter);
+    View loadingView = View.inflate(getActivity(), R.layout.loading, null);
+    //添加到同一布局体系中
+    getActivity().addContentView(loadingView,
+    		  new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT ));
+    mPullLoadListView.setEmptyView(loadingView);
+    mPullLoadListView.setAdapter(adapter);
 ```
 
 - `Activity`中
 ```java
-View empty = getLayoutInflater().inflate(R.layout.empty_list_item, null, false);
-addContentView(empty, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-mPullLoadListView.setEmptyView(empty);
+    View empty = getLayoutInflater().inflate(R.layout.empty_list_item, null, false);
+    addContentView(empty, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+    mPullLoadListView.setEmptyView(empty);
 ```
  
 3.ListView调用addHeaderView后,onItemClick时位置不正确
@@ -50,27 +50,27 @@ mPullLoadListView.setEmptyView(empty);
 当`ListView`通过`addHeaderView`添后，在o`nItemClick`中的`position`会加上`Header`的个数，所以这时候在获取数据的时候要对位置进行处理。
 
 下面两种方法都可以：
-1. .
+1. 第一种
 ```java
-public void onItemClick(AdapterView <?> parent, View v, int position, long id)   {
-    //parent.getAdapter().getItem(position)能得到真是的位置的数据
-    doSomething(parent.getAdapter().getItem(position));
-}
+    public void onItemClick(AdapterView <?> parent, View v, int position, long id) {
+        //parent.getAdapter().getItem(position)能得到真是的位置的数据
+        doSomething(parent.getAdapter().getItem(position));
+    }
 ```
-2. .
+2. 第二种
 ```java
-mListView.setOnItemClickListener(new OnItemClickListener() {
-	@Override
-	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		
-		int headerViewCount = mListView.getHeaderViewsCount();
-		int realPos = position - mListView.getHeaderViewsCount();
-		if (realPos < 0)
-			return;
-		......这样realPos就是真是的位置
-		
-	}
-});
+    mListView.setOnItemClickListener(new OnItemClickListener() {
+    	@Override
+    	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+    		
+    		int headerViewCount = mListView.getHeaderViewsCount();
+    		int realPos = position - mListView.getHeaderViewsCount();
+    		if (realPos < 0)
+    			return;
+    		......这样realPos就是真是的位置
+    		
+    	}
+    });
 ```
 
 4.ListView.addHeadrView()添加ViewPager不显示的问题

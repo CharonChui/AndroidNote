@@ -1,104 +1,96 @@
-Android¶¯»­
+AndroidåŠ¨ç”»
 ======
-1.AlphaAnimation(Í¸Ã÷¶È¶¯»­)
- 
+1. AlphaAnimation(é€æ˜åº¦åŠ¨ç”»)
 ```java
-RelativeLayout rl_splash = (RelativeLayout) findViewById(R.id.rl_splash);
-//²¥·Å¶¯»­Ğ§¹û
-AlphaAnimation animation = new AlphaAnimation(1.0f, 0.0f);
-//ÉèÖÃAlpha¶¯»­µÄ³ÖĞøÊ±¼ä
-animation.setDuration(2000);
-//²¥·ÅAlpha¶¯»­
-rl_splash.setAnimation(animation);
+    RelativeLayout rl_splash = (RelativeLayout) findViewById(R.id.rl_splash);
+    //æ’­æ”¾åŠ¨ç”»æ•ˆæœ
+    AlphaAnimation animation = new AlphaAnimation(1.0f, 0.0f);
+    //è®¾ç½®AlphaåŠ¨ç”»çš„æŒç»­æ—¶é—´
+    animation.setDuration(2000);
+    //æ’­æ”¾AlphaåŠ¨ç”»
+    rl_splash.setAnimation(animation);
 ```
-2.RotateAnimation(Ğı×ª¶¯»­)
- 
+2. RotateAnimation(æ—‹è½¬åŠ¨ç”»)
 ```java
-//Ïà¶ÔÓÚ×ÔÉíµÄÄÄ¸öÎ»ÖÃĞı×ª£¬ÕâÀïÊÇÏà¶ÔÓÚ×ÔÉíµÄÓÒÏÂ½Ç
-RotateAnimation ra = new RotateAnimation(0, 360,  //´ÓÄÄĞı×ª£¬Ğı×ª¶àÉÙ¶È
-        Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF,
-        1.0f);
-ra.setDuration(800);
-ra.setRepeatCount(Animation.INFINITE);
-ra.setRepeatMode(Animation.RESTART);
-iv_scan.startAnimation(ra);
+    //ç›¸å¯¹äºè‡ªèº«çš„å“ªä¸ªä½ç½®æ—‹è½¬ï¼Œè¿™é‡Œæ˜¯ç›¸å¯¹äºè‡ªèº«çš„å³ä¸‹è§’
+    RotateAnimation ra = new RotateAnimation(0, 360,  //ä»å“ªæ—‹è½¬ï¼Œæ—‹è½¬å¤šå°‘åº¦
+            Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF,
+            1.0f);
+    ra.setDuration(800);
+    ra.setRepeatCount(Animation.INFINITE);
+    ra.setRepeatMode(Animation.RESTART);
+    iv_scan.startAnimation(ra);
  ```
+3. ScaleAnimation(ç¼©æ”¾åŠ¨ç”»)    
+```java 
+    ScaleAnimation(float fromX, float toX, float fromY, float toY) 
+    Constructor to use when building a ScaleAnimation from code
+```
 
-//¶¯»­Ğ§¹û,¶¯»­²¥·ÅÍê³Éºó»áÓÖ»Ö¸´µ½×î³õµÄ×´Ì¬£¬ÈçºÎÈÃ±£Áô²¥·ÅÍê³ÉµÄ¶¯»­Ğ§¹ûÄØ£¿½«ÏÂÃæµÄ·½·¨ÉèÖÃÎª`true`¾Í¿ÉÒÔÁË¡£
+4. TranslateAnimation(ä½ç§»åŠ¨ç”»)     
+```java
+    TranslateAnimation(int fromXType, float fromXValue, int toXType, float toXValue, int fromYType, float fromYValue, int toYType, float toYValue) 
+    Constructor to use when building a TranslateAnimation from code
+```
+
+5. AnimationSet (å¤šç»„åŠ¨ç”»)
+```java
+    ScaleAnimation sa = new ScaleAnimation(0.2f, 1.0f, 0.4f,1.0f);//ç¼©æ”¾çš„åŠ¨ç”»æ•ˆæœ,1.0få°±ä»£è¡¨çª—ä½“çš„æ€»å®½æˆ–è€…é«˜
+    sa.setDuration(400);
+    TranslateAnimation ta = new TranslateAnimation(//ä½ç§»åŠ¨çš„åŠ¨ç”»æ•ˆæœ
+              Animation.RELATIVE_TO_SELF, 0,//æŒ‡å®šè¿™ä¸ªä½ç½®æ˜¯ç›¸å¯¹äºè°
+              Animation.RELATIVE_TO_SELF, 0.1f,
+              Animation.RELATIVE_TO_SELF, 0,
+              Animation.RELATIVE_TO_SELF, 0);
+    ta.setDuration(300);
+    AnimationSet set = new AnimationSet(false);//å¦‚æœæƒ³æ’­æ”¾å¤šç§åŠ¨ç”»çš„ç»„åˆï¼Œè¿™é‡Œå°±è¦ç”¨åˆ°äº†AnimationSet
+    set.addAnimation(sa);
+    set.addAnimation(ta);
+    contentView.startAnimation(set); // æ’­æ”¾ä¸€ç»„åŠ¨ç”». 
+```
+
+6. FrameåŠ¨ç”»    
+    - åœ¨`drawable`ç›®å½•ä¸‹æ–°å»ºä¸€ä¸ª`xml`æ–‡ä»¶ï¼Œå†…å®¹å¦‚ä¸‹:
+```xml
+        <?xml version="1.0" encoding="utf-8"?>
+        <animation-list xmlns:android="http://schemas.android.com/apk/res/android"
+            android:oneshot="true" > //onshotæ˜¯æŒ‡å®šæ˜¯å¦å¾ªç¯æ’­æ”¾
+            <item
+                android:drawable="@drawable/desktop_rocket_launch_1"  //FrameåŠ¨ç”»çš„å›¾ç‰‡
+                android:duration="50"/> //æ’­æ”¾è¿™ä¸ªå›¾ç‰‡æŒç»­çš„æ—¶é—´
+            <item
+                android:drawable="@drawable/desktop_rocket_launch_2"
+                android:duration="100"/>
+        </animation-list>
+```
+    - æ’­æ”¾FrameåŠ¨ç”»
+```java
+        AnimationDrawable rocketAnimation;
+        public void onCreate(Bundle savedInstanceState) {
+              super.onCreate(savedInstanceState);
+              setContentView(R.layout.main);
+              ImageView rocketImage = (ImageView) findViewById(R.id.iv);
+              rocketImage.setBackgroundResource(R.drawable.animlist); //å°†ä¸Šè¾¹å»ºçš„FrameåŠ¨ç”»çš„xmlæ–‡ä»¶é€šè¿‡èƒŒæ™¯èµ„æºè®¾ç½®ç»™å›¾ç‰‡
+              rocketAnimation = (AnimationDrawable) rocketImage.getBackground();  //è·å–åˆ°å›¾ç‰‡çš„èƒŒæ™¯èµ„æº
+        }
+        public void start(View view) {
+              if (!rocketAnimation.isRunning()) {
+                   rocketAnimation.start();  //æ’­æ”¾
+              }
+        }
+```
+
+//åŠ¨ç”»æ•ˆæœ,åŠ¨ç”»æ’­æ”¾å®Œæˆåä¼šåˆæ¢å¤åˆ°æœ€åˆçš„çŠ¶æ€ï¼Œå¦‚ä½•è®©ä¿ç•™æ’­æ”¾å®Œæˆçš„åŠ¨ç”»æ•ˆæœå‘¢ï¼Ÿå°†ä¸‹é¢çš„æ–¹æ³•è®¾ç½®ä¸º`true`å°±å¯ä»¥äº†ã€‚
         `animation.setFillAfter(true);`   
 ```java
-Interpolator //¶¨ÒåÁË¶¯»­µÄ±ä»¯ËÙ¶È£¬¿ÉÒÔÊµÏÖÔÈËÙ¡¢Õı¼ÓËÙ¡¢¸º¼ÓËÙ¡¢ÎŞ¹æÔò±ä¼ÓËÙµÈ
-AccelerateDecelerateInterpolator //ÑÓ³Ù¼õËÙ£¬ÔÚ¶¯×÷Ö´ĞĞµ½ÖĞ¼äµÄÊ±ºò²ÅÖ´ĞĞ¸ÃÌØĞ§¡£
-AccelerateInterpolator//»áÊ¹ÂıÂıÒÔ(float)µÄ²ÎÊı½µµÍËÙ¶È¡£
-LinearInterpolator//Æ½ÎÈ²»±äµÄ
-DecelerateInterpolator//ÔÚÖĞ¼ä¼ÓËÙ,Á½Í·Âı
-CycleInterpolator//ÇúÏßÔË¶¯ÌØĞ§£¬Òª´«µİfloatĞÍµÄ²ÎÊı¡£
-animation.setInterpolator(new LinearInterpolator());//Ö¸¶¨¶¯»­µÄÔËĞĞĞ§¹û
+Interpolator //å®šä¹‰äº†åŠ¨ç”»çš„å˜åŒ–é€Ÿåº¦ï¼Œå¯ä»¥å®ç°åŒ€é€Ÿã€æ­£åŠ é€Ÿã€è´ŸåŠ é€Ÿã€æ— è§„åˆ™å˜åŠ é€Ÿç­‰
+AccelerateDecelerateInterpolator //å»¶è¿Ÿå‡é€Ÿï¼Œåœ¨åŠ¨ä½œæ‰§è¡Œåˆ°ä¸­é—´çš„æ—¶å€™æ‰æ‰§è¡Œè¯¥ç‰¹æ•ˆã€‚
+AccelerateInterpolator//ä¼šä½¿æ…¢æ…¢ä»¥(float)çš„å‚æ•°é™ä½é€Ÿåº¦ã€‚
+LinearInterpolator//å¹³ç¨³ä¸å˜çš„
+DecelerateInterpolator//åœ¨ä¸­é—´åŠ é€Ÿ,ä¸¤å¤´æ…¢
+CycleInterpolator//æ›²çº¿è¿åŠ¨ç‰¹æ•ˆï¼Œè¦ä¼ é€’floatå‹çš„å‚æ•°ã€‚
+animation.setInterpolator(new LinearInterpolator());//æŒ‡å®šåŠ¨ç”»çš„è¿è¡Œæ•ˆæœ
 ```
-
-3.ScaleAnimation(Ëõ·Å¶¯»­)    
-```java 
-ScaleAnimation(float fromX, float toX, float fromY, float toY) 
-Constructor to use when building a ScaleAnimation from code
-```
-
-4.TranslateAnimation(Î»ÒÆ¶¯»­)     
-```java
-TranslateAnimation(int fromXType, float fromXValue, int toXType, float toXValue, int fromYType, float fromYValue, int toYType, float toYValue) 
-Constructor to use when building a TranslateAnimation from code
-```
-
-5.AnimationSet (¶à×é¶¯»­)
-```java
-ScaleAnimation sa = new ScaleAnimation(0.2f, 1.0f, 0.4f,1.0f);//Ëõ·ÅµÄ¶¯»­Ğ§¹û,1.0f¾Í´ú±í´°ÌåµÄ×Ü¿í»òÕß¸ß
-sa.setDuration(400);
-TranslateAnimation ta = new TranslateAnimation(//Î»ÒÆ¶¯µÄ¶¯»­Ğ§¹û
-          Animation.RELATIVE_TO_SELF, 0,//Ö¸¶¨Õâ¸öÎ»ÖÃÊÇÏà¶ÔÓÚË­
-          Animation.RELATIVE_TO_SELF, 0.1f,
-          Animation.RELATIVE_TO_SELF, 0,
-          Animation.RELATIVE_TO_SELF, 0);
-ta.setDuration(300);
-AnimationSet set = new AnimationSet(false);//Èç¹ûÏë²¥·Å¶àÖÖ¶¯»­µÄ×éºÏ£¬ÕâÀï¾ÍÒªÓÃµ½ÁËAnimationSet
-set.addAnimation(sa);
-set.addAnimation(ta);
-contentView.startAnimation(set); // ²¥·ÅÒ»×é¶¯»­. 
-```
-
-6.Frame¶¯»­    
-- ÔÚ`drawable`Ä¿Â¼ÏÂĞÂ½¨Ò»¸ö`xml`ÎÄ¼ş£¬ÄÚÈİÈçÏÂ:     
-
-```xml
-<?xml version="1.0" encoding="utf-8"?>
-<animation-list xmlns:android="http://schemas.android.com/apk/res/android"
-    android:oneshot="true" > //onshotÊÇÖ¸¶¨ÊÇ·ñÑ­»·²¥·Å
-    <item
-        android:drawable="@drawable/desktop_rocket_launch_1"  //Frame¶¯»­µÄÍ¼Æ¬
-        android:duration="50"/> //²¥·ÅÕâ¸öÍ¼Æ¬³ÖĞøµÄÊ±¼ä
-    <item
-        android:drawable="@drawable/desktop_rocket_launch_2"
-        android:duration="100"/>
-</animation-list>
-
-```
-- ²¥·ÅFrame¶¯»­      
-
-```java
-AnimationDrawable rocketAnimation;
-public void onCreate(Bundle savedInstanceState) {
-      super.onCreate(savedInstanceState);
-      setContentView(R.layout.main);
-      ImageView rocketImage = (ImageView) findViewById(R.id.iv);
-      rocketImage.setBackgroundResource(R.drawable.animlist); //½«ÉÏ±ß½¨µÄFrame¶¯»­µÄxmlÎÄ¼şÍ¨¹ı±³¾°×ÊÔ´ÉèÖÃ¸øÍ¼Æ¬
-      rocketAnimation = (AnimationDrawable) rocketImage.getBackground();  //»ñÈ¡µ½Í¼Æ¬µÄ±³¾°×ÊÔ´
-}
-public void start(View view) {
-      if (!rocketAnimation.isRunning()) {
-           rocketAnimation.start();  //²¥·Å
-      }
-}
-
-```
-
 ------------------------------------------
-- ÓÊÏä £ºcharon.chui@gmail.com  
+- é‚®ç®± ï¼šcharon.chui@gmail.com  
 - Good Luck! 
