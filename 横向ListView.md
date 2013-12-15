@@ -1,5 +1,6 @@
 横向ListView
 ===
+
 ```java
 /**
  * 自定义的一个水平方向的ListView，用法和ListView一样，也是去设置适配器(BaseAdapter的子类)
@@ -282,7 +283,7 @@ public class HorizontialListView extends AdapterView<ListAdapter> {
     };
 }
 ```
-
 ------------------------------------------
+
 - 邮箱 ：charon.chui@gmail.com  
 - Good Luck! 

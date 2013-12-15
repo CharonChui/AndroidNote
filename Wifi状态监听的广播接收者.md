@@ -1,5 +1,6 @@
 Wifi状态监听的广播接收者
 ==================
+
 ```java
 /**
   * 监控Wifi状态的广播接收器
@@ -50,5 +51,6 @@ private void registReceiver() {
 }
 ```
 
+-----
 - 邮箱 ：charon.chui@gmail.com  
 - Good Luck! 

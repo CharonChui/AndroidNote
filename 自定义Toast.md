@@ -1,5 +1,6 @@
 自定义Toast
 =======================
+
 系统`Toast`提示时不能够进行取消，如果有多个`Toast`时会很长时间才消失。自定义`Toast`通过`WindowManager`来进行手动的控制`Toast`的显示与隐藏。能有效的解决该问题。
 
 *Toast提示的布局*
@@ -148,9 +149,9 @@ public class ToastUtil {
 }
 ```
 
-*
+**
 在某些Pad上面Toast显示出来后就不会自动消失，在这些Pad上`toastView.getParent()会为nul`这样就导致无法移除。可以将`cancelOldAlert()`以及`cancelCurrentAlert()`进行如下修改。
-*
+**
 ```java
 private void cancelOldAlert() {
     if (oldView != null) { // 去掉 oldView.getParent() != null 这个参数，然后加上try catch代码块，解决在部分Pad上oldView.getParent()不准确的问题 
@@ -179,5 +180,6 @@ public void cancelCurrentAlert() {
 }
 ```
 
+----
 - 邮箱 ：charon.chui@gmail.com  
 - Good Luck! 

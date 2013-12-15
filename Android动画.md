@@ -1,6 +1,7 @@
 Android动画
-======
-1. AlphaAnimation(透明度动画)
+====== 
+
+1. AlphaAnimation
 ```java
     RelativeLayout rl_splash = (RelativeLayout) findViewById(R.id.rl_splash);
     //播放动画效果
@@ -10,7 +11,8 @@ Android动画
     //播放Alpha动画
     rl_splash.setAnimation(animation);
 ```
-2. RotateAnimation(旋转动画)
+
+2. RotateAnimation
 ```java
     //相对于自身的哪个位置旋转，这里是相对于自身的右下角
     RotateAnimation ra = new RotateAnimation(0, 360,  //从哪旋转，旋转多少度
@@ -92,5 +94,6 @@ CycleInterpolator//曲线运动特效，要传递float型的参数。
 animation.setInterpolator(new LinearInterpolator());//指定动画的运行效果
 ```
 ------------------------------------------
+
 - 邮箱 ：charon.chui@gmail.com  
 - Good Luck! 

@@ -1,6 +1,6 @@
-
 开发中Log的管理
 =========
+
 **LogUtil**是一个管理Log打印的工具类。在开发的不同阶段中通过对该类的控制来实现不同级别Log的打印。
 ```java    
 public class LogUtil {
@@ -44,5 +44,7 @@ public class LogUtil {
 	}
 }
 ```
+
+-----
 - 邮箱 ：charon.chui@gmail.com  
 - Good Luck! 

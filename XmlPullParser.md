@@ -36,10 +36,8 @@ public class PersonService {
                 }
             }
         }
-
         return persons;
     }
-
 
     /**
     *将数据写入到Xml文件中.
@@ -78,5 +76,6 @@ public class PersonService {
 }
 ```
 
+-----
 - 邮箱 ：charon.chui@gmail.com  
 - Good Luck! 

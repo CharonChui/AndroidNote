@@ -1,5 +1,6 @@
 RMB大小写转换
 =========
+
 ```java
 public class RenMingBi {
     private static final char[] data = new char[] { '零', '壹', '贰', '叁', '肆', '伍', '陆', '柒', '捌', '玖' };
@@ -24,5 +25,6 @@ public class RenMingBi {
 }
 ```
 
+-----
 - 邮箱 ：charon.chui@gmail.com  
 - Good Luck! 

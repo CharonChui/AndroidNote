@@ -1,5 +1,6 @@
 Ant打包
 =======================
+
 使用步骤：    
 1. 对于已经存在的工程需要利用`Ant`命令更新一下：   
 ```
@@ -19,5 +20,6 @@ Ant打包
 
 3. 刷新工程，然后在`eclipse`中的`Ant`视图中右键`add build files`选择工程中的`build.xml`，选择最下面的release或者是debug，注意release是生成带签名的apk包.生成的apk在bin目录中，名字为工程名-release.apk.
 
+-----
 - 邮箱 ：charon.chui@gmail.com  
 - Good Luck! 

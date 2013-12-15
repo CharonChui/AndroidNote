@@ -1,5 +1,6 @@
 Bitmap优化
 ===
+
 1. 一个进程的内存可以由2个部分组成：`native和dalvik`，`dalvik`就是我们平常说的`java`堆，我们创建的对象是在这里面分配的，而`bitmap`是直接在`native`上分配的。
 一旦内存分配给`Java`后，以后这块内存即使释放后，也只能给`Java`的使用，所以如果`Java`突然占用了一个大块内存，即使很快释放了,`C`能用的内存也是16M减去`Java`最大占用的内存数。而`Bitmap`的生成是通过`malloc`进行内存分配的，占用的是C的内存，这个也就说明了，上述的4MBitmap无法生成的原因，因为在13M被Java用过后，剩下C能用的只有3M了。    
 2. 在`Android`应用里，最耗费内存的就是图片资源。而且在`Android`系统中，读取位图`Bitmap`时，分给虚拟机中的图片的堆栈大小只有8M，如果超出了，就会出现`OutOfMemory`异常。
@@ -118,5 +119,6 @@ public class MainActivity extends Activity {
 ```
 
 ------------------------------------------
+
 - 邮箱 ：charon.chui@gmail.com  
 - Good Luck! 

@@ -1,7 +1,9 @@
 ListView专题
 ===
+
 1.ListView属性：
 ---
+
 1. `fadingEdge`属性
 `ListView`上边和下边有黑色的阴影,`android : fadingEdge = "none"`后就不会有阴影了
 2. `scrollbars`属性，隐藏滚动条，
@@ -20,6 +22,7 @@ When set to true, the selector will be drawn over the selecteditem. Otherwise th
 
 2.ListView.setEmptyView()没有效果
 ---
+
 有时调用`setEmptyView`没有效果，这是因为我们设置的这个`EmptyView`必须和该`ListView`在同一个**布局体系中**    
 如：下面这样的代码有些时候会没有效果
 ```java
@@ -46,6 +49,7 @@ mPullLoadListView.setAdapter(adapter);
  
 3.ListView调用addHeaderView后,onItemClick时位置不正确
 ---
+
 `addHeaderView()`以及`addFooterView()`一定要在调用`setAdapter()`方法之前调用，不然会报错。
 当`ListView`通过`addHeaderView`添后，在o`nItemClick`中的`position`会加上`Header`的个数，所以这时候在获取数据的时候要对位置进行处理。
 
@@ -75,6 +79,7 @@ mPullLoadListView.setAdapter(adapter);
 
 4.ListView.addHeadrView()添加ViewPager不显示的问题
 ---
+
 `addHeaderView()`添加`ViewPager`后不能显示出来的问题：
 ```xml
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -102,5 +107,6 @@ mListView.addHeaderView(mHeaderView);
 **注意**ViewPager的布局中宽高不能够使用`wrap_content`可以使用`match_parent`但是上面显示不出来也是由于match_parent的问题，如果我们将布局中的`layout_height="200dip"`,这样就能够显示出来`ViewPager`
  
 ------------------------------------------
+
 - 邮箱 ：charon.chui@gmail.com  
 - Good Luck! 
