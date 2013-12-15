@@ -2,7 +2,7 @@ ScrollingTabs
 ===
 
 自定义ScrollingTabs结合ViewPager实现指引的效果。    
-![image](https://github.com/CharonChui/AndroidNote/blob/master/Pic/ScrollingTabs.png?raw=true)
+![image](https://github.com/CharonChui/AndroidNote/blob/master/Pic/ScrollingTabs.png?raw=true)        
 **原理:**    
 由于`ScrollingTabs`即可以点击又可以实现左右滑动，首先想到的就是继承`HorizontalScrollView`来实现滑动，至于点击的实现需要通过对`View`
 设置点击。    
