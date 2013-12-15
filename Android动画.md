@@ -94,5 +94,6 @@ CycleInterpolator//曲线运动特效，要传递float型的参数。
 animation.setInterpolator(new LinearInterpolator());//指定动画的运行效果
 ```
 ------------------------------------------
+
 - 邮箱 ：charon.chui@gmail.com  
 - Good Luck! 
