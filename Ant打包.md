@@ -13,9 +13,9 @@ Ant打包
 2. 将签名文件keystore复制到工程根目录下,并且在根目录下新建`ant.properties`内容如下(配置签名文件):
 ```
 　　key.store=keystore.keystore //把签名放到根目录中   
-　　key.alias=ifeng
-　　key.store.password=ifeng123
-　　key.alias.password=ifeng123
+　　key.alias=tencent
+　　key.store.password=1234
+　　key.alias.password=1234
 ```
 
 3. 刷新工程，然后在`eclipse`中的`Ant`视图中右键`add build files`选择工程中的`build.xml`，选择最下面的release或者是debug，注意release是生成带签名的apk包.生成的apk在bin目录中，名字为工程名-release.apk.

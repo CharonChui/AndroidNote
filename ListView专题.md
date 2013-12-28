@@ -53,7 +53,8 @@ mPullLoadListView.setAdapter(adapter);
 `addHeaderView()`以及`addFooterView()`一定要在调用`setAdapter()`方法之前调用，不然会报错。
 当`ListView`通过`addHeaderView`添后，在o`nItemClick`中的`position`会加上`Header`的个数，所以这时候在获取数据的时候要对位置进行处理。
 
-下面两种方法都可以：
+下面两种方法都可以：    
+
 1. 第一种
 ```java
     public void onItemClick(AdapterView <?> parent, View v, int position, long id) {
@@ -61,6 +62,7 @@ mPullLoadListView.setAdapter(adapter);
         doSomething(parent.getAdapter().getItem(position));
     }
 ```
+
 2. 第二种
 ```java
     mListView.setOnItemClickListener(new OnItemClickListener() {
