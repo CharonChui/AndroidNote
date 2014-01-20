@@ -90,9 +90,7 @@ Android动画
         }
         ```
         
-    
-7. 保持动画播放完成后的状态
-    `animation.setFillAfter(true);`   
+7. 保持动画播放完成后的状态`animation.setFillAfter(true);`   
 
     ```java
     Interpolator //定义了动画的变化速度，可以实现匀速、正加速、负加速、无规则变加速度
