@@ -66,7 +66,55 @@
 	```
 	public void killBackgroundProcesses(String packageName)
 	```
-	
+6. 获取内存可用大小
+    ```java
+	public class ProcessStatusUtils {
+        /**
+         * 获取有多少个程序正处于运行状态.
+         * @param context
+         * @return
+         */
+        public static int getProcessCount(Context context){
+            ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+            return am.getRunningAppProcesses().size();
+        }
+    
+        /**
+         * 获取手机里面可用的内存空间
+         * @param context
+         * @return long类型的byte的值
+         */
+        public static long getAvailRAM(Context context){
+            ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+            MemoryInfo outInfo = new MemoryInfo();
+            am.getMemoryInfo(outInfo);
+            return outInfo.availMem;
+        }
+
+        //获取手机的总内存，Android的Api中没有提供获取总内存的方法，在linux系统中我们要通过这个文件才能得到总内存
+        public static long getTotalRAM(){
+            try {
+                File file = new File("/proc/meminfo");//Android系统这个文件的第一行就能得到总的内存大小
+                FileInputStream fis = new FileInputStream(file);
+                BufferedReader br = new BufferedReader(new InputStreamReader(fis));
+                String str = br.readLine();
+                //MemTotal:         513248 kB
+                char[] chars = str.toCharArray();
+                StringBuffer sb = new StringBuffer();
+                for(char c : chars){
+                    if(c>='0'&&c<='9'){
+                        sb.append(c);
+                    }
+                }
+                return Integer.parseInt(sb.toString())*1024;//得到的是多少kb,将kb转成b
+            } catch (Exception e) {
+                e.printStackTrace();
+                return 0;
+            }
+        }
+    } 
+    //上面的方法都是得到的多少比特的大小，在使用中可以使用Formatter.formatFileSize(Context context, long b)将其自动转成K,M,G等
+    ```
 ---
 
 - 邮箱 ：charon.chui@gmail.com  
