@@ -29,6 +29,7 @@ DevicePolicyManager中的方法
 	Return true if the given administrator component is currently active (enabled) in the system
 
 使用超级管理员DevicePolicyManager的步骤       
+
 1. 要写一个类继承DeviceAdminReceiver
 	```java
 	public class MyAdmin extends DeviceAdminReceiver {
