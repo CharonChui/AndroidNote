@@ -46,9 +46,7 @@ day02Android数据存储
 
 2. 清除缓存&清除数据    
     清除数据会清除/data/data/包名中的所有文件     
-    getCacheDir()  /data/data/<当前应用程序包名>/cache/，清除缓存的时候会清除该目录中的内容
-	
----
+    getCacheDir()  /data/data/<当前应用程序包名>/cache/，清除缓存的时候会清除该目录中的内容---
 
 - 邮箱 ：charon.chui@gmail.com  
 - Good Luck! 
