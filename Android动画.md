@@ -2,7 +2,8 @@ Android动画
 ====== 
 
 1. AlphaAnimation
-```java
+
+    ```java
     RelativeLayout rl_splash = (RelativeLayout) findViewById(R.id.rl_splash);
     //播放动画效果
     AlphaAnimation animation = new AlphaAnimation(1.0f, 0.0f);
@@ -10,10 +11,11 @@ Android动画
     animation.setDuration(2000);
     //播放Alpha动画
     rl_splash.setAnimation(animation);
-```
+    ```
 
 2. RotateAnimation
-```java
+
+    ```java
     //相对于自身的哪个位置旋转，这里是相对于自身的右下角
     RotateAnimation ra = new RotateAnimation(0, 360,  //从哪旋转，旋转多少度
             Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF,
@@ -22,21 +24,24 @@ Android动画
     ra.setRepeatCount(Animation.INFINITE);
     ra.setRepeatMode(Animation.RESTART);
     iv_scan.startAnimation(ra);
- ```
+     ```
 3. ScaleAnimation(缩放动画)    
-```java 
+     
+    ```java 
     ScaleAnimation(float fromX, float toX, float fromY, float toY) 
     Constructor to use when building a ScaleAnimation from code
-```
+    ```
 
 4. TranslateAnimation(位移动画)     
-```java
+    
+    ```java
     TranslateAnimation(int fromXType, float fromXValue, int toXType, float toXValue, int fromYType, float fromYValue, int toYType, float toYValue) 
     Constructor to use when building a TranslateAnimation from code
-```
+    ```
 
 5. AnimationSet (多组动画)
-```java
+    
+    ```java
     ScaleAnimation sa = new ScaleAnimation(0.2f, 1.0f, 0.4f,1.0f);//缩放的动画效果,1.0f就代表窗体的总宽或者高
     sa.setDuration(400);
     TranslateAnimation ta = new TranslateAnimation(//位移动的动画效果
@@ -49,11 +54,13 @@ Android动画
     set.addAnimation(sa);
     set.addAnimation(ta);
     contentView.startAnimation(set); // 播放一组动画. 
-```
+    ```
 
 6. Frame动画    
+
     - 在`drawable`目录下新建一个`xml`文件，内容如下:
-```xml
+    
+        ```xml
         <?xml version="1.0" encoding="utf-8"?>
         <animation-list xmlns:android="http://schemas.android.com/apk/res/android"
             android:oneshot="true" > //onshot是指定是否循环播放
@@ -64,9 +71,10 @@ Android动画
                 android:drawable="@drawable/desktop_rocket_launch_2"
                 android:duration="100"/>
         </animation-list>
-```
+        ```
     - 播放Frame动画
-```java
+    
+        ```java
         AnimationDrawable rocketAnimation;
         public void onCreate(Bundle savedInstanceState) {
               super.onCreate(savedInstanceState);
@@ -80,20 +88,23 @@ Android动画
                    rocketAnimation.start();  //播放
               }
         }
-```
+        ```
+        
+    
+7. 保持动画播放完成后的状态
+    `animation.setFillAfter(true);`   
 
-//动画效果,动画播放完成后会又恢复到最初的状态，如何让保留播放完成的动画效果呢？将下面的方法设置为`true`就可以了。
-        `animation.setFillAfter(true);`   
-```java
-Interpolator //定义了动画的变化速度，可以实现匀速、正加速、负加速、无规则变加速等
-AccelerateDecelerateInterpolator //延迟减速，在动作执行到中间的时候才执行该特效。
-AccelerateInterpolator//会使慢慢以(float)的参数降低速度。
-LinearInterpolator//平稳不变的
-DecelerateInterpolator//在中间加速,两头慢
-CycleInterpolator//曲线运动特效，要传递float型的参数。
-animation.setInterpolator(new LinearInterpolator());//指定动画的运行效果
-```
-------------------------------------------
+    ```java
+    Interpolator //定义了动画的变化速度，可以实现匀速、正加速、负加速、无规则变加速度
+    AccelerateDecelerateInterpolator//延迟减速，在动作执行到中间的时候才执行该特效。
+    AccelerateInterpolator//会使慢慢以(float)的参数降低速度。    
+    LinearInterpolator//平稳不变的    
+    DecelerateInterpolator//在中间加速,两头慢    
+    CycleInterpolator//曲线运动特效，要传递float型的参数。     
+    animation.setInterpolator(new LinearInterpolator());//指定动画的运行效果
+    ```
+    
+---
 
 - 邮箱 ：charon.chui@gmail.com  
 - Good Luck! 
