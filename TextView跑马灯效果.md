@@ -17,7 +17,7 @@ TextView跑马灯效果实现方式一:
 ----
 
 1. 继承TextView
-```java
+    ```java
     //继承TextView并且实现抽象方法
     public class FocusedTextView extends TextView {
      
@@ -38,15 +38,16 @@ TextView跑马灯效果实现方式一:
             return true;
         }
     }
-``` 
+    ``` 
+
 2. 在清单文件中使用该类
 ```xml
-    <com.itheima.mobilesafe.ui.FocusedTextView   //注意这里要使用包名.类名
-        android:ellipsize="marquee"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:singleLine="true"
-        android:text="我是你的小黑马卫士,哈哈哈哈,我可以保护你的手机安全.嘎嘎嘎" />
+<com.charon.test.ui.FocusedTextView   //注意这里要使用包名.类名
+    android:ellipsize="marquee"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:singleLine="true"
+    android:text="我是你的嘎嘎嘎、、、、、、、、哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈" />
  ```
 
 TextView跑马灯效果实现方式二:

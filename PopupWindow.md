@@ -1,7 +1,7 @@
 PopupWindow
 ===
-`
-A popup window that can be used to display an arbitrary view. The popup windows is a floating container that appears on top of the current activity.`
+
+A popup window that can be used to display an arbitrary view. The popup windows is a floating container that appears on top of the current activity.
  
 1. 显示
 	```java

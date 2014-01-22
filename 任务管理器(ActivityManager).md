@@ -1,21 +1,27 @@
 任务管理器(ActivityManager)
 ===
 
-`Android`中**ActivityManager**类似于`Windows`下的任务管理器，能得到正在运行程序的内容等信息      
-1. List<ActivityManager.RunningServiceInfo>  getRunningServices(int maxNum) 
+`Android`中**ActivityManager**类似于`Windows`下的任务管理器，能得到正在运行程序的内容等信息    
+
+1. List<ActivityManager.RunningServiceInfo>  getRunningServices(int maxNum)     
     Return a list of the services that are currently running.
 	这个maxNum是指返回的这个集合的最大值    
 	可以利用`ActivityManager`去判断当前某个服务是否正在运行。
-2. List<ActivityManager.RunningAppProcessInfo>  getRunningAppProcesses() 
-	Returns a list of application processes that are running on the device.
-3. List<ActivityManager.RecentTaskInfo>  getRecentTasks(int maxNum, int flags) 
+
+2. List<ActivityManager.RunningAppProcessInfo>  getRunningAppProcesses()     
+    Returns a list of application processes that are running on the device.
+
+3. List<ActivityManager.RecentTaskInfo>  getRecentTasks(int maxNum, int flags)     
     得到最近使用的程序，集合中第一个元素是刚才正在使用的
-4. Debug.MemoryInfo[]  getProcessMemoryInfo(int[] pids) 
+
+4. Debug.MemoryInfo[]  getProcessMemoryInfo(int[] pids)      
 	Return information about the memory usage of one or more processes.
 	可以通过某个进程的id得到进程的内存使用信息，然后通过这个内存信息能够得到每个程序使用的内存大小
-	- MemoryInfo中的方法
-		int getTotalPrivateDirty() 
-		Return total private dirty memory usage in kB得到占用内存的大小，单位是kb
+
+	MemoryInfo中的方法     
+    int getTotalPrivateDirty()            
+	Return total private dirty memory usage in kB得到占用内存的大小，单位是kb    
+
 	```java
     /**
      * 返回所有的进程列表信息
@@ -56,7 +62,7 @@
         return taskInfos;
     }
     ```
- 
+
 5. 一键清理     
 	杀死进程需要权限     
 	```xml
@@ -66,6 +72,7 @@
 	```
 	public void killBackgroundProcesses(String packageName)
 	```
+
 6. 获取内存可用大小
     ```java
 	public class ProcessStatusUtils {
@@ -115,6 +122,7 @@
     } 
     //上面的方法都是得到的多少比特的大小，在使用中可以使用Formatter.formatFileSize(Context context, long b)将其自动转成K,M,G等
     ```
+    
 ---
 
 - 邮箱 ：charon.chui@gmail.com  
