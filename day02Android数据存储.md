@@ -251,6 +251,10 @@ day02Android数据存储
 				}
 			}
 			```
+	    4. getReadableDatabase()与getWritableDatabase()的区别
+            通过观察源码我们发现getWritableDatabase()与getReadableDatabase()内部都是调用了getDatabaseLocked(boolean writeable),只不过是传递的参数不同。getReadableDatabase()会判断当前是否有已经打开的数据库，如果有就直接返回当前的数据库，如果没有的话就去打开数据库，而getWritableDatabase()会去判断当前的数据库是否只是可读的，如果只是可读的数据库，就会去重新打开一个可写的数据库然后返回。其实他俩的区别就在用同步的问题。因为写数据库是要加锁的，而读数据库并不需要锁.
+        5. Sqlite3工具
+            有些手机无法进入data/data/package目录下导出数据库，这时候可以adb shell进来后进入到数据库的文件夹。然后执行 sqlite 3 note.db,之后就可以去执行相应的sql语句进行查询相应的数据。
     5. Network    
         Store data on the web with your own network server.
 
