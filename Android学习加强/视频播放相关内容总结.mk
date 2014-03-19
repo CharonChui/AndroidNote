@@ -16,7 +16,7 @@
     if (mWindow == null) {  
     mWindow = new MyWindow(this);  
     mLayout.type = mWindowType;  
-	mLayout.gravity = Gravity.LEFT|Gravity.TOP;  
+    mLayout.gravity = Gravity.LEFT|Gravity.TOP;  
 	mSession.addWithoutInputChannel(mWindow, mWindow.mSeq, mLayout,  
 	mVisible ? VISIBLE : GONE, mContentInsets);  
     }  
@@ -38,5 +38,3 @@ SurfaceHolder`中提供了一些`lockCanvas()`：获取一个Canvas对象，并�
 
 - 邮箱 ：charon.chui@gmail.com  
 - Good Luck! 
-
-
