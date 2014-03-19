@@ -42,12 +42,14 @@ Android基础_数据存储
         ```
     4. SQLiteDatabase    
         Store structured data in a private database.
-		Android平台中嵌入了一个关系型数据库SQLite，和其他数据库不同的是SQLite存储数据时不区分类型，例如一个字段声明为Integer类型，我们也可以将一个字符串存入，一个字段声明为布尔型，我们也可以存入浮点数。除非是主键被定义为Integer，这时只能存储64位整数创建数据库的表时可以不指定数据类型，例如：
-        `CREATE TABLE person(id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR(20))`
-        `CREATE TABLE person(id INTEGER PRIMARY KEY AUTOINCREMENT, name)`
-        SQLite支持大部分标准SQL语句，增删改查语句都是通用的，分页查询语句和MySQL相同
-        `SELECT * FROM person LIMIT 20 OFFSET 10`
-        `SELECT * FROM person LIMIT 10,20`
+		Android平台中嵌入了一个关系型数据库SQLite，和其他数据库不同的是SQLite存储数据时不区分类型，例如一个字段声明为Integer类型，我们也可以将一个字符串存入，一个字段声明为布尔型，我们也可以存入浮点数。除非是主键被定义为Integer，这时只能存储64位整数创建数据库的表时可以不指定数据类型，例如：     
+        `CREATE TABLE person(id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR(20))`    
+        `CREATE TABLE person(id INTEGER PRIMARY KEY AUTOINCREMENT, name)`     
+        SQLite支持大部分标准SQL语句，增删改查语句都是通用的，分页查询语句和MySQL相同     
+        `SELECT * FROM person LIMIT 20 OFFSET 10`        
+        `SELECT * FROM person LIMIT 10,20`    
+        `select * from reading_history order by _id desc limit 3, 4;`    
+        `delete from test where _id in (select _id from test ORDER BY _id DESC limit 3, 20)`
 		1. 继承SQLiteOpenHelper
 		    ```java
 			public class NoteSQLiteOpenHelper extends SQLiteOpenHelper {
