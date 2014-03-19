@@ -1,12 +1,12 @@
-GitÊ¹ÓÃ´íÎó´¦Àí
+ï»¿Gitä½¿ç”¨é”™è¯¯å¤„ç†
 ===
 
-1. git push: git did not exit cleanly (exit code 128)¡£Í¨³£¶¼ÊÇÍøÂçÔ­Òò¡£
-1¡¢Êó±êÓÒ¼ü -> TortoiseGit -> Settings -> Network
-2¡¢SSH client was pointing to C:\Program Files\TortoiseGit\bin\TortoisePlink.exe
-3¡¢Changed path to C:\Program Files (x86)\Git\bin\ssh.exe
+1. git push: git did not exit cleanly (exit code 128)ã€‚é€šå¸¸éƒ½æ˜¯ç½‘ç»œåŸå› ã€‚
+1ã€é¼ æ ‡å³é”® -> TortoiseGit -> Settings -> Network
+2ã€SSH client was pointing to C:\Program Files\TortoiseGit\bin\TortoisePlink.exe
+3ã€Changed path to C:\Program Files (x86)\Git\bin\ssh.exe
 
 ---
 
-- ÓÊÏä £ºcharon.chui@gmail.com  
+- é‚®ç®± ï¼šcharon.chui@gmail.com  
 - Good Luck! 
