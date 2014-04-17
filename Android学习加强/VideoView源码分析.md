@@ -6,8 +6,8 @@ VideoView
 
 基于Android4.4源码进行分析
 
-- 简介
-    ```java
+- 简介     
+    ```java 
 	/**
 	 * Displays a video file.  The VideoView class
 	 * can load images from various sources (such as resources or content
@@ -25,8 +25,9 @@ VideoView
 	 * Also note that the audio session id (from {@link #getAudioSessionId}) may
 	 * change from its previously returned value when the VideoView is restored.
 	 */
-    ```
-- 关系
+	```
+
+- 关系       
 	```java
 	public class VideoView extends SurfaceView
 			implements MediaPlayerControl
@@ -44,6 +45,7 @@ VideoView
 		private static final int STATE_PAUSED             = 4;
 		private static final int STATE_PLAYBACK_COMPLETED = 5;
 		```
+
 	- 记录播放器状态
 		```java
 		// mCurrentState is a VideoView object's current state.
@@ -54,12 +56,14 @@ VideoView
 		private int mCurrentState = STATE_IDLE;
 		private int mTargetState  = STATE_IDLE;
 		```		
+
 	- 主要功能部分
 		```java
 		private SurfaceHolder mSurfaceHolder = null;// 显示图像
         private MediaPlayer mMediaPlayer = null; // 声音、播放
 		private MediaController mMediaController; // 播放控制
 		```
+
 	- 其他
 	    ```java
 		private int         mVideoWidth;  // 视频宽度 在onVideoSizeChanged() 和 onPrepared() 中可以得到具体大小
@@ -149,74 +153,74 @@ VideoView
 		```
 		
 	- 重写onMeasure()方法
-	```java
-	@Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        int width = getDefaultSize(mVideoWidth, widthMeasureSpec);
-        int height = getDefaultSize(mVideoHeight, heightMeasureSpec);
-		
-		// ....根据视频的宽高比进行处理， 为了更好的宽展，提供一些用户能自己选择的模式，一般会另外提供方法, 这部分代码可以先不看 start
-		int width = getDefaultSize(mVideoWidth, widthMeasureSpec);
-        int height = getDefaultSize(mVideoHeight, heightMeasureSpec);
-        if (mVideoWidth > 0 && mVideoHeight > 0) {
-
-            int widthSpecMode = MeasureSpec.getMode(widthMeasureSpec);
-            int widthSpecSize = MeasureSpec.getSize(widthMeasureSpec);
-            int heightSpecMode = MeasureSpec.getMode(heightMeasureSpec);
-            int heightSpecSize = MeasureSpec.getSize(heightMeasureSpec);
-
-            if (widthSpecMode == MeasureSpec.EXACTLY && heightSpecMode == MeasureSpec.EXACTLY) {
-                // the size is fixed
-                width = widthSpecSize;
-                height = heightSpecSize;
-
-                // for compatibility, we adjust size based on aspect ratio
-                if ( mVideoWidth * height  < width * mVideoHeight ) {
-                    //Log.i("@@@", "image too wide, correcting");
-                    width = height * mVideoWidth / mVideoHeight;
-                } else if ( mVideoWidth * height  > width * mVideoHeight ) {
-                    //Log.i("@@@", "image too tall, correcting");
-                    height = width * mVideoHeight / mVideoWidth;
-                }
-            } else if (widthSpecMode == MeasureSpec.EXACTLY) {
-                // only the width is fixed, adjust the height to match aspect ratio if possible
-                width = widthSpecSize;
-                height = width * mVideoHeight / mVideoWidth;
-                if (heightSpecMode == MeasureSpec.AT_MOST && height > heightSpecSize) {
-                    // couldn't match aspect ratio within the constraints
-                    height = heightSpecSize;
-                }
-            } else if (heightSpecMode == MeasureSpec.EXACTLY) {
-                // only the height is fixed, adjust the width to match aspect ratio if possible
-                height = heightSpecSize;
-                width = height * mVideoWidth / mVideoHeight;
-                if (widthSpecMode == MeasureSpec.AT_MOST && width > widthSpecSize) {
-                    // couldn't match aspect ratio within the constraints
-                    width = widthSpecSize;
-                }
-            } else {
-                // neither the width nor the height are fixed, try to use actual video size
-                width = mVideoWidth;
-                height = mVideoHeight;
-                if (heightSpecMode == MeasureSpec.AT_MOST && height > heightSpecSize) {
-                    // too tall, decrease both width and height
-                    height = heightSpecSize;
-                    width = height * mVideoWidth / mVideoHeight;
-                }
-                if (widthSpecMode == MeasureSpec.AT_MOST && width > widthSpecSize) {
-                    // too wide, decrease both width and height
-                    width = widthSpecSize;
-                    height = width * mVideoHeight / mVideoWidth;
-                }
-            }
-        } else {
-            // no size yet, just adopt the given spec sizes
-        }
-		// end
-		
-        setMeasuredDimension(width, height);
-    }
-	```
+		```java
+		@Override
+	    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+	        int width = getDefaultSize(mVideoWidth, widthMeasureSpec);
+	        int height = getDefaultSize(mVideoHeight, heightMeasureSpec);
+			
+			// ....根据视频的宽高比进行处理， 为了更好的宽展，提供一些用户能自己选择的模式，一般会另外提供方法, 这部分代码可以先不看 start
+			int width = getDefaultSize(mVideoWidth, widthMeasureSpec);
+	        int height = getDefaultSize(mVideoHeight, heightMeasureSpec);
+	        if (mVideoWidth > 0 && mVideoHeight > 0) {
+	
+	            int widthSpecMode = MeasureSpec.getMode(widthMeasureSpec);
+	            int widthSpecSize = MeasureSpec.getSize(widthMeasureSpec);
+	            int heightSpecMode = MeasureSpec.getMode(heightMeasureSpec);
+	            int heightSpecSize = MeasureSpec.getSize(heightMeasureSpec);
+	
+	            if (widthSpecMode == MeasureSpec.EXACTLY && heightSpecMode == MeasureSpec.EXACTLY) {
+	                // the size is fixed
+	                width = widthSpecSize;
+	                height = heightSpecSize;
+	
+	                // for compatibility, we adjust size based on aspect ratio
+	                if ( mVideoWidth * height  < width * mVideoHeight ) {
+	                    //Log.i("@@@", "image too wide, correcting");
+	                    width = height * mVideoWidth / mVideoHeight;
+	                } else if ( mVideoWidth * height  > width * mVideoHeight ) {
+	                    //Log.i("@@@", "image too tall, correcting");
+	                    height = width * mVideoHeight / mVideoWidth;
+	                }
+	            } else if (widthSpecMode == MeasureSpec.EXACTLY) {
+	                // only the width is fixed, adjust the height to match aspect ratio if possible
+	                width = widthSpecSize;
+	                height = width * mVideoHeight / mVideoWidth;
+	                if (heightSpecMode == MeasureSpec.AT_MOST && height > heightSpecSize) {
+	                    // couldn't match aspect ratio within the constraints
+	                    height = heightSpecSize;
+	                }
+	            } else if (heightSpecMode == MeasureSpec.EXACTLY) {
+	                // only the height is fixed, adjust the width to match aspect ratio if possible
+	                height = heightSpecSize;
+	                width = height * mVideoWidth / mVideoHeight;
+	                if (widthSpecMode == MeasureSpec.AT_MOST && width > widthSpecSize) {
+	                    // couldn't match aspect ratio within the constraints
+	                    width = widthSpecSize;
+	                }
+	            } else {
+	                // neither the width nor the height are fixed, try to use actual video size
+	                width = mVideoWidth;
+	                height = mVideoHeight;
+	                if (heightSpecMode == MeasureSpec.AT_MOST && height > heightSpecSize) {
+	                    // too tall, decrease both width and height
+	                    height = heightSpecSize;
+	                    width = height * mVideoWidth / mVideoHeight;
+	                }
+	                if (widthSpecMode == MeasureSpec.AT_MOST && width > widthSpecSize) {
+	                    // too wide, decrease both width and height
+	                    width = widthSpecSize;
+	                    height = width * mVideoHeight / mVideoWidth;
+	                }
+	            }
+	        } else {
+	            // no size yet, just adopt the given spec sizes
+	        }
+			// end
+			
+	        setMeasuredDimension(width, height);
+	    }
+		```
 	
 		- 附上getDefaultSize()源码 
 			```java
@@ -432,6 +436,7 @@ VideoView
 						}
 				};
 				```
+
 		    - OnPreparedListener
 			    ```java
 				MediaPlayer.OnPreparedListener mPreparedListener = new MediaPlayer.OnPreparedListener() {
@@ -525,17 +530,17 @@ VideoView
 				return false;
 			}
 			```
-			
-			- toggleMediaControlsVisiblity
-			    ```java
-				private void toggleMediaControlsVisiblity() {
-					if (mMediaController.isShowing()) {
-						mMediaController.hide();
-					} else {
-						mMediaController.show();
-					}
+
+		- toggleMediaControlsVisiblity      
+			```java
+			private void toggleMediaControlsVisiblity() {
+				if (mMediaController.isShowing()) {
+					mMediaController.hide();
+				} else {
+					mMediaController.show();
 				}
-				```
+			}
+			```
 				
 		- Key
 		    ```java
@@ -584,6 +589,7 @@ VideoView
 
 华丽丽的分割线 上源码
 ==============
+
 ----------------------
 ```java
 /*
@@ -1450,9 +1456,11 @@ public class VideoView extends SurfaceView
 }
 ```
 
- MediaPlayerControl
- ---
+MediaPlayerControl
+---
+ 
  通过该接口来打通MediaController以及VideoView
+ 
  ```java
  public interface MediaPlayerControl {
 	void    start();
@@ -1475,10 +1483,10 @@ public class VideoView extends SurfaceView
 }
  ```
  
- MediaController
- ---
+MediaController
+---
  
- - 简介
+- 简介            
     ```java
 	/**
 	* A view containing controls for a MediaPlayer. Typically contains the
@@ -1509,11 +1517,12 @@ public class VideoView extends SurfaceView
 	* </ul>
 	*/
 	```
-	
+
 - 关系
     ```java
 	public class MediaController extends FrameLayout
 	```
+
 - 成员
 	```java
 	// 一些控制功能的接口
@@ -1566,7 +1575,7 @@ public class VideoView extends SurfaceView
         if (mRoot != null)
             initControllerView(mRoot);
     }
-
+    
     public MediaController(Context context, boolean useFastForward) {
         super(context);
         mContext = context;
@@ -1575,7 +1584,7 @@ public class VideoView extends SurfaceView
         initFloatingWindowLayout();
         initFloatingWindow();
     }
-
+    
     public MediaController(Context context) {
         this(context, true);
     }
@@ -1627,20 +1636,20 @@ public class VideoView extends SurfaceView
 		}
 		```
 		
-		- mTouchListener
-		    ```java
-			private OnTouchListener mTouchListener = new OnTouchListener() {
-				public boolean onTouch(View v, MotionEvent event) {
-					if (event.getAction() == MotionEvent.ACTION_DOWN) {
-						if (mShowing) {
-							hide();
-						}
+	- mTouchListener        
+		```java
+		private OnTouchListener mTouchListener = new OnTouchListener() {
+			public boolean onTouch(View v, MotionEvent event) {
+				if (event.getAction() == MotionEvent.ACTION_DOWN) {
+					if (mShowing) {
+						hide();
 					}
-					return false;
 				}
-			};
-			```
-			
+				return false;
+			}
+		};
+		```
+
 	- setMediaPlayer
 	    VideoView调用setMediaController的时候会调用到该方法
 	    ```java
@@ -1696,6 +1705,7 @@ public class VideoView extends SurfaceView
 				}
 			};
 			```
+
 			- updateFloatingWindowLayout
 			    ```java
 				// Update the dynamic parts of mDecorLayoutParams
@@ -1742,6 +1752,7 @@ public class VideoView extends SurfaceView
 			return true;
 		}
 		```
+
 	- 进度的处理
 		- seekBar的处理
 			```java
@@ -1797,6 +1808,7 @@ public class VideoView extends SurfaceView
 				}
 			};
 			```
+			
 		- SetProgress
             ```java
 			private int setProgress() {
@@ -1823,6 +1835,7 @@ public class VideoView extends SurfaceView
 				return position;
 			}
 			```
+			
 		- show
         	```java
         	/**
@@ -1858,6 +1871,7 @@ public class VideoView extends SurfaceView
                 }
             }
         	```
+
     	- hide
     	    ```java
     		/**
@@ -2574,7 +2588,7 @@ public class MediaController extends FrameLayout {
 }
 ```
  
- ---
+---
 
 - 邮箱 ：charon.chui@gmail.com  
 - Good Luck! 
