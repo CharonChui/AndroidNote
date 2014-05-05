@@ -1,7 +1,7 @@
 Handler导致内存泄露分析
 ===
 
-有关内存泄露请猛戳[内存泄露](https://github.com/CharonChui/AndroidNote/blob/master/Android%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2.md)
+有关内存泄露请猛戳[内存泄露](https://github.com/CharonChui/AndroidNote/blob/master/Android%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F.md)
 
 ```java
 Handler mHandler = new Handler() {
