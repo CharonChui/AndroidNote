@@ -11,11 +11,12 @@ Handler mHandler = new Handler() {
     }
 }
 ```
-当我们这样创建`Handler`的时候`Android Lint`会提示我们这样一个`warning： In Android, Handler classes should be static or leaks might occur.`。
-一直以来没有仔细的去分析泄露的原因，先把主要原因列一下：
-1. `Android`程序第一次创建的时候，默认会创建一个`Looper`对象，`Looper`去处理`Message Queue`中的每个`Message`,主线程的`Looper`存在整个应用程序的生命周期.
-2. `Hanlder`在主线程创建时会关联到`Looper`的`Message Queue`,`Message`添加到消息队列中的时候`Message`会持有当前`Handler`引用，当`Looper`处理到当前消息的时候，会调用`Handler#handleMessage(Message)`.就是说在`Looper`处理这个`Message`之前，会有一条链`MessageQueue -> Message -> Handler -> Activity`，由于它的引用导致你的`Activity`被持有引用而无法被回收`
-3. **在java中，no-static的内部类会隐式的持有当前类的一个引用。static的内部类则没有。**
+当我们这样创建`Handler`的时候`Android Lint`会提示我们这样一个`warning： In Android, Handler classes should be static or leaks might occur.`。       
+     
+一直以来没有仔细的去分析泄露的原因，先把主要原因列一下：    
+- `Android`程序第一次创建的时候，默认会创建一个`Looper`对象，`Looper`去处理`Message Queue`中的每个`Message`,主线程的`Looper`存在整个应用程序的生命周期.
+- `Hanlder`在主线程创建时会关联到`Looper`的`Message Queue`,`Message`添加到消息队列中的时候`Message`会持有当前`Handler`引用，当`Looper`处理到当前消息的时候，会调用`Handler#handleMessage(Message)`.就是说在`Looper`处理这个`Message`之前，会有一条链`MessageQueue -> Message -> Handler -> Activity`，由于它的引用导致你的`Activity`被持有引用而无法被回收`
+- **在java中，no-static的内部类会隐式的持有当前类的一个引用。static的内部类则没有。**
 
 ##具体分析
 ```java
