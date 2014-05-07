@@ -4,12 +4,14 @@
 换了家公司，需要做浏览器相关的功能，一直没有用到过`WebView`，相对比较陌生，简单的学习了一下算是完成了功能，今天能有点时间，简单的总结一下：              
 在`Android`中有`WebView Widget`，它内置了`WebKit`引擎，同时，`WebKit`也是`Mac OS X`的`Safari`网页浏览器的基础。`WebKit`是一个开源的浏览器引擎，`Chrome`浏览器也是基于它的。所以很多表现`WebView`和`Chrome`是一样的。          
 
-很多文章中多会说在使用`WebView`之前，要在`AndroidManifest.xml`中添加 如下权限：`<uses-permission android:name="android.permission.INTERNET"></uses-permission>`否则会出`Web page not available`错误。其实这是不全面的，如果我加载本地的页面是不用该权限的。
+很多文章中多会说在使用`WebView`之前，要在`AndroidManifest.xml`中添加 如下权限：           
+`<uses-permission android:name="android.permission.INTERNET"></uses-permission>`否则会出`Web page not available`错误。其实这是不全面的，如果我加载本地的页面是不用该权限的。
 
 - 设置WevView要显示的网页方法有很多：
     - `mWebView.loadUrl(“http://www.google.com“);` // 网络
     - `mWebView.loadUrl(“file:///android_asset/XX.html“);` // 本地页面,这里的格式是固定的，文件要放到`assets`目录下
 	- `mWebview.postUrl(String url, byte[] postData); // 加载页面使用`Post`方式，`postData`为参数`
+
 	    ```java
 		String postData = "password=password&username=username";
 		mWebview.postUrl(url, EncodingUtils.getBytes(postData, "base64"));
@@ -23,6 +25,7 @@
 		- 显示乱码
 		    `WebView`一般为了节省资源使用`UTF-8`编码，而`String`类型的数据主要是`Unicode`编码，因此在`loadData()`的时候需要设置相应编码让其将`Unicode`编码转成`UTF-8`但是有些时候设置后还是会出现乱码，这是因为还需要为`WebView`中的
 			`Text`设置编码，
+
 			```java
 			WebView mWebView = (WebView)findViewById(R.id.webview) ;
 			String content = getUnicodeContent() ;
@@ -40,6 +43,7 @@
 		
 - Back键的处理     
     如果用`webview`点链接看了很多页以后，如果不做任何处理，点击系统`Back`键，整个浏览器会调用`finish()`而结束自身，如果希望浏览的网页回退而不是退出浏览器，需要在当前`Activity`中处理并消费掉该`Back`事件。
+
 	```java
 	 public boolean onKeyDown(int keyCoder,KeyEvent event){
 		if(webView.canGoBack() && keyCoder == KeyEvent.KEYCODE_BACK){
