@@ -17,7 +17,7 @@
 - **[小米](http://developer.xiaomi.com)**
 - **[联想](http://developer.lenovomm.com)**
 - **[华为](http://developer.huawei.com/)**
-- **[优亿市场](http://dev.eoemarket.com/)**
+- **[优亿市场](http://dev.eoemarket.com/)账号是用户名不是邮箱**
 - **[网易](http://m.163.com/android/)**
 - **[10086](http://dev.10086.cn/)**
 - **[京东](http://play.jd.com/download/)**
