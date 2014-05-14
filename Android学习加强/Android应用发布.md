@@ -18,7 +18,7 @@
 - **[联想](http://developer.lenovomm.com)**
 - **[华为](http://developer.huawei.com/)**
 - **[优亿市场](http://dev.eoemarket.com/)账号是用户名不是邮箱**
-- **[网易](http://m.163.com/android/)**
+- **[网易](http://m.163.com/android/)灰常垃圾，等你全部弄好后还要加他QQ让他审核，完了他会告诉你我们不接受个人应用，不做死就不会死**
 - **[10086](http://dev.10086.cn/)**
 - **[京东](http://play.jd.com/download/)**
 - **[魅族](http://developer.meizu.com)风格独特要做适配**
