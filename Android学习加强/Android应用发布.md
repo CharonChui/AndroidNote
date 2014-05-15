@@ -13,7 +13,7 @@
 - **[安卓市场](http://apk.hiapk.com/)**
 - **[安智市场](http://dev.anzhi.com/)账号不是邮箱，而是账号名**
 - **[机锋](http://dev.gfan.com/)**		
-- **[木蚂蚁](http://dev.mumayi.com/index/)**
+- **[木蚂蚁](http://dev.mumayi.com/index/)需要在有米广告中加入木蚂蚁的渠道号**
 - **[小米](http://developer.xiaomi.com)**
 - **[联想](http://developer.lenovomm.com)**
 - **[华为](http://developer.huawei.com/)**
