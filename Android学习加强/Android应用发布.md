@@ -22,6 +22,12 @@
 - **[10086](http://dev.10086.cn/)**
 - **[京东](http://play.jd.com/download/)**
 - **[魅族](http://developer.meizu.com)风格独特要做适配**
+- **[优亿市场](http://dev.eoemarket.com/index.php?s=/Login/login)**
+- **[3G安卓市场](http://dev.3g.cn/)**
+- **[搜狐应用市场](http://app.sohu.com/developer)账号为搜狐邮箱**
+- **[N多市场](http://www.nduoa.com/developer)账号为搜狐邮箱**
+
+
 
 ---
 
