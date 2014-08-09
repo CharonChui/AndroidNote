@@ -7,6 +7,8 @@ Android应用发布
 - **[淘宝手机助手](http://app.taobao.com)很快，每次他都是首发...，但是需要jpg格式的截图和图标，十八罗汉速度非凡**
 - **[360应用开发平台](http://open.app.360.cn/)实力不容小视,但是对广告审核很严，感觉不是很好**	
 - **[百度开发者中心(关联安卓及91)](http://developer.baidu.com/)这个不多说了，都是泪，各种麻烦、各种慢、各种不合理，众里寻他千百度，他想几度就几度**	  
+- **[安卓市场](http://dev.apk.hiapk.com/login)特别慢，百度上了，他各种理由不给上。**	 
+- **[91](http://market.sj.91.com/Users/Login.aspx?ReturnUrl=%2fDefault.aspx)慢，不说了，三家市场不如别人一家**	 
 - **[豌豆荚开发者中心](http://developer.wandoujia.com)还不错,账号用了手机号**	  
 - **[安智市场](http://dev.anzhi.com/)账号不是邮箱，而是账号名,不支持广告**
 - **[机锋](http://dev.gfan.com/)必须用机锋的广告，太霸道了**		
