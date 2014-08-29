@@ -17,6 +17,10 @@ Android应用发布
 - **[优亿市场](http://dev.eoemarket.com/)账号是用户名不是邮箱**
 - **[10086](http://dev.10086.cn/)密码最后一位是***
 - **[魅族](http://developer.meizu.com)风格独特要做适配**
+- **[易用汇](http://www.anzhuoapk.com)**
+- **[天翼开发平台](http://open.189.cn/)**
+- **[易优市场](http://www.eomarket.com/developer)**
+- **[安极市场](apk.angeeks.com)**
 - **[3G安卓市场](http://dev.3g.cn/)**
 - **[N多市场](http://www.nduoa.com/developer)**
 - **[安卓星空](http://dev.liqucn.com/index.php?m=member&c=index&a=login)**
@@ -26,6 +30,7 @@ Android应用发布
 
 做死系列
 - **[应用汇](http://dev.appchina.com/)貌似已经不收录个人应用，也不说明一下，等你提交后就说不收录该类内容**
+- **[网讯安卓应用市场](http://dev.51vapp.com/)(要软件著作权，不然通过不了)**
 - **[联想](http://developer.lenovomm.com)很难发布，他会把你定位成劣质应用，好吧，劣质公司，你看你吧ThinkPad弄成什么样了**
 - **[华为](http://developer.huawei.com/)不收录个人应用**
 - **[网易](http://m.163.com/android/)灰常垃圾，等你全部弄好后还要加他QQ让他审核，完了他会告诉你我们不接受个人应用，不做死就不会死**
