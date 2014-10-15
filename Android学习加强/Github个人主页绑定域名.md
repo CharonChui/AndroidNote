@@ -6,25 +6,26 @@
 创建步骤
 ---
 
-1. 建立一个博客repository
-    建立一个命名为username.github.io的repository, username就是你在Github上的用户名或机构名
+1. 建立一个博客`repository`
+    建立一个命名为`username.github.io`的`repository`, `username`就是你在`Github`上的用户名或机构名
 
 2. 增加主页
-    clone该repository到本地，增加index.html
+    `clone`该`repository`到本地，增加`index.html`
 
 3. 提交
-    commit并且push该次修改。
+    `commit`并且`push`该次修改。
 	
 4. OK
-    打开浏览器输入 http://username.github.io 即可。注意提交之后可能需要一小段时间的延迟。
+    打开浏览器输入 `username.github.io` 即可。注意提交之后可能需要一小段时间的延迟。
 
 
 绑定域名
 ---
 
-1. 在repository根目录新建CNAME文件, 内容为xxx.com(要绑定的域名),然后commit，push
+1. 在`repository`根目录新建`CNAME`文件, 内容为`xxx.com`(要绑定的域名),然后`commit`、`push`.
 2. 在自己的域名管理页面中,进入域名解析.
-![image](https://github.com/CharonChui/AndroidNote/blob/master/Pic/bindhost.jpg?raw=true)    
+    ![image](https://github.com/CharonChui/AndroidNote/blob/master/Pic/bindhost.jpg?raw=true)    
+    **注意记录值 `username.github.io.` (最后面有一个.)**
 
 ---
 
