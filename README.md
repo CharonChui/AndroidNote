@@ -3,16 +3,16 @@ AndroidNote
 
 The accumulation of knowledge in the development process
 
-开发过程中的一些小知识点、学习笔记。大家有好的东西可以一起往上提。
+Android学习笔记
 
 Developed By
-============
+===
 
  * Charon Chui - <charon.chui@gmail.com>
 
 
 License
-=======
+===
 
     Copyright (C) 2013 Charon Chui <charon.chui@gmail.com>
 
