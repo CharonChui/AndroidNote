@@ -107,7 +107,8 @@ Android基础_内容提供者
     		android:name="com.itheima.note.provider.NoteInfoProvider"
     		android:authorities="com.itheima.note.noteprovider" >
     	```
-	3. 在另外一个应用程序中使用内容提供者获取数据,使用ContentResolver去操作ContentProvider,ContentResolver用于管理ContentProvider实例，并且可实现找到指定的Contentprovider并获取到Contentprovider的数据。
+		
+	3. 使用内容提供者获取数据，使用`ContentResolver`去操作`ContentProvider`, `ContentResolver`用于管理`ContentProvider`实例，并且可实现找到指定的`ContentProvider`并获取里面的数据
     	```java
     	public void query(View view){
     		//得到内容提供者的解析器  中间人
@@ -190,7 +191,8 @@ Android基础_内容提供者
 		}
 		```
 	2. 一方在发生变化的时候去发送改变的消息
-	    对于一些系统的内容提供者内部都实现了该步骤，如果是自己写程序想要暴露就必须要加上该代码。
+	    对于一些系统的内容提供者内部都实现了该步骤，如果是自己写程序想要暴露就必须要加上该代码。     
+		
 		```java	
         mContext.getContentResolver().notifyChange(uri, null);
 		```
