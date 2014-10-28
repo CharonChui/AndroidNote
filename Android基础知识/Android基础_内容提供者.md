@@ -5,7 +5,7 @@ Android基础_内容提供者
     一个可以在不同应用程序间共享数据的组件，相当于一个中间人，一边把数据暴露给这个中间人，另一边是别的应用通过这个中间人获取相应的数据.
     **ContentProvider中的getContext和AndroidTestCast中的getContext方法一样，也是必须这个类初始化之后才会调用setContext方法将context设置成自己的成员变量中记录，所以对于获取getContext的时候只能放在方法内，不能放到成员位置，因为在成员上时是null，而只能在方法内调用，在方法内调用时该类就会已经初始化完了，context就不会为null还有一个就是在ContentProvider中的query是不能关闭数据库，因为其他的应用在调用这个ContentResolver的query方法的时候会返回这个Cursor要继续对这个Cursor进行使用，所以不能关闭数据库，不然再用Cusor的时候就会报错，因为数据库关闭之后，Cursor也不能用了，Cursor中保存的数据其实是数据库的一个引用，如果数据库关了Cursor就不能找到里面的数据了，Cursor也有关闭的方法，只是释放Cursor用到的资源。**
     
-    1. 继承ContentProvider,并实现相应的方法，由于是一个中间人，我们要检查这个中间人是不是冒牌的，所以就要去验证URI
+    1. 继承ContentProvider,并实现相应的方法，由于是一个中间人，我们要检查向我们要数据的人不是随便都能要的,要符合要求后才可以要
         ```java
     	public class NoteInfoProvider extends ContentProvider {
     		private static final int QUERY = 1;
@@ -20,11 +20,11 @@ Android基础_内容提供者
     
     		static {
     			// 建立一个匹配规则
-    			// 1.如果发现一个路径 com.itheima.note.noteprovider/query 查询的操作
-    			matcher.addURI("com.itheima.note.noteprovider", "query", QUERY);
-    			matcher.addURI("com.itheima.note.noteprovider", "insert", INSERT);
-    			matcher.addURI("com.itheima.note.noteprovider", "delete", DELETE);
-    			matcher.addURI("com.itheima.note.noteprovider", "update", UPDATE);
+    			// 1.如果发现一个路径 com.charon.note.noteprovider/query 查询的操作
+    			matcher.addURI("com.charon.note.noteprovider", "query", QUERY);
+    			matcher.addURI("com.charon.note.noteprovider", "insert", INSERT);
+    			matcher.addURI("com.charon.note.noteprovider", "delete", DELETE);
+    			matcher.addURI("com.charon.note.noteprovider", "update", UPDATE);
     		}
     
     		@Override
@@ -104,8 +104,8 @@ Android基础_内容提供者
 	2. 在清单文件中进行注册，并且指定其authorities
     	```xml
     	<provider
-    		android:name="com.itheima.note.provider.NoteInfoProvider"
-    		android:authorities="com.itheima.note.noteprovider" >
+    		android:name="com.charon.note.provider.NoteInfoProvider"
+    		android:authorities="com.charon.note.noteprovider" >
     	```
 		
 	3. 使用内容提供者获取数据，使用`ContentResolver`去操作`ContentProvider`, `ContentResolver`用于管理`ContentProvider`实例，并且可实现找到指定的`ContentProvider`并获取里面的数据
@@ -113,7 +113,7 @@ Android基础_内容提供者
     	public void query(View view){
     		//得到内容提供者的解析器  中间人
     		ContentResolver resolver = getContentResolver();
-    		Uri uri = Uri.parse("content://com.itheima.note.noteprovider/queryaa");
+    		Uri uri = Uri.parse("content://com.charon.note.noteprovider/queryaa");
     		Cursor cursor = resolver.query(uri, null, null, null, null);
     		while(cursor.moveToNext()){
     			String name = cursor.getString(cursor.getColumnIndex("name"));
@@ -125,7 +125,7 @@ Android基础_内容提供者
     	}
     	public void insert(View view){
     		ContentResolver resolver = getContentResolver();
-    		Uri uri = Uri.parse("content://com.itheima.note.noteprovider/insert");
+    		Uri uri = Uri.parse("content://com.charon.note.noteprovider/insert");
     		ContentValues values = new ContentValues();
     		values.put("name", "买洗头膏");
     		values.put("money", 22.58f);
@@ -133,7 +133,7 @@ Android基础_内容提供者
     	}
     	public void update(View view){
     		ContentResolver resolver = getContentResolver();
-    		Uri uri = Uri.parse("content://com.itheima.note.noteprovider/update");
+    		Uri uri = Uri.parse("content://com.charon.note.noteprovider/update");
     		ContentValues values = new ContentValues();
     		values.put("name", "买洗头膏");
     		values.put("money", 42.58f);
@@ -141,7 +141,7 @@ Android基础_内容提供者
     	}
     	public void delete(View view){
     		ContentResolver resolver = getContentResolver();
-    		Uri uri = Uri.parse("content://com.itheima.note.noteprovider/delete");
+    		Uri uri = Uri.parse("content://com.charon.note.noteprovider/delete");
     		resolver.delete(uri, "name=?", new String[]{"买洗头膏"});
     	}
     	```
