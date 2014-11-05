@@ -1,8 +1,6 @@
 AndroidNote
 ===
 
-The accumulation of knowledge in the development process.
-
 Android学习随笔
 
 ![image](https://raw.githubusercontent.com/CharonChui/AndroidNote/master/Pic/note.jpg)
