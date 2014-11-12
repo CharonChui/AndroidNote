@@ -1,8 +1,7 @@
 ﻿AndroidStudio使用教程(第一弹)
 ===
 
-`Android Studio`是一套面世不久的`IDE`（即集成开发环境），免费向谷歌及`Android`的开发人员发放。`Android Studio`以`IntelliJ IDEA`为基础（后者同样是一套相当出色的`Android`开发环境），
-旨在取代`Eclipse`和`ADT`（`Android`开发者工具）为开发者提供更好的开发工具。              
+`Android Studio`是一套面世不久的`IDE`（即集成开发环境），免费向谷歌及`Android`的开发人员发放。`Android Studio`以`IntelliJ IDEA`为基础,旨在取代`Eclipse`和`ADT`（`Android`开发者工具）为开发者提供更好的开发工具。              
 运行相应速度、智能提示、布局文件适时多屏预览等都比`Eclipse`要强，但也不能说全部都是有点现在`Studio`中无法在一个窗口管理多个`Project`，每个`Project`都要打开一个窗口，或者是`close`当前的后再打开别的。
 
 当但是毕竟是预览版，所以只是暂时试用了下，并没有过多接触，开发中还是使用`Eclipse`。           
@@ -13,12 +12,10 @@
 	这是在下载`Gradle`，大约二三十M的大小，由于伟大的防火墙，所以可能需要很长时间，这里就不教大家了，对程序猿来说不是难题，大家都会科学上网。
 	
 - 区别              
-    此`Project`非彼`Project`
-    - `Android Studio`的目录结构(`Project`)代表一个`Workspace`，一个`Workspace`里面可以有多个`Module`，这里`Module`可以理解成`Eclipse`中的一个`Project`.
+    - 此`Project`非彼`Project`, `Android Studio`的目录结构(`Project`)代表一个`Workspace`，一个`Workspace`里面可以有多个`Module`，这里`Module`可以理解成`Eclipse`中的一个`Project`.
     - 结构发生了变化，在`src`目录下有一个`main`的分组同时包含了`java`和`res`.
-	![Image](https://github.com/CharonChui/AndroidNote/blob/master/Pic/AndroidStudio_1.png?raw=true)
-	
-	如图：`MyApplication`就是`Project`，而`app`就是`Module`.
+	    ![Image](https://github.com/CharonChui/AndroidNote/blob/master/Pic/AndroidStudio_1.png?raw=true)
+	    如图：`MyApplication`就是`Project`，而`app`就是`Module`.
 	
 - 设置           
    进入后你会发现字体或样式等不符合你的习惯。            
@@ -33,7 +30,7 @@
 	
 - 运行            
     设置好字体后，当然要走你了。             
-	运行和`Eclipse`中比较像，点击绿色的箭头。 可以通过箭头左边的下拉菜单选择不同的`Module`，快捷键是`Shift+F10`
+	运行和`Eclipse`中比较像，点击绿色的箭头。 可以通过箭头左边的下拉菜单选择不同的`Module`,快捷键是`Shift+F10`                              
 	![Image](https://github.com/CharonChui/AndroidNote/blob/master/Pic/AndroidStudio_4.png?raw=true)
 
     `AndroidStudio`默认安装会启动模拟器，如果想让安装到真机上可以配置一下。在下拉菜单中选择`Edit Configurations`选择提示或者是`USB`设备。
