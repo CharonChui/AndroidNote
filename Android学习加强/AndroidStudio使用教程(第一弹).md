@@ -13,6 +13,11 @@
 	
 - 区别              
     - 此`Project`非彼`Project`, `Android Studio`的目录结构(`Project`)代表一个`Workspace`，一个`Workspace`里面可以有多个`Module`，这里`Module`可以理解成`Eclipse`中的一个`Project`.
+	`Project`代表一个完整的`Android app`，而`modules`则是`app`的一个组件，并且这个组件可以单独`build,test,debug`。`modules`可以分为下面几种：      
+	    - Java library modules    
+        - Android library modules: 包含android相关代码和资源，最后生成AAR(Android ARchive)包    
+        - Android application modules       
+		
     - 结构发生了变化，在`src`目录下有一个`main`的分组同时包含了`java`和`res`.
 	    ![Image](https://github.com/CharonChui/AndroidNote/blob/master/Pic/AndroidStudio_1.png?raw=true)
 	    如图：`MyApplication`就是`Project`，而`app`就是`Module`.
@@ -67,10 +72,10 @@
 	`F2`                       快速定位到文件错误或警告位置              
 	`Ctrl+X`                   剪切当前行                
 	`Ctrl+Y`                   删除当前行             
-	`Ctrl+D`                   复制当前行               
-	`F4`                       进入源码
-	`Alt+1`                    开关`Project`视图
-	`Ctrl+_F4`                 关闭当前窗口
+	`Ctrl+D`                   复制当前行                            
+	`F4`                       进入源码             
+	`Alt+1`                    开关`Project`视图      
+	`Ctrl+_F4`                 关闭当前窗口            
 	
 ---
 
