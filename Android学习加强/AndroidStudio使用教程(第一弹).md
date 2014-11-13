@@ -19,7 +19,7 @@
 	
 - 设置           
    进入后你会发现字体或样式等不符合你的习惯。            
-   `Windows`下点击左上角`File` -> `Settings`进入设置页面，在搜索框搜`Font`找到`Colors&Font`下的`Font`选项，我们会发现无法修改右侧字体大小。这里修改必须
+   `Windows`下点击左上角`File` -> `Settings`进入设置页面(`Mac`下为 `Android Studio` -> `Preferences`)，在搜索框搜`Font`找到`Colors&Font`下的`Font`选项，我们会发现无法修改右侧字体大小。这里修改必须
    要通过新建`Theme`进行修改的，点击`Save as`输入一个名字后，就可以修改字体了。
    	![Image](https://github.com/CharonChui/AndroidNote/blob/master/Pic/AndroidStudio_2.png?raw=true)
 
@@ -68,7 +68,9 @@
 	`Ctrl+X`                   剪切当前行                
 	`Ctrl+Y`                   删除当前行             
 	`Ctrl+D`                   复制当前行               
-	 
+	`F4`                       进入源码
+	`Alt+1`                    开关`Project`视图
+	`Ctrl+_F4`                 关闭当前窗口
 ---
 
 - 邮箱 ：charon.chui@gmail.com  
