@@ -71,6 +71,7 @@
 	`F4`                       进入源码
 	`Alt+1`                    开关`Project`视图
 	`Ctrl+_F4`                 关闭当前窗口
+	
 ---
 
 - 邮箱 ：charon.chui@gmail.com  
