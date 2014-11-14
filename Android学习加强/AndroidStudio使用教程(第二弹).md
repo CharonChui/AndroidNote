@@ -1,4 +1,4 @@
-﻿AndroidStudio使用教程(第二弹)
+AndroidStudio使用教程(第二弹)
 ===
 
 - 迁移`Eclipse`工程到`Android Studio`            

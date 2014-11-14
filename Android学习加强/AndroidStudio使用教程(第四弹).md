@@ -1,7 +1,20 @@
-﻿AndroidStudio使用教程(第四弹)
+---
+layout: post
+title: "AndroidStudio使用教程(第四弹)"
+description: "Android Studio Learing Four"
+category: Android
+tags: [Android开发]
+imagefeature: pic-2014-09-08.jpg
+comments: true
+mathjax: null
+featured: true
+published: true
+---
+
+AndroidStudio使用教程(第四弹)
 ===
    
-`Gradle`简介
+Gradle
 ---
 
 讲解到这里我感觉有必要说明一下`Gradle`。       
@@ -16,7 +29,7 @@
 - 其它插件时可以暴露自己的DSL和API来让Gradle构建文件使用。
 - 允许IDE集成，是很好的API工具
 
-介绍
+Overview
 ---
 
 `AndroidStudio build`系统是一个你可以用来`build, test, run, package your apps`的工具。 `build`系统与`Android Studio`之间是独立的，所以你可以在`Android Studio`中或者
@@ -92,14 +105,14 @@ dependencies {
 }
 ```
 	
-`Build tasks`
+Build tasks
 ---
 
 `Android Studio`构建系统定义了一些列的构建任务， 高级别的任务调用一些产出必要输出的任务。 构建系统提供了`project tasks`来构建`app`和`module tasks`来独立的构建`modules`.          
 
 可以通过`Andorid Studio`或者命令行看到当前可用任务的列表，并且执行里面的任务。 
 
-`The Gradle wrapper`
+The Gradle wrapper
 ---
 
 `Android Studio`项目包含了`Gradle wrapper`， 包括：　　　　　
@@ -114,7 +127,10 @@ dependencies {
 `Android Studio`从你项目中的`Gradle wrapper`目录读取配置文件，并且在该目录运行`wrapper`， 这样在处理多个需要不同`Gradle`版本的项目时就会游刃有余。 
 *声明：*`Android Studio`不使用`shell`脚本，所以对于他们的任何改变在`IDE`构建时都不会生效，你应该在`Gradle build files`中去设置自定义的逻辑。       
 
-你可以在开发及其或者是一些没有安装`Android Studio`的及其上使用命令行运行`shell`脚本来构建项目。             
+你可以在开发及其或者是一些没有安装`Android Studio`的及其上使用命令行运行`shell`脚本来构建项目。   
+
+直接上图：   
+![Image](https://github.com/CharonChui/AndroidNote/blob/master/Pic/AndroidStudio_4_1.png?raw=true)	            
 		
 ---
 

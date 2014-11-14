@@ -1,4 +1,4 @@
-﻿AndroidStudio使用教程(第一弹)
+AndroidStudio使用教程(第一弹)
 ===
 
 `Android Studio`是一套面世不久的`IDE`（即集成开发环境），免费向谷歌及`Android`的开发人员发放。`Android Studio`以`IntelliJ IDEA`为基础,旨在取代`Eclipse`和`ADT`（`Android`开发者工具）为开发者提供更好的开发工具。              
