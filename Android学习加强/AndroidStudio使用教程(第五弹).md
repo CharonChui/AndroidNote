@@ -98,8 +98,8 @@ dependencies {
 `debugging`标示，用`debug key`进行签名, `release`版本默认时没有签名，上面的配置中`release`时没有使用`ProGuard`.      
 `dependencies`部分是在`android`之外，该部分声明了依赖的`module`。     
 **注意：**当修改项目中得`build files`时，`Android Studio`需要进行项目同步来导入相应的`build`配置变化， 点击`Android Studio`中黄色通知部分的`Sync Now`
-来进行变化的导入。     
-![Image](https://github.com/CharonChui/AndroidNote/blob/master/Pic/AndroidStudio_5_5An.png?raw=true)
+来进行变化的导入。               
+![Image](https://github.com/CharonChui/AndroidNote/blob/master/Pic/AndroidStudio_5_5.png?raw=true)     
 
 ###Declare dependencies
 ```java
@@ -168,8 +168,9 @@ android {
             }
         }
     }
-    ...
+    ... 
     ```   
+
 - 在`Android Studio`中的`build task`页面运行`assembleRelease`。 
 在`app/build/apk/app-release.apk`下的包现在就是使用签名文件签过名的了。     
 **注意：**把签名密码等写到`build`文件中不是很安全， 可以把密码配置到环境变量中或者是让其在构建的过程中提示输入密码。 这里我们就先不介绍如何配置了，可以自己搜索下。    

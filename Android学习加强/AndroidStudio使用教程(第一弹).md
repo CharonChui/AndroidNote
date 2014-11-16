@@ -19,7 +19,7 @@ AndroidStudio使用教程(第一弹)
         - Android application modules       
 		
     - 结构发生了变化，在`src`目录下有一个`main`的分组同时包含了`java`和`res`.
-	    ![Image](https://github.com/CharonChui/AndroidNote/blob/master/Pic/AndroidStudio_1.png?raw=true)
+	    ![Image](https://github.com/CharonChui/AndroidNote/blob/master/Pic/AndroidStudio_1.png?raw=true)        
 	    如图：`MyApplication`就是`Project`，而`app`就是`Module`.
 	
 - 设置           

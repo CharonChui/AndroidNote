@@ -1,16 +1,3 @@
----
-layout: post
-title: "AndroidStudio使用教程(第四弹)"
-description: "Android Studio Learing Four"
-category: Android
-tags: [Android开发]
-imagefeature: pic-2014-09-08.jpg
-comments: true
-mathjax: null
-featured: true
-published: true
----
-
 AndroidStudio使用教程(第四弹)
 ===
    
