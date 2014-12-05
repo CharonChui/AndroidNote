@@ -94,10 +94,10 @@ Android动画
 
     ```java
     Interpolator //定义了动画的变化速度，可以实现匀速、正加速、负加速、无规则变加速度
-    AccelerateDecelerateInterpolator//延迟减速，在动作执行到中间的时候才执行该特效。
-    AccelerateInterpolator//会使慢慢以(float)的参数降低速度。    
-    LinearInterpolator//平稳不变的    
-    DecelerateInterpolator//在中间加速,两头慢    
+    AccelerateDecelerateInterpolator//先加速后减速。
+    AccelerateInterpolator//逐渐加速。    
+    LinearInterpolator//平稳不变的   
+    DecelerateInterpolator//逐渐减速
     CycleInterpolator//曲线运动特效，要传递float型的参数。     
     animation.setInterpolator(new LinearInterpolator());//指定动画的运行效果
     ```
