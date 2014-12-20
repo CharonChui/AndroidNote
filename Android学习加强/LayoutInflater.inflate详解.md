@@ -47,7 +47,7 @@ LayoutInflater inflater = (LayoutInflater)context.getSystemService
         android:layout_height="wrap_content"
         android:text="test" />
 </LinearLayout>
-``
+```
 
 ```java
 public View getView(int position, View convertView, ViewGroup parent) {
@@ -60,7 +60,7 @@ public View getView(int position, View convertView, ViewGroup parent) {
 
 如果用上面的代码会发现设置`100dp`是无效的。     
 
-而如果换成
+而如果换成下面的代码就可以了。
 ```java
 public View getView(int position, View convertView, ViewGroup parent) {
     if (convertView == null) {
@@ -70,7 +70,7 @@ public View getView(int position, View convertView, ViewGroup parent) {
 }
 ```
 这里你该会想一想为什么很多需要显示`View`的方法中都有`ViewGroup`这个参数。      
-所以有些人会说在跟布局中设置是无效的，要再嵌套一层布局。 这样是错误的， 太多的嵌套是不合理的，对性能有影响。    
+所以有些人会说在跟布局中设置是无效的，要再嵌套一层布局。 这样是错误的，会造成布局层级增多，影响性能。 
 
 
 细节
