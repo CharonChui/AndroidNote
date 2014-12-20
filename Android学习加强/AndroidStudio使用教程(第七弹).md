@@ -1,4 +1,4 @@
-AndroidStudio使用教程(第五弹)
+AndroidStudio使用教程(第七弹)
 ===
 
 本文讲解一下如何利用`Gradle`打多渠道包。    
