@@ -101,8 +101,8 @@ public boolean superDispatchTouchEvent(MotionEvent event) {
 	return super.dispatchTouchEvent(event);
 }
 ```
-是调用了`super.dispatchTouchEveent()`，而`DecorView`的父类是`FrameLayout`所以我们找到`FrameLayout.dispatchTouchEveent()`.     
-我们看到`FrameLayout`中没有重载`dispatchTouchEveent()`方法，所以我们再找到`FrameLayout`的父类`ViewGroup`.看`ViewGroup.dispatchTouchEveent()`实现。
+是调用了`super.dispatchTouchEveent()`，而`DecorView`的父类是`FrameLayout`所以我们找到`FrameLayout.dispatchTouchEveent()`.
+我们看到`FrameLayout`中没有重写`dispatchTouchEveent()`方法，所以我们再找到`FrameLayout`的父类`ViewGroup`.看`ViewGroup.dispatchTouchEveent()`实现。
 新大陆浮现了...     
 ```java
 /**
@@ -117,7 +117,8 @@ public boolean dispatchTouchEvent(MotionEvent ev) {
 	}
 
 	boolean handled = false;
-	// onFilterTouchEventForSecurity()用安全机制来过滤触摸事件，true为不过滤分发下去，false则销毁掉该事件。方法具体实现是去判断是否被其它窗口遮挡住了，如果遮挡住就要过滤掉该事件。
+	// onFilterTouchEventForSecurity()用安全机制来过滤触摸事件，true为不过滤分发下去，false则销毁掉该事件。
+	// 方法具体实现是去判断是否被其它窗口遮挡住了，如果遮挡住就要过滤掉该事件。
 	if (onFilterTouchEventForSecurity(ev)) {
 		// 没有被其它窗口遮住
 		final int action = ev.getAction();
@@ -131,7 +132,8 @@ public boolean dispatchTouchEvent(MotionEvent ev) {
 			// due to an app switch, ANR, or some other state change.
 			cancelAndClearTouchTargets(ev);
 			resetTouchState();
-			// 如果是`Down`，那么`mFirstTouchTarget`到这里肯定是`null`, `mFirstTouchTarget`是处理第一个事件对象的目标。
+			// 如果是`Down`，那么`mFirstTouchTarget`到这里肯定是`null`.因为是新一系列手势的开始。
+			// `mFirstTouchTarget`是处理第一个事件的目标。
 		}
 
 		// 检查是否拦截该事件(如果`onInterceptTouchEvent()`返回true就拦截该事件)
@@ -139,18 +141,21 @@ public boolean dispatchTouchEvent(MotionEvent ev) {
 		final boolean intercepted;
 		if (actionMasked == MotionEvent.ACTION_DOWN
 				|| mFirstTouchTarget != null) {
-			// 标记事件不允许被拦截， 默认是`false`， 该值可以通过`requestDisallowInterceptTouchEvent(true)`方法来设置，通知父`View`不要拦截该`View`上的事件。
+			// 标记事件不允许被拦截， 默认是`false`， 该值可以通过`requestDisallowInterceptTouchEvent(true)`方法来设置，
+			// 通知父`View`不要拦截该`View`上的事件。
 			final boolean disallowIntercept = (mGroupFlags & FLAG_DISALLOW_INTERCEPT) != 0;
 			if (!disallowIntercept) {
 				// 判断该`ViewGroup`是否要拦截该事件。`onInterceptTouchEvent()`方法默认返回`false`即不拦截。
 				intercepted = onInterceptTouchEvent(ev);
 				ev.setAction(action); // restore action in case it was changed
 			} else {
-				// 子`View`通知父`View`不要拦截。这样就不会走到上面`onInterceptTouchEvent()`方法中了，所以父`View`就不会拦截该事件。
+				// 子`View`通知父`View`不要拦截。这样就不会走到上面`onInterceptTouchEvent()`方法中了，
+				// 所以父`View`就不会拦截该事件。
 				intercepted = false;
 			}
 		} else {
-			// 注释比较清楚了，就是没有目标来处理该事件，而且也不是一个新的事件`Down`事件(新事件的开始), 我们应该拦截下他。
+			// 注释比较清楚了，就是没有目标来处理该事件，而且也不是一个新的事件`Down`事件(新事件的开始), 
+			// 我们应该拦截下他。
 			// There are no touch targets and this action is not an initial down
 			// so this view group continues to intercept touches.
 			intercepted = true;
@@ -160,7 +165,8 @@ public boolean dispatchTouchEvent(MotionEvent ev) {
 		final boolean canceled = resetCancelNextUpFlag(this)
 				|| actionMasked == MotionEvent.ACTION_CANCEL;
 
-		// Update list of touch targets for pointer down, if needed. 这行代码为是否需要将当前的触摸事件分发给多个子`View`，默认为`true`，分发给多个`View`（比如几个子`View`位置重叠）。默认是true
+		// Update list of touch targets for pointer down, if needed. 这行代码为是否需要将当前的触摸事件分发给多个子`View`，
+		// 默认为`true`，分发给多个`View`（比如几个子`View`位置重叠）。默认是true
 		final boolean split = (mGroupFlags & FLAG_SPLIT_MOTION_EVENTS) != 0;
 		
 		// 保存当前要分发给的目标
@@ -199,27 +205,34 @@ public boolean dispatchTouchEvent(MotionEvent ev) {
 						final View child = (preorderedList == null)
 								? children[childIndex] : preorderedList.get(childIndex);
 								
-						// `canViewReceivePointerEvents()`方法会去判断这个`View`是否可见或者在播放动画，只有这两种情况下可以接受事件的纷纷
+						// `canViewReceivePointerEvents()`方法会去判断这个`View`是否可见或者在播放动画，
+						// 只有这两种情况下可以接受事件的分发
+						
 						// `isTransformedTouchPointInView`判断这个事件的坐标值是否在该`View`内。
 						if (!canViewReceivePointerEvents(child)
 								|| !isTransformedTouchPointInView(x, y, child, null)) {
 							continue;
 						}
 
-						// 找到该`View`对应的在`mFristTouchTarget`中的存储的目标， 判断这个`View`可能已经不是之前`mFristTouchTarget`中的`View`了。如果找不到就返回null, 这种情况是用于多点触摸， 比如在同一个`View`上按下了多跟手指。
+						// 找到该`View`对应的在`mFristTouchTarget`中的存储的目标， 判断这个`View`可能已经不是之前`mFristTouchTarget`中的`View`了。
+						// 如果找不到就返回null, 这种情况是用于多点触摸， 比如在同一个`View`上按下了多跟手指。
 						newTouchTarget = getTouchTarget(child);
 						if (newTouchTarget != null) {
 							// Child View已经接受了这个事件了
 							// Child is already receiving touch within its bounds.
 							// Give it the new pointer in addition to the ones it is handling.
 							newTouchTarget.pointerIdBits |= idBitsToAssign;
+							// 找到该View了，不用再循环找了
 							break;
 						}
 
 						resetCancelNextUpFlag(child);
-						// 如果上面没有break，只有newTouchTarget为null，说明上面我们找到的Child View和之前的肯定不是同一个了， 是新增的， 比如多点触摸的时候，一个手指按在了这个`View`上，另一个手指按在了另一个`View`上。
+						// 如果上面没有break，只有newTouchTarget为null，说明上面我们找到的Child View和之前的肯定不是同一个了， 
+						// 是新增的， 比如多点触摸的时候，一个手指按在了这个`View`上，另一个手指按在了另一个`View`上。
+						// 这时候我们就看child是否分发该事件。dispatchTransformedTouchEvent如果child为null，就直接该ViewGroup出来事件
+						// 如果child不为null，就调用child.dispatchTouchEvent
 						if (dispatchTransformedTouchEvent(ev, false, child, idBitsToAssign)) {
-							// 如果这个新找到的Child View能分发，那我们就要把之前存储的值改变成现在的Child View。
+							// 如果这个Child View能分发，那我们就要把之前存储的值改变成现在的Child View。
 							// Child wants to receive touch within its bounds.
 							mLastTouchDownTime = ev.getDownTime();
 							if (preorderedList != null) {
@@ -258,7 +271,7 @@ public boolean dispatchTouchEvent(MotionEvent ev) {
 			}
 		}
 
-		// 如果不是`DOWN`事件，都从这里开始，不用向上面那样去找`target touch`
+		// DOWN事件在上面会去找touch target
 		// Dispatch to touch targets.
 		if (mFirstTouchTarget == null) {
 			// dispatchTransformedTouchEvent方法中如果child为null，那么就调用super.dispatchTouchEvent(transformedEvent);否则调用child.dispatchTouchEvent(transformedEvent)。
@@ -463,11 +476,188 @@ public boolean dispatchTouchEvent(MotionEvent event) {
 
 	return result;
 }
+
+
+通过上面的分析我们看到`View.dispatchTouchEvent()`里面会调用到`onTouchEvent()`来消耗事件。那么`onTouchEvent()`是如何处理的呢？下面我们看一下
+`View.onTouchEvent()`源码： 
+```java
+/**
+ * Implement this method to handle touch screen motion events.
+ * <p>
+ * If this method is used to detect click actions, it is recommended that
+ * the actions be performed by implementing and calling
+ * {@link #performClick()}. This will ensure consistent system behavior,
+ * including:
+ * <ul>
+ * <li>obeying click sound preferences
+ * <li>dispatching OnClickListener calls
+ * <li>handling {@link AccessibilityNodeInfo#ACTION_CLICK ACTION_CLICK} when
+ * accessibility features are enabled
+ * </ul>
+ *
+ * @param event The motion event.
+ * @return True if the event was handled, false otherwise.
+ */
+public boolean onTouchEvent(MotionEvent event) {
+	final float x = event.getX();
+	final float y = event.getY();
+	final int viewFlags = mViewFlags;
+
+	// 对disable按钮的处理，注释说的比较明白，一个disable但是clickable的view仍然会消耗事件,只是不响应而已。
+	if ((viewFlags & ENABLED_MASK) == DISABLED) {
+		if (event.getAction() == MotionEvent.ACTION_UP && (mPrivateFlags & PFLAG_PRESSED) != 0) {
+			setPressed(false);
+		}
+		// A disabled view that is clickable still consumes the touch
+		// events, it just doesn't respond to them.
+		return (((viewFlags & CLICKABLE) == CLICKABLE ||
+				(viewFlags & LONG_CLICKABLE) == LONG_CLICKABLE));
+	}
+
+	// 关于TouchDelegate,文档中是这样说的The delegate to handle touch events that are physically in this view
+    // but should be handled by another view. 就是说如果两个View, View2在View1中，View1比较大，如果我们想点击
+	// View1的时候，让View2去响应点击事件，这时候就需要使用TouchDelegate来设置。
+	// 简单的理解就是如果这个View有自己的时间委托处理人，就交给委托人处理。
+	if (mTouchDelegate != null) {
+		if (mTouchDelegate.onTouchEvent(event)) {
+			return true;
+		}
+	}
+
+	if (((viewFlags & CLICKABLE) == CLICKABLE ||
+			(viewFlags & LONG_CLICKABLE) == LONG_CLICKABLE)) {
+	    // 这个View可点击
+		switch (event.getAction()) {
+			case MotionEvent.ACTION_UP:
+			    // 最好先看DOWN后再看MOVE最后看UP。
+				// PFLAG_PREPRESSED 表示在一个可滚动的容器中,要稍后才能确定是按下还是滚动.
+                // PFLAG_PRESSED 表示不是在一个可滚动的容器中,已经可以确定按下这一操作.
+				boolean prepressed = (mPrivateFlags & PFLAG_PREPRESSED) != 0;
+				if ((mPrivateFlags & PFLAG_PRESSED) != 0 || prepressed) {
+					// 处理点击或长按事件
+					// take focus if we don't have it already and we should in
+					// touch mode.
+					boolean focusTaken = false;
+					if (isFocusable() && isFocusableInTouchMode() && !isFocused()) 
+						// 如果现在还没获取到焦点，就再获取一次焦点
+						focusTaken = requestFocus();
+					}
+
+					// 在前面`DOWN`事件的时候会延迟显示`View`的`pressed`状态,用户可能在我们还没有显示按下状态效果时就不按了.我们还是得在进行实际的点击操作时,让用户看到效果。
+					if (prepressed) {
+						// The button is being released before we actually
+						// showed it as pressed.  Make it show the pressed
+						// state now (before scheduling the click) to ensure
+						// the user sees it.
+						setPressed(true, x, y);
+				   }
+					
+					
+					if (!mHasPerformedLongPress) {
+						// 判断不是长按
+						
+						// This is a tap, so remove the longpress check
+						removeLongPressCallback();
+
+						// Only perform take click actions if we were in the pressed state
+						if (!focusTaken) {
+							// Use a Runnable and post this rather than calling
+							// performClick directly. This lets other visual state
+							// of the view update before click actions start.
+							if (mPerformClick == null) {
+								mPerformClick = new PerformClick();
+							}
+							// PerformClick就是个Runnable,里面执行performClick()方法。performClick()方法中怎么执行呢？我们在后面再说。
+							if (!post(mPerformClick)) {
+								performClick();
+							}
+						}
+					}
+
+					if (mUnsetPressedState == null) {
+						mUnsetPressedState = new UnsetPressedState();
+					}
+					// 取消按下状态，UnsetPressedState也是个Runnable,里面执行setPressed(false)
+					if (prepressed) {
+						postDelayed(mUnsetPressedState,
+								ViewConfiguration.getPressedStateDuration());
+					} else if (!post(mUnsetPressedState)) {
+						// If the post failed, unpress right now
+						mUnsetPressedState.run();
+					}
+
+					removeTapCallback();
+				}
+				break;
+
+			case MotionEvent.ACTION_DOWN:
+				mHasPerformedLongPress = false;
+				// performButtonActionOnTouchDown()处理鼠标右键菜单，有些View显示右键菜单就直接弹菜单.一般设备用不到鼠标，所以返回false。
+				if (performButtonActionOnTouchDown(event)) {
+					break;
+				}
+
+				// Walk up the hierarchy to determine if we're inside a scrolling container.
+				boolean isInScrollingContainer = isInScrollingContainer();
+
+				// For views inside a scrolling container, delay the pressed feedback for
+				// a short period in case this is a scroll.
+				// 就是遍历下View层级，判断这个View是不是在一个能scroll的View中。
+				if (isInScrollingContainer) {
+				    // 因为用户可能是点击或者是滚动，所以我们不能立马判断，先给用户设置一个要点击的事件。
+					mPrivateFlags |= PFLAG_PREPRESSED;
+					if (mPendingCheckForTap == null) {
+						mPendingCheckForTap = new CheckForTap();
+					}
+					mPendingCheckForTap.x = event.getX();
+					mPendingCheckForTap.y = event.getY();
+					// 发送一个延时的操作，用于判断用户到底是点击还是滚动。其实就是在tapTimeout中如果用户没有滚动，那就是点击了。
+					postDelayed(mPendingCheckForTap, ViewConfiguration.getTapTimeout());
+				} else {
+				    // 设置成点击状态
+					// Not inside a scrolling container, so show the feedback right away
+					setPressed(true, x, y);
+					// 检查是否是长按，就是过一段时间后如果还在按住，那就是长按了。长按的时间是ViewConfiguration.getLongPressTimeout()
+					// 也就是500毫秒
+					checkForLongClick(0);
+				}
+				break;
+
+			case MotionEvent.ACTION_CANCEL:
+				// 取消按下状态，移动点击消息，移动长按消息。
+				setPressed(false);
+				removeTapCallback();
+				removeLongPressCallback();
+				break;
+
+			case MotionEvent.ACTION_MOVE:
+				drawableHotspotChanged(x, y);
+				
+				// Be lenient about moving outside of buttons， 检查是否移动到View外面了。
+				if (!pointInView(x, y, mTouchSlop)) {
+				    // 移动到区域外面去了，就要取消点击。
+					// Outside button
+					removeTapCallback();
+					if ((mPrivateFlags & PFLAG_PRESSED) != 0) {
+						// Remove any future long press/tap checks
+						removeLongPressCallback();
+
+						setPressed(false);
+					}
+				}
+				break;
+		}
+
+		return true;
+	}
+
+	return false;
+}
 ```
 
 
-
-// 我们平时使用的时候都知道给`View`设置点击事件是`setOnClickListener()`
+上面讲了`Touch`事件的分发和处理，随便说一下点击事件:         
+我们平时使用的时候都知道给`View`设置点击事件是`setOnClickListener()`
 ```java
 /**
  * Register a callback to be invoked when this view is clicked. If this view is not
@@ -512,10 +702,10 @@ public boolean performClick() {
 }
 ```
 
-// 哪里会调用`performClick()`哪？ 很明显`onTouchEvent()`中的`ACTION_UP`中会调用。
+讲到这里就明白了。`onTouchEvent()`中的`ACTION_UP`中会调用`performClick()`方法。
 
 
-
+到这里，就全部分析完了，这一块还是比较麻烦的，中间查了很多资料，有些地方自己可能也理解的不太对，如果有哪里理解的不对的地方，还请大家指出来。谢谢。
 
 ---
 

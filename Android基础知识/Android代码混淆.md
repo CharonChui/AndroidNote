@@ -100,7 +100,6 @@ Android项目中的混淆非常简单，之所以写这篇总结是因为最近�
 -keep public class * extends android.support.v4.app.Fragment
 -keep public class * extends android.app.Fragment
 -keep public class com.android.vending.licensing.ILicensingService
--keep class com.itheima.mobilesafe.engine.AppInfoProvider
 -keep class net.youmi.android.** {
 *;
 }
