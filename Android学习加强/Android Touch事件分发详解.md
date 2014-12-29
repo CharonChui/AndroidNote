@@ -1,7 +1,7 @@
 ﻿Android Touch事件分发详解
 ===
 
-先说一些基本的知识，方便后面分析源码，更好理解。
+先说一些基本的知识，方便后面分析源码时能更好理解。
 - 所有`Touch`事件都被封装成`MotionEvent`对象，包括`Touch`的位置、历史记录、第几个手指等.
 
 - 事件类型分为`ACTION_DOWN`,`ACTION_UP`,`ACTION_MOVE`,`ACTION_POINTER_DOWN`,`ACTION_POINTER_UP`,`ACTION_CANCEL`, 每个
@@ -476,7 +476,7 @@ public boolean dispatchTouchEvent(MotionEvent event) {
 
 	return result;
 }
-
+```
 
 通过上面的分析我们看到`View.dispatchTouchEvent()`里面会调用到`onTouchEvent()`来消耗事件。那么`onTouchEvent()`是如何处理的呢？下面我们看一下
 `View.onTouchEvent()`源码： 
