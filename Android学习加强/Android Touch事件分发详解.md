@@ -75,7 +75,9 @@ public void onUserInteraction() {
 }
 ```
 但是该方法是空方法，没有具体实现。 我们往下看`getWindow().superDispatchTouchEvent(ev)`.      
-`getWindow()`方法是获取到当前页面的最上层`Window`对象，但是该类是一个抽象类。从文档中可以看到`The only existing implementation of this abstract class is android.policy.PhoneWindow, which you should instantiate when needing a Window. `，
+`getWindow()`获取到当前`Window`对象，表示顶层窗口，管理界面的显示和事件的响应；每个Activity 均会创建一个PhoneWindow对象，
+是Activity和整个View系统交互的接口，但是该类是一个抽象类。
+从文档中可以看到`The only existing implementation of this abstract class is android.policy.PhoneWindow, which you should instantiate when needing a Window. `，
 所以我们找到`PhoneWindow`类，查看它的`superDispatchTouchEvent()`方法。
 ```java
 @Override
@@ -83,7 +85,8 @@ public boolean superDispatchTouchEvent(MotionEvent event) {
 	return mDecor.superDispatchTouchEvent(event);
 }
 ```
-该方法又是调用了`mDecor.superDispatchTouchEvent(event)`, `mDecor`是什么呢？ 从名字中我们大概也能猜出来是当前窗口最顶层的`DecorView`，`Window`界面的最顶层的`View`对象。
+该方法又是调用了`mDecor.superDispatchTouchEvent(event)`, `mDecor`是什么呢？ 从名字中我们大概也能猜出来是当前窗口最顶层的`DecorView`，
+`Window`界面的最顶层的`View`对象。
 ```java
 // This is the top-level view of the window, containing the window decor.
 private DecorView mDecor;
