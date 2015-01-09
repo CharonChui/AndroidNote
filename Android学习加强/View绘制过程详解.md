@@ -802,9 +802,234 @@ private void performTraversals() {
 ```
 
 从上面源码可以看出,`performTraversals()`方法中会依次做三件事：
-- performMeasure();
-- performLayout();
-- performDraw();
+- `performMeasure()`, 内部是` mView.measure(childWidthMeasureSpec, childHeightMeasureSpec);`
+- `performLayout()`, 内部是`mView.layout(0, 0, host.getMeasuredWidth(), host.getMeasuredHeight());`
+- `performDraw()`, 内部是`draw(fullRedrawNeeded);`
+
+至此`View`绘制的三个过程已经展现：
+
+`Measure`
+=====
+
+在`performMeasure()`方法中会调用`View.measure()`方法， 源码如下：
+```java
+/**
+ * <p>
+ * This is called to find out how big a view should be. The parent
+ * supplies constraint information in the width and height parameters.
+ * </p>
+ *
+ * <p>
+ * The actual measurement work of a view is performed in
+ * {@link #onMeasure(int, int)}, called by this method. Therefore, only
+ * {@link #onMeasure(int, int)} can and must be overridden by subclasses.
+ * </p>
+ *
+ *
+ * @param widthMeasureSpec Horizontal space requirements as imposed by the
+ *        parent
+ * @param heightMeasureSpec Vertical space requirements as imposed by the
+ *        parent
+ *
+ * @see #onMeasure(int, int)
+ */
+public final void measure(int widthMeasureSpec, int heightMeasureSpec) {
+	boolean optical = isLayoutModeOptical(this);
+	if (optical != isLayoutModeOptical(mParent)) {
+		Insets insets = getOpticalInsets();
+		int oWidth  = insets.left + insets.right;
+		int oHeight = insets.top  + insets.bottom;
+		widthMeasureSpec  = MeasureSpec.adjust(widthMeasureSpec,  optical ? -oWidth  : oWidth);
+		heightMeasureSpec = MeasureSpec.adjust(heightMeasureSpec, optical ? -oHeight : oHeight);
+	}
+
+	// Suppress sign extension for the low bytes
+	long key = (long) widthMeasureSpec << 32 | (long) heightMeasureSpec & 0xffffffffL;
+	if (mMeasureCache == null) mMeasureCache = new LongSparseLongArray(2);
+
+	if ((mPrivateFlags & PFLAG_FORCE_LAYOUT) == PFLAG_FORCE_LAYOUT ||
+			widthMeasureSpec != mOldWidthMeasureSpec ||
+			heightMeasureSpec != mOldHeightMeasureSpec) {
+
+		// first clears the measured dimension flag
+		mPrivateFlags &= ~PFLAG_MEASURED_DIMENSION_SET;
+
+		resolveRtlPropertiesIfNeeded();
+
+		int cacheIndex = (mPrivateFlags & PFLAG_FORCE_LAYOUT) == PFLAG_FORCE_LAYOUT ? -1 :
+				mMeasureCache.indexOfKey(key);
+		if (cacheIndex < 0 || sIgnoreMeasureCache) {
+			// 调用onMeasure方法
+			// measure ourselves, this should set the measured dimension flag back
+			onMeasure(widthMeasureSpec, heightMeasureSpec);
+			mPrivateFlags3 &= ~PFLAG3_MEASURE_NEEDED_BEFORE_LAYOUT;
+		} else {
+			long value = mMeasureCache.valueAt(cacheIndex);
+			// Casting a long to int drops the high 32 bits, no mask needed
+			setMeasuredDimensionRaw((int) (value >> 32), (int) value);
+			mPrivateFlags3 |= PFLAG3_MEASURE_NEEDED_BEFORE_LAYOUT;
+		}
+
+		// flag not set, setMeasuredDimension() was not invoked, we raise
+		// an exception to warn the developer
+		if ((mPrivateFlags & PFLAG_MEASURED_DIMENSION_SET) != PFLAG_MEASURED_DIMENSION_SET) {
+			throw new IllegalStateException("onMeasure() did not set the"
+					+ " measured dimension by calling"
+					+ " setMeasuredDimension()");
+		}
+
+		mPrivateFlags |= PFLAG_LAYOUT_REQUIRED;
+	}
+
+	mOldWidthMeasureSpec = widthMeasureSpec;
+	mOldHeightMeasureSpec = heightMeasureSpec;
+
+	mMeasureCache.put(key, ((long) mMeasuredWidth) << 32 |
+			(long) mMeasuredHeight & 0xffffffffL); // suppress sign extension
+}
+```
+
+在`measure`方法中会调用`onMeasure`方法。
+`onMeasure()`方法的源码如下：
+```java
+/**
+ * <p>
+ * Measure the view and its content to determine the measured width and the
+ * measured height. This method is invoked by {@link #measure(int, int)} and
+ * should be overriden by subclasses to provide accurate and efficient
+ * measurement of their contents.
+ * </p>
+ *
+ * <p>
+ * <strong>CONTRACT:</strong> When overriding this method, you
+ * <em>must</em> call {@link #setMeasuredDimension(int, int)} to store the
+ * measured width and height of this view. Failure to do so will trigger an
+ * <code>IllegalStateException</code>, thrown by
+ * {@link #measure(int, int)}. Calling the superclass'
+ * {@link #onMeasure(int, int)} is a valid use.
+ * </p>
+ *
+ * <p>
+ * The base class implementation of measure defaults to the background size,
+ * unless a larger size is allowed by the MeasureSpec. Subclasses should
+ * override {@link #onMeasure(int, int)} to provide better measurements of
+ * their content.
+ * </p>
+ *
+ * <p>
+ * If this method is overridden, it is the subclass's responsibility to make
+ * sure the measured height and width are at least the view's minimum height
+ * and width ({@link #getSuggestedMinimumHeight()} and
+ * {@link #getSuggestedMinimumWidth()}).
+ * </p>
+ *
+ * @param widthMeasureSpec horizontal space requirements as imposed by the parent.
+ *                         The requirements are encoded with
+ *                         {@link android.view.View.MeasureSpec}.
+ * @param heightMeasureSpec vertical space requirements as imposed by the parent.
+ *                         The requirements are encoded with
+ *                         {@link android.view.View.MeasureSpec}.
+ *
+ * @see #getMeasuredWidth()
+ * @see #getMeasuredHeight()
+ * @see #setMeasuredDimension(int, int)
+ * @see #getSuggestedMinimumHeight()
+ * @see #getSuggestedMinimumWidth()
+ * @see android.view.View.MeasureSpec#getMode(int)
+ * @see android.view.View.MeasureSpec#getSize(int)
+ */
+protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+	setMeasuredDimension(getDefaultSize(getSuggestedMinimumWidth(), widthMeasureSpec),
+			getDefaultSize(getSuggestedMinimumHeight(), heightMeasureSpec));
+}
+```
+`getDefaultSize()`源码如下：
+```java
+/**
+ * Utility to return a default size. Uses the supplied size if the
+ * MeasureSpec imposed no constraints. Will get larger if allowed
+ * by the MeasureSpec.
+ *
+ * @param size Default size for this view
+ * @param measureSpec Constraints imposed by the parent
+ * @return The size this view should be.
+ */
+public static int getDefaultSize(int size, int measureSpec) {
+	int result = size;
+	int specMode = MeasureSpec.getMode(measureSpec);
+	int specSize = MeasureSpec.getSize(measureSpec);
+
+	switch (specMode) {
+	case MeasureSpec.UNSPECIFIED:
+		result = size;
+		break;
+	case MeasureSpec.AT_MOST:
+	case MeasureSpec.EXACTLY:
+		result = specSize;
+		break;
+	}
+	return result;
+}
+```
+
+`setMeasuredDimension()`方法如下： 
+```java
+/**
+ * <p>This method must be called by {@link #onMeasure(int, int)} to store the
+ * measured width and measured height. Failing to do so will trigger an
+ * exception at measurement time.</p>
+ *
+ * @param measuredWidth The measured width of this view.  May be a complex
+ * bit mask as defined by {@link #MEASURED_SIZE_MASK} and
+ * {@link #MEASURED_STATE_TOO_SMALL}.
+ * @param measuredHeight The measured height of this view.  May be a complex
+ * bit mask as defined by {@link #MEASURED_SIZE_MASK} and
+ * {@link #MEASURED_STATE_TOO_SMALL}.
+ */
+protected final void setMeasuredDimension(int measuredWidth, int measuredHeight) {
+	boolean optical = isLayoutModeOptical(this);
+	if (optical != isLayoutModeOptical(mParent)) {
+		Insets insets = getOpticalInsets();
+		int opticalWidth  = insets.left + insets.right;
+		int opticalHeight = insets.top  + insets.bottom;
+
+		measuredWidth  += optical ? opticalWidth  : -opticalWidth;
+		measuredHeight += optical ? opticalHeight : -opticalHeight;
+	}
+	setMeasuredDimensionRaw(measuredWidth, measuredHeight);
+}
+```
+`setMeasuredDimensionRaw()`方法如下： 
+```java
+/**
+ * Sets the measured dimension without extra processing for things like optical bounds.
+ * Useful for reapplying consistent values that have already been cooked with adjustments
+ * for optical bounds, etc. such as those from the measurement cache.
+ *
+ * @param measuredWidth The measured width of this view.  May be a complex
+ * bit mask as defined by {@link #MEASURED_SIZE_MASK} and
+ * {@link #MEASURED_STATE_TOO_SMALL}.
+ * @param measuredHeight The measured height of this view.  May be a complex
+ * bit mask as defined by {@link #MEASURED_SIZE_MASK} and
+ * {@link #MEASURED_STATE_TOO_SMALL}.
+ */
+private void setMeasuredDimensionRaw(int measuredWidth, int measuredHeight) {
+	mMeasuredWidth = measuredWidth;
+	mMeasuredHeight = measuredHeight;
+
+	mPrivateFlags |= PFLAG_MEASURED_DIMENSION_SET;
+}
+```
+
+
+
+`Layout`
+=====
+
+
+`Draw`
+=====
+
 
 ---
 
