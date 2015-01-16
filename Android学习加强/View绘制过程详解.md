@@ -31,7 +31,8 @@ private void performTraversals() {
 				(relayoutResult&WindowManagerGlobal.RELAYOUT_RES_IN_TOUCH_MODE) != 0);
 		if (focusChangedDueToTouchMode || mWidth != host.getMeasuredWidth()
 				|| mHeight != host.getMeasuredHeight() || contentInsetsChanged) {
-			// 这里是获取widthMeasureSpec,getRootMeasureSpec方法内部会使用MeasureSpec.makeMeasureSpec()方法来组装一个MeasureSpec，
+			// 这里是获取widthMeasureSpec,这俩参数不是一般的尺寸数值，而是将模式和尺寸组合在一起的数值.
+			// getRootMeasureSpec方法内部会使用MeasureSpec.makeMeasureSpec()方法来组装一个MeasureSpec，
 			// 当lp.width参数等于MATCH_PARENT的时候，MeasureSpec的specMode就等于EXACTLY，当lp.width等于WRAP_CONTENT的时候，MeasureSpec的specMode就等于AT_MOST。
 			// 并且MATCH_PARENT和WRAP_CONTENT时的specSize都是等于windowSize的，也就意味着根视图总是会充满全屏的。
 			int childWidthMeasureSpec = getRootMeasureSpec(mWidth, lp.width);
@@ -517,8 +518,9 @@ public static int getDefaultSize(int size, int measureSpec) {
 }
 ```
 `getDefaultSize`方法又会使用到`MeasureSpec`类，文档中对`MeasureSpec`是这样介绍的`A MeasureSpec is comprised of a size and a mode. There are three possible modes:`
-- MeasureSpec.EXACTLY The parent has determined an exact size for the child. The child is going to be given those bounds regardless of how big it wants to be. 理解成MATCH_PARENT
-- MeasureSpec.AT_MOST The child can be as large as it wants up to the specified size.理解成WRAP_CONTENT
+- MeasureSpec.EXACTLY The parent has determined an exact size for the child. The child is going to be given those bounds regardless of how big it wants to be. 
+    理解成MATCH_PARENT或者在布局中指定了宽高值，如layout:width='50dp'
+- MeasureSpec.AT_MOST The child can be as large as it wants up to the specified size.理解成WRAP_CONTENT,这是的值是父View可以允许的最大的值，只要不超过这个值都可以。
 - MeasureSpec.UNSPECIFIED The parent has not imposed any constraint on the child. It can be whatever size it wants. 这种情况比较少，一般用不到。
 
 这里简单总结一下上面的过程:
@@ -1563,7 +1565,7 @@ private void performDraw() {
 }
 ```
 
-最后补充一个小问题： `getWidth()`与`getMeasuredWidth()`有什么区别呢？
+最后补充一个小问题： `getWidth()`与`getMeasuredWidth()`有什么区别呢？                          
 一般情况下这两个的值是相同的，`getMeasureWidth()`方法在`measure()`过程结束后就可以获取到了，而`getWidth()`方法要在`layout()`过程结束后才能获取到。
 而且`getMeasureWidth()`的值是通过`setMeasuredDimension()`设置的，但是`getWidth()`的值是通过视图右边的坐标减去左边的坐标计算出来的。如果我们在`layout`的时候将宽高
 不传`getMeasureWidth`的值，那么这时候`getWidth()`与`getMeasuredWidth`的值就不会再相同了，当然一般也不会这么干...
