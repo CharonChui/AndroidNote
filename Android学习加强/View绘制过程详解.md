@@ -1,7 +1,7 @@
 ﻿View绘制过程详解
 ===
 
-界面窗口中的根布局是`DecorView`，该类集成子`FrameLayout`.说到`View`绘制，想到的就是从这里入手，而`FrameLayout`集成自`ViewGroup`。感觉绘制肯定会在`ViewGroup`或者`View`中，
+界面窗口的根布局是`DecorView`，该类继承自`FrameLayout`.说到`View`绘制，想到的就是从这里入手，而`FrameLayout`继承自`ViewGroup`。感觉绘制肯定会在`ViewGroup`或者`View`中，
 但是木有找到。发现`ViewGroup`实现`ViewParent`接口，而`ViewParent`有一个实现类是`ViewRootImpl`， `ViewGruop`中会使用`ViewRootImpl`...
 ```java
 /**
@@ -20,621 +20,61 @@ public final class ViewRootImpl implements ViewParent,
 
 `View`的绘制过程从`ViewRootImpl.performTraversals()`方法开始。
 首先先说明一下，这部分代码比较多，逻辑也比较麻烦，很容易弄晕，如果感觉看起来费劲，就跳过这一块，直接到下面的Measure、Layout、Draw部分开始看。
-我也没有全部弄清楚。
+我也没有全部弄清楚，我只是把里面的步骤标注了下。
 ```java
 private void performTraversals() {
-	// cache mView since it is used so much below...
-	final View host = mView;
+	// ... 此处省略源代码N行
 
-	if (DBG) {
-		System.out.println("======================================");
-		System.out.println("performTraversals");
-		host.debug();
-	}
+	// 是否需要Measure
+	if (!mStopped) {
+		boolean focusChangedDueToTouchMode = ensureTouchModeLocally(
+				(relayoutResult&WindowManagerGlobal.RELAYOUT_RES_IN_TOUCH_MODE) != 0);
+		if (focusChangedDueToTouchMode || mWidth != host.getMeasuredWidth()
+				|| mHeight != host.getMeasuredHeight() || contentInsetsChanged) {
+			// 这里是获取widthMeasureSpec,getRootMeasureSpec方法内部会使用MeasureSpec.makeMeasureSpec()方法来组装一个MeasureSpec，
+			// 当lp.width参数等于MATCH_PARENT的时候，MeasureSpec的specMode就等于EXACTLY，当lp.width等于WRAP_CONTENT的时候，MeasureSpec的specMode就等于AT_MOST。
+			// 并且MATCH_PARENT和WRAP_CONTENT时的specSize都是等于windowSize的，也就意味着根视图总是会充满全屏的。
+			int childWidthMeasureSpec = getRootMeasureSpec(mWidth, lp.width);
+			int childHeightMeasureSpec = getRootMeasureSpec(mHeight, lp.height);
 
-	if (host == null || !mAdded)
-		return;
+			if (DEBUG_LAYOUT) Log.v(TAG, "Ooops, something changed!  mWidth="
+					+ mWidth + " measuredWidth=" + host.getMeasuredWidth()
+					+ " mHeight=" + mHeight
+					+ " measuredHeight=" + host.getMeasuredHeight()
+					+ " coveredInsetsChanged=" + contentInsetsChanged);
+			
+			// 调用PerformMeasure方法。
+			 // Ask host how big it wants to be
+			performMeasure(childWidthMeasureSpec, childHeightMeasureSpec);
 
-	mIsInTraversal = true;
-	mWillDrawSoon = true;
-	boolean windowSizeMayChange = false;
-	boolean newSurface = false;
-	boolean surfaceChanged = false;
-	WindowManager.LayoutParams lp = mWindowAttributes;
+			// Implementation of weights from WindowManager.LayoutParams
+			// We just grow the dimensions as needed and re-measure if
+			// needs be
+			int width = host.getMeasuredWidth();
+			int height = host.getMeasuredHeight();
+			boolean measureAgain = false;
 
-	int desiredWindowWidth;
-	int desiredWindowHeight;
-
-	final int viewVisibility = getHostVisibility();
-	boolean viewVisibilityChanged = mViewVisibility != viewVisibility
-			|| mNewSurfaceNeeded;
-
-	WindowManager.LayoutParams params = null;
-	if (mWindowAttributesChanged) {
-		mWindowAttributesChanged = false;
-		surfaceChanged = true;
-		params = lp;
-	}
-	CompatibilityInfo compatibilityInfo = mDisplayAdjustments.getCompatibilityInfo();
-	if (compatibilityInfo.supportsScreen() == mLastInCompatMode) {
-		params = lp;
-		mFullRedrawNeeded = true;
-		mLayoutRequested = true;
-		if (mLastInCompatMode) {
-			params.privateFlags &= ~WindowManager.LayoutParams.PRIVATE_FLAG_COMPATIBLE_WINDOW;
-			mLastInCompatMode = false;
-		} else {
-			params.privateFlags |= WindowManager.LayoutParams.PRIVATE_FLAG_COMPATIBLE_WINDOW;
-			mLastInCompatMode = true;
-		}
-	}
-
-	mWindowAttributesChangesFlag = 0;
-
-	Rect frame = mWinFrame;
-	if (mFirst) {
-		mFullRedrawNeeded = true;
-		mLayoutRequested = true;
-
-		if (lp.type == WindowManager.LayoutParams.TYPE_STATUS_BAR_PANEL
-				|| lp.type == WindowManager.LayoutParams.TYPE_INPUT_METHOD) {
-			// NOTE -- system code, won't try to do compat mode.
-			Point size = new Point();
-			mDisplay.getRealSize(size);
-			desiredWindowWidth = size.x;
-			desiredWindowHeight = size.y;
-		} else {
-			DisplayMetrics packageMetrics =
-				mView.getContext().getResources().getDisplayMetrics();
-			desiredWindowWidth = packageMetrics.widthPixels;
-			desiredWindowHeight = packageMetrics.heightPixels;
-		}
-
-		// We used to use the following condition to choose 32 bits drawing caches:
-		// PixelFormat.hasAlpha(lp.format) || lp.format == PixelFormat.RGBX_8888
-		// However, windows are now always 32 bits by default, so choose 32 bits
-		mAttachInfo.mUse32BitDrawingCache = true;
-		mAttachInfo.mHasWindowFocus = false;
-		mAttachInfo.mWindowVisibility = viewVisibility;
-		mAttachInfo.mRecomputeGlobalAttributes = false;
-		viewVisibilityChanged = false;
-		mLastConfiguration.setTo(host.getResources().getConfiguration());
-		mLastSystemUiVisibility = mAttachInfo.mSystemUiVisibility;
-		// Set the layout direction if it has not been set before (inherit is the default)
-		if (mViewLayoutDirectionInitial == View.LAYOUT_DIRECTION_INHERIT) {
-			host.setLayoutDirection(mLastConfiguration.getLayoutDirection());
-		}
-		host.dispatchAttachedToWindow(mAttachInfo, 0);
-		mAttachInfo.mTreeObserver.dispatchOnWindowAttachedChange(true);
-		dispatchApplyInsets(host);
-		//Log.i(TAG, "Screen on initialized: " + attachInfo.mKeepScreenOn);
-
-	} else {
-		desiredWindowWidth = frame.width();
-		desiredWindowHeight = frame.height();
-		if (desiredWindowWidth != mWidth || desiredWindowHeight != mHeight) {
-			if (DEBUG_ORIENTATION) Log.v(TAG,
-					"View " + host + " resized to: " + frame);
-			mFullRedrawNeeded = true;
-			mLayoutRequested = true;
-			windowSizeMayChange = true;
-		}
-	}
-
-	if (viewVisibilityChanged) {
-		mAttachInfo.mWindowVisibility = viewVisibility;
-		host.dispatchWindowVisibilityChanged(viewVisibility);
-		if (viewVisibility != View.VISIBLE || mNewSurfaceNeeded) {
-			destroyHardwareResources();
-		}
-		if (viewVisibility == View.GONE) {
-			// After making a window gone, we will count it as being
-			// shown for the first time the next time it gets focus.
-			mHasHadWindowFocus = false;
-		}
-	}
-
-	// Execute enqueued actions on every traversal in case a detached view enqueued an action
-	getRunQueue().executeActions(mAttachInfo.mHandler);
-
-	boolean insetsChanged = false;
-
-	boolean layoutRequested = mLayoutRequested && !mStopped;
-	if (layoutRequested) {
-
-		final Resources res = mView.getContext().getResources();
-
-		if (mFirst) {
-			// make sure touch mode code executes by setting cached value
-			// to opposite of the added touch mode.
-			mAttachInfo.mInTouchMode = !mAddedTouchMode;
-			ensureTouchModeLocally(mAddedTouchMode);
-		} else {
-			if (!mPendingOverscanInsets.equals(mAttachInfo.mOverscanInsets)) {
-				insetsChanged = true;
+			if (lp.horizontalWeight > 0.0f) {
+				width += (int) ((mWidth - width) * lp.horizontalWeight);
+				childWidthMeasureSpec = MeasureSpec.makeMeasureSpec(width,
+						MeasureSpec.EXACTLY);
+				measureAgain = true;
 			}
-			if (!mPendingContentInsets.equals(mAttachInfo.mContentInsets)) {
-				insetsChanged = true;
-			}
-			if (!mPendingStableInsets.equals(mAttachInfo.mStableInsets)) {
-				insetsChanged = true;
-			}
-			if (!mPendingVisibleInsets.equals(mAttachInfo.mVisibleInsets)) {
-				mAttachInfo.mVisibleInsets.set(mPendingVisibleInsets);
-				if (DEBUG_LAYOUT) Log.v(TAG, "Visible insets changing to: "
-						+ mAttachInfo.mVisibleInsets);
-			}
-			if (lp.width == ViewGroup.LayoutParams.WRAP_CONTENT
-					|| lp.height == ViewGroup.LayoutParams.WRAP_CONTENT) {
-				windowSizeMayChange = true;
-
-				if (lp.type == WindowManager.LayoutParams.TYPE_STATUS_BAR_PANEL
-						|| lp.type == WindowManager.LayoutParams.TYPE_INPUT_METHOD) {
-					// NOTE -- system code, won't try to do compat mode.
-					Point size = new Point();
-					mDisplay.getRealSize(size);
-					desiredWindowWidth = size.x;
-					desiredWindowHeight = size.y;
-				} else {
-					DisplayMetrics packageMetrics = res.getDisplayMetrics();
-					desiredWindowWidth = packageMetrics.widthPixels;
-					desiredWindowHeight = packageMetrics.heightPixels;
-				}
-			}
-		}
-
-		// Ask host how big it wants to be
-		windowSizeMayChange |= measureHierarchy(host, lp, res,
-				desiredWindowWidth, desiredWindowHeight);
-	}
-
-	if (collectViewAttributes()) {
-		params = lp;
-	}
-	if (mAttachInfo.mForceReportNewAttributes) {
-		mAttachInfo.mForceReportNewAttributes = false;
-		params = lp;
-	}
-
-	if (mFirst || mAttachInfo.mViewVisibilityChanged) {
-		mAttachInfo.mViewVisibilityChanged = false;
-		int resizeMode = mSoftInputMode &
-				WindowManager.LayoutParams.SOFT_INPUT_MASK_ADJUST;
-		// If we are in auto resize mode, then we need to determine
-		// what mode to use now.
-		if (resizeMode == WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED) {
-			final int N = mAttachInfo.mScrollContainers.size();
-			for (int i=0; i<N; i++) {
-				if (mAttachInfo.mScrollContainers.get(i).isShown()) {
-					resizeMode = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE;
-				}
-			}
-			if (resizeMode == 0) {
-				resizeMode = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN;
-			}
-			if ((lp.softInputMode &
-					WindowManager.LayoutParams.SOFT_INPUT_MASK_ADJUST) != resizeMode) {
-				lp.softInputMode = (lp.softInputMode &
-						~WindowManager.LayoutParams.SOFT_INPUT_MASK_ADJUST) |
-						resizeMode;
-				params = lp;
-			}
-		}
-	}
-
-	if (params != null) {
-		if ((host.mPrivateFlags & View.PFLAG_REQUEST_TRANSPARENT_REGIONS) != 0) {
-			if (!PixelFormat.formatHasAlpha(params.format)) {
-				params.format = PixelFormat.TRANSLUCENT;
-			}
-		}
-		mAttachInfo.mOverscanRequested = (params.flags
-				& WindowManager.LayoutParams.FLAG_LAYOUT_IN_OVERSCAN) != 0;
-	}
-
-	if (mApplyInsetsRequested) {
-		mApplyInsetsRequested = false;
-		mLastOverscanRequested = mAttachInfo.mOverscanRequested;
-		dispatchApplyInsets(host);
-		if (mLayoutRequested) {
-			// Short-circuit catching a new layout request here, so
-			// we don't need to go through two layout passes when things
-			// change due to fitting system windows, which can happen a lot.
-			windowSizeMayChange |= measureHierarchy(host, lp,
-					mView.getContext().getResources(),
-					desiredWindowWidth, desiredWindowHeight);
-		}
-	}
-
-	if (layoutRequested) {
-		// Clear this now, so that if anything requests a layout in the
-		// rest of this function we will catch it and re-run a full
-		// layout pass.
-		mLayoutRequested = false;
-	}
-
-	boolean windowShouldResize = layoutRequested && windowSizeMayChange
-		&& ((mWidth != host.getMeasuredWidth() || mHeight != host.getMeasuredHeight())
-			|| (lp.width == ViewGroup.LayoutParams.WRAP_CONTENT &&
-					frame.width() < desiredWindowWidth && frame.width() != mWidth)
-			|| (lp.height == ViewGroup.LayoutParams.WRAP_CONTENT &&
-					frame.height() < desiredWindowHeight && frame.height() != mHeight));
-
-	// Determine whether to compute insets.
-	// If there are no inset listeners remaining then we may still need to compute
-	// insets in case the old insets were non-empty and must be reset.
-	final boolean computesInternalInsets =
-			mAttachInfo.mTreeObserver.hasComputeInternalInsetsListeners()
-			|| mAttachInfo.mHasNonEmptyGivenInternalInsets;
-
-	boolean insetsPending = false;
-	int relayoutResult = 0;
-
-	if (mFirst || windowShouldResize || insetsChanged ||
-			viewVisibilityChanged || params != null) {
-
-		if (viewVisibility == View.VISIBLE) {
-			// If this window is giving internal insets to the window
-			// manager, and it is being added or changing its visibility,
-			// then we want to first give the window manager "fake"
-			// insets to cause it to effectively ignore the content of
-			// the window during layout.  This avoids it briefly causing
-			// other windows to resize/move based on the raw frame of the
-			// window, waiting until we can finish laying out this window
-			// and get back to the window manager with the ultimately
-			// computed insets.
-			insetsPending = computesInternalInsets && (mFirst || viewVisibilityChanged);
-		}
-
-		if (mSurfaceHolder != null) {
-			mSurfaceHolder.mSurfaceLock.lock();
-			mDrawingAllowed = true;
-		}
-
-		boolean hwInitialized = false;
-		boolean contentInsetsChanged = false;
-		boolean hadSurface = mSurface.isValid();
-
-		try {
-			if (DEBUG_LAYOUT) {
-				Log.i(TAG, "host=w:" + host.getMeasuredWidth() + ", h:" +
-						host.getMeasuredHeight() + ", params=" + params);
+			if (lp.verticalWeight > 0.0f) {
+				height += (int) ((mHeight - height) * lp.verticalWeight);
+				childHeightMeasureSpec = MeasureSpec.makeMeasureSpec(height,
+						MeasureSpec.EXACTLY);
+				measureAgain = true;
 			}
 
-			if (mAttachInfo.mHardwareRenderer != null) {
-				// relayoutWindow may decide to destroy mSurface. As that decision
-				// happens in WindowManager service, we need to be defensive here
-				// and stop using the surface in case it gets destroyed.
-				mAttachInfo.mHardwareRenderer.pauseSurface(mSurface);
-			}
-			final int surfaceGenerationId = mSurface.getGenerationId();
-			relayoutResult = relayoutWindow(params, viewVisibility, insetsPending);
-			if (!mDrawDuringWindowsAnimating &&
-					(relayoutResult & WindowManagerGlobal.RELAYOUT_RES_ANIMATING) != 0) {
-				mWindowsAnimating = true;
-			}
-
-			if (DEBUG_LAYOUT) Log.v(TAG, "relayout: frame=" + frame.toShortString()
-					+ " overscan=" + mPendingOverscanInsets.toShortString()
-					+ " content=" + mPendingContentInsets.toShortString()
-					+ " visible=" + mPendingVisibleInsets.toShortString()
-					+ " visible=" + mPendingStableInsets.toShortString()
-					+ " surface=" + mSurface);
-
-			if (mPendingConfiguration.seq != 0) {
-				if (DEBUG_CONFIGURATION) Log.v(TAG, "Visible with new config: "
-						+ mPendingConfiguration);
-				updateConfiguration(mPendingConfiguration, !mFirst);
-				mPendingConfiguration.seq = 0;
-			}
-
-			final boolean overscanInsetsChanged = !mPendingOverscanInsets.equals(
-					mAttachInfo.mOverscanInsets);
-			contentInsetsChanged = !mPendingContentInsets.equals(
-					mAttachInfo.mContentInsets);
-			final boolean visibleInsetsChanged = !mPendingVisibleInsets.equals(
-					mAttachInfo.mVisibleInsets);
-			final boolean stableInsetsChanged = !mPendingStableInsets.equals(
-					mAttachInfo.mStableInsets);
-			if (contentInsetsChanged) {
-				if (mWidth > 0 && mHeight > 0 && lp != null &&
-						((lp.systemUiVisibility|lp.subtreeSystemUiVisibility)
-								& View.SYSTEM_UI_LAYOUT_FLAGS) == 0 &&
-						mSurface != null && mSurface.isValid() &&
-						!mAttachInfo.mTurnOffWindowResizeAnim &&
-						mAttachInfo.mHardwareRenderer != null &&
-						mAttachInfo.mHardwareRenderer.isEnabled() &&
-						lp != null && !PixelFormat.formatHasAlpha(lp.format)
-						&& !mBlockResizeBuffer) {
-
-					disposeResizeBuffer();
-
-// TODO: Again....
-//                        if (mResizeBuffer == null) {
-//                            mResizeBuffer = mAttachInfo.mHardwareRenderer.createDisplayListLayer(
-//                                    mWidth, mHeight);
-//                        }
-//                        mResizeBuffer.prepare(mWidth, mHeight, false);
-//                        RenderNode layerRenderNode = mResizeBuffer.startRecording();
-//                        HardwareCanvas layerCanvas = layerRenderNode.start(mWidth, mHeight);
-//                        try {
-//                            final int restoreCount = layerCanvas.save();
-//
-//                            int yoff;
-//                            final boolean scrolling = mScroller != null
-//                                    && mScroller.computeScrollOffset();
-//                            if (scrolling) {
-//                                yoff = mScroller.getCurrY();
-//                                mScroller.abortAnimation();
-//                            } else {
-//                                yoff = mScrollY;
-//                            }
-//
-//                            layerCanvas.translate(0, -yoff);
-//                            if (mTranslator != null) {
-//                                mTranslator.translateCanvas(layerCanvas);
-//                            }
-//
-//                            RenderNode renderNode = mView.mRenderNode;
-//                            if (renderNode != null && renderNode.isValid()) {
-//                                layerCanvas.drawDisplayList(renderNode, null,
-//                                        RenderNode.FLAG_CLIP_CHILDREN);
-//                            } else {
-//                                mView.draw(layerCanvas);
-//                            }
-//
-//                            drawAccessibilityFocusedDrawableIfNeeded(layerCanvas);
-//
-//                            mResizeBufferStartTime = SystemClock.uptimeMillis();
-//                            mResizeBufferDuration = mView.getResources().getInteger(
-//                                    com.android.internal.R.integer.config_mediumAnimTime);
-//
-//                            layerCanvas.restoreToCount(restoreCount);
-//                            layerRenderNode.end(layerCanvas);
-//                            layerRenderNode.setCaching(true);
-//                            layerRenderNode.setLeftTopRightBottom(0, 0, mWidth, mHeight);
-//                            mTempRect.set(0, 0, mWidth, mHeight);
-//                        } finally {
-//                            mResizeBuffer.endRecording(mTempRect);
-//                        }
-//                        mAttachInfo.mHardwareRenderer.flushLayerUpdates();
-				}
-				mAttachInfo.mContentInsets.set(mPendingContentInsets);
-				if (DEBUG_LAYOUT) Log.v(TAG, "Content insets changing to: "
-						+ mAttachInfo.mContentInsets);
-			}
-			if (overscanInsetsChanged) {
-				mAttachInfo.mOverscanInsets.set(mPendingOverscanInsets);
-				if (DEBUG_LAYOUT) Log.v(TAG, "Overscan insets changing to: "
-						+ mAttachInfo.mOverscanInsets);
-				// Need to relayout with content insets.
-				contentInsetsChanged = true;
-			}
-			if (stableInsetsChanged) {
-				mAttachInfo.mStableInsets.set(mPendingStableInsets);
-				if (DEBUG_LAYOUT) Log.v(TAG, "Decor insets changing to: "
-						+ mAttachInfo.mStableInsets);
-				// Need to relayout with content insets.
-				contentInsetsChanged = true;
-			}
-			if (contentInsetsChanged || mLastSystemUiVisibility !=
-					mAttachInfo.mSystemUiVisibility || mApplyInsetsRequested
-					|| mLastOverscanRequested != mAttachInfo.mOverscanRequested) {
-				mLastSystemUiVisibility = mAttachInfo.mSystemUiVisibility;
-				mLastOverscanRequested = mAttachInfo.mOverscanRequested;
-				mApplyInsetsRequested = false;
-				dispatchApplyInsets(host);
-			}
-			if (visibleInsetsChanged) {
-				mAttachInfo.mVisibleInsets.set(mPendingVisibleInsets);
-				if (DEBUG_LAYOUT) Log.v(TAG, "Visible insets changing to: "
-						+ mAttachInfo.mVisibleInsets);
-			}
-
-			if (!hadSurface) {
-				if (mSurface.isValid()) {
-					// If we are creating a new surface, then we need to
-					// completely redraw it.  Also, when we get to the
-					// point of drawing it we will hold off and schedule
-					// a new traversal instead.  This is so we can tell the
-					// window manager about all of the windows being displayed
-					// before actually drawing them, so it can display then
-					// all at once.
-					newSurface = true;
-					mFullRedrawNeeded = true;
-					mPreviousTransparentRegion.setEmpty();
-
-					if (mAttachInfo.mHardwareRenderer != null) {
-						try {
-							hwInitialized = mAttachInfo.mHardwareRenderer.initialize(
-									mSurface);
-						} catch (OutOfResourcesException e) {
-							handleOutOfResourcesException(e);
-							return;
-						}
-					}
-				}
-			} else if (!mSurface.isValid()) {
-				// If the surface has been removed, then reset the scroll
-				// positions.
-				if (mLastScrolledFocus != null) {
-					mLastScrolledFocus.clear();
-				}
-				mScrollY = mCurScrollY = 0;
-				if (mScroller != null) {
-					mScroller.abortAnimation();
-				}
-				disposeResizeBuffer();
-				// Our surface is gone
-				if (mAttachInfo.mHardwareRenderer != null &&
-						mAttachInfo.mHardwareRenderer.isEnabled()) {
-					mAttachInfo.mHardwareRenderer.destroy();
-				}
-			} else if (surfaceGenerationId != mSurface.getGenerationId() &&
-					mSurfaceHolder == null && mAttachInfo.mHardwareRenderer != null) {
-				mFullRedrawNeeded = true;
-				try {
-					mAttachInfo.mHardwareRenderer.updateSurface(mSurface);
-				} catch (OutOfResourcesException e) {
-					handleOutOfResourcesException(e);
-					return;
-				}
-			}
-		} catch (RemoteException e) {
-		}
-
-		if (DEBUG_ORIENTATION) Log.v(
-				TAG, "Relayout returned: frame=" + frame + ", surface=" + mSurface);
-
-		mAttachInfo.mWindowLeft = frame.left;
-		mAttachInfo.mWindowTop = frame.top;
-
-		// !!FIXME!! This next section handles the case where we did not get the
-		// window size we asked for. We should avoid this by getting a maximum size from
-		// the window session beforehand.
-		if (mWidth != frame.width() || mHeight != frame.height()) {
-			mWidth = frame.width();
-			mHeight = frame.height();
-		}
-
-		if (mSurfaceHolder != null) {
-			// The app owns the surface; tell it about what is going on.
-			if (mSurface.isValid()) {
-				// XXX .copyFrom() doesn't work!
-				//mSurfaceHolder.mSurface.copyFrom(mSurface);
-				mSurfaceHolder.mSurface = mSurface;
-			}
-			mSurfaceHolder.setSurfaceFrameSize(mWidth, mHeight);
-			mSurfaceHolder.mSurfaceLock.unlock();
-			if (mSurface.isValid()) {
-				if (!hadSurface) {
-					mSurfaceHolder.ungetCallbacks();
-
-					mIsCreating = true;
-					mSurfaceHolderCallback.surfaceCreated(mSurfaceHolder);
-					SurfaceHolder.Callback callbacks[] = mSurfaceHolder.getCallbacks();
-					if (callbacks != null) {
-						for (SurfaceHolder.Callback c : callbacks) {
-							c.surfaceCreated(mSurfaceHolder);
-						}
-					}
-					surfaceChanged = true;
-				}
-				if (surfaceChanged) {
-					mSurfaceHolderCallback.surfaceChanged(mSurfaceHolder,
-							lp.format, mWidth, mHeight);
-					SurfaceHolder.Callback callbacks[] = mSurfaceHolder.getCallbacks();
-					if (callbacks != null) {
-						for (SurfaceHolder.Callback c : callbacks) {
-							c.surfaceChanged(mSurfaceHolder, lp.format,
-									mWidth, mHeight);
-						}
-					}
-				}
-				mIsCreating = false;
-			} else if (hadSurface) {
-				mSurfaceHolder.ungetCallbacks();
-				SurfaceHolder.Callback callbacks[] = mSurfaceHolder.getCallbacks();
-				mSurfaceHolderCallback.surfaceDestroyed(mSurfaceHolder);
-				if (callbacks != null) {
-					for (SurfaceHolder.Callback c : callbacks) {
-						c.surfaceDestroyed(mSurfaceHolder);
-					}
-				}
-				mSurfaceHolder.mSurfaceLock.lock();
-				try {
-					mSurfaceHolder.mSurface = new Surface();
-				} finally {
-					mSurfaceHolder.mSurfaceLock.unlock();
-				}
-			}
-		}
-
-		if (mAttachInfo.mHardwareRenderer != null &&
-				mAttachInfo.mHardwareRenderer.isEnabled()) {
-			if (hwInitialized ||
-					mWidth != mAttachInfo.mHardwareRenderer.getWidth() ||
-					mHeight != mAttachInfo.mHardwareRenderer.getHeight()) {
-				final Rect surfaceInsets = params != null ? params.surfaceInsets : null;
-				mAttachInfo.mHardwareRenderer.setup(mWidth, mHeight, surfaceInsets);
-				if (!hwInitialized) {
-					mAttachInfo.mHardwareRenderer.invalidate(mSurface);
-					mFullRedrawNeeded = true;
-				}
-			}
-		}
-
-	    // 是否需要Measure
-		if (!mStopped) {
-			boolean focusChangedDueToTouchMode = ensureTouchModeLocally(
-					(relayoutResult&WindowManagerGlobal.RELAYOUT_RES_IN_TOUCH_MODE) != 0);
-			if (focusChangedDueToTouchMode || mWidth != host.getMeasuredWidth()
-					|| mHeight != host.getMeasuredHeight() || contentInsetsChanged) {
-				int childWidthMeasureSpec = getRootMeasureSpec(mWidth, lp.width);
-				int childHeightMeasureSpec = getRootMeasureSpec(mHeight, lp.height);
-
-				if (DEBUG_LAYOUT) Log.v(TAG, "Ooops, something changed!  mWidth="
-						+ mWidth + " measuredWidth=" + host.getMeasuredWidth()
-						+ " mHeight=" + mHeight
-						+ " measuredHeight=" + host.getMeasuredHeight()
-						+ " coveredInsetsChanged=" + contentInsetsChanged);
-
-				 // Ask host how big it wants to be
+			if (measureAgain) {
+				if (DEBUG_LAYOUT) Log.v(TAG,
+						"And hey let's measure once more: width=" + width
+						+ " height=" + height);
 				performMeasure(childWidthMeasureSpec, childHeightMeasureSpec);
-
-				// Implementation of weights from WindowManager.LayoutParams
-				// We just grow the dimensions as needed and re-measure if
-				// needs be
-				int width = host.getMeasuredWidth();
-				int height = host.getMeasuredHeight();
-				boolean measureAgain = false;
-
-				if (lp.horizontalWeight > 0.0f) {
-					width += (int) ((mWidth - width) * lp.horizontalWeight);
-					childWidthMeasureSpec = MeasureSpec.makeMeasureSpec(width,
-							MeasureSpec.EXACTLY);
-					measureAgain = true;
-				}
-				if (lp.verticalWeight > 0.0f) {
-					height += (int) ((mHeight - height) * lp.verticalWeight);
-					childHeightMeasureSpec = MeasureSpec.makeMeasureSpec(height,
-							MeasureSpec.EXACTLY);
-					measureAgain = true;
-				}
-
-				if (measureAgain) {
-					if (DEBUG_LAYOUT) Log.v(TAG,
-							"And hey let's measure once more: width=" + width
-							+ " height=" + height);
-					performMeasure(childWidthMeasureSpec, childHeightMeasureSpec);
-				}
-
-				layoutRequested = true;
 			}
-		}
-	} else {
-		// Not the first pass and no window/insets/visibility change but the window
-		// may have moved and we need check that and if so to update the left and right
-		// in the attach info. We translate only the window frame since on window move
-		// the window manager tells us only for the new frame but the insets are the
-		// same and we do not want to translate them more than once.
 
-		// TODO: Well, we are checking whether the frame has changed similarly
-		// to how this is done for the insets. This is however incorrect since
-		// the insets and the frame are translated. For example, the old frame
-		// was (1, 1 - 1, 1) and was translated to say (2, 2 - 2, 2), now the new
-		// reported frame is (2, 2 - 2, 2) which implies no change but this is not
-		// true since we are comparing a not translated value to a translated one.
-		// This scenario is rare but we may want to fix that.
-
-		final boolean windowMoved = (mAttachInfo.mWindowLeft != frame.left
-				|| mAttachInfo.mWindowTop != frame.top);
-		if (windowMoved) {
-			if (mTranslator != null) {
-				mTranslator.translateRectInScreenToAppWinFrame(frame);
-			}
-			mAttachInfo.mWindowLeft = frame.left;
-			mAttachInfo.mWindowTop = frame.top;
+			layoutRequested = true;
 		}
 	}
 
@@ -643,6 +83,7 @@ private void performTraversals() {
 			|| mAttachInfo.mRecomputeGlobalAttributes;
 	// 是否需要Layout
 	if (didLayout) {
+		// 调用performLayout方法。
 		performLayout(lp, desiredWindowWidth, desiredWindowHeight);
 
 		// By this point all views have been sized and positioned
@@ -679,100 +120,6 @@ private void performTraversals() {
 		}
 	}
 
-	if (triggerGlobalLayoutListener) {
-		mAttachInfo.mRecomputeGlobalAttributes = false;
-		mAttachInfo.mTreeObserver.dispatchOnGlobalLayout();
-	}
-
-	if (computesInternalInsets) {
-		// Clear the original insets.
-		final ViewTreeObserver.InternalInsetsInfo insets = mAttachInfo.mGivenInternalInsets;
-		insets.reset();
-
-		// Compute new insets in place.
-		mAttachInfo.mTreeObserver.dispatchOnComputeInternalInsets(insets);
-		mAttachInfo.mHasNonEmptyGivenInternalInsets = !insets.isEmpty();
-
-		// Tell the window manager.
-		if (insetsPending || !mLastGivenInsets.equals(insets)) {
-			mLastGivenInsets.set(insets);
-
-			// Translate insets to screen coordinates if needed.
-			final Rect contentInsets;
-			final Rect visibleInsets;
-			final Region touchableRegion;
-			if (mTranslator != null) {
-				contentInsets = mTranslator.getTranslatedContentInsets(insets.contentInsets);
-				visibleInsets = mTranslator.getTranslatedVisibleInsets(insets.visibleInsets);
-				touchableRegion = mTranslator.getTranslatedTouchableArea(insets.touchableRegion);
-			} else {
-				contentInsets = insets.contentInsets;
-				visibleInsets = insets.visibleInsets;
-				touchableRegion = insets.touchableRegion;
-			}
-
-			try {
-				mWindowSession.setInsets(mWindow, insets.mTouchableInsets,
-						contentInsets, visibleInsets, touchableRegion);
-			} catch (RemoteException e) {
-			}
-		}
-	}
-
-	boolean skipDraw = false;
-
-	if (mFirst) {
-		// handle first focus request
-		if (DEBUG_INPUT_RESIZE) Log.v(TAG, "First: mView.hasFocus()="
-				+ mView.hasFocus());
-		if (mView != null) {
-			if (!mView.hasFocus()) {
-				mView.requestFocus(View.FOCUS_FORWARD);
-				if (DEBUG_INPUT_RESIZE) Log.v(TAG, "First: requested focused view="
-						+ mView.findFocus());
-			} else {
-				if (DEBUG_INPUT_RESIZE) Log.v(TAG, "First: existing focused view="
-						+ mView.findFocus());
-			}
-		}
-		if ((relayoutResult & WindowManagerGlobal.RELAYOUT_RES_ANIMATING) != 0) {
-			// The first time we relayout the window, if the system is
-			// doing window animations, we want to hold of on any future
-			// draws until the animation is done.
-			mWindowsAnimating = true;
-		}
-	} else if (mWindowsAnimating) {
-		skipDraw = true;
-	}
-
-	mFirst = false;
-	mWillDrawSoon = false;
-	mNewSurfaceNeeded = false;
-	mViewVisibility = viewVisibility;
-
-	if (mAttachInfo.mHasWindowFocus && !isInLocalFocusMode()) {
-		final boolean imTarget = WindowManager.LayoutParams
-				.mayUseInputMethod(mWindowAttributes.flags);
-		if (imTarget != mLastWasImTarget) {
-			mLastWasImTarget = imTarget;
-			InputMethodManager imm = InputMethodManager.peekInstance();
-			if (imm != null && imTarget) {
-				imm.startGettingWindowFocus(mView);
-				imm.onWindowFocus(mView, mView.findFocus(),
-						mWindowAttributes.softInputMode,
-						!mHasHadWindowFocus, mWindowAttributes.flags);
-			}
-		}
-	}
-
-	// Remember if we must report the next draw.
-	if ((relayoutResult & WindowManagerGlobal.RELAYOUT_RES_FIRST_TIME) != 0) {
-		mReportNextDraw = true;
-	}
-
-	boolean cancelDraw = mAttachInfo.mTreeObserver.dispatchOnPreDraw() ||
-			viewVisibility != View.VISIBLE;
-
 	// 是否需要Draw
 	if (!cancelDraw && !newSurface) {
 		if (!skipDraw || mReportNextDraw) {
@@ -782,7 +129,7 @@ private void performTraversals() {
 				}
 				mPendingTransitions.clear();
 			}
-
+			// 调用performDraw方法
 			performDraw();
 		}
 	} else {
@@ -802,14 +149,26 @@ private void performTraversals() {
 ```
 
 从上面源码可以看出,`performTraversals()`方法中会依次做三件事：
-- `performMeasure()`, 内部是` mView.measure(childWidthMeasureSpec, childHeightMeasureSpec);`
-- `performLayout()`, 内部是`mView.layout(0, 0, host.getMeasuredWidth(), host.getMeasuredHeight());`
-- `performDraw()`, 内部是`draw(fullRedrawNeeded);`
+- `performMeasure()`, 内部是` mView.measure(childWidthMeasureSpec, childHeightMeasureSpec);`测量`View`大小。这里顺便提一下，这个`mView`是什么？它就是`Window`最顶成的`View(DecorView)`,它是`FrameLayout`的子类。
+- `performLayout()`, 内部是`mView.layout(0, 0, host.getMeasuredWidth(), host.getMeasuredHeight());`视图布局，确定`View`位置。
+- `performDraw()`, 内部是`draw(fullRedrawNeeded);` 绘制界面。
 
 至此`View`绘制的三个过程已经展现：
 
 `Measure`
-=====
+===
+
+`performMeasure`方法如下：
+```java
+private void performMeasure(int childWidthMeasureSpec, int childHeightMeasureSpec) {
+	Trace.traceBegin(Trace.TRACE_TAG_VIEW, "measure");
+	try {
+		mView.measure(childWidthMeasureSpec, childHeightMeasureSpec);
+	} finally {
+		Trace.traceEnd(Trace.TRACE_TAG_VIEW);
+	}
+}
+```
 
 在`performMeasure()`方法中会调用`View.measure()`方法， 源码如下：
 ```java
@@ -873,6 +232,8 @@ public final void measure(int widthMeasureSpec, int heightMeasureSpec) {
 		// flag not set, setMeasuredDimension() was not invoked, we raise
 		// an exception to warn the developer
 		if ((mPrivateFlags & PFLAG_MEASURED_DIMENSION_SET) != PFLAG_MEASURED_DIMENSION_SET) {
+			// 重写onMeausre方法的时，必须调用setMeasuredDimension或者super.onMeasure方法，不然就会走到这里报错。
+			// setMeasuredDimension中回去改变mPrivateFlags的值
 			throw new IllegalStateException("onMeasure() did not set the"
 					+ " measured dimension by calling"
 					+ " setMeasuredDimension()");
@@ -889,8 +250,138 @@ public final void measure(int widthMeasureSpec, int heightMeasureSpec) {
 }
 ```
 
-在`measure`方法中会调用`onMeasure`方法。
-`onMeasure()`方法的源码如下：
+在`measure`方法中会调用`onMeasure`方法。`ViewGroup`的子类会重写该方法来进行测量大小，因为`mView`是`DecorView`，
+而`DecorView`是`FrameLayout`的子类。所以我们看一下`FrameLayout.onMeasure`方法：
+`FrameLayout.onMeasure`源码如下：
+```java
+/**
+ * {@inheritDoc}
+ */
+@Override
+protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+	int count = getChildCount();
+
+	final boolean measureMatchParentChildren =
+			MeasureSpec.getMode(widthMeasureSpec) != MeasureSpec.EXACTLY ||
+			MeasureSpec.getMode(heightMeasureSpec) != MeasureSpec.EXACTLY;
+	mMatchParentChildren.clear();
+
+	int maxHeight = 0;
+	int maxWidth = 0;
+	int childState = 0;
+
+	for (int i = 0; i < count; i++) {
+		final View child = getChildAt(i);
+		if (mMeasureAllChildren || child.getVisibility() != GONE) {
+			// 调用该方法去测量每个子View
+			measureChildWithMargins(child, widthMeasureSpec, 0, heightMeasureSpec, 0);
+			final LayoutParams lp = (LayoutParams) child.getLayoutParams();
+			maxWidth = Math.max(maxWidth,
+					child.getMeasuredWidth() + lp.leftMargin + lp.rightMargin);
+			maxHeight = Math.max(maxHeight,
+					child.getMeasuredHeight() + lp.topMargin + lp.bottomMargin);
+			childState = combineMeasuredStates(childState, child.getMeasuredState());
+			if (measureMatchParentChildren) {
+				if (lp.width == LayoutParams.MATCH_PARENT ||
+						lp.height == LayoutParams.MATCH_PARENT) {
+					mMatchParentChildren.add(child);
+				}
+			}
+		}
+	}
+
+	// Account for padding too
+	maxWidth += getPaddingLeftWithForeground() + getPaddingRightWithForeground();
+	maxHeight += getPaddingTopWithForeground() + getPaddingBottomWithForeground();
+
+	// Check against our minimum height and width
+	maxHeight = Math.max(maxHeight, getSuggestedMinimumHeight());
+	maxWidth = Math.max(maxWidth, getSuggestedMinimumWidth());
+
+	// Check against our foreground's minimum height and width
+	final Drawable drawable = getForeground();
+	if (drawable != null) {
+		maxHeight = Math.max(maxHeight, drawable.getMinimumHeight());
+		maxWidth = Math.max(maxWidth, drawable.getMinimumWidth());
+	}
+
+	setMeasuredDimension(resolveSizeAndState(maxWidth, widthMeasureSpec, childState),
+			resolveSizeAndState(maxHeight, heightMeasureSpec,
+					childState << MEASURED_HEIGHT_STATE_SHIFT));
+
+	count = mMatchParentChildren.size();
+	if (count > 1) {
+		for (int i = 0; i < count; i++) {
+			final View child = mMatchParentChildren.get(i);
+
+			final MarginLayoutParams lp = (MarginLayoutParams) child.getLayoutParams();
+			int childWidthMeasureSpec;
+			int childHeightMeasureSpec;
+			
+			if (lp.width == LayoutParams.MATCH_PARENT) {
+				childWidthMeasureSpec = MeasureSpec.makeMeasureSpec(getMeasuredWidth() -
+						getPaddingLeftWithForeground() - getPaddingRightWithForeground() -
+						lp.leftMargin - lp.rightMargin,
+						MeasureSpec.EXACTLY);
+			} else {
+				childWidthMeasureSpec = getChildMeasureSpec(widthMeasureSpec,
+						getPaddingLeftWithForeground() + getPaddingRightWithForeground() +
+						lp.leftMargin + lp.rightMargin,
+						lp.width);
+			}
+			
+			if (lp.height == LayoutParams.MATCH_PARENT) {
+				childHeightMeasureSpec = MeasureSpec.makeMeasureSpec(getMeasuredHeight() -
+						getPaddingTopWithForeground() - getPaddingBottomWithForeground() -
+						lp.topMargin - lp.bottomMargin,
+						MeasureSpec.EXACTLY);
+			} else {
+				childHeightMeasureSpec = getChildMeasureSpec(heightMeasureSpec,
+						getPaddingTopWithForeground() + getPaddingBottomWithForeground() +
+						lp.topMargin + lp.bottomMargin,
+						lp.height);
+			}
+
+			child.measure(childWidthMeasureSpec, childHeightMeasureSpec);
+		}
+	}
+}
+```
+
+我们看到内部会调用`measureChildWithMargins()`方法,该方法源码如下：
+```java
+/**
+ * Ask one of the children of this view to measure itself, taking into
+ * account both the MeasureSpec requirements for this view and its padding
+ * and margins. The child must have MarginLayoutParams The heavy lifting is
+ * done in getChildMeasureSpec.
+ *
+ * @param child The child to measure
+ * @param parentWidthMeasureSpec The width requirements for this view
+ * @param widthUsed Extra space that has been used up by the parent
+ *        horizontally (possibly by other children of the parent)
+ * @param parentHeightMeasureSpec The height requirements for this view
+ * @param heightUsed Extra space that has been used up by the parent
+ *        vertically (possibly by other children of the parent)
+ */
+protected void measureChildWithMargins(View child,
+		int parentWidthMeasureSpec, int widthUsed,
+		int parentHeightMeasureSpec, int heightUsed) {
+	final MarginLayoutParams lp = (MarginLayoutParams) child.getLayoutParams();
+
+	final int childWidthMeasureSpec = getChildMeasureSpec(parentWidthMeasureSpec,
+			mPaddingLeft + mPaddingRight + lp.leftMargin + lp.rightMargin
+					+ widthUsed, lp.width);
+	final int childHeightMeasureSpec = getChildMeasureSpec(parentHeightMeasureSpec,
+			mPaddingTop + mPaddingBottom + lp.topMargin + lp.bottomMargin
+					+ heightUsed, lp.height);
+
+	child.measure(childWidthMeasureSpec, childHeightMeasureSpec);
+}
+```
+里面就是对该子`View`调用了`measure`方法，我们假设这个`View`已经不是`ViewGroup`了，就会又和上面一样，又调用`onMeasure`方法，
+下面我们直接看一下`View.onMeasure()`方法：
+`View.onMeasure()`方法的源码如下：
 ```java
 /**
  * <p>
@@ -939,36 +430,9 @@ public final void measure(int widthMeasureSpec, int heightMeasureSpec) {
  * @see android.view.View.MeasureSpec#getSize(int)
  */
 protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+	// 如果不重写onMeasure方法，默认会调用getDefaultSize获取大小，下面会说getDefaultSize这个方法。
 	setMeasuredDimension(getDefaultSize(getSuggestedMinimumWidth(), widthMeasureSpec),
 			getDefaultSize(getSuggestedMinimumHeight(), heightMeasureSpec));
-}
-```
-`getDefaultSize()`源码如下：
-```java
-/**
- * Utility to return a default size. Uses the supplied size if the
- * MeasureSpec imposed no constraints. Will get larger if allowed
- * by the MeasureSpec.
- *
- * @param size Default size for this view
- * @param measureSpec Constraints imposed by the parent
- * @return The size this view should be.
- */
-public static int getDefaultSize(int size, int measureSpec) {
-	int result = size;
-	int specMode = MeasureSpec.getMode(measureSpec);
-	int specSize = MeasureSpec.getSize(measureSpec);
-
-	switch (specMode) {
-	case MeasureSpec.UNSPECIFIED:
-		result = size;
-		break;
-	case MeasureSpec.AT_MOST:
-	case MeasureSpec.EXACTLY:
-		result = specSize;
-		break;
-	}
-	return result;
 }
 ```
 
@@ -1014,22 +478,1095 @@ protected final void setMeasuredDimension(int measuredWidth, int measuredHeight)
  * {@link #MEASURED_STATE_TOO_SMALL}.
  */
 private void setMeasuredDimensionRaw(int measuredWidth, int measuredHeight) {
+	// 赋值给mMeasuredWidth，getMeasuredWidth就会调用该值。
 	mMeasuredWidth = measuredWidth;
 	mMeasuredHeight = measuredHeight;
 
+	// 这就是重写onMeasure方法时如果不调用setMeasuredDimension方法时为什么会报错的原因。
 	mPrivateFlags |= PFLAG_MEASURED_DIMENSION_SET;
 }
 ```
 
+我们接着看一下上面用到的`getDefaultSize()`方法，源码如下：
+```java
+/**
+ * Utility to return a default size. Uses the supplied size if the
+ * MeasureSpec imposed no constraints. Will get larger if allowed
+ * by the MeasureSpec.
+ *
+ * @param size Default size for this view
+ * @param measureSpec Constraints imposed by the parent
+ * @return The size this view should be.
+ */
+public static int getDefaultSize(int size, int measureSpec) {
+	int result = size;
+	// measureSpec值用于获取宽度(高度)的规格和大小，解析出对应的size和mode
+	int specMode = MeasureSpec.getMode(measureSpec);
+	int specSize = MeasureSpec.getSize(measureSpec);
 
+	switch (specMode) {
+	case MeasureSpec.UNSPECIFIED:
+		result = size;
+		break;
+	case MeasureSpec.AT_MOST:
+	case MeasureSpec.EXACTLY:
+		result = specSize;
+		break;
+	}
+	return result;
+}
+```
+`getDefaultSize`方法又会使用到`MeasureSpec`类，文档中对`MeasureSpec`是这样介绍的`A MeasureSpec is comprised of a size and a mode. There are three possible modes:`
+- MeasureSpec.EXACTLY The parent has determined an exact size for the child. The child is going to be given those bounds regardless of how big it wants to be. 理解成MATCH_PARENT
+- MeasureSpec.AT_MOST The child can be as large as it wants up to the specified size.理解成WRAP_CONTENT
+- MeasureSpec.UNSPECIFIED The parent has not imposed any constraint on the child. It can be whatever size it wants. 这种情况比较少，一般用不到。
+
+这里简单总结一下上面的过程:
+```java
+performMeasure() {
+	- 1.调用View.measure方法
+	mView.measure():
+		- 2.measure内部会调用onMeasure方法,但是因为这里mView是DecorView，所以会调用FrameLayout的onMeasure方法。
+	        onMeasure(FrameLayout)
+			- 3. 内部设置ViewGroup的宽高
+				setMeasuredDimension
+				并且对每个子View进行遍历测量
+				for (int i = 0; i < count; i++) {
+					final View child = getChildAt(i);
+					- 4. 对每个子View调用measureChildWithMargins方法
+					measureChildWithMargins(child, widthMeasureSpec, 0, heightMeasureSpec, 0);	
+					    -5. measureChildWithMargins内部调用子View的measure方法
+					        meausre
+							- 6. measure方法内部又调用onMeasure方法
+					            onMeasure(View)
+					            - 7. onMeasure方法内部调用setMeasuredDimension
+									setMeasuredDimension
+									- 8. setMeasuredDimension内部调用setMeasuredDimensionRaw
+									    setMeasuredDimensionRaw
+				}
+}
+```
+
+从上面代码中能看到`measure`是`final`的，我们可以重写`onMeasure`来实现`measure`过程。
+到这里基本都讲完了，我们在开发中会按照需要重写`onMeasure`方法，然后调用`setMeasuredDimension`方法设置大小，
+ps:譬如我们设置了`setMeasuredDimension(10, 10)`,那么不管布局中怎么设置这个`View`的大小
+都是没用的，最后显示出来大小都是10*10。
 
 `Layout`
-=====
+===
+`performLayout`方法源码如下：
+```java
+private void performLayout(WindowManager.LayoutParams lp, int desiredWindowWidth,
+		int desiredWindowHeight) {
+	mLayoutRequested = false;
+	mScrollMayChange = true;
+	mInLayout = true;
 
+	final View host = mView;
+	if (DEBUG_ORIENTATION || DEBUG_LAYOUT) {
+		Log.v(TAG, "Laying out " + host + " to (" +
+				host.getMeasuredWidth() + ", " + host.getMeasuredHeight() + ")");
+	}
+
+	Trace.traceBegin(Trace.TRACE_TAG_VIEW, "layout");
+	try {
+		// 把刚才测量的宽高设置进来
+		host.layout(0, 0, host.getMeasuredWidth(), host.getMeasuredHeight());
+
+		mInLayout = false;
+		int numViewsRequestingLayout = mLayoutRequesters.size();
+		if (numViewsRequestingLayout > 0) {
+			// requestLayout() was called during layout.
+			// If no layout-request flags are set on the requesting views, there is no problem.
+			// If some requests are still pending, then we need to clear those flags and do
+			// a full request/measure/layout pass to handle this situation.
+			ArrayList<View> validLayoutRequesters = getValidLayoutRequesters(mLayoutRequesters,
+					false);
+			if (validLayoutRequesters != null) {
+				// Set this flag to indicate that any further requests are happening during
+				// the second pass, which may result in posting those requests to the next
+				// frame instead
+				mHandlingLayoutInLayoutRequest = true;
+
+				// Process fresh layout requests, then measure and layout
+				int numValidRequests = validLayoutRequesters.size();
+				for (int i = 0; i < numValidRequests; ++i) {
+					final View view = validLayoutRequesters.get(i);
+					Log.w("View", "requestLayout() improperly called by " + view +
+							" during layout: running second layout pass");
+					view.requestLayout();
+				}
+				measureHierarchy(host, lp, mView.getContext().getResources(),
+						desiredWindowWidth, desiredWindowHeight);
+				mInLayout = true;
+				host.layout(0, 0, host.getMeasuredWidth(), host.getMeasuredHeight());
+
+				mHandlingLayoutInLayoutRequest = false;
+
+				// Check the valid requests again, this time without checking/clearing the
+				// layout flags, since requests happening during the second pass get noop'd
+				validLayoutRequesters = getValidLayoutRequesters(mLayoutRequesters, true);
+				if (validLayoutRequesters != null) {
+					final ArrayList<View> finalRequesters = validLayoutRequesters;
+					// Post second-pass requests to the next frame
+					getRunQueue().post(new Runnable() {
+						@Override
+						public void run() {
+							int numValidRequests = finalRequesters.size();
+							for (int i = 0; i < numValidRequests; ++i) {
+								final View view = finalRequesters.get(i);
+								Log.w("View", "requestLayout() improperly called by " + view +
+										" during second layout pass: posting in next frame");
+								view.requestLayout();
+							}
+						}
+					});
+				}
+			}
+
+		}
+	} finally {
+		Trace.traceEnd(Trace.TRACE_TAG_VIEW);
+	}
+	mInLayout = false;
+}
+```
+
+内部会调用`layout()`方法，因为`host`是`mView`，`ViewGroup`中重写了`layout`方法，并调用了`super.layout`.
+所以我们直接看`View.layout()`方法，该方法源码如下： 
+```java
+/**
+ * Assign a size and position to a view and all of its
+ * descendants
+ *
+ * <p>This is the second phase of the layout mechanism.
+ * (The first is measuring). In this phase, each parent calls
+ * layout on all of its children to position them.
+ * This is typically done using the child measurements
+ * that were stored in the measure pass().</p>
+ *
+ * <p>Derived classes should not override this method.
+ * Derived classes with children should override
+ * onLayout. In that method, they should
+ * call layout on each of their children.</p>
+ *
+ * @param l Left position, relative to parent
+ * @param t Top position, relative to parent
+ * @param r Right position, relative to parent
+ * @param b Bottom position, relative to parent
+ */
+@SuppressWarnings({"unchecked"})
+public void layout(int l, int t, int r, int b) {
+	if ((mPrivateFlags3 & PFLAG3_MEASURE_NEEDED_BEFORE_LAYOUT) != 0) {
+		onMeasure(mOldWidthMeasureSpec, mOldHeightMeasureSpec);
+		mPrivateFlags3 &= ~PFLAG3_MEASURE_NEEDED_BEFORE_LAYOUT;
+	}
+
+	int oldL = mLeft;
+	int oldT = mTop;
+	int oldB = mBottom;
+	int oldR = mRight;
+
+	// 这部分是判断这个View的大小是否已经发生了变化，来判断是否需要重绘。
+	boolean changed = isLayoutModeOptical(mParent) ?
+			setOpticalFrame(l, t, r, b) : setFrame(l, t, r, b);
+
+	if (changed || (mPrivateFlags & PFLAG_LAYOUT_REQUIRED) == PFLAG_LAYOUT_REQUIRED) {
+		// 内部调用onLayout方法
+		onLayout(changed, l, t, r, b);
+		mPrivateFlags &= ~PFLAG_LAYOUT_REQUIRED;
+
+		ListenerInfo li = mListenerInfo;
+		if (li != null && li.mOnLayoutChangeListeners != null) {
+			ArrayList<OnLayoutChangeListener> listenersCopy =
+					(ArrayList<OnLayoutChangeListener>)li.mOnLayoutChangeListeners.clone();
+			int numListeners = listenersCopy.size();
+			for (int i = 0; i < numListeners; ++i) {
+				listenersCopy.get(i).onLayoutChange(this, l, t, r, b, oldL, oldT, oldR, oldB);
+			}
+		}
+	}
+
+	mPrivateFlags &= ~PFLAG_FORCE_LAYOUT;
+	mPrivateFlags3 |= PFLAG3_IS_LAID_OUT;
+}
+```
+这里会调用`onLayout`方法，同样因为`mView`是`FrameLayout`的子类，所以我们要看`FrameLayout`的`onLayout`方法，
+这里我们先看一下`ViewGroup.onLayout`方法:
+```java
+/**
+ * {@inheritDoc}
+ */
+@Override
+protected abstract void onLayout(boolean changed,
+		int l, int t, int r, int b);
+```
+是个抽象方法，所以`ViewGroup`的子类都需要实现该方法。
+我们看一下`FrameLayout.onLayout`方法,源码如下：
+```java
+ /**
+ * {@inheritDoc}
+ */
+@Override
+protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+	layoutChildren(left, top, right, bottom, false /* no force left gravity */);
+}
+
+void layoutChildren(int left, int top, int right, int bottom,
+							  boolean forceLeftGravity) {
+	final int count = getChildCount();
+
+	final int parentLeft = getPaddingLeftWithForeground();
+	final int parentRight = right - left - getPaddingRightWithForeground();
+
+	final int parentTop = getPaddingTopWithForeground();
+	final int parentBottom = bottom - top - getPaddingBottomWithForeground();
+
+	mForegroundBoundsChanged = true;
+	
+	for (int i = 0; i < count; i++) {
+		final View child = getChildAt(i);
+		if (child.getVisibility() != GONE) {
+			final LayoutParams lp = (LayoutParams) child.getLayoutParams();
+
+			final int width = child.getMeasuredWidth();
+			final int height = child.getMeasuredHeight();
+
+			int childLeft;
+			int childTop;
+
+			int gravity = lp.gravity;
+			if (gravity == -1) {
+				gravity = DEFAULT_CHILD_GRAVITY;
+			}
+
+			final int layoutDirection = getLayoutDirection();
+			final int absoluteGravity = Gravity.getAbsoluteGravity(gravity, layoutDirection);
+			final int verticalGravity = gravity & Gravity.VERTICAL_GRAVITY_MASK;
+
+			switch (absoluteGravity & Gravity.HORIZONTAL_GRAVITY_MASK) {
+				case Gravity.CENTER_HORIZONTAL:
+					childLeft = parentLeft + (parentRight - parentLeft - width) / 2 +
+					lp.leftMargin - lp.rightMargin;
+					break;
+				case Gravity.RIGHT:
+					if (!forceLeftGravity) {
+						childLeft = parentRight - width - lp.rightMargin;
+						break;
+					}
+				case Gravity.LEFT:
+				default:
+					childLeft = parentLeft + lp.leftMargin;
+			}
+
+			switch (verticalGravity) {
+				case Gravity.TOP:
+					childTop = parentTop + lp.topMargin;
+					break;
+				case Gravity.CENTER_VERTICAL:
+					childTop = parentTop + (parentBottom - parentTop - height) / 2 +
+					lp.topMargin - lp.bottomMargin;
+					break;
+				case Gravity.BOTTOM:
+					childTop = parentBottom - height - lp.bottomMargin;
+					break;
+				default:
+					childTop = parentTop + lp.topMargin;
+			}
+			//调用子View的layout方法
+			child.layout(childLeft, childTop, childLeft + width, childTop + height);
+		}
+	}
+}
+```
+而`View.layout`方法，又会调用到`View.onLayout`方法，我们假设这个子`View`不是`ViewGroup`.
+看一下`View.onLayout`方法源码如下： 
+```java
+/**
+ * Called from layout when this view should
+ * assign a size and position to each of its children.
+ *
+ * Derived classes with children should override
+ * this method and call layout on each of
+ * their children.
+ * @param changed This is a new size or position for this view
+ * @param left Left position, relative to parent
+ * @param top Top position, relative to parent
+ * @param right Right position, relative to parent
+ * @param bottom Bottom position, relative to parent
+ */
+protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+}
+```
+是一个空方法，这是因为`Layout`需要`ViewGroup`来控制进行。      
+
+这里也总结一下`layout`的过程。
+```java
+private void performLayout(WindowManager.LayoutParams lp, int desiredWindowWidth,
+		int desiredWindowHeight) {
+	- 1. host.layout
+	host.layout(0, 0, host.getMeasuredWidth(), host.getMeasuredHeight());
+		-2. layout方法会分别调用setFrame()和onLayout()方法
+			setFrame()
+			onLayout()
+			-3. 因为host是mView也就是DecorView也就是FrameLayout的子类。FrameLayout的onLayout方法如下
+				for (int i = 0; i < count; i++) {
+					final View child = getChildAt(i);
+					if (child.getVisibility() != GONE) {
+					    -4. 遍历每个子View，并分别调用layout方法。
+						child.layout(childLeft, childTop, childLeft + width, childTop + height);
+					}
+				}
+}
+```
 
 `Draw`
-=====
+===
 
+绘制阶段是从`ViewRootImpl`中的`performDraw`方法开始的：
+```java
+private void performDraw() {
+	if (mAttachInfo.mDisplayState == Display.STATE_OFF && !mReportNextDraw) {
+		return;
+	}
+
+	final boolean fullRedrawNeeded = mFullRedrawNeeded;
+	mFullRedrawNeeded = false;
+
+	mIsDrawing = true;
+	Trace.traceBegin(Trace.TRACE_TAG_VIEW, "draw");
+	try {
+		// 开始draw了
+		draw(fullRedrawNeeded);
+	} finally {
+		mIsDrawing = false;
+		Trace.traceEnd(Trace.TRACE_TAG_VIEW);
+	}
+
+	// For whatever reason we didn't create a HardwareRenderer, end any
+	// hardware animations that are now dangling
+	if (mAttachInfo.mPendingAnimatingRenderNodes != null) {
+		final int count = mAttachInfo.mPendingAnimatingRenderNodes.size();
+		for (int i = 0; i < count; i++) {
+			mAttachInfo.mPendingAnimatingRenderNodes.get(i).endAllAnimators();
+		}
+		mAttachInfo.mPendingAnimatingRenderNodes.clear();
+	}
+
+	if (mReportNextDraw) {
+		mReportNextDraw = false;
+		if (mAttachInfo.mHardwareRenderer != null) {
+			mAttachInfo.mHardwareRenderer.fence();
+		}
+
+		if (LOCAL_LOGV) {
+			Log.v(TAG, "FINISHED DRAWING: " + mWindowAttributes.getTitle());
+		}
+		if (mSurfaceHolder != null && mSurface.isValid()) {
+			mSurfaceHolderCallback.surfaceRedrawNeeded(mSurfaceHolder);
+			SurfaceHolder.Callback callbacks[] = mSurfaceHolder.getCallbacks();
+			if (callbacks != null) {
+				for (SurfaceHolder.Callback c : callbacks) {
+					if (c instanceof SurfaceHolder.Callback2) {
+						((SurfaceHolder.Callback2)c).surfaceRedrawNeeded(
+								mSurfaceHolder);
+					}
+				}
+			}
+		}
+		try {
+			mWindowSession.finishDrawing(mWindow);
+		} catch (RemoteException e) {
+		}
+	}
+}
+```
+内部会调用`draw`方法，`draw`方法源码如下：
+```java
+private void draw(boolean fullRedrawNeeded) {
+	Surface surface = mSurface;
+	if (!surface.isValid()) {
+		return;
+	}
+
+	if (DEBUG_FPS) {
+		trackFPS();
+	}
+
+	if (!sFirstDrawComplete) {
+		synchronized (sFirstDrawHandlers) {
+			sFirstDrawComplete = true;
+			final int count = sFirstDrawHandlers.size();
+			for (int i = 0; i< count; i++) {
+				mHandler.post(sFirstDrawHandlers.get(i));
+			}
+		}
+	}
+
+	scrollToRectOrFocus(null, false);
+
+	if (mAttachInfo.mViewScrollChanged) {
+		mAttachInfo.mViewScrollChanged = false;
+		mAttachInfo.mTreeObserver.dispatchOnScrollChanged();
+	}
+
+	boolean animating = mScroller != null && mScroller.computeScrollOffset();
+	final int curScrollY;
+	if (animating) {
+		curScrollY = mScroller.getCurrY();
+	} else {
+		curScrollY = mScrollY;
+	}
+	if (mCurScrollY != curScrollY) {
+		mCurScrollY = curScrollY;
+		fullRedrawNeeded = true;
+	}
+
+	final float appScale = mAttachInfo.mApplicationScale;
+	final boolean scalingRequired = mAttachInfo.mScalingRequired;
+
+	int resizeAlpha = 0;
+	if (mResizeBuffer != null) {
+		long deltaTime = SystemClock.uptimeMillis() - mResizeBufferStartTime;
+		if (deltaTime < mResizeBufferDuration) {
+			float amt = deltaTime/(float) mResizeBufferDuration;
+			amt = mResizeInterpolator.getInterpolation(amt);
+			animating = true;
+			resizeAlpha = 255 - (int)(amt*255);
+		} else {
+			disposeResizeBuffer();
+		}
+	}
+
+	final Rect dirty = mDirty;
+	if (mSurfaceHolder != null) {
+		// The app owns the surface, we won't draw.
+		dirty.setEmpty();
+		if (animating) {
+			if (mScroller != null) {
+				mScroller.abortAnimation();
+			}
+			disposeResizeBuffer();
+		}
+		return;
+	}
+
+	if (fullRedrawNeeded) {
+		mAttachInfo.mIgnoreDirtyState = true;
+		dirty.set(0, 0, (int) (mWidth * appScale + 0.5f), (int) (mHeight * appScale + 0.5f));
+	}
+
+	if (DEBUG_ORIENTATION || DEBUG_DRAW) {
+		Log.v(TAG, "Draw " + mView + "/"
+				+ mWindowAttributes.getTitle()
+				+ ": dirty={" + dirty.left + "," + dirty.top
+				+ "," + dirty.right + "," + dirty.bottom + "} surface="
+				+ surface + " surface.isValid()=" + surface.isValid() + ", appScale:" +
+				appScale + ", width=" + mWidth + ", height=" + mHeight);
+	}
+
+	mAttachInfo.mTreeObserver.dispatchOnDraw();
+
+	int xOffset = 0;
+	int yOffset = curScrollY;
+	final WindowManager.LayoutParams params = mWindowAttributes;
+	final Rect surfaceInsets = params != null ? params.surfaceInsets : null;
+	if (surfaceInsets != null) {
+		xOffset -= surfaceInsets.left;
+		yOffset -= surfaceInsets.top;
+
+		// Offset dirty rect for surface insets.
+		dirty.offset(surfaceInsets.left, surfaceInsets.right);
+	}
+
+	if (!dirty.isEmpty() || mIsAnimating) {
+		if (mAttachInfo.mHardwareRenderer != null && mAttachInfo.mHardwareRenderer.isEnabled()) {
+			// Draw with hardware renderer.
+			mIsAnimating = false;
+			boolean invalidateRoot = false;
+			if (mHardwareYOffset != yOffset || mHardwareXOffset != xOffset) {
+				mHardwareYOffset = yOffset;
+				mHardwareXOffset = xOffset;
+				mAttachInfo.mHardwareRenderer.invalidateRoot();
+			}
+			mResizeAlpha = resizeAlpha;
+
+			dirty.setEmpty();
+
+			mBlockResizeBuffer = false;
+			mAttachInfo.mHardwareRenderer.draw(mView, mAttachInfo, this);
+		} else {
+			// If we get here with a disabled & requested hardware renderer, something went
+			// wrong (an invalidate posted right before we destroyed the hardware surface
+			// for instance) so we should just bail out. Locking the surface with software
+			// rendering at this point would lock it forever and prevent hardware renderer
+			// from doing its job when it comes back.
+			// Before we request a new frame we must however attempt to reinitiliaze the
+			// hardware renderer if it's in requested state. This would happen after an
+			// eglTerminate() for instance.
+			if (mAttachInfo.mHardwareRenderer != null &&
+					!mAttachInfo.mHardwareRenderer.isEnabled() &&
+					mAttachInfo.mHardwareRenderer.isRequested()) {
+
+				try {
+					mAttachInfo.mHardwareRenderer.initializeIfNeeded(
+							mWidth, mHeight, mSurface, surfaceInsets);
+				} catch (OutOfResourcesException e) {
+					handleOutOfResourcesException(e);
+					return;
+				}
+
+				mFullRedrawNeeded = true;
+				scheduleTraversals();
+				return;
+			}
+			
+			// draw的部分在这里。。。内部会用canvas去画
+			if (!drawSoftware(surface, mAttachInfo, xOffset, yOffset, scalingRequired, dirty)) {
+				return;
+			}
+		}
+	}
+
+	if (animating) {
+		mFullRedrawNeeded = true;
+		scheduleTraversals();
+	}
+}
+```
+我们看一下`drawSoftware`方法： 
+```java
+/**
+ * @return true if drawing was successful, false if an error occurred
+ */
+private boolean drawSoftware(Surface surface, AttachInfo attachInfo, int xoff, int yoff,
+		boolean scalingRequired, Rect dirty) {
+
+	// Draw with software renderer.
+	final Canvas canvas;
+	try {
+		final int left = dirty.left;
+		final int top = dirty.top;
+		final int right = dirty.right;
+		final int bottom = dirty.bottom;
+
+		canvas = mSurface.lockCanvas(dirty);
+
+		// The dirty rectangle can be modified by Surface.lockCanvas()
+		//noinspection ConstantConditions
+		if (left != dirty.left || top != dirty.top || right != dirty.right
+				|| bottom != dirty.bottom) {
+			attachInfo.mIgnoreDirtyState = true;
+		}
+
+		// TODO: Do this in native
+		canvas.setDensity(mDensity);
+	} catch (Surface.OutOfResourcesException e) {
+		handleOutOfResourcesException(e);
+		return false;
+	} catch (IllegalArgumentException e) {
+		Log.e(TAG, "Could not lock surface", e);
+		// Don't assume this is due to out of memory, it could be
+		// something else, and if it is something else then we could
+		// kill stuff (or ourself) for no reason.
+		mLayoutRequested = true;    // ask wm for a new surface next time.
+		return false;
+	}
+
+	try {
+		if (DEBUG_ORIENTATION || DEBUG_DRAW) {
+			Log.v(TAG, "Surface " + surface + " drawing to bitmap w="
+					+ canvas.getWidth() + ", h=" + canvas.getHeight());
+			//canvas.drawARGB(255, 255, 0, 0);
+		}
+
+		// If this bitmap's format includes an alpha channel, we
+		// need to clear it before drawing so that the child will
+		// properly re-composite its drawing on a transparent
+		// background. This automatically respects the clip/dirty region
+		// or
+		// If we are applying an offset, we need to clear the area
+		// where the offset doesn't appear to avoid having garbage
+		// left in the blank areas.
+		if (!canvas.isOpaque() || yoff != 0 || xoff != 0) {
+			canvas.drawColor(0, PorterDuff.Mode.CLEAR);
+		}
+
+		dirty.setEmpty();
+		mIsAnimating = false;
+		attachInfo.mDrawingTime = SystemClock.uptimeMillis();
+		mView.mPrivateFlags |= View.PFLAG_DRAWN;
+
+		if (DEBUG_DRAW) {
+			Context cxt = mView.getContext();
+			Log.i(TAG, "Drawing: package:" + cxt.getPackageName() +
+					", metrics=" + cxt.getResources().getDisplayMetrics() +
+					", compatibilityInfo=" + cxt.getResources().getCompatibilityInfo());
+		}
+		try {
+			canvas.translate(-xoff, -yoff);
+			if (mTranslator != null) {
+				mTranslator.translateCanvas(canvas);
+			}
+			canvas.setScreenDensity(scalingRequired ? mNoncompatDensity : 0);
+			attachInfo.mSetIgnoreDirtyState = false;
+			
+			// 内部会去调用View.draw()；
+			mView.draw(canvas);
+		} finally {
+			if (!attachInfo.mSetIgnoreDirtyState) {
+				// Only clear the flag if it was not set during the mView.draw() call
+				attachInfo.mIgnoreDirtyState = false;
+			}
+		}
+	} finally {
+		try {
+			surface.unlockCanvasAndPost(canvas);
+		} catch (IllegalArgumentException e) {
+			Log.e(TAG, "Could not unlock surface", e);
+			mLayoutRequested = true;    // ask wm for a new surface next time.
+			//noinspection ReturnInsideFinallyBlock
+			return false;
+		}
+
+		if (LOCAL_LOGV) {
+			Log.v(TAG, "Surface " + surface + " unlockCanvasAndPost");
+		}
+	}
+	return true;
+}
+```
+代码中调用了`mView.draw()`方法，所以我们看一下`FrameLayout.draw()`方法：
+```java
+/**
+ * {@inheritDoc}
+ */
+@Override
+public void draw(Canvas canvas) {
+	super.draw(canvas);
+
+	if (mForeground != null) {
+		final Drawable foreground = mForeground;
+
+		if (mForegroundBoundsChanged) {
+			mForegroundBoundsChanged = false;
+			final Rect selfBounds = mSelfBounds;
+			final Rect overlayBounds = mOverlayBounds;
+
+			final int w = mRight-mLeft;
+			final int h = mBottom-mTop;
+
+			if (mForegroundInPadding) {
+				selfBounds.set(0, 0, w, h);
+			} else {
+				selfBounds.set(mPaddingLeft, mPaddingTop, w - mPaddingRight, h - mPaddingBottom);
+			}
+
+			final int layoutDirection = getLayoutDirection();
+			Gravity.apply(mForegroundGravity, foreground.getIntrinsicWidth(),
+					foreground.getIntrinsicHeight(), selfBounds, overlayBounds,
+					layoutDirection);
+			foreground.setBounds(overlayBounds);
+		}
+		
+		foreground.draw(canvas);
+	}
+}
+```
+内部调用了`super.draw()`，而`ViewGroup`没有重写该方法，所以直接看`View`的`draw()`方法.
+`View.draw()`方法如下：
+```java
+/**
+ * Manually render this view (and all of its children) to the given Canvas.
+ * The view must have already done a full layout before this function is
+ * called.  When implementing a view, implement
+ * {@link #onDraw(android.graphics.Canvas)} instead of overriding this method.
+ * If you do need to override this method, call the superclass version.
+ *
+ * @param canvas The Canvas to which the View is rendered.
+ */
+public void draw(Canvas canvas) {
+	final int privateFlags = mPrivateFlags;
+	final boolean dirtyOpaque = (privateFlags & PFLAG_DIRTY_MASK) == PFLAG_DIRTY_OPAQUE &&
+			(mAttachInfo == null || !mAttachInfo.mIgnoreDirtyState);
+	mPrivateFlags = (privateFlags & ~PFLAG_DIRTY_MASK) | PFLAG_DRAWN;
+
+	// 这里注释说的很明白了，draw的6个步骤。
+	/*
+	 * Draw traversal performs several drawing steps which must be executed
+	 * in the appropriate order:
+	 *
+	 *      1. Draw the background
+	 *      2. If necessary, save the canvas' layers to prepare for fading
+	 *      3. Draw view's content, 调用onDraw方法绘制自身
+	 *      4. Draw children, 调用dispatchDraw方法绘制子View
+	 *      5. If necessary, draw the fading edges and restore layers
+	 *      6. Draw decorations (scrollbars for instance)
+	 */
+
+	// Step 1, draw the background, if needed
+	int saveCount;
+
+	if (!dirtyOpaque) {
+		drawBackground(canvas);
+	}
+
+	// skip step 2 & 5 if possible (common case)
+	final int viewFlags = mViewFlags;
+	boolean horizontalEdges = (viewFlags & FADING_EDGE_HORIZONTAL) != 0;
+	boolean verticalEdges = (viewFlags & FADING_EDGE_VERTICAL) != 0;
+	if (!verticalEdges && !horizontalEdges) {
+		// Step 3, draw the content
+		if (!dirtyOpaque) onDraw(canvas);
+
+		// Step 4, draw the children
+		dispatchDraw(canvas);
+
+		// Step 6, draw decorations (scrollbars)
+		onDrawScrollBars(canvas);
+
+		if (mOverlay != null && !mOverlay.isEmpty()) {
+			mOverlay.getOverlayView().dispatchDraw(canvas);
+		}
+
+		// we're done...
+		return;
+	}
+
+	/*
+	 * Here we do the full fledged routine...
+	 * (this is an uncommon case where speed matters less,
+	 * this is why we repeat some of the tests that have been
+	 * done above)
+	 */
+
+	boolean drawTop = false;
+	boolean drawBottom = false;
+	boolean drawLeft = false;
+	boolean drawRight = false;
+
+	float topFadeStrength = 0.0f;
+	float bottomFadeStrength = 0.0f;
+	float leftFadeStrength = 0.0f;
+	float rightFadeStrength = 0.0f;
+
+	// Step 2, save the canvas' layers
+	int paddingLeft = mPaddingLeft;
+
+	final boolean offsetRequired = isPaddingOffsetRequired();
+	if (offsetRequired) {
+		paddingLeft += getLeftPaddingOffset();
+	}
+
+	int left = mScrollX + paddingLeft;
+	int right = left + mRight - mLeft - mPaddingRight - paddingLeft;
+	int top = mScrollY + getFadeTop(offsetRequired);
+	int bottom = top + getFadeHeight(offsetRequired);
+
+	if (offsetRequired) {
+		right += getRightPaddingOffset();
+		bottom += getBottomPaddingOffset();
+	}
+
+	final ScrollabilityCache scrollabilityCache = mScrollCache;
+	final float fadeHeight = scrollabilityCache.fadingEdgeLength;
+	int length = (int) fadeHeight;
+
+	// clip the fade length if top and bottom fades overlap
+	// overlapping fades produce odd-looking artifacts
+	if (verticalEdges && (top + length > bottom - length)) {
+		length = (bottom - top) / 2;
+	}
+
+	// also clip horizontal fades if necessary
+	if (horizontalEdges && (left + length > right - length)) {
+		length = (right - left) / 2;
+	}
+
+	if (verticalEdges) {
+		topFadeStrength = Math.max(0.0f, Math.min(1.0f, getTopFadingEdgeStrength()));
+		drawTop = topFadeStrength * fadeHeight > 1.0f;
+		bottomFadeStrength = Math.max(0.0f, Math.min(1.0f, getBottomFadingEdgeStrength()));
+		drawBottom = bottomFadeStrength * fadeHeight > 1.0f;
+	}
+
+	if (horizontalEdges) {
+		leftFadeStrength = Math.max(0.0f, Math.min(1.0f, getLeftFadingEdgeStrength()));
+		drawLeft = leftFadeStrength * fadeHeight > 1.0f;
+		rightFadeStrength = Math.max(0.0f, Math.min(1.0f, getRightFadingEdgeStrength()));
+		drawRight = rightFadeStrength * fadeHeight > 1.0f;
+	}
+
+	saveCount = canvas.getSaveCount();
+
+	int solidColor = getSolidColor();
+	if (solidColor == 0) {
+		final int flags = Canvas.HAS_ALPHA_LAYER_SAVE_FLAG;
+
+		if (drawTop) {
+			canvas.saveLayer(left, top, right, top + length, null, flags);
+		}
+
+		if (drawBottom) {
+			canvas.saveLayer(left, bottom - length, right, bottom, null, flags);
+		}
+
+		if (drawLeft) {
+			canvas.saveLayer(left, top, left + length, bottom, null, flags);
+		}
+
+		if (drawRight) {
+			canvas.saveLayer(right - length, top, right, bottom, null, flags);
+		}
+	} else {
+		scrollabilityCache.setFadeColor(solidColor);
+	}
+
+	// Step 3, draw the content
+	if (!dirtyOpaque) onDraw(canvas);
+
+	// Step 4, draw the children
+	dispatchDraw(canvas);
+
+	// Step 5, draw the fade effect and restore layers
+	final Paint p = scrollabilityCache.paint;
+	final Matrix matrix = scrollabilityCache.matrix;
+	final Shader fade = scrollabilityCache.shader;
+
+	if (drawTop) {
+		matrix.setScale(1, fadeHeight * topFadeStrength);
+		matrix.postTranslate(left, top);
+		fade.setLocalMatrix(matrix);
+		p.setShader(fade);
+		canvas.drawRect(left, top, right, top + length, p);
+	}
+
+	if (drawBottom) {
+		matrix.setScale(1, fadeHeight * bottomFadeStrength);
+		matrix.postRotate(180);
+		matrix.postTranslate(left, bottom);
+		fade.setLocalMatrix(matrix);
+		p.setShader(fade);
+		canvas.drawRect(left, bottom - length, right, bottom, p);
+	}
+
+	if (drawLeft) {
+		matrix.setScale(1, fadeHeight * leftFadeStrength);
+		matrix.postRotate(-90);
+		matrix.postTranslate(left, top);
+		fade.setLocalMatrix(matrix);
+		p.setShader(fade);
+		canvas.drawRect(left, top, left + length, bottom, p);
+	}
+
+	if (drawRight) {
+		matrix.setScale(1, fadeHeight * rightFadeStrength);
+		matrix.postRotate(90);
+		matrix.postTranslate(right, top);
+		fade.setLocalMatrix(matrix);
+		p.setShader(fade);
+		canvas.drawRect(right - length, top, right, bottom, p);
+	}
+
+	canvas.restoreToCount(saveCount);
+
+	// Step 6, draw decorations (scrollbars)
+	onDrawScrollBars(canvas);
+
+	if (mOverlay != null && !mOverlay.isEmpty()) {
+		mOverlay.getOverlayView().dispatchDraw(canvas);
+	}
+}
+```
+
+上面会调用`onDraw`和`dispatchDraw`方法。
+我们先看一下`View.onDraw`方法：
+```java
+/**
+ * Implement this to do your drawing.
+ *
+ * @param canvas the canvas on which the background will be drawn
+ */
+protected void onDraw(Canvas canvas) {
+}
+```
+是空方法，这是也很好理解，因为每个`View`的展现都不一样，例如`TextView`、`ProgressBar`等，
+所以`View`不会去实现`onDraw`方法，具体是要子类去根据自己的显示要求实现该方法。
+
+再看一下`dispatchDraw`方法，这个方法是用来绘制子`View`的，所以要看`ViewGroup.dispatchDraw`方法，`View.dispatchDraw`是空的。 
+```java
+/**
+ * {@inheritDoc}
+ */
+@Override
+protected void dispatchDraw(Canvas canvas) {
+	boolean usingRenderNodeProperties = canvas.isRecordingFor(mRenderNode);
+	final int childrenCount = mChildrenCount;
+	final View[] children = mChildren;
+	int flags = mGroupFlags;
+
+	if ((flags & FLAG_RUN_ANIMATION) != 0 && canAnimate()) {
+		final boolean cache = (mGroupFlags & FLAG_ANIMATION_CACHE) == FLAG_ANIMATION_CACHE;
+
+		final boolean buildCache = !isHardwareAccelerated();
+		for (int i = 0; i < childrenCount; i++) {
+			final View child = children[i];
+			if ((child.mViewFlags & VISIBILITY_MASK) == VISIBLE) {
+				final LayoutParams params = child.getLayoutParams();
+				attachLayoutAnimationParameters(child, params, i, childrenCount);
+				bindLayoutAnimation(child);
+				if (cache) {
+					child.setDrawingCacheEnabled(true);
+					if (buildCache) {
+						child.buildDrawingCache(true);
+					}
+				}
+			}
+		}
+
+		final LayoutAnimationController controller = mLayoutAnimationController;
+		if (controller.willOverlap()) {
+			mGroupFlags |= FLAG_OPTIMIZE_INVALIDATE;
+		}
+
+		controller.start();
+
+		mGroupFlags &= ~FLAG_RUN_ANIMATION;
+		mGroupFlags &= ~FLAG_ANIMATION_DONE;
+
+		if (cache) {
+			mGroupFlags |= FLAG_CHILDREN_DRAWN_WITH_CACHE;
+		}
+
+		if (mAnimationListener != null) {
+			mAnimationListener.onAnimationStart(controller.getAnimation());
+		}
+	}
+
+	int clipSaveCount = 0;
+	final boolean clipToPadding = (flags & CLIP_TO_PADDING_MASK) == CLIP_TO_PADDING_MASK;
+	if (clipToPadding) {
+		clipSaveCount = canvas.save();
+		canvas.clipRect(mScrollX + mPaddingLeft, mScrollY + mPaddingTop,
+				mScrollX + mRight - mLeft - mPaddingRight,
+				mScrollY + mBottom - mTop - mPaddingBottom);
+	}
+
+	// We will draw our child's animation, let's reset the flag
+	mPrivateFlags &= ~PFLAG_DRAW_ANIMATION;
+	mGroupFlags &= ~FLAG_INVALIDATE_REQUIRED;
+
+	boolean more = false;
+	final long drawingTime = getDrawingTime();
+
+	if (usingRenderNodeProperties) canvas.insertReorderBarrier();
+	// Only use the preordered list if not HW accelerated, since the HW pipeline will do the
+	// draw reordering internally
+	final ArrayList<View> preorderedList = usingRenderNodeProperties
+			? null : buildOrderedChildList();
+	final boolean customOrder = preorderedList == null
+			&& isChildrenDrawingOrderEnabled();
+	for (int i = 0; i < childrenCount; i++) {
+		int childIndex = customOrder ? getChildDrawingOrder(childrenCount, i) : i;
+		final View child = (preorderedList == null)
+				? children[childIndex] : preorderedList.get(childIndex);
+		if ((child.mViewFlags & VISIBILITY_MASK) == VISIBLE || child.getAnimation() != null) {
+			// 调用drawChild方法
+			more |= drawChild(canvas, child, drawingTime);
+		}
+	}
+	if (preorderedList != null) preorderedList.clear();
+
+	// Draw any disappearing views that have animations
+	if (mDisappearingChildren != null) {
+		final ArrayList<View> disappearingChildren = mDisappearingChildren;
+		final int disappearingCount = disappearingChildren.size() - 1;
+		// Go backwards -- we may delete as animations finish
+		for (int i = disappearingCount; i >= 0; i--) {
+			final View child = disappearingChildren.get(i);
+			more |= drawChild(canvas, child, drawingTime);
+		}
+	}
+	if (usingRenderNodeProperties) canvas.insertInorderBarrier();
+
+	if (debugDraw()) {
+		onDebugDraw(canvas);
+	}
+
+	if (clipToPadding) {
+		canvas.restoreToCount(clipSaveCount);
+	}
+
+	// mGroupFlags might have been updated by drawChild()
+	flags = mGroupFlags;
+
+	if ((flags & FLAG_INVALIDATE_REQUIRED) == FLAG_INVALIDATE_REQUIRED) {
+		invalidate(true);
+	}
+
+	if ((flags & FLAG_ANIMATION_DONE) == 0 && (flags & FLAG_NOTIFY_ANIMATION_LISTENER) == 0 &&
+			mLayoutAnimationController.isDone() && !more) {
+		// We want to erase the drawing cache and notify the listener after the
+		// next frame is drawn because one extra invalidate() is caused by
+		// drawChild() after the animation is over
+		mGroupFlags |= FLAG_NOTIFY_ANIMATION_LISTENER;
+		final Runnable end = new Runnable() {
+		   public void run() {
+			   notifyAnimationListener();
+		   }
+		};
+		post(end);
+	}
+}
+```
+可以看到上面的方法中会调用`drawChild`方法，该方法如下： 
+```java
+/**
+ * Draw one child of this View Group. This method is responsible for getting
+ * the canvas in the right state. This includes clipping, translating so
+ * that the child's scrolled origin is at 0, 0, and applying any animation
+ * transformations.
+ *
+ * @param canvas The canvas on which to draw the child
+ * @param child Who to draw
+ * @param drawingTime The time at which draw is occurring
+ * @return True if an invalidate() was issued
+ */
+protected boolean drawChild(Canvas canvas, View child, long drawingTime) {
+	return child.draw(canvas, this, drawingTime);
+}
+```
+
+这里也简单总结一下`draw`的过程：
+```java
+// 1. ViewRootImpl.performDraw()
+private void performDraw() {
+	// 2. ViewRootImpl.draw()
+	draw(fullRedrawNeeded);	
+		// 3. ViewRootImpl.drawSoftware
+		drawSoftware
+			// 4. 内部调用mView.draw,也就是FrameLayout.draw(). 
+			mView.draw()(FrameLayout)
+				// 5. FrameLayout.draw方法内部会调用super.draw方法，也就是View.draw方法.
+				super.draw(canvas);
+					// 6. View.draw方法内部会分别调用onDraw绘制自己以及dispatchDraw绘制子View.
+					onDraw
+					// 绘制子View
+					dispatchDraw
+						// 7. dispatchDraw方法内部会遍历所有子View.
+						for (int i = 0; i < childrenCount; i++) {
+							// 8. 对每个子View分别调用drawChild方法
+							drawChild()
+								// 9. drawChild方法内部会对该子View调用draw方法，进行绘制。然后draw又会调用onDraw等，循环就开始了。 
+									child.draw()
+						}
+}
+```
+
+最后补充一个小问题： `getWidth()`与`getMeasuredWidth()`有什么区别呢？
+一般情况下这两个的值是相同的，`getMeasureWidth()`方法在`measure()`过程结束后就可以获取到了，而`getWidth()`方法要在`layout()`过程结束后才能获取到。
+而且`getMeasureWidth()`的值是通过`setMeasuredDimension()`设置的，但是`getWidth()`的值是通过视图右边的坐标减去左边的坐标计算出来的。如果我们在`layout`的时候将宽高
+不传`getMeasureWidth`的值，那么这时候`getWidth()`与`getMeasuredWidth`的值就不会再相同了，当然一般也不会这么干...
 
 ---
 
