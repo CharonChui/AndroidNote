@@ -1,7 +1,5 @@
-AndroidNote
+Android学习笔记  
 ===
-
-Android学习随笔
 
 ![image](https://raw.githubusercontent.com/CharonChui/Pictures/master/note.jpg)
 

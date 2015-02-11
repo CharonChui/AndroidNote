@@ -8,7 +8,7 @@ Markdown学习手册
 斜体 | _斜体_ | `_斜体_` | 两边加_
 中划线 | ~~中划线~~ | `~~中划线~~` | 两边加~~
 单行代码 | `Log.i("Hello World!")` | \`Log.i("Hello World!")\` | 两边加`
-插入图片 | ![Image](https://github.com/CharonChui/AndroidNote/blob/master/Pic/rss.png?raw=true)| `![Image](https://github.com/CharonChui/AndroidNote/blob/master/Pic/rss.png?raw=true)` | [] 中间为占位符,() 中间为图片链接
+插入图片 | ![Image](https://github.com/CharonChui/Pictures/master/rss.png?raw=true)| `![Image](https://github.com/CharonChui/Pictures/master/rss.png?raw=true)` | [] 中间为占位符,() 中间为图片链接
 链接 | [Visit Github](http://www.github.com) | `[Visit Github](http://www.github.com)` | [] 中间为显示文字,() 中间为链接
 
 
