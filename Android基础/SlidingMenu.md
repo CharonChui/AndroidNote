@@ -2,9 +2,9 @@ SlidingMenu
 ===
 
 先看一下图片      
-![image](https://github.com/CharonChui/Pictures/master/slidingmenu_1.png?raw=true)    
-![image](https://github.com/CharonChui/Pictures/master/slidingmenu_2.png?raw=true)   
-![image](https://github.com/CharonChui/Pictures/master/slidingmenu_3.png?raw=true)   
+![image](https://raw.githubusercontent.com/CharonChui/Pictures/master/slidingmenu_1.png?raw=true)    
+![image](https://raw.githubusercontent.com/CharonChui/Pictures/master/slidingmenu_2.png?raw=true)   
+![image](https://raw.githubusercontent.com/CharonChui/Pictures/master/slidingmenu_3.png?raw=true)   
 
 
 原理

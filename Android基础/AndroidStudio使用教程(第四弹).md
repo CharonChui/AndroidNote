@@ -117,7 +117,7 @@ The Gradle wrapper
 你可以在开发及其或者是一些没有安装`Android Studio`的及其上使用命令行运行`shell`脚本来构建项目。   
 
 直接上图：   
-![Image](https://github.com/CharonChui/Pictures/master/AndroidStudio_4_1.png?raw=true)	            
+![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/AndroidStudio_4_1.png?raw=true)	            
 		
 ---
 

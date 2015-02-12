@@ -19,32 +19,32 @@ AndroidStudio使用教程(第一弹)
         - Android application modules       
 		
     - 结构发生了变化，在`src`目录下有一个`main`的分组同时包含了`java`和`res`.
-	    ![Image](https://github.com/CharonChui/Pictures/master/AndroidStudio_1.png?raw=true)        
+	    ![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/AndroidStudio_1.png?raw=true)        
 	    如图：`MyApplication`就是`Project`，而`app`就是`Module`.
 	
 - 设置           
    进入后你会发现字体或样式等不符合你的习惯。            
    `Windows`下点击左上角`File` -> `Settings`进入设置页面(`Mac`下为 `Android Studio` -> `Preferences`)，在搜索框搜`Font`找到`Colors&Font`下的`Font`选项，我们会发现无法修改右侧字体大小。这里修改必须
    要通过新建`Theme`进行修改的，点击`Save as`输入一个名字后，就可以修改字体了。
-   	![Image](https://github.com/CharonChui/Pictures/master/AndroidStudio_2.png?raw=true)
+   	![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/AndroidStudio_2.png?raw=true)
 
 	这里可能有些人会发现我的主题是黑色的，和`IO`大会演示的一样，但是安装后默认是白色的，有些刺眼。这里可以通过设置页面中修改`Theme`来改变,
 	默认是`Intellij`, 改为`Darcula`就是黑色的了.
-	![Image](https://github.com/CharonChui/Pictures/master/AndroidStudio_3.png?raw=true)
+	![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/AndroidStudio_3.png?raw=true)
 	很酷有木有.
 	
 - 运行            
     设置好字体后，当然要走你了。             
 	运行和`Eclipse`中比较像，点击绿色的箭头。 可以通过箭头左边的下拉菜单选择不同的`Module`,快捷键是`Shift+F10`                              
-	![Image](https://github.com/CharonChui/Pictures/master/AndroidStudio_4.png?raw=true)
+	![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/AndroidStudio_4.png?raw=true)
 
     `AndroidStudio`默认安装会启动模拟器，如果想让安装到真机上可以配置一下。在下拉菜单中选择`Edit Configurations`选择提示或者是`USB`设备。
-	![Image](https://github.com/CharonChui/Pictures/master/AndroidStudio_5.png?raw=true)	
-	![Image](https://github.com/CharonChui/Pictures/master/AndroidStudio_6.png?raw=true)	
+	![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/AndroidStudio_5.png?raw=true)	
+	![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/AndroidStudio_6.png?raw=true)	
 	
 - 常用快捷键介绍            
     `AndroidStudio`中可以将快捷键设置成`Eclipse`中的快捷键。具体方法为在设置页面搜索`keymap`然后选择为`Eclipse`就可以了.
-	![Image](https://github.com/CharonChui/Pictures/master/AndroidStudio_7.png?raw=true)	
+	![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/AndroidStudio_7.png?raw=true)	
 	
 	强迫症的人伤不起，非想用默认的快捷键。               
 	这里我整理下下个人常用的几个快捷键。 每个人的习惯不同，大家各取所需              

@@ -24,7 +24,7 @@
 
 1. 在`repository`根目录新建`CNAME`文件, 内容为`xxx.com`(要绑定的域名),然后`commit`、`push`.
 2. 在自己的域名管理页面中,进入域名解析.
-    ![image](https://github.com/CharonChui/Pictures/master/bindhost.jpg?raw=true)    
+    ![image](https://raw.githubusercontent.com/CharonChui/Pictures/master/bindhost.jpg?raw=true)    
     **注意记录值 `username.github.io.` (最后面有一个.)**
 
 ---

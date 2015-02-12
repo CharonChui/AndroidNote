@@ -28,9 +28,9 @@ AndroidStudio使用教程(第二弹)
 	
 - 使用`Android`项目视图
     这里纯粹看个人爱好，不过对于标准的`AndroidStudio`工程，一般我们常用的部分，都在`Android`项目视图中显示出来了。      
-	![Image](https://github.com/CharonChui/Pictures/master/AndroidStudio_2_1.png?raw=true)             
+	![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/AndroidStudio_2_1.png?raw=true)             
 	效果如下图：     
-	![Image](https://github.com/CharonChui/Pictures/master/AndroidStudio_2_2.png?raw=true)               
+	![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/AndroidStudio_2_2.png?raw=true)               
 	
 - 使用布局编辑器             
 
@@ -39,21 +39,21 @@ AndroidStudio使用教程(第二弹)
 	- 点击布局页面右侧的`Preview`按钮，可以进行预览。  
 	
 	    想预览多屏幕效果时可以在预览界面设备的下拉菜单上选择`Preview All Screen Sizes`.     
-	    ![Image](https://github.com/CharonChui/Pictures/master/AndroidStudio_2_3.png?raw=true)       
+	    ![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/AndroidStudio_2_3.png?raw=true)       
 		
 	- 选择主题
 	
-	    想给应用设置一个主题，可以点击`Theme`图标![Image](https://github.com/CharonChui/Pictures/master/AndroidStudio_2_4.png?raw=true), 就会显示
+	    想给应用设置一个主题，可以点击`Theme`图标![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/AndroidStudio_2_4.png?raw=true), 就会显示
 		出选择对话框。       
-		![Image](https://github.com/CharonChui/Pictures/master/AndroidStudio_2_5.png?raw=true)
+		![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/AndroidStudio_2_5.png?raw=true)
 	
 	- 国际化
-	    对于国际化的适配选择国际化图标![Image](https://github.com/CharonChui/Pictures/master/AndroidStudio_2_6.png?raw=true),然后在弹出的列表中选择
+	    对于国际化的适配选择国际化图标![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/AndroidStudio_2_6.png?raw=true),然后在弹出的列表中选择
 		需要进行国际化的国家进行适配即可。
 
 - 常用功能
     有些人进来之后可能找不到`DDMS`了.      
-	![Image](https://github.com/CharonChui/Pictures/master/AndroidStudio_2_7.png?raw=true)	   
+	![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/AndroidStudio_2_7.png?raw=true)	   
 	上图中的三个图标分别为, `AVD Manager`、`SDK Manager`、`DDMS`
 	
 
