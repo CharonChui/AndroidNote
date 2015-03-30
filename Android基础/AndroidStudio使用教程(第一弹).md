@@ -1,8 +1,10 @@
 AndroidStudio使用教程(第一弹)
 ===
 
-`Android Studio`是一套面世不久的`IDE`（即集成开发环境），免费向谷歌及`Android`的开发人员发放。`Android Studio`以`IntelliJ IDEA`为基础,旨在取代`Eclipse`和`ADT`（`Android`开发者工具）为开发者提供更好的开发工具。              
-运行相应速度、智能提示、布局文件适时多屏预览等都比`Eclipse`要强，但也不能说全部都是有点现在`Studio`中无法在一个窗口管理多个`Project`，每个`Project`都要打开一个窗口，或者是`close`当前的后再打开别的。
+`Android Studio`是一套面世不久的`IDE`（即集成开发环境），免费向谷歌及`Android`的开发人员发放。`Android Studio`以`IntelliJ IDEA`为基础,
+旨在取代`Eclipse`和`ADT`（`Android`开发者工具）为开发者提供更好的开发工具。              
+运行相应速度、智能提示、布局文件适时多屏预览等都比`Eclipse`要强，但也不能说全部都是有点现在`Studio`中无法在一个窗口管理多个`Project`，
+每个`Project`都要打开一个窗口，或者是`close`当前的后再打开别的。
 
 当但是毕竟是预览版，所以只是暂时试用了下，并没有过多接触，开发中还是使用`Eclipse`。           
 经过一年多的沉淀，如果已到0.8.4版本，最近准备在工作用正式开始使用，所以看了下官网的教程。准备开始了。
@@ -12,7 +14,8 @@ AndroidStudio使用教程(第一弹)
 	这是在下载`Gradle`，大约二三十M的大小，由于伟大的防火墙，所以可能需要很长时间，这里就不教大家了，对程序猿来说不是难题，大家都会科学上网。
 	
 - 区别              
-    - 此`Project`非彼`Project`, `Android Studio`的目录结构(`Project`)代表一个`Workspace`，一个`Workspace`里面可以有多个`Module`，这里`Module`可以理解成`Eclipse`中的一个`Project`.
+    - 此`Project`非彼`Project`, `Android Studio`的目录结构(`Project`)代表一个`Workspace`，一个`Workspace`里面可以有多个`Module`，
+	这里`Module`可以理解成`Eclipse`中的一个`Project`.
 	`Project`代表一个完整的`Android app`，而`modules`则是`app`的一个组件，并且这个组件可以单独`build,test,debug`。`modules`可以分为下面几种：      
 	    - Java library modules    
         - Android library modules: 包含android相关代码和资源，最后生成AAR(Android ARchive)包    
@@ -24,7 +27,8 @@ AndroidStudio使用教程(第一弹)
 	
 - 设置           
    进入后你会发现字体或样式等不符合你的习惯。            
-   `Windows`下点击左上角`File` -> `Settings`进入设置页面(`Mac`下为 `Android Studio` -> `Preferences`)，在搜索框搜`Font`找到`Colors&Font`下的`Font`选项，我们会发现无法修改右侧字体大小。这里修改必须
+   `Windows`下点击左上角`File` -> `Settings`进入设置页面(`Mac`下为 `Android Studio` -> `Preferences`)，在搜索框搜`Font`找到`Colors&Font`下的`Font`选项，
+   我们会发现无法修改右侧字体大小。这里修改必须
    要通过新建`Theme`进行修改的，点击`Save as`输入一个名字后，就可以修改字体了。
    	![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/AndroidStudio_2.png?raw=true)
 

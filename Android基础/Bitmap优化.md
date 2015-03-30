@@ -1,11 +1,15 @@
 Bitmap优化
 ===
 
-1. 一个进程的内存可以由2个部分组成：`native和dalvik`，`dalvik`就是我们平常说的`java`堆，我们创建的对象是在这里面分配的，而`bitmap`是直接在`native`上分配的。   
-一旦内存分配给`Java`后，以后这块内存即使释放后，也只能给`Java`的使用，所以如果`Java`突然占用了一个大块内存，即使很快释放了,`C`能用的内存也是16M减去`Java`最大占用的内存数。
-而`Bitmap`的生成是通过`malloc`进行内存分配的，占用的是C的内存，这个也就说明了，上述的4MBitmap无法生成的原因，因为在13M被Java用过后，剩下C能用的只有3M了。    
+1. 一个进程的内存可以由2个部分组成：`native和dalvik`
+    `dalvik`就是我们平常说的`java`堆，我们创建的对象是在这里面分配的，而`bitmap`是直接在`native`上分配的。   
+    一旦内存分配给`Java`后，以后这块内存即使释放后，也只能给`Java`的使用，所以如果`Java`突然占用了一个大块内存，
+	即使很快释放了,`C`能用的内存也是16M减去`Java`最大占用的内存数。
+    而`Bitmap`的生成是通过`malloc`进行内存分配的，占用的是`C`的内存，这个也就说明了，上述的`4MBitmap`无法生成的原因，
+	因为在`13M`被`Java`用过后，剩下`C`能用的只有`3M`了。    
 
-2. 在`Android`应用里，最耗费内存的就是图片资源。而且在`Android`系统中，读取位图`Bitmap`时，分给虚拟机中的图片的堆栈大小只有8M，如果超出了，就会出现`OutOfMemory`异常。
+2. 在`Android`应用里，最耗费内存的就是图片资源。    
+    在`Android`系统中，读取位图`Bitmap`时，分给虚拟机中的图片的堆栈大小只有8M，如果超出了，就会出现`OutOfMemory`异常。
 
 3. 及时回收Bitmap的内存
     ```java
@@ -19,7 +23,8 @@ Bitmap优化
     ```
 
 4. 捕获异常     
-    在实例化`Bitmap`的代码中，一定要对`OutOfMemory`异常进行捕获。下面对初始化`Bitmap`对象过程中可能发生的`OutOfMemory`异常进行了捕获。如果发生了异常，应用不会崩溃，而是得到了一个默认的图片。
+    在实例化`Bitmap`的代码中，一定要对`OutOfMemory`异常进行捕获。下面对初始化`Bitmap`对象过程中可能发生的`OutOfMemory`异常进行了捕获。
+	如果发生了异常，应用不会崩溃，而是得到了一个默认的图片。
     ```java
     Bitmap bitmap = null;
     try {
@@ -33,14 +38,17 @@ Bitmap优化
         return defaultBitmapMap;
     }
     ```
+	
 5. 缓存通用的Bitmap对象
 
 6. 压缩图片
     如果图片像素过大可以将图片缩小，以减少载入图片过程中的内存的使用，避免异常发生。
-使用`BitmapFactory.Options.inSampleSize`就可以缩小图片。属性值`inSampleSize`表示缩略图大小为原始图片大小的几分之一。即如果这个值为2，则取出的缩略图的宽和高都是原始图片的1/2，图片的大小就为原始大小的1/4。
-如果知道图片的像素过大，就可以对其进行缩小。那么如何才知道图片过大呢?
-使用`BitmapFactory.Options`设置`inJustDecodeBounds`为`true`后，并不会真正的分配空间，即解码出来的`Bitmap`为`null`，但是可计算出原始图片的宽度和高度，即`options.outWidth`和`options.outHeight`。
-通过这两个值，就可以知道图片是否过大了。
+    使用`BitmapFactory.Options.inSampleSize`就可以缩小图片。属性值`inSampleSize`表示缩略图大小为原始图片大小的几分之一。
+	即如果这个值为2，则取出的缩略图的宽和高都是原始图片的1/2，图片的大小就为原始大小的1/4。
+    如果知道图片的像素过大，就可以对其进行缩小。那么如何才知道图片过大呢?
+    使用`BitmapFactory.Options`设置`inJustDecodeBounds`为`true`后，并不会真正的分配空间，即解码出来的`Bitmap`为`null`，
+	但是可计算出原始图片的宽度和高度，即`options.outWidth`和`options.outHeight`。
+    通过这两个值，就可以知道图片是否过大了。
     ```java
     BitmapFactory.Options opts = new BitmapFactory.Options();
     // 设置inJustDecodeBounds为true

@@ -1,58 +1,57 @@
 滑动切换Activity(GestureDetector)
 ===
 
-1. 实现手势滑动切换`Activity`      
-	1. 创建一个手势识别器(`GestureDetector`)       
-	2. 在`Activity`的`onTouchEvent`中去使用该手势识别器      
- 
-	```java
-	public abstract class SetupBaseActivity extends Activity {
-		protected SharedPreferences sp;
-		protected GestureDetector mGestureDetector;
+1. 实现手势滑动切换`Activity`        
+	- 创建一个手势识别器(`GestureDetector`)       
+	- 在`Activity`的`onTouchEvent`中去使用该手势识别器      
+		```java
+		public abstract class SetupBaseActivity extends Activity {
+			protected SharedPreferences sp;
+			protected GestureDetector mGestureDetector;
 
-		@Override
-		protected void onCreate(Bundle savedInstanceState) {
-			super.onCreate(savedInstanceState);
-			sp =getSharedPreferences("config", MODE_PRIVATE);
-			initView();
-			setupView();
-			//1.创建一个手势识别器 new 对象，并给这个手势识别器设置监听器
-			mGestureDetector = new GestureDetector(new GestureDetector.SimpleOnGestureListener(){
-				//当手指在屏幕上滑动的时候 调用的方法.
-				@Override
-				//e1代表的是手指刚开始滑动的事件，e2代表手指滑动完了的事件
-				public boolean onFling(MotionEvent e1, MotionEvent e2,float velocityX, float velocityY) {
-					if(e1.getRawX() - e2.getRawX() > 200){
-						showNext();//向右滑动，显示下一个界面
-						return true;
+			@Override
+			protected void onCreate(Bundle savedInstanceState) {
+				super.onCreate(savedInstanceState);
+				sp =getSharedPreferences("config", MODE_PRIVATE);
+				initView();
+				setupView();
+				//1.创建一个手势识别器 new 对象，并给这个手势识别器设置监听器
+				mGestureDetector = new GestureDetector(new GestureDetector.SimpleOnGestureListener(){
+					//当手指在屏幕上滑动的时候 调用的方法.
+					@Override
+					//e1代表的是手指刚开始滑动的事件，e2代表手指滑动完了的事件
+					public boolean onFling(MotionEvent e1, MotionEvent e2,float velocityX, float velocityY) {
+						if(e1.getRawX() - e2.getRawX() > 200){
+							showNext();//向右滑动，显示下一个界面
+							return true;
+						}
+
+						if(e2.getRawX() - e1.getRawX() > 200){
+							showPre();//向左滑动，显示上一个界面
+							return true;
+						}
+						return super.onFling(e1, e2, velocityX, velocityY);
 					}
+				});
+			}
 
-					if(e2.getRawX() - e1.getRawX() > 200){
-						showPre();//向左滑动，显示上一个界面
-						return true;
-					}
-					return super.onFling(e1, e2, velocityX, velocityY);
-				}
-			});
+			//2.让手势识别器生效，重写Activity的触摸事件，并且将Activity的触摸事件传入到手势识别器中
+			@Override
+			public boolean onTouchEvent(MotionEvent event) {
+				mGestureDetector.onTouchEvent(event);
+				return super.onTouchEvent(event);
+			}
 		}
-
-		//2.让手势识别器生效，重写Activity的触摸事件，并且将Activity的触摸事件传入到手势识别器中
-		@Override
-		public boolean onTouchEvent(MotionEvent event) {
-			mGestureDetector.onTouchEvent(event);
-			return super.onTouchEvent(event);
-		}
-	}
-	```
+		```
 
 2. 实现切换效果
 	经过上一步已经实现了滑动界面的切换，但是切换界面时的效果不好看，我们需要自定义切换的效果
 	
-	1. 在res目录下面新建一个anim文件夹在这个文件夹中新建动画效果
-		tran_next_in.xml//下一个界面进入的样式        
-		tran_next_out.xml//下一个界面进入时当前页面出去的样式         
-		tran_pre_in.xml//上一个界面进入的样式         
-		tran_pre_out.xml//上一个界面进入时当前页面出去的样式       
+	- 在res目录下面新建一个anim文件夹在这个文件夹中新建动画效果
+		tran_next_in.xml//下一个界面进入的样式         
+		tran_next_out.xml//下一个界面进入时当前页面出去的样式          
+		tran_pre_in.xml//上一个界面进入的样式          
+		tran_pre_out.xml//上一个界面进入时当前页面出去的样式        
  
 		- tran_next_in.xml里面的内容
 			```xml
@@ -106,7 +105,7 @@
 			</translate>
 			```
   
-	2. 让`Activity`在创建和销毁时使用上面自定义的动画
+	- 让`Activity`在创建和销毁时使用上面自定义的动画
 		
 		`public void overridePendingTransition(int enterAnim, int exitAnim);`
 		`Call immediately after one of the flavors of startActivity(Intent) or finish() to specify an explicit transition animation to perform next.`

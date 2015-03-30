@@ -3,7 +3,6 @@ XmlPullParser
 
 ```java
 public class PersonService {
-
     /**
      * 接收一个包含XML文件的输入流, 解析出XML中的Person对象, 装入一个List返回
      * @param in    包含XML数据的输入流
@@ -76,6 +75,6 @@ public class PersonService {
 }
 ```
 
------
+---
 - 邮箱 ：charon.chui@gmail.com  
 - Good Luck! 

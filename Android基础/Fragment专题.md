@@ -3,20 +3,26 @@ Fragment专题
 
 ##简介
 
-A Fragment is a piece of an application's user interface or behavior that can be placed in an Activity. Interaction with fragments is done through FragmentManager, 
+A Fragment is a piece of an application's user interface or behavior that can be placed in an Activity. 
+Interaction with fragments is done through FragmentManager, 
 which can be obtained via Activity.getFragmentManager() and Fragment.getFragmentManager().
 
-The Fragment class can be used many ways to achieve a wide variety of results. In its core, it represents a particular operation or interface that is running within a larger Activity. 
-A Fragment is closely tied to the Activity it is in, and can not be used apart from one. Though Fragment defines its own lifecycle, that lifecycle is dependent on its activity: if the activity is stopped, 
+The Fragment class can be used many ways to achieve a wide variety of results. 
+In its core, it represents a particular operation or interface that is running within a larger Activity. 
+A Fragment is closely tied to the Activity it is in, and can not be used apart from one. 
+Though Fragment defines its own lifecycle, that lifecycle is dependent on its activity: if the activity is stopped, 
 no fragments inside of it can be started; when the activity is destroyed, all fragments will be destroyed.
 
-All subclasses of Fragment must include a public no-argument constructor. The framework will often re-instantiate a fragment class when needed, in particular during state restore, 
-and needs to be able to find this constructor to instantiate it. If the no-argument constructor is not available, a runtime exception will occur in some cases during state restore.
+All subclasses of Fragment must include a public no-argument constructor. 
+The framework will often re-instantiate a fragment class when needed, in particular during state restore, 
+and needs to be able to find this constructor to instantiate it. 
+If the no-argument constructor is not available, a runtime exception will occur in some cases during state restore.
 
 
 ##生命周期
 
-`onAttach()`(`Fragment`被绑定到`Activity`时调用) ---> `onCreate()`(`Fragment`创建) --> `onCreateView()`(创建和`Fragment`关联的`View Hierarchy`时调用) --> `onActivityCreated()`(`Activity`的`onCreate()`方法返回时调用) 
+`onAttach()`(`Fragment`被绑定到`Activity`时调用) ---> `onCreate()`(`Fragment`创建) --> 
+`onCreateView()`(创建和`Fragment`关联的`View Hierarchy`时调用) --> `onActivityCreated()`(`Activity`的`onCreate()`方法返回时调用) 
 --> `onStart()` --> `onResume()` --> `onPause()` --> `onStop()` --> `onDestroyView()`当和`Fragment`关联的`view hierarchy`正在被移除时调用. 
 --> `onDestroy()`(`Activity`的`onDestroy`执行后的回调), --> `onDetach()`(当`Fragment`从`Activity`解除关联时被调用)        
 	
@@ -55,8 +61,8 @@ and needs to be able to find this constructor to instantiate it. If the no-argum
 		}
 	}
 	```
-	**每一个fragment 都需要一个唯一的标识,如果activity重启,系统可以用来恢复fragment(并且你也可以用来捕获fragment 来处理事务,例如移除它.)**
-	有3 种方法来为一个`fragment` 提供一个标识:
+	**每一个fragment 都需要一个唯一的标识,如果activity重启,系统可以用来恢复fragment(并且你也可以用来捕获fragment 来处理事务,例如移除它.)**                
+	有3 种方法来为一个`fragment` 提供一个标识:             
 		1. 为`android:id`属性提供一个唯一ID.
 		2. 为`android:tag`属性提供一个唯一字符串.
 		3. 如果以上2个你都没有提供,系统使用容器`view`的`ID`.
@@ -111,17 +117,17 @@ and needs to be able to find this constructor to instantiate it. If the no-argum
 	
 ##管理Fragment
 
-要在activity 中管理fragment,需要使用FragmentManager. 通过调用activity 的getFragmentManager()取得它的实例.
-可以通过FragmentManager 做一些事情, 包括:
+要在`activity`中管理`fragment`,需要使用`FragmentManager`. 通过调用`activity`的`getFragmentManager()`取得它的实例.
+可以通过`FragmentManager`做一些事情, 包括:           
     1. 使用findFragmentById() (用于在activitylayout 中提供一个UI 的fragment)或findFragmentByTag()(适用于有或没有UI 的fragment)获取activity 中存在的fragment      
     2. 将fragment 从后台堆栈中弹出, 使用popBackStack() (模拟用户按下BACK 命令).    
     3. 使用addOnBackStackChangeListener()注册一个监听后台堆栈变化的listener.   
 
 ## 处理Fragment事务
 
-每一个事务都是同时要执行的一套变化.可以在一个给定的事务中设置你想执行的所有变化,使用诸如add(), remove(),和replace().然后, 要给activity 应用事务, 必须调用commit().在调用commit()之前, 
-你可能想调用addToBackStack(),将事务添加到一个fragment 事务的backstack. 这个	
-
+每一个事务都是同时要执行的一套变化.可以在一个给定的事务中设置你想执行的所有变化,使用诸如`add()`, `remove()`,和`replace()`.
+要给`activity`应用事务, 必须调用`commit()`.在调用`commit()`之前, 
+你可能想调用`addToBackStack()`,将事务添加到一个fragment 事务的`backstack`
 将一个fragment 替换为另一个, 并在后台堆栈中保留之前的状态:
 ```java
 // Create new fragment and transaction
@@ -139,7 +145,8 @@ transaction.commit();
 	
 ## Fragment真正的onPause以及onResume
 
-`Fragment`虽然有`onResume()`和`onPause()`方法，但是这两个方法是`Activity`的方法调用时机也与`Activity`相同，和`ViewPager`搭配使用这个方法就很鸡肋了，根本不是你想要的效果，这里介绍一种方法。
+`Fragment`虽然有`onResume()`和`onPause()`方法，但是这两个方法是`Activity`的方法调用时机也与`Activity`相同，
+和`ViewPager`搭配使用这个方法就很鸡肋了，根本不是你想要的效果，这里介绍一种方法。
 ```java
 @Override
 public void setUserVisibleHint(boolean isVisibleToUser) {
@@ -152,7 +159,8 @@ public void setUserVisibleHint(boolean isVisibleToUser) {
 }
 ```
 
-通过阅读`ViewPager`和`PageAdapter`相关的代码，切换`Fragment`实际上就是通过设置`setUserVisibleHint`和`setMenuVisibility`来实现的，调用这个方法时并不会释放掉`Fragment`（即不会执行onDestoryView）。
+通过阅读`ViewPager`和`PageAdapter`相关的代码，切换`Fragment`实际上就是通过设置`setUserVisibleHint`和`setMenuVisibility`来实现的，
+调用这个方法时并不会释放掉`Fragment`（即不会执行`onDestoryView`）。
 
 ##Fragment与ViewPager搭配
 `FragmentStatePagerAdapter`，会自动保存和恢复`Fragment`。
@@ -225,7 +233,6 @@ public class ScreenSlidePagerActivity extends FragmentActivity {
 如何给`ViewPager`切换时增加动画.
 ```java
 ViewPager mPager = (ViewPager) findViewById(R.id.pager);
-...
 mPager.setPageTransformer(true, new DepthPageTransformer ());
 ```
 

@@ -59,7 +59,9 @@ Widget简介
 		android:updatePeriodMillis="86400000" //指定更新的间隔时间，最小为半个小时，一般不用它更新，都是自己更新
 		android:previewImage="@drawable/preview"//指定小控件的图标,如果不要这个选项就是程序的图标
 		android:initialLayout="@layout/example_appwidget"//设置这个小控件的布局文件
-		android:configure="com.example.android.ExampleAppWidgetConfigure" //有些复杂的Widget在点击的时候会去开启一个Activity，这时候就是通过这个参数来配置要开启的Activity，用不着就删除这一行	android:resizeMode="horizontal|vertical">//这个是Android3.0的一个新特性，是可以让widget改变大小，在2.3时候创建出来的Widget多大就是多大，不能改变，可以把这个去掉
+		android:configure="com.example.android.ExampleAppWidgetConfigure" //有些复杂的Widget在点击的时候会去开启一个Activity，
+		// 这时候就是通过这个参数来配置要开启的Activity，用不着就删除这一行	android:resizeMode="horizontal|vertical">
+		//这个是Android3.0的一个新特性，是可以让widget改变大小，在2.3时候创建出来的Widget多大就是多大，不能改变，可以把这个去掉
 	</appwidget-provider>
 	```
 	
@@ -89,14 +91,14 @@ Widget简介
 					views.setTextViewText(
 							R.id.process_count,
 							"正在运行:"
-									+ ProcessStatusUtils												.getProcessCount(getApplicationContext())
+									+ ProcessStatusUtils.getProcessCount(getApplicationContext())
 									+ "个");
 					views.setTextViewText(
 							R.id.process_memory,
 							"可用内存:"
 									+ Formatter
 											.formatFileSize(
-													getApplicationContext(),				       ProcessStatusUtils.getAvailRAM(getApplicationContext())));
+													getApplicationContext(), ProcessStatusUtils.getAvailRAM(getApplicationContext())));
 					Intent intent = new Intent();
 					intent.setAction("com.itheima.killall");
 					//设置一个自定义的广播事件 动作  com.itheima.killall

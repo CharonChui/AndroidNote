@@ -4,7 +4,8 @@
 DevicePolicyManager    
 ---
 
-Public interface for managing policies enforced on a device. Most clients of this class must have published a DeviceAdminReceiver that the user has currently enabled.       
+Public interface for managing policies enforced on a device. Most clients of this class must have published a DeviceAdminReceiver that the user 
+has currently enabled.       
 
 ```java
 DevicePolicyManager dpm = (DevicePolicyManager) mContext.getSystemService(Context.DEVICE_POLICY_SERVICE);

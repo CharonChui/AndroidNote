@@ -66,6 +66,6 @@ TextView实现跑马灯的效果,不用自定义View
     android:text="测试啊啊啊啊啊啊啊啊ggggggggggggggggggggggggggggg" />
 ```
 
-----
+---
 - 邮箱 ：charon.chui@gmail.com  
 - Good Luck! 

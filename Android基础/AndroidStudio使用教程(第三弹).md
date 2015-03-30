@@ -3,7 +3,7 @@ AndroidStudio使用教程(第三弹)
 
 熟悉了基本的使用之后，可能关心的就是版本控制了。
 
-- `SVN`
+- `SVN`               
     - 下载`Subversion command line`              
 		- 方法一                
 	        下载地址是[Subversion](http://subversion.apache.org/packages.html)里面有不同系统的版本。             
@@ -46,7 +46,7 @@ AndroidStudio使用教程(第三弹)
 	完成之后会提示是否想要把刚才检出的项目导入`AndroidStudio`中。                  
 	Why not?                         
 	以`Gradle`方式导入， 然后`next`, 然后`next`然后就没有然后了。                     
-	![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/AndroidStudio_3_12.png?raw=true)	                    
+	![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/AndroidStudio_3_12.png?raw=true)	                                     
 		
 ---
 

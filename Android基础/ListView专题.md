@@ -111,7 +111,8 @@ mAutoCircleViewPager = (ViewPager) mHeaderView.findViewById(R.id.vp_auto_circle)
 //addHeaderView要在ListView的setAdapter前添加            
 mListView.addHeaderView(mHeaderView);
 ```
-**注意**ViewPager的布局中宽高不能够使用`wrap_content`可以使用`match_parent`但是上面显示不出来也是由于match_parent的问题，如果我们将布局中的`layout_height="200dip"`,这样就能够显示出来`ViewPager`
+**注意**ViewPager的布局中宽高不能够使用`wrap_content`可以使用`match_parent`但是上面显示不出来也是由于match_parent的问题，
+如果我们将布局中的`layout_height="200dip"`,这样就能够显示出来`ViewPager`
  
 ---
 

@@ -8,7 +8,9 @@ PullToRefreshListView
 拉刷新`ListView`无非就是对普通的`List View`添加一个`HeaderView`,然后通过对`ListView onTouchEvent`来获取当前下拉刷新的状态。然后去改变`HeaderView`的状态。    
 
 1. 自定义`ListView`，在构造方法中去添加`HeaderView`
-	通过`ListView.addHeaderView()`去添加`HeaderView`的时候，`HeaderView`会显示在屏幕的最初位置，我们需要它默认的时候是在屏幕的上方，这样默认时是不可见的，但是我们下拉`ListView`的时候，它就能够显示出来。这就要通过设置`HeaderView`的`padding`来实现它的隐藏。注意：View的显示最初要经过`Measure`测量宽高，我们在构造方法去添加的时候，该View可能并没有被测量，所以在获取`HeaderView`高度的时候会为0，这时候我们要手动的去测量一下`HeaderView`。
+	通过`ListView.addHeaderView()`去添加`HeaderView`的时候，`HeaderView`会显示在屏幕的最初位置，我们需要它默认的时候是在屏幕的上方，这样默认时是不可见的，
+	但是我们下拉`ListView`的时候，它就能够显示出来。这就要通过设置`HeaderView`的`padding`来实现它的隐藏。注意：View的显示最初要经过`Measure`测量宽高，
+	我们在构造方法去添加的时候，该View可能并没有被测量，所以在获取`HeaderView`高度的时候会为0，这时候我们要手动的去测量一下`HeaderView`。
 	```java
 	/**
 	* 当前状态
@@ -73,7 +75,8 @@ PullToRefreshListView
 		case MotionEvent.ACTION_MOVE:
 			//手指当前滑动的位置
 			currentPositionY = y;
-			//手指移动的距离，由于HeaderView高度固定，但是手指下拉的高度可以最大为屏幕的高度，如手指下拉屏幕高度时，HeaderView会很难看，所以我们让下拉的距离进行一个缩放。
+			//手指移动的距离，由于HeaderView高度固定，但是手指下拉的高度可以最大为屏幕的高度，如手指下拉屏幕高度时，HeaderView会很难看，
+			// 所以我们让下拉的距离进行一个缩放。
 			pullDistance = (currentPositionY - downPositionY) / RATIO;
 
 			if (mState == State.REFRESHING) {
@@ -88,7 +91,8 @@ PullToRefreshListView
 				mState = State.RELEASE_TO_REFRESH;
 				changeState();
 			} else if (mState == State.RELEASE_TO_REFRESH) {
-			//释放刷新时有三种情况，一是我继续下啦，这时候不用管，因为继续下拉还是释放刷新。二是我手指往上移动，此时HeaderView不完全可见，这时候状态要改变为下拉刷新了。三是我手指上移的很厉害，导致HeaderView完全不可见了，这是状态要改变为起始状态。
+			//释放刷新时有三种情况，一是我继续下啦，这时候不用管，因为继续下拉还是释放刷新。二是我手指往上移动，此时HeaderView不完全可见，
+			// 这时候状态要改变为下拉刷新了。三是我手指上移的很厉害，导致HeaderView完全不可见了，这是状态要改变为起始状态。
 				if (pullDistance < 0) {
 					// 如果当时状态为松手刷新，但是这时候我并没有松手，而是直接将手指往上移动，移动回手指最先的位置，这时候状态要变为起始状态。
 					mState = State.ORIGNAL;
@@ -133,7 +137,8 @@ PullToRefreshListView
 	}
 	```
 
-3. 上面的写法仍有些问题。就是我们在`onTouchEvent`中`Move`里面对移动的距离进行了判断，但是`ListView`本身就是一个可以上下滑动的组件，如果我们直接这样判断，那`ListView`本上上下滑动的功能就被我们给抹去了。
+3. 上面的写法仍有些问题。就是我们在`onTouchEvent`中`Move`里面对移动的距离进行了判断，但是`ListView`本身就是一个可以上下滑动的组件，
+	如果我们直接这样判断，那`ListView`本上上下滑动的功能就被我们给抹去了。
 	```java
 	@Override
 	public boolean onTouchEvent(MotionEvent ev) {
@@ -151,7 +156,8 @@ PullToRefreshListView
 			.....
 			break;
 	```
-	而对于`isCanPullToRefresh`的判断是通过`ListView.setOnScrollListener`去进行判断当前第一个可见条目是不是`ListView`的第一个条目，只有第一个条目在最顶端位置的时候才可以进行下拉刷新。
+	而对于`isCanPullToRefresh`的判断是通过`ListView.setOnScrollListener`去进行判断当前第一个可见条目是不是`ListView`的第一个条目，
+	只有第一个条目在最顶端位置的时候才可以进行下拉刷新。
 	```java
 	super.setOnScrollListener(new OnScrollListener() {
 
@@ -204,7 +210,8 @@ PullToRefreshListView
 LoadMoreListView
 ---
 **原理：**    
-滑动到底部自动加载更多的`ListView`，无非就是通过对其滑动过程进行监听，一旦滑动到底部的时候我们就去加载新的数据。通过对`ListView`添加`FooterView`，然后在不同的状态控制它的显示与隐藏。     
+滑动到底部自动加载更多的`ListView`，无非就是通过对其滑动过程进行监听，一旦滑动到底部的时候我们就去加载新的数据。通过对`ListView`添加`FooterView`，
+然后在不同的状态控制它的显示与隐藏。     
 
 1.  自定义ListView的子类，在构造方法中去添加FooterView.  
 	```java

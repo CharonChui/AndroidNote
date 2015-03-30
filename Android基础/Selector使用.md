@@ -47,8 +47,8 @@ Selector使用
         注：在StateListDrawable类中，该方法返回为true，显然状态改变后，我们的图片会跟着改变。
 
 2. GridView之Selector使用：  
-
-    GridView在点击每一个条目的时候黄色的背景,很难看，那么怎么才能让其不显示这个颜色呢?就是在GridView中将listSelector这个属性指定为透明的，这样再点击的时候就不显示黄色了，但是这样用户不知道自己点击了没有，所以要让它在点击的时候显示一个我们自定义的颜色     
+    GridView在点击每一个条目的时候黄色的背景,很难看，那么怎么才能让其不显示这个颜色呢?就是在GridView中将listSelector这个属性指定为透明的，
+	这样再点击的时候就不显示黄色了，但是这样用户不知道自己点击了没有，所以要让它在点击的时候显示一个我们自定义的颜色     
     ```xml
     <GridView
         android:listSelector="@android:color/transparent"//listSelector用于标示当前的条目被选择的时候的状态

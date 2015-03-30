@@ -35,8 +35,7 @@ Debug
     - 删除`Module`           
         在该`Module`邮件选择`Open Module Settings`。     ![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/AndroidStudio_6_8.png?raw=true)                
         进入设置页后选中要删除的`Module`点击左上角的删除图标`-`.     ![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/AndroidStudio_6_9.png?raw=true)后点击确定。                  
-        在该`Module`上邮件这次会发现已经有`Delete`按钮了。删除就可以了。    ![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/AndroidStudio_6_10.png?raw=true)   
-	  	
+        	  	
 ---
 
 - 邮箱 ：charon.chui@gmail.com  

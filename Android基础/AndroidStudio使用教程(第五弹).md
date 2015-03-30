@@ -25,7 +25,8 @@ Add a library module
 完成之后打开该`Module`中的`build.gradle`你会看到`apply plugin: 'com.android.library'`说明这是一个`library`.    
 
 ### Add a dependency on a library module   
-上一步我们创建了`mylibrary module`, 现在我们想让`app module`依赖与`mylibrary module`, 但是构建系统还不知道，我们需要修改`app module`下的`build.gradle`文件添加`mylibrary module`就可以了。 
+上一步我们创建了`mylibrary module`, 现在我们想让`app module`依赖与`mylibrary module`, 但是构建系统还不知道，
+我们需要修改`app module`下的`build.gradle`文件添加`mylibrary module`就可以了。 
 
 ```xml
 ...
@@ -37,11 +38,11 @@ dependencies {
 
 ### Build the project in Android Studio
 `Android Studio`中`build project`点击上面导航栏中的`Build`菜单然后选择`Make Project`, 这时窗口底部的状态栏就会显示`build`的进度。       
-点击窗口右边底部的![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/AndroidStudio_5_2.png?raw=true)图标来显示`Gradle Console`.      
-![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/AndroidStudio_5_3.png?raw=true)
+点击窗口右边底部的![Image](https://github.com/CharonChui/Pictures/blob/master/AndroidStudio_5_2.png)图标来显示`Gradle Console`.      
+![Image](https://github.com/CharonChui/Pictures/blob/master/AndroidStudio_5_3.png?raw=true)
 
 在窗口右边栏点击`Gradle`窗口可以看到当前所有可用的`build tasks`, 双击里面的`task`即可执行。      
-![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/AndroidStudio_5_4.png?raw=true)
+![Image](https://github.com/CharonChui/Pictures/blob/master/AndroidStudio_5_4.png?raw=true)
 
 ### Build a release version
 点击`Gradle tasks`页面， 展开`app`中的`task`然后双击`assembleRelease`即可。 
@@ -99,7 +100,7 @@ dependencies {
 `dependencies`部分是在`android`之外，该部分声明了依赖的`module`。     
 **注意：**当修改项目中得`build files`时，`Android Studio`需要进行项目同步来导入相应的`build`配置变化， 点击`Android Studio`中黄色通知部分的`Sync Now`
 来进行变化的导入。               
-![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/AndroidStudio_5_5.png?raw=true)     
+![Image](https://github.com/CharonChui/Pictures/blob/master/AndroidStudio_5_5.png)     
 
 ###Declare dependencies
 ```java

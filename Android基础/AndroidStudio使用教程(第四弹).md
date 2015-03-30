@@ -19,7 +19,8 @@ Gradle
 Overview
 ---
 
-`AndroidStudio build`系统是一个你可以用来`build, test, run, package your apps`的工具。 `build`系统与`Android Studio`之间是独立的，所以你可以在`Android Studio`中或者
+`AndroidStudio build`系统是一个你可以用来`build, test, run, package your apps`的工具。 `build`系统与`Android Studio`之间是独立的，
+所以你可以在`Android Studio`中或者
 `command line`中去执行。写完自己的应用程序之后，你可以用`build`系统来做以下事情：　　　　　
 - 自定义、配置和扩展`build`过程.。     
 - 用同一个工程根据不同的特性来创建多个`APK`。    
@@ -61,7 +62,8 @@ Projects and modules
 `Module`中包含应用中的源码和资源文件， `Android Studio`中的`Project`包含以下三种`Module`：     
 - 包含可复用代码的`Java library modules`. 构建系统对`Java library module`会生成一个`JAR`包。 
 - 有可复用`Android`代码和资源的`Android library modules`. 对该`library modules`构建系统会生成一个`AAR(Android ARchive)`包。
-- 有应用代码或者也可能是依赖其他`library modules`的`Android application modules`, 虽然很很多`Android`应用都只包含一个`application module`. 对于`application modules`
+- 有应用代码或者也可能是依赖其他`library modules`的`Android application modules`, 虽然很很多`Android`应用都只包含一个`application module`. 
+对于`application modules`
 构建系统会生成一个`APK`包。 
 
 `Android Studio projects`在`project`的最外城都包含一个列出所有`modules`的`Gradle build file`, 每个`module`也都包含自己的`Gradle build file`.      
@@ -76,9 +78,11 @@ Dependencies
 - `Local Dependencies`
     如果本地文件系统中有`module`所依赖的二进制包如`JAR`包， 你可以在该`module`中的构建文件中声明这些依赖关系。 
 - `Remote Dependencies`
-    当你的依赖是在远程仓库中，你不需要去下载他们然后拷贝到自己的工程中。 `Android Studio`支持远程`Maven`依赖。 `Maven`是一个流行的项目管理工具，它可以使用仓库帮助组织项目依赖。         
+    当你的依赖是在远程仓库中，你不需要去下载他们然后拷贝到自己的工程中。 `Android Studio`支持远程`Maven`依赖。 `Maven`是一个流行的项目管理工具，
+	它可以使用仓库帮助组织项目依赖。         
 	
-	许多优秀的软件类库和工具都在公共的`Maven`仓库中， 对于这些依赖只需按照远程仓库中不同元素的定义来指定他们的`Moven`位置即可。 构建系统使用的`Maven`位置格式是`group:name:version`. 例如`Google Guava`16.0.1版本类库的`Maven`坐标是
+	许多优秀的软件类库和工具都在公共的`Maven`仓库中， 对于这些依赖只需按照远程仓库中不同元素的定义来指定他们的`Moven`位置即可。 
+	构建系统使用的`Maven`位置格式是`group:name:version`. 例如`Google Guava`16.0.1版本类库的`Maven`坐标是
 	`com.google.guava:guava:16.0.1`.      
 	
 	` Maven Central Repository`现在被广泛用于分发许多类库和工具。 
@@ -95,7 +99,8 @@ dependencies {
 Build tasks
 ---
 
-`Android Studio`构建系统定义了一些列的构建任务， 高级别的任务调用一些产出必要输出的任务。 构建系统提供了`project tasks`来构建`app`和`module tasks`来独立的构建`modules`.          
+`Android Studio`构建系统定义了一些列的构建任务， 高级别的任务调用一些产出必要输出的任务。 构建系统提供了`project tasks`来构建`app`和`module tasks`
+来独立的构建`modules`.          
 
 可以通过`Andorid Studio`或者命令行看到当前可用任务的列表，并且执行里面的任务。 
 

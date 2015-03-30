@@ -21,209 +21,210 @@ ContentProvider
 - 如果数据是`SQLiteDatabase`，表中必须有一个`_id`的列，用来表示每条记录的唯一性。
 
 1. 继承`ContentProvider`,并实现相应的方法。
-```java
-public class NoteProvider extends ContentProvider {
-    private static final int NOTES = 1;
-    private static final int NOTE_ID = 2;
+	```java
+	public class NoteProvider extends ContentProvider {
+		private static final int NOTES = 1;
+		private static final int NOTE_ID = 2;
 
-    public static final String AUTHORITY = "com.charon.demo.provider.noteprovider";
-    public static final String TABLE_NAME = "note";
-    // 定义一个名为`CONTENT_URI`必须为其指定一个唯一的字符串值，最好的方案是以类的全名称
-    public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + TABLE_NAME);
+		public static final String AUTHORITY = "com.charon.demo.provider.noteprovider";
+		public static final String TABLE_NAME = "note";
+		// 定义一个名为`CONTENT_URI`必须为其指定一个唯一的字符串值，最好的方案是以类的全名称
+		public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + TABLE_NAME);
 
-    // 声明一个路径的检查者，参数为Uri不匹配时的返回值
-    // 虽然是中间人，但也不能谁要数据我们都给，所以要检查下，只有符合我们要求的人，我们才会给他数据。
-    private static UriMatcher sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
+		// 声明一个路径的检查者，参数为Uri不匹配时的返回值
+		// 虽然是中间人，但也不能谁要数据我们都给，所以要检查下，只有符合我们要求的人，我们才会给他数据。
+		private static UriMatcher sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
-    private NoteSQLiteOpenHelper mSQLiteOpenHelper;
-    private SQLiteDatabase mSQLiteDatabase;
+		private NoteSQLiteOpenHelper mSQLiteOpenHelper;
+		private SQLiteDatabase mSQLiteDatabase;
 
-    static {
-        // 建立匹配规则，例如发现路径为ccom.charon.demo.provider.noteprovider/note/1表示要操作note表中id为1的记录
-        sUriMatcher.addURI(AUTHORITY, TABLE_NAME, NOTES);
-        sUriMatcher.addURI(AUTHORITY, TABLE_NAME + "/#", NOTE_ID);
-    }
+		static {
+			// 建立匹配规则，例如发现路径为ccom.charon.demo.provider.noteprovider/note/1表示要操作note表中id为1的记录
+			sUriMatcher.addURI(AUTHORITY, TABLE_NAME, NOTES);
+			sUriMatcher.addURI(AUTHORITY, TABLE_NAME + "/#", NOTE_ID);
+		}
 
-    /**
-     * Implement this to initialize your content provider on startup.
-     * This method is called for all registered content providers on the
-     * application main thread at application launch time.  It must not perform
-     * lengthy operations, or application startup will be delayed.
-     * <p/>
-     * <p>You should defer nontrivial initialization (such as opening,
-     * upgrading, and scanning databases) until the content provider is used
-     * (via {@link #query}, {@link #insert}, etc).  Deferred initialization
-     * keeps application startup fast, avoids unnecessary work if the provider
-     * turns out not to be needed, and stops database errors (such as a full
-     * disk) from halting application launch.
-     * <p/>
-     * <p>If you use SQLite, {@link android.database.sqlite.SQLiteOpenHelper}
-     * is a helpful utility class that makes it easy to manage databases,
-     * and will automatically defer opening until first use.  If you do use
-     * SQLiteOpenHelper, make sure to avoid calling
-     * {@link android.database.sqlite.SQLiteOpenHelper#getReadableDatabase} or
-     * {@link android.database.sqlite.SQLiteOpenHelper#getWritableDatabase}
-     * from this method.  (Instead, override
-     * {@link android.database.sqlite.SQLiteOpenHelper#onOpen} to initialize the
-     * database when it is first opened.)
-     *
-     * @return true if the provider was successfully loaded, false otherwise
-     */
-    @Override
-    public boolean onCreate() {
-        mSQLiteOpenHelper = new NoteSQLiteOpenHelper(getContext());
-        return true;
-    }
+		/**
+		 * Implement this to initialize your content provider on startup.
+		 * This method is called for all registered content providers on the
+		 * application main thread at application launch time.  It must not perform
+		 * lengthy operations, or application startup will be delayed.
+		 * <p/>
+		 * <p>You should defer nontrivial initialization (such as opening,
+		 * upgrading, and scanning databases) until the content provider is used
+		 * (via {@link #query}, {@link #insert}, etc).  Deferred initialization
+		 * keeps application startup fast, avoids unnecessary work if the provider
+		 * turns out not to be needed, and stops database errors (such as a full
+		 * disk) from halting application launch.
+		 * <p/>
+		 * <p>If you use SQLite, {@link android.database.sqlite.SQLiteOpenHelper}
+		 * is a helpful utility class that makes it easy to manage databases,
+		 * and will automatically defer opening until first use.  If you do use
+		 * SQLiteOpenHelper, make sure to avoid calling
+		 * {@link android.database.sqlite.SQLiteOpenHelper#getReadableDatabase} or
+		 * {@link android.database.sqlite.SQLiteOpenHelper#getWritableDatabase}
+		 * from this method.  (Instead, override
+		 * {@link android.database.sqlite.SQLiteOpenHelper#onOpen} to initialize the
+		 * database when it is first opened.)
+		 *
+		 * @return true if the provider was successfully loaded, false otherwise
+		 */
+		@Override
+		public boolean onCreate() {
+			mSQLiteOpenHelper = new NoteSQLiteOpenHelper(getContext());
+			return true;
+		}
 
-    /**
-     * 内容提供者暴露的查询的方法.
-     */
-    @Override
-    public Cursor query(Uri uri, String[] projection, String selection,
-                        String[] selectionArgs, String sortOrder) {
-        mSQLiteDatabase = mSQLiteOpenHelper.getReadableDatabase();
-        Cursor cursor;
-        // 1.重要的事情 ,检查 uri的路径.
-        switch (sUriMatcher.match(uri)) {
-            case NOTES:
-                break;
-            case NOTE_ID:
-                String id = uri.getLastPathSegment();
-                if (TextUtils.isEmpty(selection)) {
-                    selection = selection + "_id = " + id;
-                } else {
-                    selection = selection + " and " + "_id = " + id;
-                }
-                break;
-            default:
-                throw new IllegalArgumentException("UnKnown Uri" + uri);
-                break;
-        }
-        cursor = mSQLiteDatabase.query(TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
-        if (cursor != null) {
-            cursor.setNotificationUri(getContext().getContentResolver(), uri);
-        }
-        return cursor;
-    }
+		/**
+		 * 内容提供者暴露的查询的方法.
+		 */
+		@Override
+		public Cursor query(Uri uri, String[] projection, String selection,
+							String[] selectionArgs, String sortOrder) {
+			mSQLiteDatabase = mSQLiteOpenHelper.getReadableDatabase();
+			Cursor cursor;
+			// 1.重要的事情 ,检查 uri的路径.
+			switch (sUriMatcher.match(uri)) {
+				case NOTES:
+					break;
+				case NOTE_ID:
+					String id = uri.getLastPathSegment();
+					if (TextUtils.isEmpty(selection)) {
+						selection = selection + "_id = " + id;
+					} else {
+						selection = selection + " and " + "_id = " + id;
+					}
+					break;
+				default:
+					throw new IllegalArgumentException("UnKnown Uri" + uri);
+					break;
+			}
+			cursor = mSQLiteDatabase.query(TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
+			if (cursor != null) {
+				cursor.setNotificationUri(getContext().getContentResolver(), uri);
+			}
+			return cursor;
+		}
 
-    /**
-     * Implement this to handle requests for the MIME type of the data at the
-     * given URI.  The returned MIME type should start with
-     * <code>vnd.android.cursor.item</code> for a single record,
-     * or <code>vnd.android.cursor.dir/</code> for multiple items.
-     * This method can be called from multiple threads, as described in
-     * <a href="{@docRoot}guide/topics/fundamentals/processes-and-threads.html#Threads">Processes
-     * and Threads</a>.
-     * <p/>
-     * <p>Note that there are no permissions needed for an application to
-     * access this information; if your content provider requires read and/or
-     * write permissions, or is not exported, all applications can still call
-     * this method regardless of their access permissions.  This allows them
-     * to retrieve the MIME type for a URI when dispatching intents.
-     *
-     * @param uri the URI to query.
-     * @return a MIME type string, or {@code null} if there is no type.
-     */
-    @Override
-    public String getType(Uri uri) {
-        // 注释说的很清楚了，下面是常用的格式
-        // 单个记录的IMEI类型 vnd.android.cursor.item/vnd.<yourcompanyname>.<contenttype>
-        // 多个记录的IMEI类型 vnd.android.cursor.dir/vnd.<yourcompanyname>.<contenttype>
-        switch (sUriMatcher.match(uri)) {
-            case NOTE_ID:
-                // 如果uri为 content://com.charon.demo.noteprovider/note/1
-                return "vnd.android.cursor.item/vnd.charon.note";
-            case NOTES:
-                return "vnd.android.cursor.dir/vnd.charon.note";
-            default:
-                return null;
-        }
+		/**
+		 * Implement this to handle requests for the MIME type of the data at the
+		 * given URI.  The returned MIME type should start with
+		 * <code>vnd.android.cursor.item</code> for a single record,
+		 * or <code>vnd.android.cursor.dir/</code> for multiple items.
+		 * This method can be called from multiple threads, as described in
+		 * <a href="{@docRoot}guide/topics/fundamentals/processes-and-threads.html#Threads">Processes
+		 * and Threads</a>.
+		 * <p/>
+		 * <p>Note that there are no permissions needed for an application to
+		 * access this information; if your content provider requires read and/or
+		 * write permissions, or is not exported, all applications can still call
+		 * this method regardless of their access permissions.  This allows them
+		 * to retrieve the MIME type for a URI when dispatching intents.
+		 *
+		 * @param uri the URI to query.
+		 * @return a MIME type string, or {@code null} if there is no type.
+		 */
+		@Override
+		public String getType(Uri uri) {
+			// 注释说的很清楚了，下面是常用的格式
+			// 单个记录的IMEI类型 vnd.android.cursor.item/vnd.<yourcompanyname>.<contenttype>
+			// 多个记录的IMEI类型 vnd.android.cursor.dir/vnd.<yourcompanyname>.<contenttype>
+			switch (sUriMatcher.match(uri)) {
+				case NOTE_ID:
+					// 如果uri为 content://com.charon.demo.noteprovider/note/1
+					return "vnd.android.cursor.item/vnd.charon.note";
+				case NOTES:
+					return "vnd.android.cursor.dir/vnd.charon.note";
+				default:
+					return null;
+			}
 
-        // 这个MIME类型的作用是要匹配AndroidManifest.xml文件<activity>标签下<intent-filter>标签的子标签<data>的属性android:mimeType。
-        // 如果不一致，则会导致对应的Activity无法启动。
-    }
+			// 这个MIME类型的作用是要匹配AndroidManifest.xml文件<activity>标签下<intent-filter>标签的子标签<data>的属性android:mimeType。
+			// 如果不一致，则会导致对应的Activity无法启动。
+		}
 
-    @Override
-    public Uri insert(Uri uri, ContentValues values) {
-        mSQLiteDatabase = mSQLiteOpenHelper.getWritableDatabase();
-        switch (sUriMatcher.match(uri)) {
-            case NOTES:
-                break;
+		@Override
+		public Uri insert(Uri uri, ContentValues values) {
+			mSQLiteDatabase = mSQLiteOpenHelper.getWritableDatabase();
+			switch (sUriMatcher.match(uri)) {
+				case NOTES:
+					break;
 
-            case NOTE_ID:
-                break;
+				case NOTE_ID:
+					break;
 
-            default:
-                throw new IllegalArgumentException("UnKnown Uri" + uri);
-                break;
-        }
+				default:
+					throw new IllegalArgumentException("UnKnown Uri" + uri);
+					break;
+			}
 
-        long rowId = mSQLiteDatabase.insert(TABLE_NAME, null, values);
-        if (rowId > 0) {
-            Uri noteUri = ContentUris.withAppendedId(CONTENT_URI, rowId);
-            getContext().getContentResolver().notifyChange(noteUri, null);
-            return noteUri;
-        }
+			long rowId = mSQLiteDatabase.insert(TABLE_NAME, null, values);
+			if (rowId > 0) {
+				Uri noteUri = ContentUris.withAppendedId(CONTENT_URI, rowId);
+				getContext().getContentResolver().notifyChange(noteUri, null);
+				return noteUri;
+			}
 
-        return null;
-    }
+			return null;
+		}
 
-    @Override
-    public int delete(Uri uri, String selection, String[] selectionArgs) {
-        mSQLiteDatabase = mSQLiteOpenHelper.getWritableDatabase();
-        switch (sUriMatcher.match(uri)) {
-            case NOTES:
-                break;
+		@Override
+		public int delete(Uri uri, String selection, String[] selectionArgs) {
+			mSQLiteDatabase = mSQLiteOpenHelper.getWritableDatabase();
+			switch (sUriMatcher.match(uri)) {
+				case NOTES:
+					break;
 
-            case NOTE_ID:
-                String id = uri.getLastPathSegment();
-                if (TextUtils.isEmpty(selection)) {
-                    selection = selection + "_id = " + id;
-                } else {
-                    selection = selection + " and " + "_id = " + id;
-                }
-                break;
+				case NOTE_ID:
+					String id = uri.getLastPathSegment();
+					if (TextUtils.isEmpty(selection)) {
+						selection = selection + "_id = " + id;
+					} else {
+						selection = selection + " and " + "_id = " + id;
+					}
+					break;
 
-            default:
-                throw new IllegalArgumentException("UnKnown Uri" + uri);
-                break;
-        }
-        int count = mSQLiteDatabase.delete(TABLE_NAME, selection, selectionArgs);
-        getContext().getContentResolver().notifyChange(uri, null);
-        return count;
-    }
+				default:
+					throw new IllegalArgumentException("UnKnown Uri" + uri);
+					break;
+			}
+			int count = mSQLiteDatabase.delete(TABLE_NAME, selection, selectionArgs);
+			getContext().getContentResolver().notifyChange(uri, null);
+			return count;
+		}
 
-    @Override
-    public int update(Uri uri, ContentValues values, String selection,
-                      String[] selectionArgs) {
-        switch (sUriMatcher.match(uri)) {
-            case NOTES:
+		@Override
+		public int update(Uri uri, ContentValues values, String selection,
+						  String[] selectionArgs) {
+			switch (sUriMatcher.match(uri)) {
+				case NOTES:
 
-                break;
+					break;
 
-            case NOTE_ID:
+				case NOTE_ID:
 
-                break;
+					break;
 
-            default:
-				throw new IllegalArgumentException("UnKnown Uri" + uri);
-				break;
-        }
+				default:
+					throw new IllegalArgumentException("UnKnown Uri" + uri);
+					break;
+			}
 
-        mSQLiteDatabase = mSQLiteOpenHelper.getWritableDatabase();
-        int update = mSQLiteDatabase.update(TABLE_NAME, values, selection, selectionArgs);
-        return update;
-    }
-```
+			mSQLiteDatabase = mSQLiteOpenHelper.getWritableDatabase();
+			int update = mSQLiteDatabase.update(TABLE_NAME, values, selection, selectionArgs);
+			return update;
+		}
+	```
 
 2. 在清单文件中进行注册，并且指定其authorities
-```xml
-<provider
-	android:name="com.charon.demo.provider.NoteProvider"
-	android:authorities="com.charon.demo.provider.noteprovider" >
-```
+	```xml
+	<provider
+		android:name="com.charon.demo.provider.NoteProvider"
+		android:authorities="com.charon.demo.provider.noteprovider" >
+	```
 	
-3. 使用内容提供者获取数据，使用`ContentResolver`去操作`ContentProvider`, `ContentResolver`用于管理`ContentProvider`实例，并且可实现找到指定的`ContentProvider`并获取里面的数据
+3. 使用内容提供者获取数据，使用`ContentResolver`去操作`ContentProvider`, `ContentResolver`用于管理`ContentProvider`实例，
+	并且可实现找到指定的`ContentProvider`并获取里面的数据
 	```java
 	public void query(View view){
 		//得到内容提供者的解析器  中间人
@@ -261,8 +262,8 @@ public class NoteProvider extends ContentProvider {
 ---
 
 内容观察者的原理：     
-`How a content provider actually stores its data under the covers is up to its designer. But all content providers implement a common interface for querying the provider and 
-returning results — as well as for adding, altering, and deleting data.            
+`How a content provider actually stores its data under the covers is up to its designer. But all content providers implement a common interface for 
+querying the provider and returning results — as well as for adding, altering, and deleting data.            
 It's an interface that clients use indirectly, most generally through ContentResolver objects. 
 You get a ContentResolver by calling getContentResolver() from within the implementation of an Activity or other application component: 
 You can then use the ContentResolver's methods to interact with whatever content providers you're interested in.`
@@ -296,6 +297,7 @@ You can then use the ContentResolver's methods to interact with whatever content
 		}
 	}
 	```
+	
 2. 一方在发生变化的时候去发送改变的消息
 	对于一些系统的内容提供者内部都实现了该步骤，如果是自己写程序想要暴露就必须要加上该代码。     
 	

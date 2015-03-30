@@ -10,7 +10,8 @@ SlidingMenu
 原理
 ---
 
-`SlidingMenu`无非就是一个包含三个`View`的控件，**左边View**、**中间View(默认时全屏)**、**右边View**，默认的情况下中间`View`会把两边的`View`覆盖住，在手指滑动的时候，会根据手指的滑动方向以及滑动距离去移动中间的那个`View`，从而能让两边`View`完全可见。    
+`SlidingMenu`无非就是一个包含三个`View`的控件，**左边View**、**中间View(默认时全屏)**、**右边View**，默认的情况下中间`View`会把两边的`View`覆盖住，
+在手指滑动的时候，会根据手指的滑动方向以及滑动距离去移动中间的那个`View`，从而能让两边`View`完全可见。    
 在定义该View的时候，首先会想到继承`RelativeLayout`，能简单的实现这种左、中、右三个View的布局。
 
 1. 继承RelativeLayout
@@ -41,7 +42,6 @@ SlidingMenu
 	```
 
 2. 具体的三个View需要暴露给外界调用，所以我们要提供一个setView()的方法。
-
 	```java
 	public void setView(View leftView, View rightView, View centerView,
 			int leftViewWidth, int rightViewWidth) {
@@ -207,7 +207,8 @@ SlidingMenu
 	```
 
 4. 到这里SlidingMenu的大体实现已经完成了        
-	剩下的就是对速率的计算，已经添加显示左边与显示右边的View的按钮。当左边View完全显示的时候，点击中间View可见部分时需要让中间View全屏。至于这些细节的东西就不再仔细说了，大家自己看源码吧。
+	剩下的就是对速率的计算，已经添加显示左边与显示右边的View的按钮。当左边View完全显示的时候，点击中间View可见部分时需要让中间View全屏。
+	至于这些细节的东西就不再仔细说了，大家自己看源码吧。
 
 ---
 

@@ -6,9 +6,10 @@ AndroidStudio使用教程(第二弹)
     官方文档中说`Android Studio`可以兼容`Eclipse`的现有工程，但需要做一些操作：              
 	
     - `Eclipse`进行项目构建           
-	    首先升级`ADT`到最新版本, 好像是22之后，选择需要从`Eclipse`导出的工程，右键选择`Export`并选择`Android`下的`Generate Gradle Build Files`, 运行完成之后你会
-	发现在项目目录中多了一个`build.gradle`, 这就是`Android Studio`所识别的文件。      
-		PS：官方文档中说明如果没有`Grade build`文件，也是可以将项目导入到`Android Studio`中，它会用现有的`Ant build`文件进行配置.但为了更好地使用之后的功能和充分使用构建变量，
+	    首先升级`ADT`到最新版本, 好像是22之后，选择需要从`Eclipse`导出的工程，右键选择`Export`并选择`Android`下的`Generate Gradle Build Files`, 
+		运行完成之后你会发现在项目目录中多了一个`build.gradle`, 这就是`Android Studio`所识别的文件。      
+		PS：官方文档中说明如果没有`Grade build`文件，也是可以将项目导入到`Android Studio`中，它会用现有的`Ant build`文件进行配置.
+		但为了更好地使用之后的功能和充分使用构建变量，
 		还是强烈地建议先从`ADT`插件中生成`Gradle`文件再导入`Android Studio`.
     
 	- 导入            
@@ -43,13 +44,13 @@ AndroidStudio使用教程(第二弹)
 		
 	- 选择主题
 	
-	    想给应用设置一个主题，可以点击`Theme`图标![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/AndroidStudio_2_4.png?raw=true), 就会显示
-		出选择对话框。       
+	    想给应用设置一个主题，可以点击`Theme`图标![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/AndroidStudio_2_4.png?raw=true), 
+		就会显示出选择对话框。       
 		![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/AndroidStudio_2_5.png?raw=true)
 	
 	- 国际化
-	    对于国际化的适配选择国际化图标![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/AndroidStudio_2_6.png?raw=true),然后在弹出的列表中选择
-		需要进行国际化的国家进行适配即可。
+	    对于国际化的适配选择国际化图标![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/AndroidStudio_2_6.png?raw=true),
+		然后在弹出的列表中选择需要进行国际化的国家进行适配即可。
 
 - 常用功能
     有些人进来之后可能找不到`DDMS`了.      
