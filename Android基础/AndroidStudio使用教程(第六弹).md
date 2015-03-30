@@ -32,9 +32,12 @@ Debug
 很多人都在问`AndroidStudio`中如何删除`Project`，如何删除`Module`？怎么和`Eclipse`不同啊，找不到`delete`或`remove`选项。       
     - 删除`Project`       
         点击左侧`File`-->`Close project`，关闭当前工程， 然后直接找到工程所在本地文件进行删除(慎重啊), 删除完之后点击最近列表中的该项目就会提示不存在，我们把他从最近项目中移除即可.![Image](https://github.com/CharonChui/Pictures/blob/master/AndroidStudio_6_11.png?raw=true)你会发现，点击`remove`之后没效果，以后估计会解决。      
-    - 删除`Module`           
-        在该`Module`邮件选择`Open Module Settings`。     ![Image](https://github.com/CharonChui/Pictures/blob/master/AndroidStudio_6_8.png?raw=true)                
-        进入设置页后选中要删除的`Module`点击左上角的删除图标`-`.     ![Image](https://github.com/CharonChui/Pictures/blob/master/AndroidStudio_6_9.png?raw=true)后点击确定。                  
+    - 删除`Module`             
+        在该`Module`邮件选择`Open Module Settings`。            
+		![Image](https://github.com/CharonChui/Pictures/blob/master/AndroidStudio_6_8.png?raw=true)                
+        进入设置页后选中要删除的`Module`点击左上角的删除图标`-`后点击确定。                                
+		![Image](https://github.com/CharonChui/Pictures/blob/master/AndroidStudio_6_9.png?raw=true)
+		
         	  	
 ---
 
