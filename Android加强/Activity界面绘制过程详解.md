@@ -19,17 +19,17 @@ public void setContentView(int layoutResID) {
 ```
 `getWindow()`就是获取该页面的窗体`Window`，该类是一个抽象类，他有一个唯一的子类`PhoneWindow`.
 ```java
-    /**
-     * Retrieve the current {@link android.view.Window} for the activity.
-     * This can be used to directly access parts of the Window API that
-     * are not available through Activity/Screen.
-     *
-     * @return Window The current window, or null if the activity is not
-     *         visual.
-     */
-    public Window getWindow() {
-        return mWindow;
-    }
+/**
+ * Retrieve the current {@link android.view.Window} for the activity.
+ * This can be used to directly access parts of the Window API that
+ * are not available through Activity/Screen.
+ *
+ * @return Window The current window, or null if the activity is not
+ *         visual.
+ */
+public Window getWindow() {
+	return mWindow;
+}
 ```
 接下来，我们看一下`PhoneWindow.setContentView()`方法。(简单的理解是`PhoneWindow`把`DectorView(`FrameLayout的子类)`进行包装，将它作为窗口的根`View`)
 ```java

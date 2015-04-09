@@ -1,11 +1,11 @@
-Java基础面试图
+Java基础面试题
 ===
 
 本部分全部内容是根据张孝祥老师的Word文档整理而来。只不过是为了方便观看，把代码部分用`markdown`来展示。整理时脑海中不断回忆起张老师上课的情景，真是怀念。
 
 1. 一个".java"源文件中是否可以包括多个类（不是内部类）？有什么限制？            
-	可以有多个类，但只能有一个public的类，并且public的类名必须与文件名相一致。
-2. Java有没有goto?      
+    可以有多个类，但只能有一个public的类，并且public的类名必须与文件名相一致。
+2. Java有没有goto?       
 	java中的保留字，现在没有在java中使用。
 3. 说说&和&&的区别。        
 	&和&&都可以用作逻辑与的运算符，表示逻辑与（and），当运算符两边的表达式的结果都为true时，整个运算结果才为true，否则，只要有一方为false，则结果为false。
@@ -14,7 +14,7 @@ Java基础面试图
 	If(x==33 && ++y>0)不会增长&还可以用作位运算符，当&操作符两边的表达式不是boolean类型时，&表示按位与操作，
 	我们通常使用0x0f来与一个整数进行&运算，来获取该整数的最低4个bit位，例如，0x31 & 0x0f的结果为0x01。 
 	备注：这道题先说两者的共同点，再说出&&和&的特殊之处，并列举一些经典的例子来表明自己理解透彻深入、实际经验丰富。 
-4. 在JAVA中如何跳出当前的多重嵌套循环？ 
+4. 在JAVA中如何跳出当前的多重嵌套循环？         
 	在Java中，要想跳出多重循环，可以在外面的循环语句前定义一个标号，然后在里层循环体的代码中使用带有标号的break 语句，即可跳出外层循环。例如，
 	```java
 	ok:
@@ -45,23 +45,23 @@ Java基础面试图
 		} 
 	}
 	```
-5. switch语句能否作用在byte上，能否作用在long上，能否作用在String上? 
+5. switch语句能否作用在byte上，能否作用在long上，能否作用在String上?                   
 	在switch（expr1）中，expr1只能是一个整数表达式或者枚举常量（更大字体），整数表达式可以是int基本类型或Integer包装类型，由于，
 	byte,short,char都可以隐含转换为int，所以，这些类型以及这些类型的包装类型也是可以的。显然，long和String类型都不符合switch的语法规定，
 	并且不能被隐式转换成int类型，所以，它们不能作用于swtich语句中。 
-6. short s1 = 1; s1 = s1 + 1;有什么错? short s1 = 1; s1 += 1;有什么错? 
+6. short s1 = 1; s1 = s1 + 1;有什么错? short s1 = 1; s1 += 1;有什么错?               
 	对于short s1 = 1; s1 = s1 + 1; 由于s1+1运算时会自动提升表达式的类型，所以结果是int型，再赋值给short类型s1时，编译器将报告需要强制转换类型的错误。
 	对于short s1 = 1; s1 += 1;由于 += 是java语言规定的运算符，java编译器会对它进行特殊处理，因此可以正确编译。 
-7. char型变量中能不能存贮一个中文汉字?为什么? 
+7. char型变量中能不能存贮一个中文汉字?为什么?               
 	char型变量是用来存储Unicode编码的字符的，unicode编码字符集中包含了汉字，所以，char型变量中当然可以存储汉字啦。不过，
 	如果某个特殊的汉字没有被包含在unicode编码字符集中，那么，这个char型变量中就不能存储这个特殊汉字。补充说明：unicode编码占用两个字节，
 	所以char类型的变量也是占用两个字节。
 	备注：后面一部分回答虽然不是在正面回答题目，但是，为了展现自己的学识和表现自己对问题理解的透彻深入，可以回答一些相关的知识，做到知无不言，言无不尽。 
-8、用最有效率的方法算出2乘以8等於几?       
-	2 << 3，
+8. 用最有效率的方法算出2乘以8等於几?             
+	2 << 3，            
 	因为将一个数左移n位，就相当于乘以了2的n次方，那么，一个数乘以8只要将其左移3位即可，而位运算cpu直接支持的，效率最高，
 	所以2乘以8等於几的最效率的方法是2 << 3。
-9. 请设计一个一百亿的计算器
+9. 请设计一个一百亿的计算器                   
 	首先要明白这道题目的考查点是什么，一是大家首先要对计算机原理的底层细节要清楚、要知道加减法的位运算原理和知道计算机中的算术运算会发生越界的情况，
 	二是要具备一定的面向对象的设计思想。首先，计算机中用固定数量的几个字节来存储的数值，所以计算机中能够表示的数值是有一定的范围的，
 	为了便于讲解和理解，我们先以byte 类型的整数为例，它用1个字节进行存储，表示的最大数值范围为-128到+127。-1在内存中对应的二进制数据为11111111，
@@ -168,28 +168,28 @@ Java基础面试图
 	```
 	备注：这个解答除了说清楚两者的区别外，最后还用一个具体的应用例子来说明两者的差异，体现了自己有很好的解说问题和设计案例的能力，思维敏捷，
 	超过一般程序员，有写作能力！
-13. 是否可以从一个static方法内部发出对非static方法的调用？ 
+13. 是否可以从一个static方法内部发出对非static方法的调用？                
 	不可以。因为非static方法是要与对象关联在一起的，必须创建一个对象后，才可以在该对象上进行方法调用，而static方法调用时不需要创建对象，可以直接调用。
 	也就是说，当一个static方法被调用时，可能还没有创建任何实例对象，如果从一个static方法中发出对非static方法的调用，那个非static方法是关联到哪个对象上的呢？
 	这个逻辑无法成立，所以，一个static方法内部发出对非static方法的调用。
-14. Integer与int的区别
+14. Integer与int的区别                   
 	int是java提供的8种原始数据类型之一。Java为每个原始类型提供了封装类，Integer是java为int提供的封装类。int的默认值为0，而Integer的默认值为null，
 	即Integer可以区分出未赋值和值为0的区别，int则无法表达出未赋值的情况，例如，要想表达出没有参加考试和考试成绩为0的区别，则只能使用Integer。
 	在JSP开发中，Integer的默认为null，所以用el表达式在文本框中显示时，值为空白字符串，而int默认的默认值为0，所以用el表达式在文本框中显示时，结果为0，
 	所以，int不适合作为web层的表单数据的类型。在Hibernate中，如果将OID定义为Integer类型，那么Hibernate就可以根据其值是否为null而判断一个对象是否是临时的，
 	如果将OID定义为了int类型，还需要在hbm映射文件中设置其unsaved-value属性为0。另外，Integer提供了多个与整数相关的操作方法，例如，将一个字符串转换成整数，
 	Integer中还定义了表示整数的最大值和最小值的常量。
-15. Math.round(11.5)等於多少? Math.round(-11.5)等於多少?
+15. Math.round(11.5)等於多少? Math.round(-11.5)等於多少?                  
 	Math类中提供了三个与取整有关的方法：ceil、floor、round，这些方法的作用与它们的英文名称的含义相对应，例如，ceil的英文意义是天花板，
 	该方法就表示向上取整，所以，Math.ceil(11.3)的结果为12,Math.ceil(-11.3)的结果是-11；floor的英文意义是地板，该方法就表示向下取整，
 	所以，Math.floor(11.6)的结果为11,Math.floor(-11.6)的结果是-12；最难掌握的是round方法，它表示“四舍五入”，算法为Math.floor(x+0.5)，
 	即将原来的数字加上0.5后再向下取整，所以，Math.round(11.5)的结果为12，Math.round(-11.5)的结果为-11。
-15. 下面的代码有什么不妥之处?
+15. 下面的代码有什么不妥之处?                
 	- if(username.equals(“zxx”){}
 	- int  x = 1;
 	    return x==1?true:false;
 	这个我就不说了吧，你能看出来的。
-16. Overload和Override的区别。Overloaded的方法是否可以改变返回值的类型?    
+16. Overload和Override的区别。Overloaded的方法是否可以改变返回值的类型?          
 	Overload是重载的意思，Override是覆盖的意思，也就是重写。     
 	重载Overload表示同一个类中可以有多个名称相同的方法，但这些方法的参数列表各不相同（即参数个数或类型不同）。
 	重写Override表示子类中的方法可以与父类中的某个方法的名称和参数完全相同，通过子类创建的实例对象调用这个方法时，将调用子类中的定义方法，
@@ -201,12 +201,11 @@ Java基础面试图
 	这是不行的，我们可以用反证法来说明这个问题，因为我们有时候调用一个方法时也可以不定义返回结果变量，即不要关心其返回结果，
 	例如我们调用map.remove(key)方法时，虽然remove方法有返回值，但是我们通常都不会定义接收返回结果的变量，这时候假设该类中有两个名称和参数列表完全相同的方法，
 	仅仅是返回类型不同，java就无法确定编程者倒底是想调用哪个方法了，因为它无法通过返回结果类型来判断。 
-17. 一个房子里有椅子，椅子有腿和背，房子与椅子是什么关系，椅子与腿和背是什么关系？
+17. 一个房子里有椅子，椅子有腿和背，房子与椅子是什么关系，椅子与腿和背是什么关系？                    
 	如果房子有多个椅子，就是聚合关系，否则是一种关联关系，当然，聚合是一种特殊的关联。椅子与腿和背时组合关系。
 	说说has a与is a的区别。        
-	答：is-a表示的是属于得关系。比如兔子属于一种动物（继承关系）。
-		has-a表示组合，包含关系。比如兔子包含有腿，头等组件；
-18. 分层设计的好处；
+	答：is-a表示的是属于得关系。比如兔子属于一种动物（继承关系）。has-a表示组合，包含关系。比如兔子包含有腿，头等组件；
+18. 分层设计的好处；             
 	把各个功能按调用流程进行了模块化，模块化带来的好处就是可以随意组合，举例说明：如果要注册一个用户，
 	流程为显示界面并通过界面接收用户的输入，接着进行业务逻辑处理，在处理业务逻辑又访问数据库，如果我们将这些步骤全部按流水帐的方式放在一个方法中编写，
 	这也是可以的，但这其中的坏处就是，当界面要修改时，由于代码全在一个方法内，可能会碰坏业务逻辑和数据库访问的码，同样，当修改业务逻辑或数据库访问的代码时，
@@ -214,15 +213,15 @@ Java基础面试图
 	这样分层后，还可以方便切换各层，譬如原来的界面是Swing，现在要改成BS界面，如果最初是按分层设计的，这时候不需要涉及业务和数据访问的代码，
 	只需编写一条web界面就可以了。
    下面的仅供参考，不建议照搬照套，一定要改成自己的语言，发现内心的感受：             
-	分层的好处：
-		- 实现了软件之间的解耦；
-		- 便于进行分工
-		- 便于维护
-		- 提高软件组件的重用
-		- 便于替换某种产品，比如持久层用的是hibernate,需要更换产品用toplink，就不用该其他业务代码，直接把配置一改。
-		- 便于产品功能的扩展。
-		- 便于适用用户需求的不断变化
-19. 序列化接口的id有什么用？
+	分层的好处：            
+	- 实现了软件之间的解耦；
+	- 便于进行分工
+	- 便于维护
+	- 提高软件组件的重用
+	- 便于替换某种产品，比如持久层用的是hibernate,需要更换产品用toplink，就不用该其他业务代码，直接把配置一改。
+	- 便于产品功能的扩展。
+	- 便于适用用户需求的不断变化
+19. 序列化接口的id有什么用？                 
    对象经常要通过IO进行传送，让你写程序传递对象，你会怎么做？把对象的状态数据用某种格式写入到硬盘，Person->“zxx,male,28,30000”?Person，
    既然大家都要这么干，并且没有个统一的干法，于是，sun公司就提出一种统一的解决方案，它会把对象变成某个格式进行输入和输出，
    这种格式对程序员来说是透明（transparent）的，但是，我们的某个类要想能被sun的这种方案处理，必须实现Serializable接口。      
@@ -231,7 +230,7 @@ Java基础面试图
    假设两年前我保存了某个类的一个对象，这两年来，我修改该类，删除了某个属性和增加了另外一个属性，两年后，我又去读取那个保存的对象，或有什么结果？
    未知！sun的jdk就会蒙了。为此，一个解决办法就是在类中增加版本后，每一次类的属性修改，都应该把版本号升级一下，这样，在读取时，
    比较存储对象时的版本号与当前类的版本号，如果不一致，则直接报版本号不同的错!
-20. 面向对象的特征有哪些方面
+20. 面向对象的特征有哪些方面                 
 	面向对象是相对于面向过程而言的，面向过程强调的是功能，面向对象强调的是将功能封装进对象强调具备功能的对象，
 	- 思想特点好处：
 		- 是符合人们思考习惯的一种思想；
@@ -292,10 +291,10 @@ Java基础面试图
 		球这个对象应该有移动到下一个点的方法
 		绳子这个对象应该有提供下个点是哪个点的方法，以通知小球移动的方向		
 			
-21. java中实现多态的机制是什么？ 
+21. java中实现多态的机制是什么？            
 	靠的是父类或接口定义的引用变量可以指向子类或具体实现类的实例对象，而程序调用的方法在运行期才动态绑定，就是引用变量所指向的具体实例对象的方法，
 	也就是内存里正在运行的那个对象的方法，而不是引用变量的类型中定义的方法。 
-22. abstract class和interface有什么区别? 	
+22. abstract class和interface有什么区别? 	          
 	含有abstract修饰符的class即为抽象类，abstract类不能创建的实例对象。含有abstract方法的类必须定义为abstract class，abstract class类中的方法不必是抽象的。
 	abstract class类中定义抽象方法必须在具体(Concrete)子类中实现，所以，不能有抽象构造方法或抽象静态方法。如果的子类没有实现抽象父类中的所有抽象方法，
 	那么子类也必须定义为abstract类型。接口（interface）可以说成是抽象类的一种特例，接口中的所有方法都必须是抽象的。
@@ -309,7 +308,7 @@ Java基础面试图
 	- 抽象类中可以包含静态方法，接口中不能包含静态方法
 	- 抽象类和接口中都可以包含静态成员变量，抽象类中的静态成员变量的访问类型可以任意，但接口中定义的变量只能是public static final类型，并且默认即为public static final类型。
 	- 一个类可以实现多个接口，但只能继承一个抽象类。	
-23. abstract的method是否可同时是static,是否可同时是native，是否可同时是synchronized?         
+23. abstract的method是否可同时是static,是否可同时是native，是否可同时是synchronized?           
 	abstract的method 不可以是static的，因为抽象的方法是要被子类实现的，而static与子类扯不上关系！
 	native方法表示该方法要用另外一种依赖平台的编程语言实现的，不存在着被子类实现的问题，所以，它也不能是抽象的，不能与abstract混用。
 	例如，FileOutputSteam类要硬件打交道，底层的实现用的是操作系统相关的api实现，例如，在windows用c语言实现的，所以，查看jdk 的源代码，
@@ -357,9 +356,10 @@ Java基础面试图
 	这种内部类对其他类是不可见的其他类无法引用这种内部类，但是这种内部类创建的实例对象可以传递给其他类访问。这种内部类必须是先定义，
 	后使用，即内部类的定义代码必须出现在使用该类之前，这与方法中的局部变量必须先定义后使用的道理也是一样的。这种内部类可以访问方法体中的局部变量，
 	但是，该局部变量前必须加final修饰符。	
-25. 内部类可以引用它的包含类的成员吗？有没有什么限制？ 
+25. 内部类可以引用它的包含类的成员吗？有没有什么限制？             
 	完全可以。如果不是静态内部类，那没有什么限制！ 
 	如果你把静态嵌套类当作内部类的一种特例，那在这种情况下不可以访问外部类的普通成员变量，而只能访问外部类中的静态成员，例如，下面的代码：
+    ```java
 	class Outer {
 		static int x;
 		static class Inner
@@ -370,11 +370,12 @@ Java基础面试图
 			}
 		}
 	}
+    ```
 	答题时，也要能察言观色，揣摩提问者的心思，显然人家希望你说的是静态内部类不能访问外部类的成员，但你一上来就顶牛，这不好，要先顺着人家，
 	让人家满意，然后再说特殊情况，让人家吃惊。
-26. Anonymous Inner Class (匿名内部类) 是否可以extends(继承)其它类，是否可以implements(实现)interface(接口)? 
+26. Anonymous Inner Class (匿名内部类) 是否可以extends(继承)其它类，是否可以implements(实现)interface(接口)?                  
 	可以继承其他类或实现其他接口。不仅是可以，而是必须!
-27. super.getClass()方法调用
+27. super.getClass()方法调用                  
 	下面程序的输出结果是多少？
 	```java
 	import java.util.Date;
@@ -396,14 +397,14 @@ Java基础面试图
 	所以，super.getClass().getName()方法返回的也应该是Test。如果想得到父类的名称，应该用如下代码：       
 	`getClass().getSuperClass().getName();`
 
-28. jdk中哪些类是不能继承的？
+28. jdk中哪些类是不能继承的？              
 	不能继承的是类是那些用final关键字修饰的类。一般比较基本的类型或防止扩展类无意间破坏原来方法的实现的类型都应该是final的，
 	在jdk中System,String,StringBuffer等都是基本类型。
-29. String是最基本的数据类型吗? 
+29. String是最基本的数据类型吗?                
 	基本数据类型包括byte、int、char、long、float、double、boolean和short。 
 	java.lang.String类是final类型的，因此不可以继承这个类、不能修改这个类。为了提高效率节省空间，我们应该用StringBuffer类 
 
-30. String s = "Hello";s = s + " world!";这两行代码执行后，原始的String对象中的内容到底变了没有？
+30. String s = "Hello";s = s + " world!";这两行代码执行后，原始的String对象中的内容到底变了没有？                    
 	没有。因为String被设计成不可变(immutable)类，所以它的所有对象都是不可变对象。在这段代码中，s原先指向一个String对象，内容是 "Hello"，
 	然后我们对s进行了+操作，那么s所指向的那个对象是否发生了改变呢？答案是没有。这时，s不指向原来那个对象了，而指向了另一个 String对象，
 	内容为"Hello world!"，原来那个对象还存在于内存之中，只是s这个引用变量不再指向它了。
@@ -432,11 +433,11 @@ Java基础面试图
 	所以多线程并发访问也不会有任何问题。当然也有一些缺点，比如每个不同的状态都要一个对象来代表，可能会造成性能上的问题。所以Java标准类库还提供了一个可变版本，
 	即 StringBuffer。
  
-31. String s = new String("xyz");创建了几个String Object? 二者之间有什么区别？        
+31. String s = new String("xyz");创建了几个String Object? 二者之间有什么区别？         
 	两个或一个，”xyz”对应一个对象，这个对象放在字符串常量缓冲区，常量”xyz”不管出现多少遍，都是缓冲区中的那一个。
 	New String每写一遍，就创建一个新的对象，它一句那个常量”xyz”对象的内容来创建出一个新String对象。如果以前就用过’xyz’，
 	这句代表就不会创建”xyz”自己了，直接从缓冲区拿。
-32. String 和StringBuffer的区别
+32. String 和StringBuffer的区别               
 	JAVA平台提供了两个类：String和StringBuffer，它们可以储存和操作字符串，即包含多个字符的字符数据。String类表示内容不可改变的字符串。
 	而StringBuffer类表示内容可以被修改的字符串。当你知道字符数据要改变的时候你就可以使用StringBuffer。典型地，你可以使用StringBuffers来动态构造字符数据。
 	另外，String实现了equals方法，new String(“abc”).equals(new String(“abc”)的结果为true,而StringBuffer没有实现equals方法，
@@ -458,12 +459,12 @@ Java基础面试图
 	在讲两者区别时，应把循环的次数搞成10000，然后用endTime-beginTime来比较两者执行的时间差异，最后还要讲讲StringBuilder与StringBuffer的区别。
 	String覆盖了equals方法和hashCode方法，而StringBuffer没有覆盖equals方法和hashCode方法，所以，将StringBuffer对象存储进Java集合类中时会出现问题。
 
-33. StringBuffer与StringBuilder的区别
+33. StringBuffer与StringBuilder的区别                 
 	StringBuffer和StringBuilder类都表示内容可以被修改的字符串，StringBuilder是线程不安全的，运行效率高，如果一个字符串变量是在方法里面定义，
 	这种情况只可能有一个线程访问它，不存在不安全的因素了，则用StringBuilder。如果要在类里面定义成员变量，并且这个类的实例对象会在多线程环境下使用，
 	那么最好用StringBuffer。
 
-34. 如何把一段逗号分割的字符串转换成一个数组?
+34. 如何把一段逗号分割的字符串转换成一个数组?                   
 	如果不查jdk api，我很难写出来！我可以说说我的思路：
 	- 用正则表达式，代码大概为：String [] result = orgStr.split(“,”);
 	- 用 StingTokenizer ,代码为：
@@ -475,10 +476,10 @@ Java基础面试图
 			result[i++]=toker.nextToken();
 		}
 		```
-35. 数组有没有length()这个方法? String有没有length()这个方法？ 
+35. 数组有没有length()这个方法? String有没有length()这个方法？                
 	数组没有length()这个方法，有length的属性。String有length()这个方法。
 	
-36. 下面这条语句一共创建了多少个对象：String s="a"+"b"+"c"+"d";
+36. 下面这条语句一共创建了多少个对象：String s="a"+"b"+"c"+"d";                   
 	答：对于如下代码：
 	String s1 = "a";
 	String s2 = s1 + "b";
@@ -494,7 +495,7 @@ Java基础面试图
 	```
 	最终打印的结果应该为true。 
 
-37. try {}里有一个return语句，那么紧跟在这个try后的finally {}里的code会不会被执行，什么时候被执行，在return前还是后?       
+37. try {}里有一个return语句，那么紧跟在这个try后的finally {}里的code会不会被执行，什么时候被执行，在return前还是后?                   
 	也许你的答案是在return之前，但往更细地说，我的答案是在return中间执行，请看下面程序代码的运行结果： 
 	```java
 	public  class Test {
@@ -527,7 +528,7 @@ Java基础面试图
 
 	运行结果是1，为什么呢？主函数调用子函数并得到结果的过程，好比主函数准备一个空罐子，当子函数要返回结果时，先把结果放在罐子里，
 	然后再将程序逻辑返回到主函数。所谓返回，就是子函数说，我不运行了，你主函数继续运行吧，这没什么结果可言，结果是在说这话之前放进罐子里的。
-38. 下面的程序代码输出的结果是多少？
+38. 下面的程序代码输出的结果是多少？             
 	```java
 	public class  smallT {
 		public static void  main(String args[]) {
@@ -591,21 +592,21 @@ Java基础面试图
 	```
 	结论：finally中的代码比return 和break语句后执行
 
-39. final, finally, finalize的区别。 
+39. final, finally, finalize的区别。          
 	final 用于声明属性，方法和类，分别表示属性不可变，方法不可覆盖，类不可继承。 
 	内部类要访问局部变量，局部变量必须定义成final类型.       
 	finally是异常处理语句结构的一部分，表示总是执行。       
 	finalize是Object类的一个方法，在垃圾收集器执行的时候会调用被回收对象的此方法，可以覆盖此方法提供垃圾收集时的其他资源回收，例如关闭文件等。
 	JVM不保证此方法总被调用
 
-40. 运行时异常与一般异常有何异同？ 
+40. 运行时异常与一般异常有何异同？             
 	异常表示程序运行过程中可能出现的非正常状态，运行时异常表示虚拟机的通常操作中可能遇到的异常，是一种常见运行错误。
 	java编译器要求方法必须声明抛出可能发生的非运行时异常，但是并不要求必须声明抛出未被捕获的运行时异常。   
-41. error和exception有什么区别? 
+41. error和exception有什么区别?              
 	error 表示恢复不是不可能但很困难的情况下的一种严重问题。比如说内存溢出。不可能指望程序能处理这样的情况。 
 	exception 表示一种设计或实现问题。也就是说，它表示如果程序运行正常，从不会发生的情况。 
 
-42. java中有几种方法可以实现一个线程？用什么关键字修饰同步方法? stop()和suspend()方法为何不推荐使用？ 
+42. java中有几种方法可以实现一个线程？用什么关键字修饰同步方法? stop()和suspend()方法为何不推荐使用？           
 	java5以前，有如下两种：     
 	第一种：      
 	```java
@@ -643,15 +644,15 @@ Java基础面试图
 	就会造成死锁。所以不应该使用suspend()，而应在自己的Thread类中置入一个标志，指出线程应该活动还是挂起。若标志指出线程应该挂起，便用wait()命其进入等待状态。
 	若标志指出线程应当恢复，则用一个notify()重新启动线程。 
 
-43. 启动一个线程是用run()还是start()? . 
+43. 启动一个线程是用run()还是start()?             
 	启动一个线程是调用start()方法，使线程就绪状态，以后可以被调度为运行状态，一个线程必须关联一些具体的执行代码，run()方法是该线程所关联的执行代码。 
 
-44. 简述synchronized和java.util.concurrent.locks.Lock的异同 ？ 
+44. 简述synchronized和java.util.concurrent.locks.Lock的异同 ？              
 	主要相同点：Lock能完成synchronized所实现的所有功能                   
 	主要不同点：Lock有比synchronized更精确的线程语义和更好的性能。synchronized会自动释放锁，而Lock一定要求程序员手工释放，
 	并且必须在finally从句中释放。Lock还有更强大的功能，例如，它的tryLock方法可以非阻塞方式去拿锁。 
 	
-45. 设计4个线程，其中两个线程每次对j增加1，另外两个线程对j每次减少1。写出程序。 
+45. 设计4个线程，其中两个线程每次对j增加1，另外两个线程对j每次减少1。写出程序。             
 	以下程序使用内部类实现线程，对j增减的时候没有考虑顺序问题。 
 	```java
 	public class ThreadTest1 
@@ -730,7 +731,7 @@ Java基础面试图
 	}
 	```
 	
-46. 子线程循环10次，接着主线程循环100，接着又回到子线程循环10次，接着再回到主线程又循环100，如此循环50次，请写出程序。 
+46. 子线程循环10次，接着主线程循环100，接着又回到子线程循环10次，接着再回到主线程又循环100，如此循环50次，请写出程序。         
 	```java
 	public class ThreadTest {
 
@@ -740,7 +741,6 @@ Java基础面试图
 		public static void main(String[] args) {
 			// TODO Auto-generated method stub
 			new ThreadTest().init();
-
 		}
 
 		public void init()
@@ -786,10 +786,8 @@ Java基础面试图
 				}
 				bShouldSub = true;
 				this.notify();
-			
-			}
-			
-			
+			}	
+		
 			public synchronized void SubThread(int i)
 			{
 				if(!bShouldSub)
@@ -835,9 +833,7 @@ Java基础面试图
 			
 		}.start();*/		
 			
-			
 			//final String str = new String("");
-
 			new Thread(
 					new Runnable()
 					{
@@ -890,7 +886,6 @@ Java基础面试图
 				}			
 			}
 		}
-
 	}
 	下面使用jdk5中的并发库来实现的：
 	import java.util.concurrent.Executors;
@@ -960,7 +955,7 @@ Java基础面试图
 	}
 	```
 
-47. ArrayList和Vector的区别
+47. ArrayList和Vector的区别             
 	这两个类都实现了List接口（List接口继承了Collection接口），他们都是有序集合，即存储在这两个集合中的元素的位置都是有顺序的，相当于一种动态的数组，
 	我们以后可以按位置索引号取出某个元素，，并且其中的数据是允许重复的，这是HashSet之类的集合的最大不同处，HashSet之类的集合不可以按索引号去检索其中的元素，
 	也不允许有重复的元素（本来题目问的与hashset没有任何关系，但为了说清楚ArrayList与Vector的功能，我们使用对比方式，更有利于说明问题）。         
@@ -977,7 +972,7 @@ Java基础面试图
 		Vector还可以设置增长的空间大小，而ArrayList没有提供设置增长空间的方法。
 		总结：即Vector增长原来的一倍，ArrayList增加原来的0.5倍。
 		
-48. HashMap和Hashtable的区别
+48. HashMap和Hashtable的区别           
 	HashMap是Hashtable的轻量级实现（非线程安全的实现），他们都完成了Map接口，主要区别在于HashMap允许空（null）键值（key）,由于非线程安全，
 	在只有一个线程访问的情况下，效率要高于Hashtable。 
 	HashMap允许将null作为一个entry的key或者value，而Hashtable不允许。 
@@ -990,14 +985,14 @@ Java基础面试图
 	- 同步性:Hashtable是线程安全的，也就是说是同步的，而HashMap是线程序不安全的，不是同步的 
 	- 值：只有HashMap可以让你将空值作为一个表的条目的key或value 
 	
-49. List 和 Map 区别?
+49. List 和 Map 区别?             
 	一个是存储单列数据的集合，另一个是存储键和值这样的双列数据的集合，List中存储的数据是有顺序，并且允许重复；Map中存储的数据是没有顺序的，
 	其键是不能重复的，它的值是可以有重复的。
 	
-50. List, Set, Map是否继承自Collection接口? 
+50. List, Set, Map是否继承自Collection接口?           
 	List，Set是，Map不是 
 	
-51. List、Map、Set三个接口，存取元素时，各有什么特点？ 
+51. List、Map、Set三个接口，存取元素时，各有什么特点？                
 	这样的题属于随意发挥题：这样的题比较考水平，两个方面的水平：一是要真正明白这些内容，二是要有较强的总结和表述能力。如果你明白，
 	但表述不清楚，在别人那里则等同于不明白。
 	首先，List与Set具有相似性，它们都是单列元素的集合，所以，它们有一个功共同的父接口，叫Collection。Set里面不允许有重复的元素，所谓重复，
@@ -1019,13 +1014,13 @@ Java基础面试图
 	new 两个Student插入到HashSet中，看HashSet的size，实现hashcode和equals方法后再看size。
 	同一个对象可以在Vector中加入多次。往集合里面加元素，相当于集合里用一根绳子连接到了目标对象。往HashSet中却加不了多次的。 
 
-52. 说出ArrayList,Vector, LinkedList的存储性能和特性 
+52. 说出ArrayList,Vector, LinkedList的存储性能和特性              
 	ArrayList和Vector都是使用数组方式存储数据，此数组元素数大于实际存储的数据以便增加和插入元素，它们都允许直接按序号索引元素，
 	但是插入元素要涉及数组元素移动等内存操作，所以索引数据快而插入数据慢，Vector由于使用了synchronized方法（线程安全），通常性能上较ArrayList差，
 	而LinkedList使用双向链表实现存储，按序号索引数据需要进行前向或后向遍历，但是插入数据时只需要记录本项的前后项即可，所以插入速度较快。
 	LinkedList也是线程不安全的，LinkedList提供了一些方法，使得LinkedList可以被当作堆栈和队列来使用。
 	
-53. 去掉一个Vector集合中重复的元素 
+53. 去掉一个Vector集合中重复的元素             
 	```java
 	Vector newVector = new Vector();
 	For (int i=0;i<vector.size();i++) {
@@ -1037,21 +1032,21 @@ Java基础面试图
 	```
 	还有一种简单的方式，`HashSet set = new HashSet(vector);`
 	
-54. Collection 和 Collections的区别。     
+54. Collection 和 Collections的区别。              
 	Collection是集合类的上级接口，继承与他的接口主要有Set 和List.    
 	Collections是针对集合类的一个帮助类，他提供一系列静态方法实现对各种集合的搜索、排序、线程安全化等操作。 
 	
-55. Set里的元素是不能重复的，那么用什么方法来区分重复与否呢? 是用==还是equals()? 它们有何区别? 
+55. Set里的元素是不能重复的，那么用什么方法来区分重复与否呢? 是用==还是equals()? 它们有何区别?             
 	Set里的元素是不能重复的，元素重复与否是使用equals()方法进行判断的。 
 	equals()和==方法决定引用值是否指向同一对象equals()在类中被覆盖，为的是当两个分离的对象的内容和类型相配的话，返回真值。
 
-56. 两个对象值相同(x.equals(y) == true)，但却可有不同的hash code，这句话对不对? 
+56. 两个对象值相同(x.equals(y) == true)，但却可有不同的hash code，这句话对不对?            
 	对。
 	如果对象要保存在HashSet或HashMap中，它们的equals相等，那么，它们的hashcode值就必须相等。
 	如果不是要保存在HashSet或HashMap，则与hashcode没有什么关系了，这时候hashcode不等是可以的，例如arrayList存储的对象就不用实现hashcode，当然，
 	我们没有理由不实现，通常都会去实现的。
 	
-57. 字节流与字符流的区别
+57. 字节流与字符流的区别                
 	要把一片二进制数据数据逐一输出到某个设备中，或者从某个设备中逐一读取一片二进制数据，不管输入输出设备是什么，我们要用统一的方式来完成这些操作，
 	用一种抽象的方式进行描述，这个抽象描述方式起名为IO流，对应的抽象类为OutputStream和InputStream ，不同的实现类就代表不同的输入和输出设备，
 	它们都是针对字节进行操作的。在应用中，经常要完全是字符的一段文本输出去或读进来，用字节流可以吗？计算机中的一切最终都是二进制的字节形式存在。
@@ -1061,12 +1056,12 @@ Java基础面试图
 	字符向字节转换时，要注意编码的问题，因为字符串转成字节数组，
 	其实是转成该字符的某种编码的字节形式，读取也是反之的道理。
 
-58. 垃圾回收器的基本原理是什么？垃圾回收器可以马上回收内存吗？有什么办法主动通知虚拟机进行垃圾回收？ 
+58. 垃圾回收器的基本原理是什么？垃圾回收器可以马上回收内存吗？有什么办法主动通知虚拟机进行垃圾回收？              
 	对于GC来说，当程序员创建对象时，GC就开始监控这个对象的地址、大小以及使用情况。通常，GC采用有向图的方式记录和管理堆(heap)中的所有对象。
 	通过这种方式确定哪些对象是"可达的"，哪些对象是"不可达的"。当GC确定一些对象为"不可达"时，GC就有责任回收这些内存空间。可以。
 	程序员可以手动执行System.gc()，通知GC运行，但是Java语言规范并不保证GC一定会执行。 
  
-59. 什么时候用assert。 
+59. 什么时候用assert。              
 	assertion(断言)在软件开发中是一种常用的调试方式，很多开发语言中都支持这种机制。在实现中，assertion就是在程序中的一条语句，
 	它对一个boolean表达式进行检查，一个正确程序必须保证这个boolean表达式的值为true；如果该值为false，说明程序已经处于不正确的状态下，
 	assert将给出警告或退出。一般来说，assertion用于保证程序最基本、关键的正确性。assertion检查通常在开发和测试时开启。为了提高性能，
@@ -1094,17 +1089,17 @@ Java基础面试图
 	}
 	```
 
-60. 能不能自己写个类，也叫java.lang.String？
+60. 能不能自己写个类，也叫java.lang.String？                  
 	可以，但在应用的时候，需要用自己的类加载器去加载，否则，系统的类加载器永远只是去加载jre.jar包中的那个java.lang.String。
 	由于在tomcat的web应用程序中，都是由webapp自己的类加载器先自己加载WEB-INF/classess目录中的类，然后才委托上级的类加载器加载，
 	如果我们在tomcat的web应用程序中写一个java.lang.String，这时候Servlet程序加载的就是我们自己写的java.lang.String，但是这么干就会出很多潜在的问题，
 	原来所有用了java.lang.String类的都将出现问题。
 	虽然java提供了endorsed技术，可以覆盖jdk中的某些类，具体做法是….。但是，能够被覆盖的类是有限制范围，反正不包括java.lang这样的包中的类。
 	（下面的例如主要是便于大家学习理解只用，不要作为答案的一部分，否则，人家怀疑是题目泄露了）例如，运行下面的程序：
+    ```java
 	package java.lang;
 
 	public class String {
-
 		/**
 		 * @param args
 		 */
@@ -1112,8 +1107,8 @@ Java基础面试图
 			// TODO Auto-generated method stub
 			System.out.println("string");
 		}
-
 	}
+    ```
 	报告的错误如下：
 	java.lang.NoSuchMethodError: main
 	Exception in thread "main"
@@ -1122,7 +1117,7 @@ Java基础面试图
 算法与编程
 ---
 
-1. 判断身份证：要么是15位，要么是18位，最后一位可以为字母，并写程序提出其中的年月日。
+1. 判断身份证：要么是15位，要么是18位，最后一位可以为字母，并写程序提出其中的年月日。                
 	答：我们可以用正则表达式来定义复杂的字符串格式，(\d{17}[0-9a-zA-Z]|\d{14}[0-9a-zA-Z])可以用来判断是否为合法的15位或18位身份证号码。
 	因为15位和18位的身份证号码都是从7位到第12位为身份证为日期类型。这样我们可以设计出更精确的正则模式，使身份证号的日期合法，
 	这样我们的正则模式可以进一步将日期部分的正则修改为[12][0-9]{3}[01][0-9][123][0-9]，当然可以更精确的设置日期。
@@ -1171,7 +1166,7 @@ Java基础面试图
 	}
 	```
 	
-2. 编写一个程序，将a.txt文件中的单词与b.txt文件中的单词交替合并到c.txt文件中，a.txt文件中的单词用回车符分隔，b.txt文件中用回车或空格进行分隔。
+2. 编写一个程序，将a.txt文件中的单词与b.txt文件中的单词交替合并到c.txt文件中，a.txt文件中的单词用回车符分隔，b.txt文件中用回车或空格进行分隔。             
 	```java
 	package cn.itcast;
 
@@ -1180,57 +1175,53 @@ Java基础面试图
 	import java.io.FileWriter;
 
 	public class MainClass{
-		public static void main(String[] args) throws Exception{
-			FileManager a = new FileManager("a.txt",new char[]{'\n'});
-			FileManager b = new FileManager("b.txt",new char[]{'\n',' '});		
-			FileWriter c = new FileWriter("c.txt");
-			String aWord = null;
-			String bWord = null;
-			while((aWord = a.nextWord()) !=null ){
-				c.write(aWord + "\n");
-				bWord = b.nextWord();
-				if(bWord != null)
-					c.write(bWord + "\n");
-			}
-			
-			while((bWord = b.nextWord()) != null){
-				c.write(bWord + "\n");
-			}	
-			c.close();
-		}
-		
+    	public static void main(String[] args) throws Exception{
+    		FileManager a = new FileManager("a.txt",new char[]{'\n'});
+    		FileManager b = new FileManager("b.txt",new char[]{'\n',' '});		
+    		FileWriter c = new FileWriter("c.txt");
+    		String aWord = null;
+    		String bWord = null;
+    		while((aWord = a.nextWord()) !=null ){
+    			c.write(aWord + "\n");
+    			bWord = b.nextWord();
+    			if(bWord != null)
+    				c.write(bWord + "\n");
+    		}
+    		
+    		while((bWord = b.nextWord()) != null){
+    			c.write(bWord + "\n");
+    		}	
+    		c.close();
+    	}
 	}
 
-
 	class FileManager{
-
-		String[] words = null;
-		int pos = 0;
-		public FileManager(String filename,char[] seperators) throws Exception{
-			File f = new File(filename);
-			FileReader reader = new FileReader(f);
-			char[] buf = new char[(int)f.length()];
-			int len = reader.read(buf);
-			String results = new String(buf,0,len);
-			String regex = null;
-			if(seperators.length >1 ){
-				regex = "" + seperators[0] + "|" + seperators[1];
-			}else{
-				regex = "" + seperators[0];
-			}
-			words = results.split(regex);
-		}
-		
-		public String nextWord(){
-			if(pos == words.length)
-				return null;
-			return words[pos++];
-		}
-
+    	String[] words = null;
+    	int pos = 0;
+    	public FileManager(String filename,char[] seperators) throws Exception{
+    		File f = new File(filename);
+    		FileReader reader = new FileReader(f);
+    		char[] buf = new char[(int)f.length()];
+    		int len = reader.read(buf);
+    		String results = new String(buf,0,len);
+    		String regex = null;
+    		if(seperators.length >1 ){
+    			regex = "" + seperators[0] + "|" + seperators[1];
+    		}else{
+    			regex = "" + seperators[0];
+    		}
+    		words = results.split(regex);
+    	}
+    
+    	public String nextWord(){
+    		if(pos == words.length)
+    			return null;
+    		return words[pos++];
+    	}
 	}
 	```
 	
-3. 编写一个程序，将d:\java目录下的所有.java文件复制到d:\jad目录下，并将原来文件的扩展名从.java改为.jad。
+3. 编写一个程序，将d:\java目录下的所有.java文件复制到d:\jad目录下，并将原来文件的扩展名从.java改为.jad。               
 	listFiles方法接受一个FileFilter对象，这个FileFilter对象就是过虑的策略对象，不同的人提供不同的FileFilter实现，即提供了不同的过滤策略。
 	```java
 	import java.io.File;
@@ -1243,40 +1234,38 @@ Java基础面试图
 
 	public class Jad2Java {
 
-		public static void main(String[] args) throws Exception {
-			File srcDir = new File("java");
-			if(!(srcDir.exists() && srcDir.isDirectory()))
-					throw new Exception("目录不存在");
-			File[] files = srcDir.listFiles(
-				new FilenameFilter(){
+	public static void main(String[] args) throws Exception {
+		File srcDir = new File("java");
+		if(!(srcDir.exists() && srcDir.isDirectory()))
+				throw new Exception("目录不存在");
+		File[] files = srcDir.listFiles(
+			new FilenameFilter(){
 
-						public boolean accept(File dir, String name) {
-							return name.endsWith(".java");
-						}
-						
+					public boolean accept(File dir, String name) {
+						return name.endsWith(".java");
 					}
-			);
-			
-			System.out.println(files.length);
-			File destDir = new File("jad");
-			if(!destDir.exists()) destDir.mkdir();
-			for(File f :files){
-				FileInputStream  fis = new FileInputStream(f);
-				String destFileName = f.getName().replaceAll("\\.java$", ".jad");
-				FileOutputStream fos = new FileOutputStream(new File(destDir,destFileName));
-				copy(fis,fos);
-				fis.close();
-				fos.close();
-			}
-		}
+					
+				}
+		);
 		
-		private static void copy(InputStream ips,OutputStream ops) throws Exception{
-			int len = 0;
-			byte[] buf = new byte[1024];
-			while((len = ips.read(buf)) != -1){
-				ops.write(buf,0,len);
-			}
+		System.out.println(files.length);
+		File destDir = new File("jad");
+		if(!destDir.exists()) destDir.mkdir();
+		for(File f :files){
+			FileInputStream  fis = new FileInputStream(f);
+			String destFileName = f.getName().replaceAll("\\.java$", ".jad");
+			FileOutputStream fos = new FileOutputStream(new File(destDir,destFileName));
+			copy(fis,fos);
+			fis.close();
+			fos.close();
+		}
+	}
 
+	private static void copy(InputStream ips,OutputStream ops) throws Exception{
+		int len = 0;
+		byte[] buf = new byte[1024];
+		while((len = ips.read(buf)) != -1){
+			ops.write(buf,0,len);
 		}
 	}
 	```
@@ -1322,7 +1311,7 @@ Java基础面试图
 	}
 	```
 	
-4. 编写一个截取字符串的函数，输入为一个字符串和字节数，输出为按字节截取的字符串，但要保证汉字不被截取半个，如“我ABC”，4，应该截取“我AB”，
+4. 编写一个截取字符串的函数，输入为一个字符串和字节数，输出为按字节截取的字符串，但要保证汉字不被截取半个，如“我ABC”，4，应该截取“我AB”，             
 	输入“我ABC汉DEF”，6，应该输出“我ABC”，而不是“我ABC+汉的半个”。
 	```java
 	首先要了解中文字符有多种编码及各种编码的特征。
@@ -1350,7 +1339,7 @@ Java基础面试图
 	}
 	```
 	
-5. 有一个字符串，其中包含中文字符、英文字符和数字字符，请统计和打印出各个字符的个数。
+5. 有一个字符串，其中包含中文字符、英文字符和数字字符，请统计和打印出各个字符的个数。                    
 	```java
 	哈哈，其实包含中文字符、英文字符、数字字符原来是出题者放的烟雾弹。
 	String content = “中国aadf的111萨bbb菲的zz萨菲”;
@@ -1385,7 +1374,7 @@ Java基础面试图
 	System.out.println(……………);
 	```
 	
-6. 说明生活中遇到的二叉树，用java实现二叉树
+6. 说明生活中遇到的二叉树，用java实现二叉树                 
 	这是组合设计模式。
 	我有很多个(假设10万个)数据要保存起来，以后还需要从保存的这些数据中检索是否存在某个数据，（我想说出二叉树的好处，该怎么说呢？那就是说别人的缺点），
 	假如存在数组中，那么，碰巧要找的数字位于99999那个地方，那查找的速度将很慢，因为要从第1个依次往后取，取出来后进行比较。
@@ -1562,7 +1551,7 @@ Java基础面试图
 	}
 	```
 	
-7. 从类似如下的文本文件中读取出所有的姓名，并打印出重复的姓名和重复的次数，并按重复次数排序：
+7. 从类似如下的文本文件中读取出所有的姓名，并打印出重复的姓名和重复的次数，并按重复次数排序：               
 	- 张三,28
 	- 李四,35
 	- 张三,28
@@ -1571,8 +1560,9 @@ Java基础面试图
 	- 李四,35
 	- 赵六,28
 	- 田七,35
-	
+ 
 	程序代码如下（答题要博得用人单位的喜欢，包名用该公司，面试前就提前查好该公司的网址，如果查不到，现场问也是可以的。还要加上实现思路的注释）：
+
 	```java
 	package com.huawei.interview;
 
@@ -1586,122 +1576,122 @@ Java基础面试图
 	import java.util.Map;
 	import java.util.TreeSet;
 
-
 	public class GetNameTest {
 
-		/**
-		 * @param args
-		 */
-		public static void main(String[] args) {
-			// TODO Auto-generated method stub
-			//InputStream ips = GetNameTest.class.getResourceAsStream("/com/huawei/interview/info.txt");
-			//用上一行注释的代码和下一行的代码都可以，因为info.txt与GetNameTest类在同一包下面，所以，可以用下面的相对路径形式
-			
-			Map results = new HashMap();
-			InputStream ips = GetNameTest.class.getResourceAsStream("info.txt");
-			BufferedReader in = new BufferedReader(new InputStreamReader(ips));
-			String line = null;
-			try {
-				while((line=in.readLine())!=null)
-				{
-					dealLine(line,results);
-				}
-				sortResults(results);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		//InputStream ips = GetNameTest.class.getResourceAsStream("/com/huawei/interview/info.txt");
+		//用上一行注释的代码和下一行的代码都可以，因为info.txt与GetNameTest类在同一包下面，所以，可以用下面的相对路径形式
 		
-		static class User
-		{
-			public  String name;
-			public Integer value;
-			public User(String name,Integer value)
+		Map results = new HashMap();
+		InputStream ips = GetNameTest.class.getResourceAsStream("info.txt");
+		BufferedReader in = new BufferedReader(new InputStreamReader(ips));
+		String line = null;
+		try {
+			while((line=in.readLine())!=null)
 			{
-				this.name = name;
-				this.value = value;
+				dealLine(line,results);
 			}
+			sortResults(results);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
-			@Override
-			public boolean equals(Object obj) {
-				// TODO Auto-generated method stub
+	static class User
+	{
+		public  String name;
+		public Integer value;
+		public User(String name,Integer value)
+		{
+			this.name = name;
+			this.value = value;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			// TODO Auto-generated method stub
+				
+			//下面的代码没有执行，说明往treeset中增加数据时，不会使用到equals方法。
+			boolean result = super.equals(obj);
+			System.out.println(result);
+			return result;
+		}
+	}
+
+	private static void sortResults(Map results) {
+		// TODO Auto-generated method stub
+		TreeSet sortedResults = new TreeSet(
+				new Comparator(){
+					public int compare(Object o1, Object o2) {
+						// TODO Auto-generated method stub
+						User user1 = (User)o1;
+						User user2 = (User)o2;
+						/*如果compareTo返回结果0，则认为两个对象相等，新的对象不会增加到集合中去
+						 * 所以，不能直接用下面的代码，否则，那些个数相同的其他姓名就打印不出来。
+						 * */
+						
+						//return user1.value-user2.value;
+						//return user1.value<user2.value?-1:user1.value==user2.value?0:1;
+						if(user1.value<user2.value)
+						{
+							return -1;
+						}else if(user1.value>user2.value)
+						{
+							return 1;
+						}else
+						{
+							return user1.name.compareTo(user2.name);
+						}
+					}
 					
-				//下面的代码没有执行，说明往treeset中增加数据时，不会使用到equals方法。
-				boolean result = super.equals(obj);
-				System.out.println(result);
-				return result;
+				}
+		);
+		Iterator iterator = results.keySet().iterator();
+		while(iterator.hasNext())
+		{
+			String name = (String)iterator.next();
+			Integer value = (Integer)results.get(name);
+			if(value > 1)
+			{				
+				sortedResults.add(new User(name,value));				
 			}
 		}
 		
-		private static void sortResults(Map results) {
-			// TODO Auto-generated method stub
-			TreeSet sortedResults = new TreeSet(
-					new Comparator(){
-						public int compare(Object o1, Object o2) {
-							// TODO Auto-generated method stub
-							User user1 = (User)o1;
-							User user2 = (User)o2;
-							/*如果compareTo返回结果0，则认为两个对象相等，新的对象不会增加到集合中去
-							 * 所以，不能直接用下面的代码，否则，那些个数相同的其他姓名就打印不出来。
-							 * */
-							
-							//return user1.value-user2.value;
-							//return user1.value<user2.value?-1:user1.value==user2.value?0:1;
-							if(user1.value<user2.value)
-							{
-								return -1;
-							}else if(user1.value>user2.value)
-							{
-								return 1;
-							}else
-							{
-								return user1.name.compareTo(user2.name);
-							}
-						}
-						
-					}
-			);
-			Iterator iterator = results.keySet().iterator();
-			while(iterator.hasNext())
-			{
-				String name = (String)iterator.next();
-				Integer value = (Integer)results.get(name);
-				if(value > 1)
-				{				
-					sortedResults.add(new User(name,value));				
-				}
-			}
-			
-			printResults(sortedResults);
-		}
-		private static void printResults(TreeSet sortedResults) 
+		printResults(sortedResults);
+	}
+	private static void printResults(TreeSet sortedResults) 
+	{
+		Iterator iterator  = sortedResults.iterator();
+		while(iterator.hasNext())
 		{
-			Iterator iterator  = sortedResults.iterator();
-			while(iterator.hasNext())
-			{
-				User user = (User)iterator.next();
-				System.out.println(user.name + ":" + user.value);
-			}	
-		}
-		public static void dealLine(String line,Map map)
+			User user = (User)iterator.next();
+			System.out.println(user.name + ":" + user.value);
+		}	
+	}
+	public static void dealLine(String line,Map map)
+	{
+		if(!"".equals(line.trim()))
 		{
-			if(!"".equals(line.trim()))
+			String [] results = line.split(",");
+			if(results.length == 3)
 			{
-				String [] results = line.split(",");
-				if(results.length == 3)
-				{
-					String name = results[1];
-					Integer value = (Integer)map.get(name);
-					if(value == null) value = 0;
-					map.put(name,value + 1);
-				}
+				String name = results[1];
+				Integer value = (Integer)map.get(name);
+				if(value == null) value = 0;
+				map.put(name,value + 1);
 			}
 		}
+	}
 
 	}
 	```
-8. 写一个Singleton出来。
+    
+8. 写一个Singleton出来。             
 	Singleton模式主要作用是保证在Java应用程序中，一个类Class只有一个实例存在。 
 	- 饱汉模式
 	```java
@@ -1738,7 +1728,7 @@ Java基础面试图
 	}
 	```
  
-9. 递归算法题1
+9. 递归算法题                          
 	一个整数，大于0，不用循环和本地变量，按照n，2n，4n，8n的顺序递增，当值大于5000时，把值按照指定顺序输出来。
 	例：n=1237
 	则输出为：      
@@ -1760,7 +1750,7 @@ Java基础面试图
 	}
 	```
  
-10. 递归算法题2
+10. 递归算法题                           
 	第1个人10，第2个比第1个人大2岁，依次递推，请用递归方式计算出第8个人多大？
 	```java
 	package cn.itcast;
@@ -1786,7 +1776,7 @@ Java基础面试图
 	}
 	```
 	
-11. 排序都有哪几种方法？请列举。用JAVA实现一个快速排序。 
+11. 排序都有哪几种方法？请列举。用JAVA实现一个快速排序。            
 	 本人只研究过冒泡排序、选择排序和快速排序，下面是快速排序的代码：
 	```java
 	public class QuickSort {
@@ -1837,7 +1827,7 @@ Java基础面试图
 	}
 	```
 	
-12. 有数组a[n]，用java代码将数组元素顺序颠倒
+12. 有数组a[n]，用java代码将数组元素顺序颠倒             
 	```java
 	import java.util.Arrays;
 
@@ -1869,7 +1859,7 @@ Java基础面试图
 	}
 	```
 	
-13. 金额转换，阿拉伯数字的金额转换成中国传统的形式如：（￥1011）－>（一千零一拾一元整）输出。
+13. 金额转换，阿拉伯数字的金额转换成中国传统的形式如：（￥1011）－>（一千零一拾一元整）输出。            
 	```java
 	// 去零的代码：
 	return sb.reverse().toString().replaceAll("零[拾佰仟]","零").replaceAll("零+万","万").replaceAll("零+元","元").replaceAll("零+","零");

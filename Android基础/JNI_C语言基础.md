@@ -3,7 +3,7 @@ JNI_C语言基础
 
 1. JNI(java native interface)    
     `Java`本地开发接口，`JNI`是一个协议，这个协议用来沟通`Java`代码和外部的本地代码(`c/c++`).
-	通过这个协议`Java`代码就可以调用外部的`c/c++`代码，外部的`c/c++`代码也可以调用java代码，
+    通过这个协议`Java`代码就可以调用外部的`c/c++`代码，外部的`c/c++`代码也可以调用java代码，
 	使用JNI技术，其实就是在Java程序中，调用C语言的函数库中提供的函数，来完成一些Java语言无法完成的任务。由于Java语言和C语言结构完全不相同，因此若想让它们二者交互，则需要制定一系列的规范。
 	JNI就是这组规范，此时 Java只和JNI交互，而由JNI去和C语言交互。
 	
@@ -31,7 +31,6 @@ JNI_C语言基础
 	指针变量是存放地址(指针)的变量      
 	指针和指针变量是两个不同的概念       
 	但是要注意： 通常我们叙述时会把指针变量简称为指针，实际它们含义并不一样      
-
 
   - 未经过初始化的指针变量，不能够直接使用
   - 指针变量的类型 不能够相互转换 
@@ -103,7 +102,6 @@ JNI_C语言基础
 		 }
 
 	}
-
 
 	main(){
 		   printf("请您输入所要创建的数组大小： \n");
@@ -187,11 +185,11 @@ JNI_C语言基础
 	}
 	``` 
 
-9. 静态内存和动态内存
+9. 静态内存和动态内存                     
     静态内存是系统是程序编译执行后系统自动分配,由系统自动释放,静态内存是栈分配的.动态内存是堆分配的.       
     C中静态内存会自动释放，但是对于动态内存(堆内存)在c中是没有垃圾回收的，必须要靠程序员手动的去释放，不然就会一直存在        
 
-10. C中的基本数据类型
+10. C中的基本数据类型               
      char, int, float, double, signed, unsigned, long, short and void     
      c中char 占用1个字节       java char占用2个字节     
      c中long 占用4个字节       java long占用8个字节     
@@ -204,7 +202,7 @@ JNI_C语言基础
 		char cc[20] = "heima 15";
 		char cc[20] = {'h','e','i','m','a'};
 
-11. c文件的后缀是.c
+11. c文件的后缀是.c          
 	```c
 	示例代码：
 	c中的打印语句中要有类似占位符，在后面的参数对占位符的内容进行声明
@@ -216,7 +214,7 @@ JNI_C语言基础
 	} 
 	```
 
-12. C中的输入输出
+12. C中的输入输出            
 	%d  -  int     
 	%ld – long int     
 	%c  - char    
@@ -227,7 +225,7 @@ JNI_C语言基础
 	%o -  八进制输出     
 	%s – 字符串      
  
-13. / c语言从键盘输入一个字符串
+13. c语言从键盘输入一个字符串                   
 	```c
     //scanf() 接收键盘输入的数据，参数1： 指定接收的数据的数据类型参数 2： 指定接收的数据存放的位置
 	#include<stdio.h>
@@ -241,7 +239,7 @@ JNI_C语言基础
 
 14. 取地址符  &(能得到一个对象的地址)    
 
-15. C中两个数的交换     
+15. C中两个数的交换      
 	```c
 	#include<stdio.h>
 	void swap(int* i, int* j) {
@@ -259,7 +257,7 @@ JNI_C语言基础
 	}
 	```
 
-16. C中的for循环
+16. C中的for循环             
 	```c
 	#include <stdio.h>
 
@@ -290,7 +288,7 @@ JNI_C语言基础
 	C中for循环不能像java那样for(int i=0, i<100; i++)C中不允许在for中进行变量的声明，必须要分开，像上面的这个代码这样
 	```
 
-17. 指针的运算
+17. 指针的运算               
     int i = 3;  //天津 解放路 33号      
     int j = 5;   // 北京 东北旺 9号      
     int* p = &i;      
@@ -300,7 +298,7 @@ JNI_C语言基础
 	因为指针的运算必须在数组中才有效，这就是为什么数组中能用     
 	p[i] 等价于 *(p+i)，因为这个p是数组的名字也代表了数组中第一个元素的地址，p+i就是讲指针加几就是得到第几个元素的指针 
 
-18. 函数的指针
+18. 函数的指针              
 	```c
 	/**
 	1.定义int (*pf)(int x, int y);
@@ -323,64 +321,62 @@ JNI_C语言基础
 	内存的四个部分 Stack  Heap CodeSegment DataSegment
 	函数是存放到CodeSegment中的，这个函数的地址就是CodeSegment中的这个函数的地址，我们得到函数的地址如果去访问这个地址就相当于调用了这个函数
 	```
-	
-19.结构体(类似于java中的类)
-	```c
-	#include <stdio.h>
-	struct Student
-	{
-		 int age;  //4
-		 float score; //4
-		 long id; //4
-		 char sex; //1
-	};
-	int main(void)
-	{
-		 struct Student st={80,55.6f,10001,'F'};
-		 printf("st.age=%d\n",st.age);
-		
-		 printf("结构体的长度为%d\n",sizeof(st));//打印出来的结果是16为什么呢？ 编译器为了方便起见 做了处理，它将所有的变量的长度都统一成最大的长度
-		
-		 struct Student* pst = &st;//结构体的指针
-		
-			  printf("st.age=%d\n",(*pst).age);//(*pst)就是得到结构体，由于*的优先级比较低，通常要用括号括起来。
-			 
-			 printf("age=%d\n",pst->age);//这一行是上一行的简单写法，pst->age 在计算机内部会被转换为 (*pst).age pst->age的含义: pst所指向的结构体变量中的age这个成员
-		system("pause");
+    
+19. 结构体(类似于java中的类)              
+    ```c
+    #include <stdio.h>
+    struct Student
+    {
+    	 int age;  //4
+    	 float score; //4
+    	 long id; //4
+    	 char sex; //1
+    };
+    int main(void)
+    {
+    	 struct Student st={80,55.6f,10001,'F'};
+    	 printf("st.age=%d\n",st.age);
+    	
+    	 printf("结构体的长度为%d\n",sizeof(st));//打印出来的结果是16为什么呢？ 编译器为了方便起见 做了处理，它将所有的变量的长度都统一成最大的长度
+    	
+    	 struct Student* pst = &st;//结构体的指针
+    	
+    		  printf("st.age=%d\n",(*pst).age);//(*pst)就是得到结构体，由于*的优先级比较低，通常要用括号括起来。
+    		 
+    		 printf("age=%d\n",pst->age);//这一行是上一行的简单写法，pst->age 在计算机内部会被转换为 (*pst).age pst->age的含义: pst所指向的结构体变量中的age这个成员
+    	system("pause");
+    }
+    ```
+    结构体的三种写法          
+    第一种  
+    ```c
+    struct Student
+    {
+    int age;
+    float score;
+    char sex;
+    }
+    ```
+    第二种      
+    ```c
+    struct Student2
+    {
+    int age;
+    float score;
+    char sex;
+    } st2;//相当于java中直接弄了一个对象
+    ```
+    第三种       
+    ```c
+    struct
+    {
+    int age;
+    float score;
+    char sex;
+    } st3;
+    ```
 
-	}
-	```
-
-	结构体的三种写法          
-	第一种  
-	```c
-	struct Student
-	{
-	  int age;
-	  float score;
-	  char sex;
-	}
-	```
-	第二种      
-	```c
-	struct Student2
-	{
-	int age;
-	float score;
-	char sex;
-	} st2;//相当于java中直接弄了一个对象
-	```
-	第三种       
-	```c
-	struct
-	{
-	int age;
-	float score;
-	char sex;
-	} st3;
-	```
-
-20. Union联合体
+20. Union联合体      
 	```c
 	#include <stdio.h> 
 	main() { 
@@ -398,8 +394,8 @@ JNI_C语言基础
 	} 
 	联合体是一个公用的内存空间，联合体长度为： 占有字节数最大的元素的长度（字节数）
 	```
-	
-21. 枚举
+    
+21. 枚举         
 	```c
 	enum WeekDay {
 	Monday=8,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday
@@ -415,16 +411,17 @@ JNI_C语言基础
 	默认的情况是从0开始往后递加
 	```		
 
-22. typedef
-	定义别名
+22. typedef           
+	定义别名          
 	声明自定义数据类型，配合各种原有数据类型来达到简化编程的目的的类型定义关键字。 
+    ```c
 	typedef int haha;  //定义数据类型的别名. 
 	int main(void)
 	{
 	  haha i = 3;这里haha就相当于int
 	  printf("i=%d\n",i); 
 	}
-
+    ```
 	每一个指针占四个字节
  
 23. 多级指针

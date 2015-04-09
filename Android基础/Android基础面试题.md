@@ -1,10 +1,10 @@
-Android面试题
+Android基础面试题
 ===
 
 没有删这套题，虽然都是网上找的，在刚开始找工作的时候这套题帮了我很多，那时候`Android`刚起步，很多家都是这一套面试题，我都是直接去了不看题画画一顿就写完了，哈哈
 现在估计没有公司会用这种笔试题了。还是留下来吧，回忆一下。
 
-1. 下列哪些语句关于内存回收的说明是正确的? (b )           
+1. 下列哪些语句关于内存回收的说明是正确的? (b)          
   A、 程序员必须创建一个线程来释放内存      
   B、 内存回收程序负责释放无用内存     
   C、 内存回收程序允许程序员直接释放内存      
@@ -16,7 +16,7 @@ Android面试题
       D、BufferUnderflowException        
 3. Math.round(11.5)等于多少(). Math.round(-11.5)等于多少(c)           
     A、11 ,-11   B、11 ,-12   C、12 ,-11   D、12 ,-12 
-4. 下列程序段的输出结果是：（b)
+4. 下列程序段的输出结果是：(b)              
     ```java
      void complicatedexpression_r(){
      int x=20, y=30;
@@ -30,7 +30,7 @@ Android面试题
    A、onPause()  B、onCreate()   C、 onResume()   D、onStart()  
 6. Intent传递数据时，下列的数据类型哪些可以被传递（abcd）(多选)            
    A、Serializable  B、charsequence  C、Parcelable  D、Bundle
-7. android 中下列属于Intent的作用的是(c)    
+7. android 中下列属于Intent的作用的是(c)     
   A、实现应用程序间的数据共享      
   B、是一段长的生命周期，没有用户界面的程序，可以保持应用在后台运行，而不会因为切换页面而消失         
   C、可以实现界面间的切换，可以包含动作和动作数据，连接四大组件的纽带       
@@ -41,44 +41,44 @@ Android面试题
     C、整个文档调入内存，浪费时间和空间           
     D、不是长久驻留在内存，数据不是持久的，事件过后，若没有保存数据，数据就会消失           
 9. 下面的对自定style的方式正确的是(a)     
-    A、      
+    A、           
 	```xml
 	<resources>
 		<style name="myStyle">
 			<item name="android:layout_width">fill_parent</item>
 		</style>
 	</resources>
-	```
-     B、      
+	```                
+     B、              
 	 ```xml
 	<style name="myStyle">
 				<item name="android:layout_width">fill_parent</item>
 	</style>
-	```
-     C、      
+	```          
+     C、               
 	```xml 
 	<resources>
 		<item name="android:layout_width">fill_parent</item>
 	</resources>
-	```
-     D、     
+	```        
+     D、       
 	 ```xml
 	<resources>
 		<style name="android:layout_width">fill_parent</style>
 	</resources>
 	```
-10. 在android中使用Menu时可能需要重写的方法有（ac）。(多选)
+10. 在android中使用Menu时可能需要重写的方法有（ac）。(多选)                
 	A、onCreateOptionsMenu()        
 	B、onCreateMenu()      
 	C、onOptionsItemSelected()    
 	D、onItemSelected()       
-11. 在SQL Server Management Studio 中运行下列T-SQL语句，其输出值（c）。         
+11. 在SQL Server Management Studio 中运行下列T-SQL语句，其输出值（c）               
 	`SELECT @@IDENTITY`      
 	A、	可能为0.1        
 	B、	可能为3       
 	C、 不可能为-100   
 	D、	肯定为0    
-12. 在SQL Server 2005中运行如下T-SQL语句，假定SALES表中有多行数据，执行查询之后的结果是（d）。        
+12. 在SQL Server 2005中运行如下T-SQL语句，假定SALES表中有多行数据，执行查询之后的结果是（d）。                               
 	```
 	BEGIN TRANSACTION A
  	Update SALES Set qty=30 WHERE qty<30
@@ -88,7 +88,7 @@ Android面试题
 		Update SALES Set qty=60 WHERE qty<60
 	COMMIT　TRANSACTION B
 	COMMIT TRANSACTION A
-	 ```
+	 ```              
 	A、SALES表中qty列最小值大于等于30        
 	B、SALES表中qty列最小值大于等于40       
 	C、SALES表中qty列的数据全部为50     
@@ -109,7 +109,7 @@ Android面试题
 	C、让渲染器在独立的线程里运作，和UI线程分离。        
 	D、可以直接从内存或者DMA等硬件接口取得图像数据          
 16. 下面在AndroidManifest.xml文件中注册BroadcastReceiver方式正确的(a)            
-  	A、       
+  	A、        
 	```xml
 	<receiver android:name="NewBroad">
 		<intent-filter>
@@ -118,24 +118,24 @@ Android面试题
 			<action>
 		</intent-filter>
 	</receiver>
-	```
-    B、      
+	```             
+    B、       
 	```xml
 	<receiver android:name="NewBroad">
 		<intent-filter>
 			android:name="android.provider.action.NewBroad"/>
 		</intent-filter>
 	</receiver>
-	``` 
-    C、    
+	```           
+    C、         
 	 ```xml
 	<receiver android:name="NewBroad">
 		<action  
 			  android:name="android.provider.action.NewBroad"/>
 		 <action>
 	</receiver>
-	```
-    D、    
+	```          
+    D、               
     ```xml
 	<intent-filter>
 		<receiver android:name="NewBroad">
@@ -144,7 +144,7 @@ Android面试题
 			<action>
 		</receiver>
 	</intent-filter>
-	```
+	```          
 17. 关于ContenValues类说法正确的是(a)        
     A、他和Hashtable比较类似，也是负责存储一些名值对，但是他存储的名值对当中的名是String类型，而值都是基本类型        
     B、他和Hashtable比较类似，也是负责存储一些名值对，但是他存储的名值对当中的名是任意类型，而值都是基本类型           
