@@ -77,7 +77,7 @@ AndroidStudio使用教程(第一弹)
 	| 跳转到上次修改的地方                                         | `Ctrl+Shift+Backspace`                      |                                              |	                        
 	| 快捷生成结构体(加try catch等)                                | `Ctrl+Alt+T`                                |  `Command+Option+T`                          |	                                
 	| 显示最近编辑列表                                             | `Ctrl+E`                                    |                                              |	                                
-	| 跳转到大括号开头或结尾                                       | `Ctrl+{或}                                  |                                              |	                          
+	| 跳转到大括号开头或结尾                                       | `Ctrl+{或}`                                  |                                              |	                          
 	| 在方法间移动                                                 | `Alt+↑或↓`                                  |                                              |	                                            
 	| 切换已打开的文件视图                                         | `Alt+←或→`                                  |                                              |	                                               
 	| 重命名                                                       | `Shift+F6`                                  |                                              |	                
