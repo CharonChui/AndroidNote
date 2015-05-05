@@ -52,34 +52,41 @@ AndroidStudio使用教程(第一弹)
 	
 	强迫症的人伤不起，非想用默认的快捷键。               
 	这里我整理下下个人常用的几个快捷键。 每个人的习惯不同，大家各取所需              
-	`Ctrl+S`                   开个玩笑，这个键算是彻底废掉了， 因为`AndroidStudio`与`Eclipse`不同，他是自动保存的，所以我们再也不需要`Ctrl+S`了.          
-	`Ctrl+空格`                代码提示                    (同`Eclipse`中`Alt+/`)         
-	`Ctrl+Shjft+N`             查找文件                    (同`Eclipse`中`Ctrl+Shift+R`)              
-	`Ctrl+F12`                 显示当前文件的结构          (同`Eclipse`中`Ctrl+0`)             
-	`Ctrl+Alt+L`               格式化                      (同`Eclipse`中`Ctrl+Shift+F`)             
-	`Ctrl+Alt+O`               优化导入的包                (同`Eclipse`中`Ctrl+Shift+O`)           
-	`Ctrl+Q`                   查看文档                    (同`Eclipse`中`F2`)              
-	`Alt+F7`                   搜寻                        (同`Eclipse`中`File Search`)           
-	`Alt+Insert`               新建文件或生成代码(`GetSet`)(同`Eclipse`中`Alt+Shift+S后的操作`)             
-	`Alt+Enter`                快速修复                    (同`Eclipse`中`F1`)           
-	`Ctrl+P`                   显示方法参数                         
-	`Shift+F10`                运行项目                               
-	`Ctrl+Shift+Backspace`     跳转到上次修改的地方           
-	`Ctrl+E`                   显示最近编辑列表             
-	`Ctrl+[或]`                跳转到大括号开头或结尾            
-	`Ctrl+Alt+T`               把代码包在一起(加try catch等)          
-	`Alt+↑或↓`                 在方法间移动            
-	`Ctrl+Shift+F7`            高亮本文件中选中的代码            
-	`Alt+←或→`                 切换已打开的文件视图               
-	`Shift+F6`                 重命名               
-	`Ctrl+B`                   快速打开该类或方法                  
-	`F2`                       快速定位到文件错误或警告位置              
-	`Ctrl+X`                   剪切当前行                
-	`Ctrl+Y`                   删除当前行             
-	`Ctrl+D`                   复制当前行                            
-	`F4`                       进入源码             
-	`Alt+1`                    开关`Project`视图      
-	`Ctrl+_F4`                 关闭当前窗口            
+	`Ctrl+S`                   开个玩笑，这个键算是彻底废掉了， 因为`AndroidStudio`与`Eclipse`不同，他是自动保存的，所以我们再也不需要`Ctrl+S`了.   
+
+	| 功能                                                         | Windows                                     | Mac                                          |
+	| ------------------------------------------------------------ |:-------------------------------------------:| --------------------------------------------:|
+	| 代码提示                 (同`Eclipse`中`Alt+/`)              | `Ctrl+空格`                                 | `Command+空格`                               |
+	| 查找文件                 (同`Eclipse`中`Ctrl+Shift+R`)       | `Ctrl+Shjft+N`                              | `Command+Option+N`                           |
+	| 显示当前文件的结构       (同`Eclipse`中`Ctrl+0`)             | `Ctrl+F12`                                  | `Command+F12`                                |
+	| 格式化                   (同`Eclipse`中`Ctrl+Shift+F`)       | `Ctrl+Alt+L`                                | `Command+Option+L`                           |
+	| 优化导入的包             (同`Eclipse`中`Ctrl+Shift+O`)       | `Ctrl+Alt+O`                                | `Option+Control+O`                           |
+	| 查看文档                 (同`Eclipse`中`F2`)                 | `Ctrl+Q`                                    | `Command+Q`                                  |
+	| 查找使用位               (同`Eclipse`中`File Search`)        | `Alt+F7`                                    | `Option+F7`                                  |
+	| 上下移动代码                                                 | `Alt+Shift+Up/Down`                         | `Option+Shift+Up/Down`                       |
+	| 剪切当前行                                                   | `Ctrl+X`                                    | `Option+Shift+Up/Down`                       |
+	| 删除当前行                                                   | `Ctrl+Y`                                    | `Command+Delete`                             |	                        
+	| 快速覆写方法                                                 | `Ctrl+O`                                    | `Command+O`                                  |	                           
+	| 折叠展开代码块                                               | `Ctrl+Plus/Minus`                           | `Command+Plus/Minus`                         |	 	                                   
+	| 折叠展开全部代码块                                           | `Ctrl+Shift+Plus/Minus`                     | `Command+Shift+Plus/Minus`                   |	                                                
+	| 大小写转换                                                   | `Ctrl+Shift+U`                              | `Command+Shift+U`                            |	      		 
+	| 新建文件或生成代码(`GetSet`)                                 | `Alt+Insert`                                |                                              |
+	| 快速修复(同`Eclipse`中`F1`)                                  | `Alt+Enter`                                 |                                              |
+	| 显示方法参数                                                 | `Ctrl+P`                                    |                                              |	                     
+	| 运行项目                                                     | `Shift+F10`                                 |                                              |				 
+	| 跳转到上次修改的地方                                         | `Ctrl+Shift+Backspace`                      |                                              |	                        
+	| 快捷生成结构体(加try catch等)                                | `Ctrl+Alt+T`                                |  `Command+Option+T`                          |	                                
+	| 显示最近编辑列表                                             | `Ctrl+E`                                    |                                              |	                                
+	| 跳转到大括号开头或结尾                                       | `Ctrl+{或}                                  |                                              |	                          
+	| 在方法间移动                                                 | `Alt+↑或↓`                                  |                                              |	                                            
+	| 切换已打开的文件视图                                         | `Alt+←或→`                                  |                                              |	                                               
+	| 重命名                                                       | `Shift+F6`                                  |                                              |	                
+	| 快速打开该类或方法源码                                       | `F4`                                        |                                              |	                                                       
+	| 快速定位到文件错误或警告位置                                 | `F2`                                        |                                              |	                         
+	| 复制当前行                                                   | `Ctrl+D`                                    |                                              |	                             
+	| 开关`Project`视图                                            | `Alt+1`                                     |                                              |	                                
+	| 关闭当前窗口                                                 | `Ctrl+_F4`                                  |                                              |	                                
+
 	
 ---
 
