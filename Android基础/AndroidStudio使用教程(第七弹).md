@@ -219,6 +219,12 @@ android {
         _360 {}
         baidu {}
         qq {}
+		intenational {
+		    // 当然这里还可以指定 applicationId 版本等这些内容，比如我们程序有一个国内版，一个国际版，他俩的包名不同，这时候就可以通过这种方式来指定。
+			applicationId = 'com.test.test'
+            versionName = '1.0'
+            versionCode = 1
+		}
     }
 
     productFlavors.all {
