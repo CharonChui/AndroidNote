@@ -8,6 +8,11 @@ Git命令
     ```
 	git config --global "user.name xxx"
 	git config --global "user.email xxx@xxx.com"
+	```
+	上面修改后可以使用`cat ~/.gitconfig`查看
+	如果指向修改仓库中的用户名时可以不加`--global`，这样可以用`cat .git/config`来查看
+	
+	`git config --list`来查看所有的配置。
 
 - 新建仓库
     `mkdir gitDemo`
