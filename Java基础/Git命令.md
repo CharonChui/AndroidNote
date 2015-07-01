@@ -54,14 +54,14 @@ Git命令
     `Git`中用`HEAD`表示当前版本，上一版本就是`HEAD^`,上上一版本就是`HEAD^^`.如果往前一千个版本呢？ 那就是`HEAD~1000`.             
     `git reset —-hard HEAD^`       
     `git reset —-hard commit_id`
-	`git reset HEAD file`可以把用`git add`之后但是还没有`commit`之前暂存区中的修改撤销。          
+	`git reset HEAD fileName`可以把用`git add`之后但是还没有`commit`之前暂存区中的修改撤销。          
     说到这里就说一个问题，如果你reset到某一个版本之后，发现弄错了，还想返回去，这时候用`git log`已经找不到之前的`commit id`了。那怎么办？这时候可以使用下面的命令来找。
 
 - `git reflog`               
     可以查看所有操作记录包括`commit`和`reset`操作以及删除的`commit`记录
 
 - `git checkout`撤销修改或者切换分支           
-    `git checkout --xx.txt`意思就是将`xx.txt`文件在工作区的修改全部撤销。可能会有两种情况:      
+    `git checkout -- xx.txt`意思就是将`xx.txt`文件在工作区的修改全部撤销。可能会有两种情况:      
 	
 	- 修改后还没有调用`git add`添加到暂存区，现在撤销后就会和版本库一样的状态。
 	- 修改后已经调用`git add`添加到暂存区后又做了修改，这时候撤销就会回到暂存区的状态。
@@ -142,7 +142,9 @@ Git命令
 
 - 当执行`git reset HEAD`命令时，暂存区的目录树会被重写，会被`master`分支指向的目录树所替换，但是工作区不受影响。
 - 当执行`git checkout .`或`git checkout -- file`命令是，会用暂存区全部的文件或指定的文件替换工作区的文件。这个操作很危险，会清楚工作区中未添加到暂存区的改动。
-- 当执行`git checkout HEAD .`或`git checkout HEAD` 命令时，会用`HEAD`指向的`master`分支中的全部或部分文件替换暂存区和工作区中的文件。这个命令也是极度危险的。因为不但会清楚工作区中未提交的改动，也会清楚暂存区中未提交的改动。
+命令时，会用`HEAD`指向的`master`分支中的全部或部分文件替换暂存区和工作区中的文件。这个命令也是极度危险的。因为不但会清楚工作区中未提交的改动，也会清楚暂存区中未提交的改动。
+- `git reset HEAD <file>` 是在添加到暂存区后，撤出暂存区使用，他只会把文件撤出暂存区，但是你的修改还在，仍然在工作区。当然如果使用`git reset --hard HEAD`这样就完了，工作区所有的内容都会被远程仓库最新代码覆盖。
+- `git checkout -- xxx.txt`是用于修改后未添加到暂存区时使用(如果修改后添加到暂存区后就没效果了，必须要先reset撤销暂存区后再使用checkout)，这时候会把之前的修改覆盖掉。所以是危险的。
 
 ---
 
