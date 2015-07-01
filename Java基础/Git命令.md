@@ -90,7 +90,7 @@ Git命令
 	`git branch devBranch`创建名为`devBranch`的分支。          
 	`git checkout devBranch`切换到`devBranch`分支。            
 	`git branch`查看当前仓库中的分支                   
-	`git branch -r`查看远程仓库的目录            
+	`git branch -r`查看远程仓库的分支            
 	```
 	origin/HEAD -> origin/master
 	origin/developer
@@ -102,6 +102,25 @@ Git命令
 	`git branch -d devBranch`删除`devBranch`分支。           
 	当时如果在新建了一个分支后进行修改但是还没有合并到其他分支的时候就去使用`git branch -d xxx`删除的时候系统会手提示说这个分支没有被合并，删除失败。
 	这时如果你要强行删除的话可以使用命令`git branch -D xxx`.
+	如何删除远程分支呢？
+	```
+	git branch -r -d origin/developer
+	git push origin :developer
+	```
+	如何本地创建分支并推送给远程仓库？
+	```
+	// 本地创建分支
+	git checkout master //进入master分支
+    git checkout -b frommaster //以master为源创建分支frommaster
+	// 推送到远程仓库
+	git push origin frommaster// 推送到远程仓库所要使用的名字
+	```
+	
+	如何切到到远程仓库分支进行开发呢？
+	git checkout -b frommaster origin/frommaster// 本地新建frommaster分支并且与远程仓库的frommaster分支想关联
+	提交更改的话就用 
+	git push origin frommaster
+	
 
 - `git merge`合并指定分支到当前分支                         
    `git merge devBranch`将`devBranch`分支合并到`master`。          
