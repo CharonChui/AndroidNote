@@ -1,4 +1,4 @@
-﻿Activity界面绘制过程详解
+Activity界面绘制过程详解
 ===
 
 设置界面首先就是`Activity.setContentView()`方法：我们先看一下他的源码：

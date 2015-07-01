@@ -1,4 +1,4 @@
-﻿View绘制过程详解
+View绘制过程详解
 ===
 
 界面窗口的根布局是`DecorView`，该类继承自`FrameLayout`.说到`View`绘制，想到的就是从这里入手，而`FrameLayout`继承自`ViewGroup`。感觉绘制肯定会在`ViewGroup`或者`View`中，

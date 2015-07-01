@@ -1,4 +1,4 @@
-﻿AsyncTask详解
+AsyncTask详解
 ===
 
 `AsyncTask`简单的说其实就是`Handler`和`Thread`的结合，就想下面自己写的`MyAsyncTask`一样，这就是它的基本远离，当然它并不止这么简单。

@@ -1,4 +1,4 @@
-﻿BroadcastReceiver安全问题
+BroadcastReceiver安全问题
 ===
 
 `BroadcastReceiver`设计的初衷是从全局考虑可以方便应用程序和系统、应用程序之间、应用程序内的通信，所以对单个应用程序而言`BroadcastReceiver`是存在安全性问题的(恶意程序脚本不断的去发送你所接收的广播)

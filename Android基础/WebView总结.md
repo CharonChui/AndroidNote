@@ -1,4 +1,4 @@
-﻿WebView总结
+WebView总结
 ===
      
 在`Android`中有`WebView Widget`，它内置了`WebKit`引擎，同时，`WebKit`也是`Mac OS X`的`Safari`网页浏览器的基础。`WebKit`是一个开源的浏览器引擎，
