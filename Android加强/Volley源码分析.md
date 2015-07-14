@@ -269,10 +269,12 @@ public class RequestQueue {
      */
     private final Set<Request<?>> mCurrentRequests = new HashSet<Request<?>>();
 
+	// cache队列
     /** The cache triage queue. */
     private final PriorityBlockingQueue<Request<?>> mCacheQueue =
         new PriorityBlockingQueue<Request<?>>();
 
+	// 网络请求队列
     /** The queue of requests that are actually going out to the network. */
     private final PriorityBlockingQueue<Request<?>> mNetworkQueue =
         new PriorityBlockingQueue<Request<?>>();
