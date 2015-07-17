@@ -1,5 +1,28 @@
-发布Android Library到Maven Central
+发布library到jCenter
 ---
+
+在`Android Studio`中想要使用一些第三方类库的时候非常方便，只需要在`build.gradle`中加入一行代码就可以了：   
+```java
+dependencies {
+    compile 'com.google.code.gson:gson:2.3.1'
+}
+```
+刚从`Eclipse`转过来的时候感觉太方便了，也不用下`jar`包然后拷贝到`libs`目录了，重要的是以后升级起来灰常方便，改个数字就好了。
+那究竟它里面是怎么运转的呢？其实`Android Studio`是从`Maven`仓库中下载所配置的`libraray`。总的来说，`Android`只有两种存放`library`
+的服务器就是`jCenter`和`Maven Central`。
+
+- `jCenter`
+    `jCenter`是由[bintray](https://bintray.com/)维护的`Maven`仓库。你可以在[这里](http://jcenter.bintray.com/)查看它所有的`library`。
+	想要在项目中使用`jCenter`必须要在项目的`build.gradle`中像如下这样进行声明：    
+	```java
+	allprojects {
+		repositories {
+			jcenter()
+		}
+	}
+	```
+	
+	
 
 - 登陆[bintray](https://bintray.com/)。
 - 选择`Maven`后进入。
