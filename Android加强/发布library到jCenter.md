@@ -30,22 +30,22 @@ dependencies {
         }
     }
     ```	
-虽然`jCenter`和`Maven Central`都是`Android`标准的`library maven`仓库，但是他俩是由不同提供者维护，并且存放到完全不同的服务器上，所以他俩之间毫无关系。     
-除了这两个标准的服务器外，如果我们使用的`library`作者把该`library`放到自己的服务器上，我们还可以自己定义特有的`Maven`仓库服务器。例如`Twitter`的`Fabric.io`就是这种情况，它们在[https://maven.fabric.io/public](https://maven.fabric.io/public)上维护了一个自己的`Maven`仓库，如果你想使用`Fabric.io`上的`library`你必须要自己定义仓库的`url`:       
-```java
-repositories {
-    maven { url 'https://maven.fabric.io/public' }
-}
-然后才能正常使用
-dependencies {
-    compile 'com.crashlytics.sdk.android:crashlytics:2.2.4@aar'
-}
-```	
+	虽然`jCenter`和`Maven Central`都是`Android`标准的`library maven`仓库，但是他俩是由不同提供者维护，并且存放到完全不同的服务器上，所以他俩之间毫无关系。     
+	除了这两个标准的服务器外，如果我们使用的`library`作者把该`library`放到自己的服务器上，我们还可以自己定义特有的`Maven`仓库服务器。例如`Twitter`的`Fabric.io`就是这种情况，它们在[https://maven.fabric.io/public](https://maven.fabric.io/public)上维护了一个自己的`Maven`仓库，如果你想使用`Fabric.io`上的`library`你必须要自己定义仓库的`url`:       
+	```java
+	repositories {
+		maven { url 'https://maven.fabric.io/public' }
+	}
+	然后才能正常使用
+	dependencies {
+		compile 'com.crashlytics.sdk.android:crashlytics:2.2.4@aar'
+	}
+	```	
 
-上传到自建服务器需要定义仓库的`url`，所以会比上传到标准的`maven`仓库使用起来要更麻烦。
+	上传到自建服务器需要定义仓库的`url`，所以会比上传到标准的`maven`仓库使用起来要更麻烦。
 
-至于上传到`jCenter`还是`Maven Central`上面就要看开发者个人的爱好了，当然在这两个上面都上传是最方便的。在`Android Studio`开始的几个版本中，它将`Maven central` 作为默认仓库。新建项目之后`build.gradle`中会自动生成`Maven central`仓库的配置。
-但是`Maven Central`最大的问题就是上传`library`非常困难，同时还会由安全方面的原因，所以后来`Android Studio`将默认仓库替换成`jCenter`。所以最近的几个版本中创建项目之后,`build.gradle`中会默认定义`jCenter`而不是`Maven Central`。     
+	至于上传到`jCenter`还是`Maven Central`上面就要看开发者个人的爱好了，当然在这两个上面都上传是最方便的。在`Android Studio`开始的几个版本中，它将`Maven central` 作为默认仓库。新建项目之后`build.gradle`中会自动生成`Maven central`仓库的配置。
+	但是`Maven Central`最大的问题就是上传`library`非常困难，同时还会由安全方面的原因，所以后来`Android Studio`将默认仓库替换成`jCenter`。所以最近的几个版本中创建项目之后,`build.gradle`中会默认定义`jCenter`而不是`Maven Central`。     
 
 `jCenter`相对`Maven Central`来说更好的几个主要原因:    
 
@@ -102,7 +102,7 @@ compile 'com.squareup.picasso:picasso:2.5.2'
 - 填写包信息            
     ![image](https://raw.githubusercontent.com/CharonChui/Pictures/master/add_package_information.png?raw=true)
 
-    包名这里对于单词之间要用`-`分割，例如:`fb-like`。
+    包名这里对于单词之间要用`-`分割。
 - 然后会提示已经上传。            
  到这里我们已经在`bintray`上创建了一个`Maven`仓库，接下来要做的就是上传`library`。
 
@@ -132,11 +132,14 @@ compile 'com.squareup.picasso:picasso:2.5.2'
     - 使用下面的命令生成一个key。如果是windows用户需要使用cygwin。否则不能执行        
         `gpg --gen-key`
          后面会一步步的进行提示，按照提示输入相应内容就好。
-         ![image](https://raw.githubusercontent.com/CharonChui/Pictures/master/add_account.png?raw=true)
 
          创建完成后可以使用`gpg --list-keys`命令来查看创建key的信息.
          接下来需要将生成的key上传到keyserver上才能发挥作用。
         ![image](https://raw.githubusercontent.com/CharonChui/Pictures/master/list_key.png?raw=true)
+	
+	- 接下来需要将`key`上传到`keyserver`让它发挥作用，运行如下命令，将下面的PUBLIC_KEY_ID替换成上面2048R/后面的数字，如我的是B861C367
+	    `gpg --keyserver hkp://pool.sks-keyservers.net --send-keys PUBLIC_KEY_ID`
+		
     - 运行以下命令        
     ```java
 	gpg -a --export yourmail@email.com > public_key_sender.asc
@@ -185,48 +188,164 @@ bintray.user=YOUR_BINTRAY_USERNAME
 bintray.apikey=YOUR_BINTRAY_API_KEY
 bintray.gpg.password=YOUR_GPG_PASSWORD
 ```
-`Api key`可以在`Binatry`官网上面的`Edit Profile`页面获取。      
+`Api key`可以在`Binatry`官网上面的`Edit Profile`页面下的`API Key`中获取。      
 最后要做的就是修改`library module`中的`build.gradle`文件。
-在`apply plugin: 'com.android.library`之后添加ext部分的内容:    
+下面这是最初的状态：       
 ```java
-apply plugin: 'android-library'
+apply plugin: 'com.android.library'
 
-ext {
-    bintrayRepo = 'maven'
-    bintrayName = 'dlna4android'
+android {
+    compileSdkVersion 22
+    buildToolsVersion "22.0.1"
 
-    publishedGroupId = 'com.charon.cyberlink'
-    libraryName = 'dlan4andorid'
-    artifact = 'dlan4andorid'
+    defaultConfig {
+        minSdkVersion 8
+        targetSdkVersion 22
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
 
-    libraryDescription = 'A wrapper for Facebook Native Like Button (LikeView) on Android'
-
-    siteUrl = 'https://github.com/CharonChui/CyberLink4Android'
-    gitUrl = 'https://github.com/CharonChui/CyberLink4Android.git'
-
-    libraryVersion = '0.9.3'
-
-    developerId = 'CharonChui'
-    developerName = 'Charon Chui'
-    developerEmail = 'charon.chui@gmail.com'
-
-    licenseName = 'The Apache Software License, Version 2.0'
-    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-    allLicenses = ["Apache-2.0"]
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
 }
 ```
-接着在该`build.gradle`文件的最后方添加如下这两句脚本,为了方便直接将它写到github上面了，你需要修改成自己的:     
+下面就是修改之后的文件:      
 ```java
-apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
-apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'
+apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: "com.jfrog.bintray"
+
+// This is the library version used when deploying the artifact
+version = "1.0.0"
+
+android {
+    compileSdkVersion 22
+    buildToolsVersion "22.0.1"
+
+    defaultConfig {
+        minSdkVersion 8
+        targetSdkVersion 22
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+}
+
+def siteUrl = 'https://github.com/CharonChui/CyberLink4Android'      // Homepage URL of the library
+def gitUrl = 'https://github.com/CharonChui/CyberLink4Android.git'   // Git repository URL
+group = "com.charon.cyberlink"                      // Maven Group ID for the artifact
+
+install {
+    repositories.mavenInstaller {
+        // This generates POM.xml with proper parameters
+        pom {
+            project {
+                packaging 'aar'
+
+                // Add your description here
+                name 'CyberLink4Android'
+                description = 'CyberLink for Android is a development package for UPnP™ developers on Android development.'
+                url siteUrl
+
+                // Set your license
+                licenses {
+                    license {
+                        name 'The Apache Software License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id 'CharonChui'
+                        name 'Charon Chui'
+                        email 'charon.chui@gmail.com'
+                    }
+                }
+                scm {
+                    connection gitUrl
+                    developerConnection gitUrl
+                    url siteUrl
+
+                }
+            }
+        }
+    }
+}
+
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+artifacts {
+    archives javadocJar
+    archives sourcesJar
+}
+
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+// https://github.com/bintray/gradle-bintray-plugin
+bintray {
+    user = properties.getProperty("bintray.user")
+    key = properties.getProperty("bintray.apikey")
+
+    configurations = ['archives']
+    pkg {
+        repo = "maven"
+        // it is the name that appears in bintray when logged
+        name = "cyberlink-android"
+        websiteUrl = siteUrl
+        vcsUrl = gitUrl
+        licenses = ["Apache-2.0"]
+        publish = true
+        version {
+            gpg {
+                sign = true //Determines whether to GPG sign the files. The default is false
+                passphrase = properties.getProperty("bintray.gpg.password") //Optional. The passphrase for GPG signing'
+            }
+//            mavenCentralSync {
+//                sync = true //Optional (true by default). Determines whether to sync the version to Maven Central.
+//                user = properties.getProperty("bintray.oss.user") //OSS user token
+//                password = properties.getProperty("bintray.oss.password") //OSS user password
+//                close = '1' //Optional property. By default the staging repository is closed and artifacts are released to Maven Central. You can optionally turn this behaviour off (by puting 0 as value) and release the version manually.
+//            }
+        }
+    }
+}
 ```
 
 到这一步就可以开始上传到`bintray`了，接下来开启`Android Studio`的`Terminal`中。
 - 检查代码的正确性，以及编译`library`文件(`aar`,`pom`等)。执行如下命令:    
-    `gradlew install`      
+    `./gradlew install`      
     正确的话会提示`BUILD SUCCESSFUL`
 - 上传编译的文件到`bintray`，使用如下命令:     
-    `gradlew bintrayUpload`       
+    `./gradlew bintrayUpload`       
     成功的话会提示`SUCCESSFUL`      
 接下来到`bintray`上检查一下你得`package`你会在版本区域发现新上传的版本。点击进去就能发现我们上传的`library`文件。   
 
@@ -237,7 +356,6 @@ repositories {
         url 'https://dl.bintray.com/nuuneoi/maven/'
     }
 }
-  
 ...
   
 dependencies {
