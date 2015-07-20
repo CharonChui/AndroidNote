@@ -184,7 +184,7 @@ allprojects {
 修改`local.properties`文件，在里面配置`apikey`、用户名以及密码，以便`bintray`进行验证。之所以要把这些东西配置到该文件中是因为这些信息都比较敏感，不能分享到别处，包括版本控制里面。而在创建项目的时候`local.properties`已经被添加到`.gitignore`中了，所以这些数据不会被上传：   
 需要添加如下三行代码:     
 ```java
-bintray.user=YOUR_BINTRAY_USERNAME
+bintray.user=YOUR_BINTRAY_USERNAME  // 这里一定要用小写，不要用CharonChui不然会报错的，因为他会根据该用户名去找指定package，如果是大写他就找不到了。
 bintray.apikey=YOUR_BINTRAY_API_KEY
 bintray.gpg.password=YOUR_GPG_PASSWORD
 ```
@@ -347,7 +347,11 @@ bintray {
 - 上传编译的文件到`bintray`，使用如下命令:     
     `./gradlew bintrayUpload`       
     成功的话会提示`SUCCESSFUL`      
-接下来到`bintray`上检查一下你得`package`你会在版本区域发现新上传的版本。点击进去就能发现我们上传的`library`文件。   
+接下来到`bintray`上检查一下你得`package`你会在版本区域发现新上传的版本。点击进去就能发现我们上传的`library`文件。      
+![image](https://raw.githubusercontent.com/CharonChui/Pictures/master/publish_version.png?raw=true)
+
+点击该版本进入后可以看到所有的文件目录。       
+![image](https://raw.githubusercontent.com/CharonChui/Pictures/master/version_list.png?raw=true)
 
 到这里你的`library`就已经上传了，任何人都可以使用，但是别高兴的太早，因为现在只是上传到了你自己的私人`Maven`仓库，而不是`jCenter`上，如果别人使用你`library`，他必须要先定义仓库的`url`， 如下:     
 ```java
@@ -363,7 +367,9 @@ dependencies {
 }
 ```
 这样终究是不方便的，因为别人还要单独的去配置你仓库的`url`那么接下来就是怎么将`bintray`上我们的仓库上传到`jCenter`中呢？      
-把`library`同步到`jCenter`上非常容易。只需要访问`bintray`，然后点击`Add to jCeter`然后在新出来的页面直接点击`Send`即可。现在我们就需要等待`bintray`团队审核我们的请求，一般会在两三个小时左右，如果审核通过，会收到一封邮件通知。通过这一步之后任何开发者都可以不用配置仓库`url`直接使用了。  想检查一下自己的`library`是否在`jCenter`上存在，可以直接访问[http://jcenter.bintray.com](http://jcenter.bintray.com),然后根据你的`groupId`直接进入相应的目录查看即可。这里要说一下，这个链接到`jCenter`是一个只需要做一次的操作，如果以后对你的`package`做了修改，或者发布新版本等，这些改变会自动同步到`jCenter`上。同时，如果你要像删除某一个`package`，但是在`jCenter`仓库中的`library`不会被删除。它会一直存在，没法直接删除，因此如果你想要完全删除的时候，最好在移除`package`之前先在网页上把删除每个版本。
+把`library`同步到`jCenter`上非常容易。只需要访问`bintray`，然后点击`Add to jCeter`然后在新出来的页面直接点击`Send`即可。
+![image](https://raw.githubusercontent.com/CharonChui/Pictures/master/add_to_jcenter.png?raw=true)
+现在我们就需要等待`bintray`团队审核我们的请求，一般会在两三个小时左右，如果审核通过，会收到一封邮件通知。通过这一步之后任何开发者都可以不用配置仓库`url`直接使用了。  想检查一下自己的`library`是否在`jCenter`上存在，可以直接访问[http://jcenter.bintray.com](http://jcenter.bintray.com),然后根据你的`groupId`直接进入相应的目录查看即可。这里要说一下，这个链接到`jCenter`是一个只需要做一次的操作，如果以后对你的`package`做了修改，或者发布新版本等，这些改变会自动同步到`jCenter`上。同时，如果你要像删除某一个`package`，但是在`jCenter`仓库中的`library`不会被删除。它会一直存在，没法直接删除，因此如果你想要完全删除的时候，最好在移除`package`之前先在网页上把删除每个版本。
 
 最后一步:上传library到Maven Central      
 ---
@@ -374,8 +380,6 @@ dependencies {
 - `Maven Central`上的仓库已经认证通过.
 
 如果确认已经完成上面的授权后，上传`library`到`Maven Central`就非常简单了，只需要在`package`的详情页面点击`Maven Central`的链接。
-
-![image](https://raw.githubusercontent.com/CharonChui/Pictures/master/maven_central.png?raw=true)
-
+![image](https://raw.githubusercontent.com/CharonChui/Pictures/master/publish_to_maven_central.png?raw=true)
 然后再出来的页面输入`Maven Central`对应的用户名和密码点击`Sync`就可以了。上传到`Maven Central`的`library`是非常严格的，比如`+`号是不能在`library`版本的依赖定义中使用的。    
 完成之后，你可以在 [Maven Central Repository](https://oss.sonatype.org/content/repositories/releases/)中找到你的`library`。    
