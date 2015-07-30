@@ -114,18 +114,12 @@ compile 'com.squareup.picasso:picasso:2.5.2'
 - 注册Sonatype账号      
     在[Sonatype](https://issues.sonatype.org/secure/Dashboard.jspa)上注册账号。
     注册完登陆后需要在`JIRA`中创建一个`issue`，这样他就会允许你上传匹配`Maven Central`提供的`GROUP_ID`的`library`。    ![image](https://raw.githubusercontent.com/CharonChui/Pictures/master/create_issue.png?raw=true)
-
-    Project: Community Support - Open Source Project Repository Hosting
-    
-    Issue Type: New Project
-    
-    Summary: 你的 library名称的概要，比如The Cheese Library。
-    
-    Group Id: 输入根GROUP_ID，比如， com.charon.cyberlink 。一旦批准之后，每个以com.charon.cyberlink开始的library都允许被上传到仓库，比如com.charon.cyberlink.somelib。
-    
-    Project URL: 输入任意一个你想贡献的library的URL，比如， [https://github.com/CharonChui/CyberLink4Android](https://github.com/CharonChui/CyberLink4Android)。
-    
-    SCM URL: 版本控制的URL，比如 [https://github.com/CharonChui/CyberLink4Android.git](https://github.com/CharonChui/CyberLink4Android.git)。
+    Project: Community Support - Open Source Project Repository Hosting              
+    Issue Type: New Project          
+    Summary: 你的 library名称的概要，比如The Cheese Library。           
+    Group Id: 输入根GROUP_ID，比如， com.charon。一旦批准之后，每个以com.charon开始的library都允许被上传到仓库，比如com.charon.xxx。        
+    Project URL: 输入任意一个你想贡献的library的URL，比如， [https://github.com/CharonChui/CyberLink4Android](https://github.com/CharonChui/CyberLink4Android)。           
+    SCM URL: 版本控制的URL，比如 [https://github.com/CharonChui/CyberLink4Android.git](https://github.com/CharonChui/CyberLink4Android.git)。         
     其他的都不用管，写完之后创建就可以了。 然后就是开始等，大约一周左右就会获准将自己的`library`分享到`Maven Central`。
 - 下面就是`Bintray`中的账户选项中填写`Sonatype`用户名。
     ![image](https://raw.githubusercontent.com/CharonChui/Pictures/master/add_account.png?raw=true)
