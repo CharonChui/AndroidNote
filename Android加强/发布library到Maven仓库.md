@@ -117,7 +117,7 @@ compile 'com.squareup.picasso:picasso:2.5.2'
     Project: Community Support - Open Source Project Repository Hosting              
     Issue Type: New Project          
     Summary: 你的 library名称的概要，比如The Cheese Library。           
-    Group Id: 输入根GROUP_ID，比如， com.charon。一旦批准之后，每个以com.charon开始的library都允许被上传到仓库，比如com.charon.xxx。        
+    Group Id: 输入根GROUP_ID，比如， com.charonchui。一旦批准之后，每个以com.charon开始的library都允许被上传到仓库，比如com.charonchui.xxx。        
     Project URL: 输入任意一个你想贡献的library的URL，比如， [https://github.com/CharonChui/CyberLink4Android](https://github.com/CharonChui/CyberLink4Android)。           
     SCM URL: 版本控制的URL，比如 [https://github.com/CharonChui/CyberLink4Android.git](https://github.com/CharonChui/CyberLink4Android.git)。         
     其他的都不用管，写完之后创建就可以了。 然后就是开始等，大约一周左右就会获准将自己的`library`分享到`Maven Central`。
@@ -245,7 +245,7 @@ dependencies {
 
 def siteUrl = 'https://github.com/CharonChui/CyberLink4Android'      // Homepage URL of the library
 def gitUrl = 'https://github.com/CharonChui/CyberLink4Android.git'   // Git repository URL
-group = "com.charon.cyberlink"                      // Maven Group ID for the artifact
+group = "com.charonchui.cyberlink"                      // Maven Group ID for the artifact
 
 install {
     repositories.mavenInstaller {
@@ -359,7 +359,7 @@ repositories {
 ...
   
 dependencies {
-    compile 'com.charon.cyberlink:cyberlink-android:1.0.0'
+    compile 'com.charonchui.cyberlink:cyberlink-android:1.0.0'
 }
 ```
 这样终究是不方便的，因为别人还要单独的去配置你仓库的`url`那么接下来就是怎么将`bintray`上我们的仓库上传到`jCenter`中呢？      
@@ -373,7 +373,7 @@ dependencies {
 到这里你就可以在项目中直接使用:　　　　　
 ```java
 dependencies {
-    compile 'com.charon.cyberlink:cyberlink-android:1.0.0'
+    compile 'com.charonchui.cyberlink:cyberlink-android:1.0.0'
 }
 ```
 但是，我悲剧了。提示失败了，为什么呢？　
@@ -383,10 +383,10 @@ dependencies {
 所以通过这里能看出来它是使用当前`module`的名字的。我们只能通过如下方式去使用:     
 ```java
 dependencies {
-    compile 'com.charon.cyberlink:library:1.0.0'
+    compile 'com.charonchui.cyberlink:library:1.0.0'
 }
 ```
-这样就能正常使用了。 如果有些人感觉这样不好，就想要`com.charon.cyberlink:cyberlink-android:1.0.0`的方式，那就将`Android Studio`中`library`的名字修改为`cyberlink-android`后重新上传发布吧。
+这样就能正常使用了。 如果有些人感觉这样不好，就想要`com.charonchui.cyberlink:cyberlink-android:1.0.0`的方式，那就将`Android Studio`中`library`的名字修改为`cyberlink-android`后重新上传发布吧。
 
 
 最后一步:上传library到Maven Central      
