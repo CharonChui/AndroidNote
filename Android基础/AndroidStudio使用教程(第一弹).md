@@ -66,14 +66,14 @@ AndroidStudio使用教程(第一弹)
 	| 上下移动代码                                                 | `Alt+Shift+Up/Down`                         | `Option+Shift+Up/Down`                       |
 	| 剪切当前行                                                   | `Ctrl+X`                                    | `Option+Shift+Up/Down`                       |
 	| 删除当前行                                                   | `Ctrl+Y`                                    | `Command+Delete`                             |	                        
-	| 快速覆写方法                                                 | `Ctrl+O`                                    | `Command+O`                                  |	                           
+	| 快速重写方法     override                                    | `Ctrl+O`                                    | `Command+O`                                  |	                           
 	| 折叠展开代码块                                               | `Ctrl+Plus/Minus`                           | `Command+Plus/Minus`                         |	 	                                   
 	| 折叠展开全部代码块                                           | `Ctrl+Shift+Plus/Minus`                     | `Command+Shift+Plus/Minus`                   |	                                                
 	| 大小写转换                                                   | `Ctrl+Shift+U`                              | `Command+Shift+U`                            |	      		 
 	| 新建文件或生成代码(`GetSet`)                                 | `Alt+Insert`                                |                                              |
 	| 快速修复(同`Eclipse`中`F1`)                                  | `Alt+Enter`                                 |                                              |
 	| 显示方法参数                                                 | `Ctrl+P`                                    |                                              |	                     
-	| 运行项目                                                     | `Shift+F10`                                 |  `Ctrl+R`                                            |				 
+	| 运行项目                                                     | `Shift+F10`                                 |  `Ctrl+R`                                    |				 
 	| 跳转到上次修改的地方                                         | `Ctrl+Shift+Backspace`                      |                                              |	                        
 	| 快捷生成结构体(加try catch等)                                | `Ctrl+Alt+T`                                |  `Command+Option+T`                          |	                                
 	| 显示最近编辑列表                                             | `Ctrl+E`                                    |                                              |	                                
@@ -84,9 +84,22 @@ AndroidStudio使用教程(第一弹)
 	| 直接进入源码                                                 | `F4`                                        |                                              |	                                                       
 	| 快速打开该类或方法(与F4虽然大部分情况下相同，但他俩不一样)   | `Ctrl+B`如在布局文件上点会直接进入布局文件  |                                              |
 	| 快速定位到文件错误或警告位置                                 | `F2`                                        |                                              |	                         
-	| 复制当前行                                                   | `Ctrl+D`                                    |                                              |	                             
+	| 在当前位置复制当前行                                         | `Ctrl+D`                                    |                                              |	                             
+	| 选中两个文件或目录后进行比较(活生生一个简单的BeyondCompare)  | `Ctrl+D`                                    |                                              |	                             
 	| 开关`Project`视图                                            | `Alt+1`                                     |                                              |	                                
-	| 关闭当前窗口                                                 | `Ctrl+_F4`                                  |                                              |	                                
+	| 关闭当前窗口                                                 | `Ctrl+_F4`                                  |                                              |	             
+	| 实现接口方法  implement                                      | `Ctrl+I`                                    | ``                                  |
+	| 抽象方法查看具体有哪些实现类                                 | `Ctrl+Alt+B`                                | ``                       |
+	| 单行注释                                                     | `Ctrl+/`                                    | ``                       |
+	| 多行注释                                                     | `Ctrl+Shit+/`                               | ``                             |	                        
+	| 复制，如果当前行没有选中内容就复制当前行                     | `Ctrl+C`                                    | ``                                  |	                           
+	| 打开该类的关系图，查看该类的继承或实现                       | `Ctrl+H`                                    | ``                         |	 	                                   
+	| 提示代码缩写，如so后点击提示System.out.print等               | `Ctrl+J`                                    | ``                   |	                                                
+	| 进入父类方法的实现  UP                                       | `Ctrl+U`                                    | ``                            |	      		 
+	| 选择最近所有复制过内容的列表                                 | `Ctrl+Shift+V`                              |                                              |
+	| 通过卡片的方式，直接查看该方法的具体内容或者图片，
+	  不用再通过新开一个页面查看了，看代码实现的时候非常方便。     | `Ctrl+Shift+I`                              |                                              |
+	| 全局搜索                                                     | `Ctrl+Shift+F`                              |                                              |	                     
 
 	
 ---
