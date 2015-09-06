@@ -7,6 +7,301 @@ MaterialDesign使用
 使用`eclipse`或`Android Studio`进行开发时，直接在`Android SDK Manager`中将`Extras->Android Support Library`
 升级至最新版即可。
 
+下面我就简单讲解一下如何通过`support v7`包来使用`Material Design`进行开发。
+
+Material Design Theme
+---
+`Material`主题:   
+- @android:style/Theme.Material (dark version)             --               Theme.AppCompat
+- @android:style/Theme.Material.Light (light version)      --               Theme.AppCompat.Light
+- @android:style/Theme.Material.Light.DarkActionBar        --               Theme.AppCompat.Light.DarkActionBar
+
+对应的效果分别如下:    
+
+![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/Material_theme.png?raw=true)	
+
+使用ToolBar
+---
+
+- 禁止Action Bar
+可以通过使用`Material theme`来让应用使用`Material Design`。想要使用`ToolBar`需要先禁用`ActionBar`。
+可以通过自定义`theme`继承`Theme.AppCompat.Light.NoActionBar`或者在`theme`中通过以下配置来进行。
+```xml
+<item name="windowActionBar">false</item>
+<item name="android:windowNoTitle">true</item>
+```
+下面我通过第二种方式来看一下具体的实现:   
+在`style.xml`中自定义`AppTheme`:    
+```
+<!-- Base application theme. -->
+<style name="AppTheme" parent="AppTheme.Base"/>
+
+<style name="AppTheme.Base" parent="Theme.AppCompat.Light.DarkActionBar">
+	<!-- Tell Android System that we will use ToolBar instead of ActionBar -->
+	<item name="windowNoTitle">true</item>
+	<item name="windowActionBar">false</item>
+	<!-- colorPrimary is used for the default action bar background -->
+	<item name="colorPrimary">@color/colorPrimary</item>
+
+	<!-- colorPrimaryDark is used for the status bar -->
+	<item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+
+	<!-- colorAccent is used as the default value for colorControlActivated
+		 which is used to tint widgets -->
+	<item name="colorAccent">@color/colorAccent</item>
+</style>
+```
+配置的这几种颜色分别如下图所示:    
+![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/material_color.png?raw=true)	
+
+
+
+
+在`values-v21`中的`style.xml`中同样自定义`AppTheme`主题: 
+```xml
+<style name="AppTheme" parent="AppTheme.Base">
+	<!-- Customize your theme using Material Design here. -->
+	<item name="android:windowContentTransitions" >true</item>
+	<item name="android:windowAllowEnterTransitionOverlap" >true</item>
+	<item name="android:windowAllowReturnTransitionOverlap">true</item>
+	<item name="android:windowSharedElementEnterTransition">@android:transition/move</item>
+	<item name="android:windowSharedElementExitTransition">@android:transition/move</item>
+</style>
+```
+
+在`Manifest`文件中设置`AppTheme`主题:   
+```
+<application
+	android:allowBackup="true"
+	android:icon="@mipmap/ic_launcher"
+	android:label="@string/app_name"
+	android:theme="@style/AppTheme" >
+	<activity
+		...
+	</activity>
+	<activity android:name="com.charon.materialsample.FriendsActivity"></activity>
+</application>
+```
+这里说一下为什么要在`values-v21`中也自定义个主题，这是为了能让在`21`以上的版本能更好的使用`Material Design`，
+在21以上的版本中会有更多的动画、特效等。
+
+- 让Activity继承AppCompatActivity
+```java
+public class MainActivity extends AppCompatActivity {
+	...
+}
+
+```
+
+- 在布局文件中进行声明
+
+生命`toolbar.xml`，我们把他单独放到一个文件中，方便多布局使用:    
+```
+<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/colorPrimary"
+    android:minHeight="?attr/actionBarSize"
+    local:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+    local:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+```
+在`Activity`的布局中使用`ToolBar`:    
+```xml
+<LinearLayout
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="vertical">
+
+	<include
+		android:id="@+id/toolbar"
+		layout="@layout/toolbar" />
+
+	<com.charon.materialsample.view.PagerSlidingTabStrip
+		android:id="@+id/psts_main"
+		android:layout_width="match_parent"
+		android:layout_height="48dip"
+		android:background="@color/colorPrimary" />
+
+	<android.support.v4.view.ViewPager
+		android:id="@+id/vp_main"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"></android.support.v4.view.ViewPager>
+
+</LinearLayout>
+```
+
+- 在Activity中设置ToolBar
+```java
+public class MainActivity extends AppCompatActivity{
+    private Context mContext;
+    private Toolbar mToolbar;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        mContext = this;
+		mToolbar = (Toolbar) findViewById(R.id.toolbar);
+		mToolbar.setTitle(R.string.app_name);
+		// 将ToolBar设置为ActionBar，这样一设置后他就能像ActionBar一样直接显示menu目录中的菜单资源
+		// 如果不用该方法，那ToolBar就只是一个普通的View，对menu要用inflateMenu去加载布局。
+		setSupportActionBar(mToolbar);
+		getSupportActionBar().setDisplayShowHomeEnabled(true);
+    }
+```
+
+到这里运行项目就可以了，就可以看到一个简单的`ToolBar`实现。
+
+接下来我们看一下`ToolBar`中具体有哪些内容:    
+
+![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/ToolBar_content.jpg?raw=true)	
+
+我们可以通过对应的方法来修改他们的属性:   
+![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/toolbarCode.png?raw=true)	
+
+对于`ToolBar`中的`Menu`部分我们可以通过一下方法来设置:    
+```java
+toolbar.inflateMenu(R.menu.menu_main);
+toolbar.setOnMenuItemClickListener();
+```
+或者也可以直接在`Activity`的`onCreateOptionsMenu`及`onOptionsItemSelected`来处理: 
+```java
+@Override
+public boolean onCreateOptionsMenu(Menu menu) {
+	// Inflate the menu; this adds items to the action bar if it is present.
+	getMenuInflater().inflate(R.menu.menu_main, menu);
+	return true;
+}
+
+@Override
+public boolean onOptionsItemSelected(MenuItem item) {
+	// Handle action bar item clicks here. The action bar will
+	// automatically handle clicks on the Home/Up button, so long
+	// as you specify a parent activity in AndroidManifest.xml.
+	int id = item.getItemId();
+
+	//noinspection SimplifiableIfStatement
+	if (id == R.id.action_settings) {
+		return true;
+	}
+	if (id == R.id.action_search) {
+		Toast.makeText(getApplicationContext(), "Search action is selected!", Toast.LENGTH_SHORT).show();
+		return true;
+	}
+	return super.onOptionsItemSelected(item);
+}
+```
+`menu`的实现如下:   
+```xml
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" tools:context=".MainActivity">
+
+        <item
+            android:id="@+id/action_search"
+            android:title="@string/action_search"
+            android:orderInCategory="100"
+            android:icon="@drawable/ic_action_search"
+            app:showAsAction="ifRoom" />
+
+        <item
+            android:id="@+id/action_settings"
+            android:title="@string/action_settings"
+            android:orderInCategory="100"
+            app:showAsAction="never" />
+
+</menu>
+```
+
+如果想要对`NavigationIcon`添加点击实现:  
+```java
+toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+	@Override
+	public void onClick(View v) {
+		onBackPressed();
+	}
+});
+```
+
+运行后发现我们强大的`Activity`切换动画怎么在`5.0`一下系统上实现呢？`support v7`包也帮我们考虑到了。使用`ActivityOptionsCompat`
+及`ActivityCompat.startActivity`，但是悲剧了，他对4.0一下基本都无效，而且就算在4.0上很多动画也不行，具体还是用其他
+大神在`github`写的开源项目吧。
+
+
+- 动态取色Palette 
+
+`Palette`这个类中可以提取一下集中颜色：　　
+
+- Vibrant （有活力）
+- Vibrant dark（有活力 暗色）
+- Vibrant light（有活力 亮色）
+- Muted （柔和）
+- Muted dark（柔和 暗色）
+- Muted light（柔和 亮色）
+```java
+//目标bitmap，代码片段
+Bitmap bm = BitmapFactory.decodeResource(getResources(),
+		R.drawable.kale);
+Palette palette = Palette.generate(bm);
+if (palette.getLightVibrantSwatch() != null) {
+	//得到不同的样本，设置给imageview进行显示
+	iv.setBackgroundColor(palette.getLightVibrantSwatch().getRgb());
+	iv1.setBackgroundColor(palette.getDarkVibrantSwatch().getRgb());
+	iv2.setBackgroundColor(palette.getLightMutedSwatch().getRgb());
+	iv3.setBackgroundColor(palette.getDarkMutedSwatch().getRgb());
+}
+```
+使用DrawerLayout
+---
+
+- 布局中的使用
+```xml
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!--主页面-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar" />
+
+        <com.charon.materialsample.view.PagerSlidingTabStrip
+            android:id="@+id/psts_main"
+            android:layout_width="match_parent"
+            android:layout_height="48dip"
+            android:background="@color/colorPrimary" />
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/vp_main"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></android.support.v4.view.ViewPager>
+
+    </LinearLayout>
+
+    <!--侧边栏部分-->
+    <fragment
+        android:id="@+id/fragment_navigation_drawer"
+        android:name="com.charon.materialsample.fragment.FragmentDrawer"
+        android:layout_width="@dimen/nav_drawer_width"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:layout="@layout/fragment_navigation_drawer"
+        tools:layout="@layout/fragment_navigation_drawer" />
+
+</android.support.v4.widget.DrawerLayout>
+```
+
+
 
 ---
 
