@@ -58,7 +58,8 @@ Material Design Theme
     ```
     
     配置的这几种颜色分别如下图所示:    
-    ![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/material_color.png?raw=true)	
+    ![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/material_color.png?raw=true)	       
+    里面没有`colorAccent`的颜色，这个颜色是设置`Checkbox`等控件选中时的颜色。
 
     在`values-v21`中的`style.xml`中同样自定义`AppTheme`主题: 
     ```xml
@@ -543,9 +544,44 @@ public class DrawerFragment extends Fragment {
 Ripple效果
 ---
 
+个人非常喜欢的效果。相当于给点击事件加上了动态的赶脚。。。
+
+
+假设现在有一个`Button`的`selector`，我们想给这个`Button`加上`Ripple`效果，肿么办？ 
+新建一个`xml`文件，用`ripple`包裹`selector`，然后在`Button`的`backgroud`直接引用这个`xml`就好了。
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+android:color="@color/whatever">
+<selector xmlns:android="http://schemas.android.com/apk/res/android"
+<item android:state_pressed="false" android:state_focused="true"
+android:drawable="@drawable/some_focused_blah"/>
+<item android:state_pressed="true" android:drawable="@drawable/some_pressed_blah"/>
+<item android:drawable="@android:color/whatever"/>
+</selector>
+</ripple>
+
+```
+但是很遗憾，`ripple`是5.0才有的，而且`support`包中没有实现该功能的扩展。
 `5.0`的这些效果还是无法在低版本上实现，包括一些`TextView`等样式，现在可以用大神的开源项目        
 [MaterialDesignLibrary](https://github.com/navasmdc/MaterialDesignLibrary)
 
+
+RecyclerView
+---
+
+`ListView`的升级版，还有什么理由不去用呢？ 同样他也在`support v7`包中。
+```
+compile 'com.android.support:recyclerview-v7:21.+'  
+```
+通过`mRecyclerView.setLayoutManager(new LinearLayoutManager(this)); `设置为`LinearLayoutManager`来实现水平或者竖直
+方向的`ListView`。
+
+
+阴影
+---
+
+通过对`View`设置`backgroud`后再添加`android:elevation="2dp"`来实现背景大小。
 
 
 

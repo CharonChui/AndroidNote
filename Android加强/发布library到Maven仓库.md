@@ -16,7 +16,7 @@ dependencies {
     想要在项目中使用`jCenter`必须要在项目的`build.gradle`中像如下这样进行声明：    
 
     ```java
-	allprojects {
+    allprojects {
 		repositories {
 			jcenter()
 		}
@@ -160,10 +160,12 @@ buildscript {
         jcenter()
     }
     dependencies {
-        // 注意gradle版本要再1.1.2以上，之前的版本存在问题。
+        // 注意gradle版本要再1.1.2以上，之前的版本存在问题。如果在工程中/gradle/wrapper/gradle-wrapper.properties重看到当前的gradle版本为2.4，下面的配置版本就要改为1.3.0
         classpath 'com.android.tools.build:gradle:1.2.3'
         // 下面的部分就为新添加的。
+        // 用于上传项目到bintray
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.2'
+        // 用于生成javaDoc和jar，如果gradle版本为2.4及以上，下面的版本就要改为1.3，具体可参考https://github.com/dcendents/android-maven-gradle-plugin
         classpath 'com.github.dcendents:android-maven-plugin:1.2'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -338,7 +340,7 @@ bintray {
 
 到这一步就可以开始上传到`bintray`了，接下来开启`Android Studio`的`Terminal`中。
 - 检查代码的正确性，以及编译`library`文件(`aar`,`pom`等)。执行如下命令:    
-    `./gradlew install`      
+    `./gradlew install`如果提示权限不足就用`chmod 777 gradlew`改下权限就好了，windows下直接运行`gradlew install`
     正确的话会提示`BUILD SUCCESSFUL`
 - 上传编译的文件到`bintray`，使用如下命令:     
     `./gradlew bintrayUpload`       
@@ -402,4 +404,35 @@ dependencies {
 直接进入下一个页面:         
 ![image](https://raw.githubusercontent.com/CharonChui/Pictures/master/send_to_maven.png?raw=true)
 然后再出来的页面输入`Maven Central`对应的用户名和密码点击`Sync`就可以了。上传到`Maven Central`的`library`是非常严格的，比如`+`号是不能在`library`版本的依赖定义中使用的。    
-完成之后，你可以在 [Maven Central Repository](https://oss.sonatype.org/content/repositories/releases/)中找到你的`library`。    
+完成之后，你可以在 [Maven Central Repository](https://oss.sonatype.org/content/repositories/releases/)中找到你的`library`。
+
+总结下在使用过程中遇到的错误: 
+
+- Maven gradle插件与gradle版本要对应好，如下，不要不对应。
+    ```xml
+    // Top-level build file where you can add configuration options common to all sub-projects/modules.
+    
+    buildscript {
+        repositories {
+            jcenter()
+        }
+        dependencies {
+            classpath 'com.android.tools.build:gradle:1.3.0'
+            // 用于上传项目到bintray
+            classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.2'
+            // 用于生成javaDoc和jar
+            classpath 'com.github.dcendents:android-maven-gradle-plugin:1.3'
+            // NOTE: Do not place your application dependencies here; they belong
+            // in the individual module build.gradle files
+        }
+    }
+    
+    allprojects {
+        repositories {
+            jcenter()
+        }
+    }
+    ```
+- `windows`下执行`gradlew install`编译`javadoc`时会提示`GBK`编码错误，这时候需要修改编译时的编码，具体放狗搜下，当时我改在`mac`上用了，就没解决。
+- 编译生成`javadoc`时提示很多找不到类，不能使用`<br/>`等错误，这里建议在写注释的时候一定要规范，不要使用汉字，而且不要使用`<br/>`，`<p>`等。
+
