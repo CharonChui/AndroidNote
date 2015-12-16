@@ -74,8 +74,10 @@ JNI基础
     所以要在windows下使用ndk的工具,必须要提供一个工具(linux环境的模拟器)
 
 - 工具二:  cygwin(windows下linux系统环境的模拟器, 主要是为了能够运行ndk的工具)       
-    安装 devel shell        
+    安装 devel shell       
+	![image](https://raw.githubusercontent.com/CharonChui/Pictures/master/jni_cygwin.png?raw=true)    
     linux 特点:所有的设备 硬件 都是以文件的方式定义的.     
+	安装完后进入`cygwin`打印`make -v`命令如果能打印出`GNU Make ...`就说明安装木问题了。
 
 - 工具三: cdt(c/c++ develop tools)  eclipse 的一个插件  用来让c\c++代码 语法高亮显示.         
     adt(android develop tools)          
@@ -85,7 +87,7 @@ JNI基础
     配置cygwin的环境变量: 在cygwin安装目录,etc目录,profile的文件 32行 添加ndk工具所在的目录.
     `PATH="/usr/local/bin:/usr/bin:/cygdrive/d/android-ndk-r7b:${PATH}"`在这个后面加上:ndk-build的路径(注意：在linux中路径的分隔符不是分号而是冒号)，
 	改成这样       
-	`PATH="/usr/local/bin:/usr/bin:${PATH}:/cygdrive/d/android-ndk-r7b"`//注意这里的路径是在linux系统下的ndk路径而不是windows下的路径
+	`PATH="/usr/local/bin:/usr/bin:${PATH}:/cygdrive/d/android-ndk-r7b"`//注意这里的路径是在linux系统下的ndk路径而不是windows下的路径,/cygdrive/d/是在linux下看到的d盘。
 
 ###JNI开发步骤：
 
@@ -132,7 +134,9 @@ JNI基础
 	```
 4. cmd进入到当前的工程的文件夹中(也可以进入到当前工程的jni目录中)，然后运行ndk-build工具就能将c文件编译成一个可执行的二进制文件. ->.so，        
     注意用ndk-build编译之后一定要刷新，不然eclipse会缓存旧的不加载新的进来
-
+	![image](https://raw.githubusercontent.com/CharonChui/Pictures/master/ndk_build.png?raw=true)    
+	
+	
 5. 刷新工程，就能看到多出了两个文件夹
 
 6. 在java中将要调用的c代码加载到java虚拟机中，通过静态代码块的方式
