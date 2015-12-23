@@ -184,14 +184,14 @@ JNI基础
 8. 如何在c中向logcat中打印日志            
 	如果想像logcat打印日志就要用到谷歌在ndk中提供的一个工具log.h的头文件
 	步骤：
-	1. 在c文件的头上面导入文件，加入下面的这四行代码
+	1. 在c文件的头上面导入文件，加入下面的这四行代码      
         ```c
 		#include <android/log.h> //导入log.h
 		#define LOG_TAG "clog"  //指定打印到logcat的Tag
 		#define LOGD(...) __android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, __VA_ARGS__) //对后面的这个打印日志的方法起一个别名是LOGD
 		#define LOGI(...) __android_log_print(ANDROID_LOG_INFO, LOG_TAG, __VA_ARGS__)
 		```
-	2. 在android.mk中加载文件
+	2. 在android.mk中加载文件            
         ```
 		LOCAL_PATH := $(call my-dir)
 		include $(CLEAR_VARS)
