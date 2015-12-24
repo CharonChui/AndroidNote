@@ -106,7 +106,23 @@ JNI基础
 	`public native String helloFromC();`
 
 2. 在工程中新建一个jni文件夹(然后在这个文件夹中写c代码，在C中实现java里面定义的c方法默认的时候是自己手写c的方法名，           
-	但是很麻烦这里要参考七里面提供的方式，用javah编译后，然后拷贝h的头文件到jni文件夹中，在从h文件拷贝方法的名字，然后实现该方法).       
+	但是很麻烦这里要参考七里面提供的方式，用javah编译后，然后拷贝h的头文件到jni文件夹中，在从h文件拷贝方法的名字，然后实现该方法).  
+	```
+	C:\Users\Administrator>javah -help
+	用法:
+	  javah [options] <classes>
+	其中, [options] 包括:
+	  -o <file>                输出文件 (只能使用 -d 或 -o 之一)
+	  -d <dir>                 输出目录
+	  -v  -verbose             启用详细输出
+	  -h  --help  -?           输出此消息
+	  -version                 输出版本信息
+	  -jni                     生成 JNI 样式的标头文件 (默认值)
+	  -force                   始终写入输出文件
+	  -classpath <path>        从中加载类的路径
+	  -cp <path>               从中加载类的路径
+	  -bootclasspath <path>    从中加载引导类的路径
+	```	
 	`#include <stdio.h>`         
 	`#include <jni.h>`        
 	//这个方法的名字的写法固定Java_表示这个方法由Java调用,cn_itcast_ndk表示java的包名DemoActivity表示

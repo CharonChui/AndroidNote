@@ -1,11 +1,44 @@
 AndroidStudio中进行ndk开发
 ===
 
-- 在`module/src/main/`下创建`jni`文件夹
+- 创建工程，声明`native`方法。
+	在`MainActivity`中声明`native`方法。
+	`private native void initUninstallFeedback(String packagePath, int sdkVersion);`
+	
+- 生成`class`文件。
+    执行`Build-Make Project`命令，生成`class`文件。所在目录为`app_path/build/intermediates/classes/debug`
 
+
+- 执行`javah`生成`.h文件`
+		```
+	C:\Users\Administrator>javah -help
+	用法:
+	  javah [options] <classes>
+	其中, [options] 包括:
+	  -o <file>                输出文件 (只能使用 -d 或 -o 之一)
+	  -d <dir>                 输出目录
+	  -v  -verbose             启用详细输出
+	  -h  --help  -?           输出此消息
+	  -version                 输出版本信息
+	  -jni                     生成 JNI 样式的标头文件 (默认值)
+	  -force                   始终写入输出文件
+	  -classpath <path>        从中加载类的路径
+	  -cp <path>               从中加载类的路径
+	  -bootclasspath <path>    从中加载引导类的路径
+	```	
+	在`Studio Terminal`中进入到`src/main`目录下执行`javah`命令:       
+	`javah -d jni -classpath <SDK_android.jar>;<APP_classes> <class>`
+	
+	`F:\NDKDemo\app\src\main>javah -d jni -classpath C:\develop\android-sdk-windows\platforms\android-22\android.jar;..\..\build\intermediates\classes\debug com.charonchui.ndkdemo.MainActivity
+	`
+	执行完成后就会在`src/main/jni`目录下生成`com_charonchui_ndkdemo_MainActivity.h`文件。
+
+- 在`module/src/main/jni`目录下创建对应的`.c`文件。
+
+
+
+- 配置`ndk`路径，在项目右键`Moudle Setting`中设置。              
     ![image](https://raw.githubusercontent.com/CharonChui/Pictures/master/studio_ndk_jni.png?raw=true)    
-
-- 配置`ndk`路径，在项目右键`Moudle Setting`中设置。
 	
 - 在`build.gradle`中配置`ndk`选项
 
@@ -22,7 +55,9 @@ AndroidStudio中进行ndk开发
 			versionName "1.0"
 
 			ndk {
-				moduleName "app"
+				moduleName "uninstall_feedback" // 配置so名字
+				ldLibs "log"
+	//            abiFilters "armeabi", "x86"  默认就是全部的，加了配置才会生成选中的
 			}
 		}
 		buildTypes {
@@ -31,34 +66,6 @@ AndroidStudio中进行ndk开发
 				proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 			}
 		}
-		
-		productFlavors {
-//        // for detailed abiFilter descriptions, refer to "Supported ABIs" @
-//        // https://developer.android.com/ndk/guides/abis.html#sa
-//        create("arm") {
-//            ndk.abiFilters.add("armeabi")
-//        }
-//        create("arm7") {
-//            ndk.abiFilters.add("armeabi-v7a")
-//        }
-//        create("arm8") {
-//            ndk.abiFilters.add("arm64-v8a")
-//        }
-//        create("x86") {
-//            ndk.abiFilters.add("x86")
-//        }
-//        create("x86-64") {
-//            ndk.abiFilters.add("x86_64")
-//        }
-//        create("mips") {
-//            ndk.abiFilters.add("mips")
-//        }
-//        create("mips-64") {
-//            ndk.abiFilters.add("mips64")
-//        }
-        // To include all cpu architectures, leaves abiFilters empty
-        create("all")
-    }
 	}
 	```
 	这里可能会出现错误:      
@@ -69,7 +76,7 @@ AndroidStudio中进行ndk开发
 		解决方法就是在`jni`目录建一个任意名字的`.c`空文件就可以了。
 	
 - 执行Build      
-	可以在`lib`目录中找到响应的`so`文件，注意名字是以`lib`+`module name`命名的。
+	然后就可以在`app/build/intermediates/ndk/debug/obj/local`下看到所有架构的`so`了。
     ![image](https://raw.githubusercontent.com/CharonChui/Pictures/master/studio_ndk_build.png?raw=true)    
 ---
 
