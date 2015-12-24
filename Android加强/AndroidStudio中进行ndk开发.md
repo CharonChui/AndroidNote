@@ -1,16 +1,22 @@
 AndroidStudio中进行ndk开发
 ===
 
-- 创建工程，声明`native`方法。
-	在`MainActivity`中声明`native`方法。
-	`private native void initUninstallFeedback(String packagePath, int sdkVersion);`
+- 创建工程，声明`native`方法。               
+	```java
+	private native void startDaemon(String serviceName, int sdkVersion);
+
+    static {
+        System.loadLibrary("daemon");
+    }
+	```
 	
-- 生成`class`文件。
+	
+- 生成`class`文件。                 
     执行`Build-Make Project`命令，生成`class`文件。所在目录为`app_path/build/intermediates/classes/debug`
 
 
-- 执行`javah`生成`.h文件`
-		```
+- 执行`javah`生成`.h文件`                    
+	```
 	C:\Users\Administrator>javah -help
 	用法:
 	  javah [options] <classes>
@@ -29,9 +35,8 @@ AndroidStudio中进行ndk开发
 	在`Studio Terminal`中进入到`src/main`目录下执行`javah`命令:       
 	`javah -d jni -classpath <SDK_android.jar>;<APP_classes> <class>`
 	
-	`F:\NDKDemo\app\src\main>javah -d jni -classpath C:\develop\android-sdk-windows\platforms\android-22\android.jar;..\..\build\intermediates\classes\debug com.charonchui.ndkdemo.MainActivity
-	`
-	执行完成后就会在`src/main/jni`目录下生成`com_charonchui_ndkdemo_MainActivity.h`文件。
+	`F:\DaemonService\app\src\main>javah -d jni -classpath C:\develop\android-sdk-windows\platforms\android-22\android.jar;..\..\build\intermediates\classes\debug com.charonchui.daemonservice.service.DaemonService`
+	执行完成后就会在`src/main/jni`目录下生成`com_charonchui_daemonservice_service_DaemonService.h`文件。
 
 - 在`module/src/main/jni`目录下创建对应的`.c`文件。
 
@@ -40,7 +45,7 @@ AndroidStudio中进行ndk开发
 - 配置`ndk`路径，在项目右键`Moudle Setting`中设置。              
     ![image](https://raw.githubusercontent.com/CharonChui/Pictures/master/studio_ndk_jni.png?raw=true)    
 	
-- 在`build.gradle`中配置`ndk`选项
+- 在`build.gradle`中配置`ndk`选项              
 
     ```java
 	android {
@@ -57,7 +62,7 @@ AndroidStudio中进行ndk开发
 			ndk {
 				moduleName "uninstall_feedback" // 配置so名字
 				ldLibs "log"
-	//            abiFilters "armeabi", "x86"  默认就是全部的，加了配置才会生成选中的
+	//            abiFilters "armeabi", "x86"  // 默认就是全部的，加了配置才会生成选中的
 			}
 		}
 		buildTypes {
@@ -78,6 +83,7 @@ AndroidStudio中进行ndk开发
 - 执行Build      
 	然后就可以在`app/build/intermediates/ndk/debug/obj/local`下看到所有架构的`so`了。
     ![image](https://raw.githubusercontent.com/CharonChui/Pictures/master/studio_ndk_build.png?raw=true)    
+	
 ---
 
 - 邮箱 ：charon.chui@gmail.com  
