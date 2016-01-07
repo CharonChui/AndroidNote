@@ -39,7 +39,7 @@ Selector使用
 		stalistDrawable.addState(new int []{focused }, getResources().getDrawable(R.drawable.pic4);  
 		//没有任何状态时显示的图片，我们给它设置我空集合  
 		stalistDrawable.addState(new int []{}, getResources().getDrawable(R.drawable.pic5);  
-		上面的“-”负号表示对应的属性值为false
+		上面的“-”负号表示对应的属性值为 false
 		当我们为某个View使用其作为背景色时，会根据状态进行背景图的转换。
     	```
     - public boolean isStateful ()     
