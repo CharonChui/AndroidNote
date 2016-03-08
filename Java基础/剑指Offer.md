@@ -296,10 +296,284 @@
 	
 	思路: 开始看到这道题，我感觉很简单，就是循环比较下找出最下的就完了，我感觉什么旋转数组都是面试官
 	放的烟雾弹。后来我发现我错了。旋转数组是有用的。
-
+	```java
+	public class FindTest {
+		public static void main(String[] args) {
+			// int[] array={1,1,1,2,0};
+			// int[] array={3,4,5,1,2};
+			int[] array = { 1, 0, 1, 1, 1 }; // 这是0，1，1，1，1的旋转
+			System.out.println(findMinNum(array));
+		}
 	
+		public static Integer findMinNum(int[] array) {
+			if (array == null) {
+				return null;
+			}
+			int leftIndex = 0;
+			int rightIndex = array.length - 1;
+			int mid = 0;
+			// 最小的数就在这中间
+			while (array[leftIndex] >= array[rightIndex]) {
+				if (rightIndex - leftIndex <= 1) {
+					// 这就是最小的了
+					mid = rightIndex;
+					break;
+				}
+				// 去中间的值，类似二分法查找
+				mid = (leftIndex + rightIndex) / 2;
+				// 前、中、后三个值都相等的情况，主要就是为了区分0，1，1，1，1这种数值相同的情况
+				if (array[leftIndex] == array[rightIndex] && array[leftIndex] == array[mid]) {
+					// 把指针在移动一下，不相等就继续变mid的值
+					if (array[leftIndex + 1] != array[rightIndex - 1]) {
+						mid = array[leftIndex + 1] < array[rightIndex - 1] ? (leftIndex + 1) : (rightIndex - 1);
+						break;
+					} else {
+						leftIndex++;
+						rightIndex--;
+					}
+				} else {
+					if (array[mid] >= array[leftIndex])
+						leftIndex = mid;
+					else {
+						if (array[mid] <= array[rightIndex])
+							rightIndex = mid;
+					}
+				}
+				return array[mid];
+			}
+			return null;
+		}
+	}
+    ```
+9. 斐波那契数列	    
+    什么是斐波那契数列呢？ 就是f(0)=0;f(1)=1;f(n)=f(n-1)+f(n-2);
+    写一个函数，输入n，求斐波那契数列的第n项。
+    思路:标准的一个递归。
+    ```java
+	public long fibonacci1(int n) {
+		if (n == 0) {
+			return 0;
+		}
+		
+		if (n == 1) {
+			return 1;
+		}
+		
+		return fibonacci1(n-1) + fibonacci1(n-2);
+	}
+    ```
+    貌似很合理，但其实也是有问题的，这样会导致重复计算，例如我们在算f(10)，需要先求出f(9)和f(8)，而算f(9)又要求出f(8)和f(7)，很显然重复了。显然面试官不会满意的。那该怎么做呢？ 那就是累加。 
+    ```java
+	public class Fibonacci {
+		public static long fibonacci(int n) {
+			long result = 0;
+			long preOne = 0;
+			long preTwo = 1;
+			if (n == 0) {
+				return preOne;
+			}
+			if (n == 1) {
+				return preTwo;
+			}
+			for (int i = 2; i <= n; i++) {
+				result = preOne + preTwo;
+				preOne = preTwo;
+				preTwo = result;
+			}
+			return result;
+		}
+	}
+	```
+10. 2进制中1的个数
+    请实现一个函数,输入一个整数,输出该数二进制表示中 1 的个数。例如 把 9 表示成二进制是 1001;有 2 位是 1,因此如果输入 9,函数输出 2.
+    思路: 把一个整数减去1，再和原整数做与运算，会把该整数最右边的一个1变成0.那么一个整数的二进制表示中有多少个1，就可以进行多少次运算。
+    ```java
+	public int numberOf1(int n) {
+		int count = 0;
+		while (n != 0) {
+			count++;
+			n = (n - 1) & n;
+		}
+		return count;
+	}
+    ```
+    
+11. 数值的整数次方
+    实现函数double Power(double base,int exponent),求base的exponent次方。不得使用库函数，同时不需要考虑大数问题。
+    思路:就是不断的累计去乘.
+    ```java
+    public double powerWithExponent(double base, int exponent) {
+		double result = 1.0;
+		for (int i = 1; i <= exponent; i++) {
+			result = result * base;
+		}
+		return result;
+	}
+    ```
+    本来想着挺简单，其实已经写错了。因为exponent如果是0或者负数呢？
+    思路：当指数为负数的时候，可以先对指数求绝对值，然后算出次方的结果之后再取倒数。既然有求倒数，我们很自然的就要想到有没有可能对0求倒数，如果对0求倒数怎么办？当底数base是零且指数是负数的时候，我们不做特殊的处理，就会发现对0求倒数从而导致程序运行出错。怎么告诉函数的调用者出现了这种错误？在Java中可以抛出异常来解决。
+    ```java
+    public static double power(double base, int exponent) throws Exception {
+		double result = 0.0;
+		// 如果是求0的负数次幂
+		if (equal(base, 0.0) && exponent < 0) {
+			throw new Exception("0的负数次幂没有意义");
+		}
+		if (exponent < 0) {
+			// 负数次幂，先取绝对值算出次方后再求倒数
+			result = 1.0 / powerWithExpoment(base, -exponent);
+		} else {
+			result = powerWithExpoment(base, exponent);
+		}
+		return result;
+	}
+
+	private static double powerWithExpoment(double base, int exponent) {
+		if (exponent == 0) {
+			return 1;
+		}
+		if (exponent == 1) {
+			return base;
+		}
+		double result = 1.0;
+		for (int i = 1; i <= exponent; i++) {
+			result = result * base;
+		}
+		return result;
+	}
+
+	/**
+	 * 判断两个double数据是否相等
+	 * @param num1
+	 * @param num2
+	 * @return
+	 */
+	private static boolean equal(double num1, double num2) {
+		if ((num1 - num2 > -0.0000001) && num1 - num2 < 0.0000001) {
+			return true;
+		} else {
+			return false;
+		}
+
+	}
+    ```
+12. 打印 1 到最大的 n 位数
+    输入数字n，按顺序打印出从1最大的的n位数十进制数。比如输入3，则打印出1，2，3一直到最大的3位数即999.
+    思路: 1位数就是10-1，两位数就是10*10-1三位数就是10*10*10-1
+    
+    ```java
+    public void print1ToMaxOfNDigits(int n) {
+		int number = 1;
+		int i = 0;
+		while (i++ < n) {
+			number *= 10;
+		}
+		for (int j = 1; j < number; ++j)
+			System.out.println(j);
+	}
+    ```
+    感觉挺简单，其实已经错了。因为没有规定n的值，如果很大的话，显然会超过int型的最大值。我们很自然的想到解决这个问题需要一个大数。最常用的也是最容易的用字符串或者数组表达大数。接下来我们用数组来解决大数问题。
+    思路:每一位数都是0到9，这样弄一个数组，数组的长度就是n，每一位都是0-9，这样，循环去打印数组就可以了
+    ```java
+	public static void main(String[] args) {
+		printToMaxOfNDigits(2);
+	}
+
+	public static void printToMaxOfNDigits(int n) {
+		int[] array = new int[n];
+		if (n <= 0)
+			return;
+		printArray(array, 0);
+	}
+
+	private static void printArray(int[] array, int n) {
+		// 每一位都是0-9
+		for (int i = 0; i < 10; i++) {
+			if (n != array.length) {
+				array[n] = i;
+				// 递归弄另一位
+				printArray(array, n + 1);
+			} else {
+				boolean isFirstNo0 = false;
+				for (int j = 0; j < array.length; j++) {
+					if (array[j] != 0) {
+						System.out.print(array[j]);
+						if (!isFirstNo0) {
+							isFirstNo0 = true;
+						}
+					} else {
+						if (isFirstNo0) {
+							// 10 20 这种后位是0的
+							System.out.print(array[j]);
+						}
+					}
+				}
+				System.out.println();
+				// 打印完就return
+				return;
+			}
+		}
+	}
+```
+
+13. 在O(1)时间删除链表节点
+    给定单向链表的头指针和一个节点指针，定义一个函数在O(1)时间删除该节点。
+    思路：在单向链表中删除一个节点，最常规的方法无疑是从链表的头结点开始，顺序遍历查找要删除的节点，并在链表中删除该节点。删除就是将这个要被删除的节点的前一节点设置成该要被删除节点的下一节点。- -！
+    ```java
+    public class DeleteListNodeTest {
+		public static void main(String[] args) {
+			ListNode head = new ListNode();
+			ListNode second = new ListNode();
+			ListNode third = new ListNode();
+			head.nextNode = second;
+			second.nextNode = third;
+			head.data = 1;
+			second.data = 2;
+			third.data = 3;
+			deleteNode(head, second);
+			System.out.println(head.nextNode.data);
+		}
+	
+		/**
+		 * 
+		 * @param head
+		 *            头结点
+		 * @param deListNode
+		 *            将被删除的节点
+		 */
+		public static void deleteNode(ListNode head, ListNode deListNode) {
+			if (deListNode == null || head == null) {
+				return;
+			}
+	
+			if (head == deListNode) {
+				// 要删除的这个节点正好是头节点
+				head = null;
+			} else if (deListNode.nextNode == null) {
+				// 要删除的这个节点正好是最后一个节点
+				ListNode pointListNode = head;
+				while (pointListNode.nextNode.nextNode != null) {
+					pointListNode = pointListNode.nextNode;
+				}
+				pointListNode.nextNode = null;
+			} else {
+				// 要删除的节点是中间的节点，直接把该节点的值和next指向下一个节点就可以。
+				deListNode.data = deListNode.nextNode.data;
+				deListNode.nextNode = deListNode.nextNode.nextNode;
+			}
+		}
+	}
+	
+	class ListNode {
+		int data;
+		ListNode nextNode;
+	}
+    ```
+14. 调整数组顺序使奇数位于偶数前面
+
 
 ---
 
 - 邮箱 ：charon.chui@gmail.com  
 - Good Luck! 
+
