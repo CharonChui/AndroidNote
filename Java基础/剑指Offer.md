@@ -5,13 +5,14 @@
 
 1. 我没找到第一题是什么- -!,谁知道的给补充下吧
 
-2. 实现单例模式
-    单例的实现分为好几种:    
+2. 实现单例模式                 
+    单例的实现分为好几种:     
 	- 饿汉式
 	- 懒汉式
-	- 枚举
+	- 枚举              
 	
-	- 饿汉式
+	具体实现:      
+	- 饿汉式              
 		```java
 		public class Singleton {
 			private Singleton() {
@@ -75,20 +76,20 @@
 	}
 	```
 	
-3. 二维数组中的查找
+3. 二维数组中的查找            
     题目描述：一个二维数组，每一行从左到右递增，每一列从上到下递增．输入一个二维数组和一个整数，判断数组中是否含有整数。
-	
+	             
 	分析:     
 	1   6   11
 	5   9   15
 	7   13   20
 	
-	假设我们要找7，那怎么找呢？
-	我们先从第一行找，从后往前找，因为他是递增的，先是11，这里11>7所以肯定不是第三列的。这时候我们就找第二列，
-	这个值是6,6 < 7,所以我们可以从第二列往下找，这个数可能会再第二列或者第一列。把行数加1，来到第二行第二列的9
-	这时候一判断9 > 7，所以不可能是第二列了，这时候把列数再前移，来到第一列，刚才是第二行，所以我们取第一列第二行
-	的数，也就是5,5 < 7，所以还要继续往后找，就是把行数加1，就来到了第三行第一列，也就是7，一判断就是他了。
-	整体思路就是从右上角开始，逐渐前移列数或者增加行数。
+	假设我们要找7，那怎么找呢？                
+	我们先从第一行找，从后往前找，因为他是递增的，先是11，这里11>7所以肯定不是第三列的。这时候我们就找第二列，       
+	这个值是6,6 < 7,所以我们可以从第二列往下找，这个数可能会再第二列或者第一列。把行数加1，来到第二行第二列的9            
+	这时候一判断9 > 7，所以不可能是第二列了，这时候把列数再前移，来到第一列，刚才是第二行，所以我们取第一列第二行        
+	的数，也就是5,5 < 7，所以还要继续往后找，就是把行数加1，就来到了第三行第一列，也就是7，一判断就是他了。         
+	整体思路就是从右上角开始，逐渐前移列数或者增加行数。          
 	```java
 	public static boolean find(int[][] array, int number) {
 		if (array == null) {
@@ -115,9 +116,9 @@
 	}
 	```
 	
-4. 替换空格
-    请实现一个函数，把字符串中的每个空格替换成`%20`。
-	思路: 很简单，就是判断每个字符是否为空着，但也要注意使用`StringBuilder`会比`StringBuffer`效率稍高。
+4. 替换空格            
+    请实现一个函数，把字符串中的每个空格替换成`%20`。              
+	思路: 很简单，就是判断每个字符是否为空着，但也要注意使用`StringBuilder`会比`StringBuffer`效率稍高。                    
 	```java
 	public String replaceBlank(String input) {
 		if (input == null) {
@@ -137,9 +138,9 @@
 	}
 	```
 	
-5. 从尾到头打印链表
-    输入一个链表的头结点，从尾到头反过来打印出每个节点的值。	
-	思路: 我们可以从头开始遍历，但是要让先遍历的最后打印，这就是一个吃进去、吐出来的方式，最适合的就是栈.
+5. 从尾到头打印链表            
+    输入一个链表的头结点，从尾到头反过来打印出每个节点的值。            	
+	思路: 我们可以从头开始遍历，但是要让先遍历的最后打印，这就是一个吃进去、吐出来的方式，最适合的就是栈.            
 	- 遍历的方式
 	```java
 	public class ListNodeTest {
@@ -190,17 +191,17 @@
 	}
 	```
 	
-6. 重建二叉树	   
-    输入二叉树的前序遍历和中序遍历的结果，重建出该二叉树。假设前
-    序遍历和中序遍历结果中都不包含重复的数字，例如输入的前序遍历序列
-    {1,2,4,7,3,5,6,8}和中序遍历序列{4,7,2,1,5,3,8,6}重建出如图所示的二叉树。
+6. 重建二叉树	    
+    输入二叉树的前序遍历和中序遍历的结果，重建出该二叉树。假设前        
+    序遍历和中序遍历结果中都不包含重复的数字，例如输入的前序遍历序列        
+    {1,2,4,7,3,5,6,8}和中序遍历序列{4,7,2,1,5,3,8,6}重建出如图所示的二叉树。          
 		  
 	![image](https://raw.githubusercontent.com/CharonChui/Pictures/master/binary_offer.png)	  
-	思路: 前序遍历序列中，第一个数字总是树的根节点的值。
-	中序遍历根节点在序列的中间，左边是左子树，右边是右子树。
-	所以我们可以根据前序遍历的第一个值去中旬遍历数组中查找，就能找出来中序的分割点是谁。
-	这样在他左边的就都是左子树，右边是右子树。这样也就能知道左子树的个数，再用这个数量去前子树中去前几个数。
-	就这样再递归下去排列二级左子树的根节点。
+	思路: 前序遍历序列中，第一个数字总是树的根节点的值。          
+	中序遍历根节点在序列的中间，左边是左子树，右边是右子树。          
+	所以我们可以根据前序遍历的第一个值去中旬遍历数组中查找，就能找出来中序的分割点是谁。           
+	这样在他左边的就都是左子树，右边是右子树。这样也就能知道左子树的个数，再用这个数量去前子树中去前几个数。          
+	就这样再递归下去排列二级左子树的根节点。          
 	```java
 	import java.util.Arrays;
 
@@ -246,14 +247,14 @@
 	}
 	```
 
-7. 用两个栈实现队列
-    用两个栈实现一个队列，实现对了的两个函数`appendTail`和
-    `deleteHead`，分别完成在队列尾插入结点和在队列头部删除结点的功能。
-	思路： 栈是啥？栈是先进后出，因为栈是一个出口啊，先进入的被压在最下面了，出要从上面开始出，也就是吃了吐出来。
-	队列是啥？两头的，就想管道一样，先进先出。不雅的说，就是吃了拉出来。
-	队列尾插入节点好说啊，就是在栈中往里放。     
+7. 用两个栈实现队列                      
+    用两个栈实现一个队列，实现对了的两个函数`appendTail`和     
+    `deleteHead`，分别完成在队列尾插入结点和在队列头部删除结点的功能。        
+	思路： 栈是啥？栈是先进后出，因为栈是一个出口啊，先进入的被压在最下面了，出要从上面开始出，也就是吃了吐出来。         
+	队列是啥？两头的，就想管道一样，先进先出。不雅的说，就是吃了拉出来。            
+	队列尾插入节点好说啊，就是在栈中往里放。         
 	那队列头部删除怎么弄？因为他在栈的最底部啊，你没法直接删他啊，不要忘了，我们是用两个栈来实现。所以自然想到
-	就是把这个栈中的数据都取出放入到第二个栈中，然后删除第二个栈的最上面的元素就可以了。
+	就是把这个栈中的数据都取出放入到第二个栈中，然后删除第二个栈的最上面的元素就可以了。         
 	```java
 	public class StackListTest<T> {
 		private Stack<T> stack1 = new Stack<T>();
@@ -289,10 +290,10 @@
 	}
 	```
 	
-8. 	旋转数组的最小数字
-    把一个数组最开始的若干个元素搬到数组的末尾，我们称之为数组的
-    旋转。输入一个递增排序的数组的一个旋转，输出旋转数组的最小元素。例如数
-    组{3,4,5,1,2}为{1,2,3,4,5}的一个旋转，该数组的最小值为 1.
+8. 	旋转数组的最小数字               
+    把一个数组最开始的若干个元素搬到数组的末尾，我们称之为数组的        
+    旋转。输入一个递增排序的数组的一个旋转，输出旋转数组的最小元素。例如数      
+    组{3,4,5,1,2}为{1,2,3,4,5}的一个旋转，该数组的最小值为 1.        
 	
 	思路: 开始看到这道题，我感觉很简单，就是循环比较下找出最下的就完了，我感觉什么旋转数组都是面试官
 	放的烟雾弹。后来我发现我错了。旋转数组是有用的。
@@ -345,9 +346,9 @@
 		}
 	}
     ```
-9. 斐波那契数列	    
-    什么是斐波那契数列呢？ 就是f(0)=0;f(1)=1;f(n)=f(n-1)+f(n-2);
-    写一个函数，输入n，求斐波那契数列的第n项。
+9. 斐波那契数列	     
+    什么是斐波那契数列呢？ 就是f(0)=0;f(1)=1;f(n)=f(n-1)+f(n-2);           
+    写一个函数，输入n，求斐波那契数列的第n项。           
     思路:标准的一个递归。
     ```java
 	public long fibonacci1(int n) {
@@ -384,9 +385,9 @@
 		}
 	}
 	```
-10. 2进制中1的个数
-    请实现一个函数,输入一个整数,输出该数二进制表示中 1 的个数。例如 把 9 表示成二进制是 1001;有 2 位是 1,因此如果输入 9,函数输出 2.
-    思路: 把一个整数减去1，再和原整数做与运算，会把该整数最右边的一个1变成0.那么一个整数的二进制表示中有多少个1，就可以进行多少次运算。
+10. 2进制中1的个数               
+    请实现一个函数,输入一个整数,输出该数二进制表示中 1 的个数。例如 把 9 表示成二进制是 1001;有 2 位是 1,因此如果输入 9,函数输出 2.      
+    思路: 把一个整数减去1，再和原整数做与运算，会把该整数最右边的一个1变成0.那么一个整数的二进制表示中有多少个1，就可以进行多少次运算。       
     ```java
 	public int numberOf1(int n) {
 		int count = 0;
@@ -398,9 +399,9 @@
 	}
     ```
     
-11. 数值的整数次方
-    实现函数double Power(double base,int exponent),求base的exponent次方。不得使用库函数，同时不需要考虑大数问题。
-    思路:就是不断的累计去乘.
+11. 数值的整数次方           
+    实现函数double Power(double base,int exponent),求base的exponent次方。不得使用库函数，同时不需要考虑大数问题。        
+    思路:就是不断的累计去乘.            
     ```java
     public double powerWithExponent(double base, int exponent) {
 		double result = 1.0;
@@ -410,7 +411,7 @@
 		return result;
 	}
     ```
-    本来想着挺简单，其实已经写错了。因为exponent如果是0或者负数呢？
+    本来想着挺简单，其实已经写错了。因为exponent如果是0或者负数呢？         
     思路：当指数为负数的时候，可以先对指数求绝对值，然后算出次方的结果之后再取倒数。既然有求倒数，我们很自然的就要想到有没有可能对0求倒数，如果对0求倒数怎么办？当底数base是零且指数是负数的时候，我们不做特殊的处理，就会发现对0求倒数从而导致程序运行出错。怎么告诉函数的调用者出现了这种错误？在Java中可以抛出异常来解决。
     ```java
     public static double power(double base, int exponent) throws Exception {
@@ -457,9 +458,9 @@
 
 	}
     ```
-12. 打印 1 到最大的 n 位数
-    输入数字n，按顺序打印出从1最大的的n位数十进制数。比如输入3，则打印出1，2，3一直到最大的3位数即999.
-    思路: 1位数就是10-1，两位数就是10*10-1三位数就是10*10*10-1
+12. 打印 1 到最大的 n 位数            
+    输入数字n，按顺序打印出从1最大的的n位数十进制数。比如输入3，则打印出1，2，3一直到最大的3位数即999.           
+    思路: 1位数就是10-1，两位数就是10*10-1三位数就是10*10*10-1              
     
     ```java
     public void print1ToMaxOfNDigits(int n) {
@@ -516,9 +517,9 @@
 	}
 ```
 
-13. 在O(1)时间删除链表节点
-    给定单向链表的头指针和一个节点指针，定义一个函数在O(1)时间删除该节点。
-    思路：在单向链表中删除一个节点，最常规的方法无疑是从链表的头结点开始，顺序遍历查找要删除的节点，并在链表中删除该节点。删除就是将这个要被删除的节点的前一节点设置成该要被删除节点的下一节点。- -！
+13. 在O(1)时间删除链表节点            
+    给定单向链表的头指针和一个节点指针，定义一个函数在O(1)时间删除该节点。          
+    思路：在单向链表中删除一个节点，最常规的方法无疑是从链表的头结点开始，顺序遍历查找要删除的节点，并在链表中删除该节点。删除就是将这个要被删除的节点的前一节点设置成该要被删除节点的下一节点。- -！ 
     ```java
     public class DeleteListNodeTest {
 		public static void main(String[] args) {
@@ -569,8 +570,185 @@
 		ListNode nextNode;
 	}
     ```
-14. 调整数组顺序使奇数位于偶数前面
+14. 调整数组顺序使奇数位于偶数前面              
+    输入一个整数数组，实现一个函数来调整该函数数组中数字的顺序，使得
+所有奇数位于数组的前半部分，所有偶数位于数组的后半部分。
+    思路: 维护两个指针，一个指向第一个元素，一个指向最后一个元素，然后通过指针的移动，来判断当前元素是奇数还是偶数，来交换位置。　　　
+	```java
+	public static void order(int[] array) {
+		if (array == null || array.length == 0) {
+			return;
+		}
+		int start = 0;
+		int end = array.length - 1;
+		while (start < end) {
+			while (start < end && !isEven(array[start])) {
+				// 如果当前位置是奇数，就下移指针
+				start++;
+			}
+			while (start < end && isEven(array[end])) {
+				// 第二个指针如果当前位置是偶数，就向前移动指针
+				end--;
+			}
+			if (start < end) {
+			    // 说明第一个指针指向的是偶数，第二个指针指向的是奇数，我们来更换他俩的位置。
+				int temp = array[start];
+				array[start] = array[end];
+				array[end] = temp;
+			}
+		}
+	}
 
+	private static boolean isEven(int n) {
+		return n % 2 == 0;
+	}
+	```
+	
+15. 链表中倒数第K个结点            
+    输入一个链表，输出该链表中倒数第`k`个结点。   
+    思路: 拿到倒数第k个节点，我们只需要知道该链表的总长度，然后我们从头开始遍历渠道第`totalLength-k`个就是了。如何拿到总长度，也简单就是遍历一遍就知道了。
+	但是这样会牵扯到两次遍历，效率比较低。那怎么处理呢？也是使用两个指针，我们要保证第一个指针走到链表最后一个位置(totalLength)的时候，第二个指针正好指向倒数第`k`个节点(
+	也就是从头开始第`totalLength-k+1个`)，那这两个指针之间差多少呢？`totalLength-(totalLength-k+1)`也就是`k-1`个位置，所以让第一个指针移动到第`k-1`个位置后，就让第二个指针
+	开始移动，这样等第一个移动到最后一个元素的时候，第二个正好指向了倒数第`k`个元素。
+	```java
+	public class ListNodeTailText {
+		public static void main(String[] args) {
+			ListNode node1 = new ListNode();
+			ListNode node2 = new ListNode();
+			ListNode node3 = new ListNode();
+			ListNode node4 = new ListNode();
+			node1.nextNode = node2;
+			node2.nextNode = node3;
+			node3.nextNode = node4;
+			node1.data = 1;
+			node2.data = 2;
+			node3.data = 3;
+			node4.data = 4;
+			ListNode resultListNode = findKToTail(node1, 3);
+			System.out.println(resultListNode.data);
+		}
+
+		public static ListNode findKToTail(ListNode head, int k) {
+			if (head == null || k == 0) {
+				return null;
+			}
+			ListNode firstIndex = head;
+			ListNode secondIndex = head;
+			for (int i = 0; i < k; ++i) {
+				if (firstIndex.nextNode != null) {
+					firstIndex = firstIndex.nextNode;
+				} else {
+					return null;
+				}
+			}
+			while (firstIndex != null) {
+				secondIndex = secondIndex.nextNode;
+				firstIndex = firstIndex.nextNode;
+			}
+			return secondIndex;
+		}
+	}
+
+	class ListNode {
+		int data;
+		ListNode nextNode;
+	}
+	```
+16. 反转链表           
+    定义一个函数，输入一个链表的头结点，反转该链表并输出反转后链表的头结点。
+	思路:反转链表问的比较多，整体的思路就是从后往前来，这个问题我也是花了很长时间才弄明白，太笨了。也有两种方式：递归和普通的方式
+	```java
+	public class LinkedListDemo {
+
+		public static void main(String[] args) {
+			ListNode head = new ListNode();
+			ListNode second = new ListNode();
+			ListNode third = new ListNode();
+			ListNode forth = new ListNode();
+			head.nextNode = second;
+			second.nextNode = third;
+			third.nextNode = forth;
+			head.data = 1;
+			second.data = 2;
+			third.data = 3;
+			forth.data = 4;
+			ListNode resultListNode = reverse1(head);
+			System.out.println(resultListNode.data);
+		}
+
+		/**
+		 * 递归
+		 * 
+		 * @param head
+		 * @return
+		 */
+		public static ListNode reverse1(ListNode head) {
+			if (null == head || null == head.getNextNode()) {
+				return head;
+			}
+			// A B C -> A C B -> C B A
+			ListNode reversedHead = reverse1(head.getNextNode());
+			head.getNextNode().setNextNode(head);
+			head.setNextNode(null);
+			return reversedHead;
+		}
+
+		public static ListNode reverse2(ListNode head) {
+			if (null == head) {
+				return head;
+			}
+			// A B C
+			ListNode pre = head;  // A
+			ListNode cur = head.getNextNode();  // B
+			ListNode next;
+			while (cur != null) {
+				// next = C
+				next = cur.getNextNode();
+				// B -> A
+				cur.setNextNode(pre);
+				// pre = B
+				pre = cur;
+				// cur = C
+				cur = next;
+				// 第一轮下来就是 A B C -> A B A 
+				// 第二轮下来就是 C B A  pre = C cur = null
+				// 再继续就会跳出循环
+			}
+		
+			// 虽然已经是C B A 了，但是不要忘了此时A的next还是B，所以我们要将其设置为null
+			// 将原链表的头节点的下一个节点置为null，再将反转后的头节点赋给head
+			head.setNextNode(null);
+			head = pre;
+			// 到这就是返回C了。
+			return head;
+		}
+
+	}
+
+	class ListNode {
+		public ListNode nextNode;
+		public int data;
+
+		public ListNode getNextNode() {
+			return nextNode;
+		}
+
+		public void setNextNode(ListNode nextNode) {
+			this.nextNode = nextNode;
+		}
+
+		public int getData() {
+			return data;
+		}
+
+		public void setData(int data) {
+			this.data = data;
+		}
+	}
+	```　　　　
+17. 合并两个排序的链表
+    输入两个递增排序的链表，合并这两个链表并使新链表中的结点仍然是按
+    照递增排序的。	
 
 ---
 
