@@ -749,7 +749,152 @@
 17. 合并两个排序的链表
     输入两个递增排序的链表，合并这两个链表并使新链表中的结点仍然是按
     照递增排序的。	
+	思路: 合并两个链表，按照递增顺序，那就是假设第一个链表是1 3 第二个链表是2 4 6那怎么去合并呢？
+	先是比较两个链表的头结点，１和２比较，那合并后的新链表头肯定是１了，然后再拿2和3比较看谁是第二个结点，那可定是2了，到这里就确定了新链表的前两个结点，
+	就是1 2 然后再用3和4比较确定谁是第三个，这是啥？这是递归。
+	```java
+	public class MergeListTest {
+		public static void main(String[] args) {
+			ListNode head1 = new ListNode();
+			ListNode second1 = new ListNode();
+			ListNode head2 = new ListNode();
+			ListNode second2 = new ListNode();
+			ListNode third2 = new ListNode();
+			head1.nextNode = second1;
+			head2.nextNode = second2;
+			second2.nextNode = third2;
+			head1.data = 1;
+			second1.data = 3;
+			head2.data = 2;
+			second2.data = 2;
+			third2.data = 2;
+			MergeListTest test = new MergeListTest();
+			ListNode result = test.mergeList(head1, head2);
+			System.out.println(result.nextNode.nextNode.nextNode.nextNode.data);
+		}
 
+		public ListNode mergeList(ListNode head1, ListNode head2) {
+			if (head1 == null) {
+				return head2;
+			} else if (head2 == null) {
+				return head1;
+			}
+			ListNode mergeHead = null;
+			if (head1.data < head2.data) {
+				mergeHead = head1;
+				mergeHead.nextNode = mergeList(head1.nextNode, head2);
+			} else {
+				mergeHead = head2;
+				mergeHead.nextNode = mergeList(head1, head2.nextNode);
+			}
+			return mergeHead;
+		}
+	}
+
+	class ListNode {
+		public ListNode nextNode;
+		public int data;
+
+		public ListNode getNextNode() {
+			return nextNode;
+		}
+
+		public void setNextNode(ListNode nextNode) {
+			this.nextNode = nextNode;
+		}
+
+		public int getData() {
+			return data;
+		}
+
+		public void setData(int data) {
+			this.data = data;
+		}
+	}
+	```
+18. 树的子结构	               
+
+    输入两颗二叉树 A 和 B，判断 B 是不是 A 的子结构。
+	![image](https://raw.githubusercontent.com/CharonChui/Pictures/master/findchildbinarytree.png)	  
+	思路:   想要判断B树是不是A的子树，那首先要先去在A树种遍历找到与B树根节点相同的结点，然后再从这个结点去遍历子结点
+	看字节点与B树是否一样，如果不一样就继续往下遍历结点，找与B树根节点一直的结点，如此循环。
+	以上图为例，我们先在A中找8的结点，发现A的根节点就是，然后继续看A的左子节点是8，而B的左子节点是9，锁着这
+	肯定不是了，继续往下找为8的结点，发现在A树的第二层找打了，然后再进行判断该结点下的子节点，发现为9和2，正好与B的相同
+	就是他了。
+	```java
+	public class Problem18 {
+		public static void main(String args[]) {
+			BinaryTreeNode root1 = new BinaryTreeNode();
+			BinaryTreeNode node1 = new BinaryTreeNode();
+			BinaryTreeNode node2 = new BinaryTreeNode();
+			BinaryTreeNode node3 = new BinaryTreeNode();
+			BinaryTreeNode node4 = new BinaryTreeNode();
+			BinaryTreeNode node5 = new BinaryTreeNode();
+			BinaryTreeNode node6 = new BinaryTreeNode();
+			root1.leftNode = node1;
+			root1.rightNode = node2;
+			node1.leftNode = node3;
+			node1.rightNode = node4;
+			node4.leftNode = node5;
+			node4.rightNode = node6;
+			root1.value = 8;
+			node1.value = 8;
+			node2.value = 7;
+			node3.value = 9;
+			node4.value = 2;
+			node5.value = 4;
+			node6.value = 7;
+			BinaryTreeNode root2 = new BinaryTreeNode();
+			BinaryTreeNode a = new BinaryTreeNode();
+			BinaryTreeNode b = new BinaryTreeNode();
+			root2.leftNode = a;
+			root2.rightNode = b;
+			root2.value = 8;
+			a.value = 9;
+			b.value = 2;
+			System.out.println(hasSubTree(root1, root2));
+		}
+
+		public static boolean hasSubTree(BinaryTreeNode root1, BinaryTreeNode root2) {
+			boolean result = false;
+			if (root1 != null && root2 != null) {
+				if (root1.value == root2.value) {
+					result = doesTree1HavaTree2(root1, root2);
+					if (!result) {
+						result = hasSubTree(root1.leftNode, root2);
+					}
+					if (!result) {
+						result = hasSubTree(root1.rightNode, root2);
+					}
+				}
+			}
+			return result;
+		}
+
+		private static boolean doesTree1HavaTree2(BinaryTreeNode root1,
+				BinaryTreeNode root2) {
+			if (root2 == null) {
+				return true;
+			} else if (root1 == null)
+				return false;
+			if (root1.value != root2.value) {
+				return false;
+			}
+			return doesTree1HavaTree2(root1.leftNode, root2.leftNode)
+					&& doesTree1HavaTree2(root1.rightNode, root2.rightNode);
+		}
+	}
+
+	class BinaryTreeNode {
+		int value;
+		BinaryTreeNode leftNode;
+		BinaryTreeNode rightNode;
+	}
+	```
+
+19. 二叉树的镜像
+    请完成一个函数，输入一个二叉树，该函数输出它的镜像。	
+	
 ---
 
 - 邮箱 ：charon.chui@gmail.com  
