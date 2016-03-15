@@ -1,4 +1,4 @@
-剑指Offer
+剑指Offer(上)
 ===
 
 最近面试，遇到一些笔试题，写不上来，内心是崩溃的，该好好复习下了，所以决定仔细做一遍，随便也整理下，方便大家学习。
@@ -7,7 +7,7 @@
 
 2. 实现单例模式                 
     单例的实现分为好几种:     
-	- 饿汉式
+    - 饿汉式
 	- 懒汉式
 	- 枚举              
 	
@@ -655,97 +655,98 @@
 	}
 	```
 16. 反转链表           
-    定义一个函数，输入一个链表的头结点，反转该链表并输出反转后链表的头结点。
-	思路:反转链表问的比较多，整体的思路就是从后往前来，这个问题我也是花了很长时间才弄明白，太笨了。也有两种方式：递归和普通的方式
-	```java
-	public class LinkedListDemo {
+    定义一个函数，输入一个链表的头结点，反转该链表并输出反转后链表的头结点。       
+	思路:反转链表问的比较多，整体的思路就是从后往前来，这个问题我也是花了很长时间才弄明白，太笨了。
+    也有两种方式：递归和普通的方式        
 
-		public static void main(String[] args) {
-			ListNode head = new ListNode();
-			ListNode second = new ListNode();
-			ListNode third = new ListNode();
-			ListNode forth = new ListNode();
-			head.nextNode = second;
-			second.nextNode = third;
-			third.nextNode = forth;
-			head.data = 1;
-			second.data = 2;
-			third.data = 3;
-			forth.data = 4;
-			ListNode resultListNode = reverse1(head);
-			System.out.println(resultListNode.data);
-		}
-
-		/**
-		 * 递归
-		 * 
-		 * @param head
-		 * @return
-		 */
-		public static ListNode reverse1(ListNode head) {
-			if (null == head || null == head.getNextNode()) {
-				return head;
-			}
-			// A B C -> A C B -> C B A
-			ListNode reversedHead = reverse1(head.getNextNode());
-			head.getNextNode().setNextNode(head);
-			head.setNextNode(null);
-			return reversedHead;
-		}
-
-		public static ListNode reverse2(ListNode head) {
-			if (null == head) {
-				return head;
-			}
-			// A B C
-			ListNode pre = head;  // A
-			ListNode cur = head.getNextNode();  // B
-			ListNode next;
-			while (cur != null) {
-				// next = C
-				next = cur.getNextNode();
-				// B -> A
-				cur.setNextNode(pre);
-				// pre = B
-				pre = cur;
-				// cur = C
-				cur = next;
-				// 第一轮下来就是 A B C -> A B A 
-				// 第二轮下来就是 C B A  pre = C cur = null
-				// 再继续就会跳出循环
-			}
-		
-			// 虽然已经是C B A 了，但是不要忘了此时A的next还是B，所以我们要将其设置为null
-			// 将原链表的头节点的下一个节点置为null，再将反转后的头节点赋给head
-			head.setNextNode(null);
-			head = pre;
-			// 到这就是返回C了。
-			return head;
-		}
-
-	}
-
-	class ListNode {
-		public ListNode nextNode;
-		public int data;
-
-		public ListNode getNextNode() {
-			return nextNode;
-		}
-
-		public void setNextNode(ListNode nextNode) {
-			this.nextNode = nextNode;
-		}
-
-		public int getData() {
-			return data;
-		}
-
-		public void setData(int data) {
-			this.data = data;
-		}
-	}
-	```　　　　
+    ```java
+    public class LinkedListDemo {
+    	public static void main(String[] args) {
+    		ListNode head = new ListNode();
+    		ListNode second = new ListNode();
+    		ListNode third = new ListNode();
+    		ListNode forth = new ListNode();
+    		head.nextNode = second;
+    		second.nextNode = third;
+    		third.nextNode = forth;
+    		head.data = 1;
+    		second.data = 2;
+    		third.data = 3;
+    		forth.data = 4;
+    		ListNode resultListNode = reverse1(head);
+    		System.out.println(resultListNode.data);
+    	}
+    
+    	/**
+    	 * 递归
+    	 * 
+    	 * @param head
+    	 * @return
+    	 */
+    	public static ListNode reverse1(ListNode head) {
+    		if (null == head || null == head.getNextNode()) {
+    			return head;
+    		}
+    		// A B C -> A C B -> C B A
+    		ListNode reversedHead = reverse1(head.getNextNode());
+    		head.getNextNode().setNextNode(head);
+    		head.setNextNode(null);
+    		return reversedHead;
+    	}
+    
+    	public static ListNode reverse2(ListNode head) {
+    		if (null == head) {
+    			return head;
+    		}
+    		// A B C
+    		ListNode pre = head;  // A
+    		ListNode cur = head.getNextNode();  // B
+    		ListNode next;
+    		while (cur != null) {
+    			// next = C
+    			next = cur.getNextNode();
+    			// B -> A
+    			cur.setNextNode(pre);
+    			// pre = B
+    			pre = cur;
+    			// cur = C
+    			cur = next;
+    			// 第一轮下来就是 A B C -> A B A 
+    			// 第二轮下来就是 C B A  pre = C cur = null
+    			// 再继续就会跳出循环
+    		}
+    	
+    		// 虽然已经是C B A 了，但是不要忘了此时A的next还是B，所以我们要将其设置为null
+    		// 将原链表的头节点的下一个节点置为null，再将反转后的头节点赋给head
+    		head.setNextNode(null);
+    		head = pre;
+    		// 到这就是返回C了。
+    		return head;
+    	}
+    }
+    
+    class ListNode {
+    	public ListNode nextNode;
+    	public int data;
+    
+    	public ListNode getNextNode() {
+    		return nextNode;
+    	}
+    
+    	public void setNextNode(ListNode nextNode) {
+    		this.nextNode = nextNode;
+    	}
+    
+    	public int getData() {
+    		return data;
+    	}
+    
+    	public void setData(int data) {
+    		this.data = data;
+    	}
+    }
+    ```
+    
 17. 合并两个排序的链表
     输入两个递增排序的链表，合并这两个链表并使新链表中的结点仍然是按
     照递增排序的。	
@@ -894,9 +895,354 @@
 
 19. 二叉树的镜像
     请完成一个函数，输入一个二叉树，该函数输出它的镜像。	
-	
+    思路：什么事镜像？ 就像照镜子一样。打个比方现在的数是
+    ```
+            1                                                   1
+        2         3      左图的二叉树的镜像就是             3          2
+     4     5  6       7                              7       6  5        4
+    ```
+    就是从根节点开始，先前序遍历这棵树的每个结点,先转换它的两个子节点，然后再对这两个子节点下的子节点进行转换。
+    ```java
+    public class mirrorBinaryTreeTest {
+        public static void main(String[] args) {
+    		BinaryTreeNode root1 = new BinaryTreeNode();
+    		BinaryTreeNode node1 = new BinaryTreeNode();
+    		BinaryTreeNode node2 = new BinaryTreeNode();
+    
+    		BinaryTreeNode node3 = new BinaryTreeNode();
+    		BinaryTreeNode node4 = new BinaryTreeNode();
+    		BinaryTreeNode node5 = new BinaryTreeNode();
+    		BinaryTreeNode node6 = new BinaryTreeNode();
+    		root1.leftNode = node1;
+    		root1.rightNode = node2;
+    		node1.leftNode = node3;
+    		node1.rightNode = node4;
+    		node4.leftNode = node5;
+    		node4.rightNode = node6;
+    		root1.value = 8;
+    		node1.value = 8;
+    		node2.value = 7;
+    		node3.value = 9;
+    		node4.value = 2;
+    		node5.value = 4;
+    		node6.value = 7;
+    		BinaryTreeNode rootBinaryTreeNode = mirrorBinaryTree(root1);
+    	}
+    
+    	public static BinaryTreeNode mirrorBinaryTree(BinaryTreeNode root) {
+    		if (root == null) {
+    			return null;
+    		}
+    		if (root.leftNode == null && root.rightNode == null)
+    			return null;
+    		Stack<BinaryTreeNode> stack = new Stack<BinaryTreeNode>();
+    		while (root != null || !stack.isEmpty()) {
+    			while (root != null) {
+    				BinaryTreeNode temp = root.leftNode;
+    				root.leftNode = root.rightNode;
+    				root.rightNode = temp;
+    				stack.push(root);
+    				root = root.leftNode;
+    			}
+    			root = stack.pop();
+    			root = root.rightNode;
+    		}
+    		return root;
+    	}
+    }
+    
+    class BinaryTreeNode {
+    	public int value;
+    	public BinaryTreeNode leftNode;
+    	public BinaryTreeNode rightNode;
+    
+    	public BinaryTreeNode() {
+    
+    	}
+    
+    	public BinaryTreeNode(int value) {
+    		this.value = value;
+    		this.leftNode = null;
+    		this.rightNode = null;
+    	}
+    }
+    ```
+20. 顺时针打印矩阵
+    输入一个矩阵,按照从外向里以顺时针的顺序依次打印出每一个数字。
+    ```
+    1   2   3    4  
+    5   6   7    8
+    9   10  11  12
+    ```
+    思路：顺时针打印也就是4步，从左往右、从上往下、从右向左、从下往上，然后继续循环如此，
+    当然在每次循环的时候都要判断好，以免只有一行或者一列或者一个元素的情况。
+    ```java
+    public class printMatrixTest {
+        public static void main(String[] args) {
+    		int[][] arr = { { 1, 2, 3, 4 }, { 5, 6, 7, 8 }, { 9, 10, 11, 12 } };
+    		printMatrixInCircle(arr);
+    	}
+    
+    	public static void printMatrixInCircle(int[][] array) {
+    		if (array == null) {
+    			return;
+    		}
+    		int start = 0;
+    		// 循环的次数就是维度要大于指针的2倍
+    		while (array[0].length > start * 2 && array.length > start * 2) {
+    			printOneCircle(array, start);
+    			start++;
+    		}
+    	}
+    
+    	private static void printOneCircle(int[][] array, int start) {
+    		int columns = array[0].length;
+    		int rows = array.length;
+    		int endX = columns - 1 - start;
+    		int endY = rows - 1 - start;
+    		// 从左到右打印一行
+    		for (int i = start; i <= endX; i++) {
+    			int number = array[start][i];
+    			System.out.print(number + ",");
+    		}
+    		// 从上到下打印一列
+    		if (start < endY) {
+    			for (int i = start + 1; i <= endY; i++) {
+    				int number = array[i][endX];
+    				System.out.print(number + ",");
+    			}
+    		}
+    		// 从右到左打印一行
+    		if (start < endX && start < endY) {
+    			for (int i = endX - 1; i >= start; i--) {
+    				int number = array[endY][i];
+    				System.out.print(number + ",");
+    			}
+    		}
+    		// 从下到上打印一列
+    		if (start < endY && start < endY - 1) {
+    			for (int i = endY - 1; i >= start + 1; i--) {
+    				int number = array[i][start];
+    				System.out.print(number + ",");
+    			}
+    		}
+    	}
+    }
+    ```
+21. 包含`min`函数的栈        
+    定义栈的数据结构,请在该类型中实现一个能够得到栈的最小元素的`min`函数。
+    在该栈中,调用`min`、`push`及`pop`的时间复杂度都是O(1)          
+    思路: 最先想到的就是用一个变量记录住最小的元素，但是如果这个最小的元素被取出了呢？ 
+    怎么再返回剩下所有元素中最小的一个呢？很显然用一个变量记住是不行的，我们必须要用
+    一个辅助栈来纪录这小小元素。
+    ```java
+    public class MinInStack {
+        /**
+    	 * 辅助栈，来纪录这些小的元素
+    	 */
+    	private MyStack<Integer> minStack = new MyStack<>();
+    	private MyStack<Integer> dataStack = new MyStack<>();
+    
+    	public void push(Integer item) {
+    		dataStack.push(item);
+    		if (minStack.length == 0 || item <= minStack.head.data) {
+    			minStack.push(item);
+    		} else {
+    			minStack.push(minStack.head.data);
+    		}
+    	}
+    
+    	public Integer pop() {
+    		if (dataStack.length == 0 || minStack.length == 0) {
+    			return null;
+    		}
+    		minStack.pop();
+    		return dataStack.pop();
+    	}
+    
+    	public Integer min() {
+    		if (minStack.length == 0) {
+    			return null;
+    		}
+    		return minStack.head.data;
+    	}
+    
+    	public static void main(String[] args) {
+    		MinInStack test = new MinInStack();
+    		test.push(3);
+    		test.push(2);
+    		test.push(1);
+    		System.out.println(test.pop());
+    		System.out.println(test.min());
+    	}
+    }
+    
+    /**
+     * 链表
+     */
+    class ListNode<K> {
+    	K data;
+    	ListNode<K> nextNode;
+    }
+    
+    /**
+     * 自定义栈的数据结构
+     */
+    class MyStack<K> {
+    	public ListNode<K> head;
+    	/**
+    	 * 当前栈的大小
+    	 */
+    	public int length;
+    
+    	public void push(K item) {
+    		ListNode<K> node = new ListNode<K>();
+    		node.data = item;
+    		node.nextNode = head;
+    		head = node;
+    		length++;
+    	}
+    
+    	public K pop() {
+    		if (head == null)
+    			return null;
+    		ListNode<K> temp = head;
+    		head = head.nextNode;
+    		length--;
+    		return temp.data;
+    	}
+    
+    }
+    ```
+22. 栈的压入、弹出序列         
+    题目:输入两个整数序列,第一个序列表示栈的压入顺序,请判断第二个序列是 
+    否为该栈的弹出序列。假设压入栈的所有数字均不相等。
+    例如压栈序列为 1、2、3、4、5.序列 4、5、3、2、1 是压栈序列对应的一个
+    弹出序列,但 4、3、5、1、2 却不是。        
+    思路: 这道题我完全没看懂，看完后实在不理解是什么意思。 - -！搜了很久才弄明白。
+    什么事对应的弹出序列呢？ 就是这个入栈后所有的可能弹出的方式。比如我可以完全按照1、2、3、4、5
+    的方式去放入，然后取出就是5、4、3、2、1，也可以在1、2
+    进入的时候先把2弹出，然后再继续添加3、4、5，这样的弹出顺序就是2、5、4、3、1。
+    但是为什么4、3、5、1、2是不对的呢？ 这是因为1、2、3、4添加进入的时候，我们先弹出
+    4然后再弹出3，因为以后要弹5，所以我们必须继续添加5，这样栈内就剩下了1、2、5，然后我们再
+    往外弹出就只能是5、2、1，也就是他的顺序只能是4、3、5、2、1。        
+    那怎么判断呢？ 如果下一个弹出的数字刚好是栈顶数字，那么直接弹出。
+    如果下一个弹出的数字不在栈顶，我们把压栈序列中还没有入栈的数字压入辅助栈，
+    直到把下一个需要弹出的数字压入栈顶为止。如果所有的数字都压入栈了仍没有
+    找到下一个弹出的数字，那么该序列不可能是一个弹出序列。
+    ```java
+    public class PopOrderTest {
+        public static void main(String[] args) {
+    		int[] array1 = { 1, 2, 3, 4, 5 };
+    		int[] array2 = { 4, 3, 5, 1, 2 };
+    		System.out.println(isPopOrder(array1, array2));
+    	}
+    
+    	public static boolean isPopOrder(int[] line1, int[] line2) {
+    		if (line1 == null || line2 == null) {
+    			return false;
+    		}
+    		int index = 0;
+    		// 把line1中的元素都加入该栈
+    		Stack<Integer> stack = new Stack<Integer>();
+    		for (int i = 0; i < line2.length; i++) {
+    			if (!stack.isEmpty() && stack.peek() == line2[i]) {
+    				// 要取出的元素正好是栈顶的元素，就直接取出。
+    				stack.pop();
+    			} else {
+    				if (index == line1.length) {
+    					// line1的元素已经全部加入栈中，且要取出的元素仍然不是栈顶的元素，那就说明line1中不包含要取出的元素。直接返回false
+    					return false;
+    				} else {
+    					// 只要要取出的元素不是栈顶的，就一直往栈里面加
+    					do {
+    						stack.push(line1[index++]);
+    					} while (stack.peek() != line2[i] && index != line1.length);
+    					
+    					if (stack.peek() == line2[i]) {
+    						stack.pop();
+    					} else {
+    						return false;
+    					}
+    				}
+    			}
+    		}
+    		return true;
+    	}
+    }
+    ```
+    
+23. 从上往下打印二叉树         
+    从上往下打印二叉树的每个结点，同一层的结点按照从左到右的顺序打印。      
+    思路: 每一次打印一个结点的时候，如果该结点有子节点，把该结点的子节点放到一个队列的尾。接下来到队列的头部取出最早进入队列的结点，重复前面打印操作，直到队列中所有的结点都被打印出为止。
+    ```java
+    public class Problem23 {
+        public static void main(String args[]) {
+    		BinaryTreeNode root1 = new BinaryTreeNode();
+    		BinaryTreeNode node1 = new BinaryTreeNode();
+    		BinaryTreeNode node2 = new BinaryTreeNode();
+    		BinaryTreeNode node3 = new BinaryTreeNode();
+    		BinaryTreeNode node4 = new BinaryTreeNode();
+    		BinaryTreeNode node5 = new BinaryTreeNode();
+    		BinaryTreeNode node6 = new BinaryTreeNode();
+    
+    		root1.leftNode = node1;
+    		root1.rightNode = node2;
+    		node1.leftNode = node3;
+    		node1.rightNode = node4;
+    		node4.leftNode = node5;
+    		node4.rightNode = node6;
+    		root1.value = 8;
+    		node1.value = 8;
+    		node2.value = 7;
+    		node3.value = 9;
+    		node4.value = 2;
+    		node5.value = 4;
+    		node6.value = 7;
+    
+    		Problem23 test = new Problem23();
+    		test.printFromTopToBottom(root1);
+    	}
+    
+    	public void printFromTopToBottom(BinaryTreeNode root) {
+    		if (root == null)
+    			return;
+    		Queue<BinaryTreeNode> queue = new LinkedList<BinaryTreeNode>();
+    		queue.add(root);
+    		while (!queue.isEmpty()) {
+    			BinaryTreeNode node = queue.poll();
+    			System.out.print(node.value);
+    			if (node.leftNode != null) {
+    				queue.add(node.leftNode);
+    			}
+    			if (node.rightNode != null) {
+    				queue.add(node.rightNode);
+    			}
+    		}
+    	}
+    }
+    
+    class BinaryTreeNode {
+    	public int value;
+    	public BinaryTreeNode leftNode;
+    	public BinaryTreeNode rightNode;
+    
+    	public BinaryTreeNode() {
+    
+    	}
+    
+    	public BinaryTreeNode(int value) {
+    		this.value = value;
+    		this.leftNode = null;
+    		this.rightNode = null;
+    	}
+    }
+    ```
+
+
 ---
 
 - 邮箱 ：charon.chui@gmail.com  
 - Good Luck! 
+
 
