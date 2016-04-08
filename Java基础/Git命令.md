@@ -1,3 +1,5 @@
+@(Java基础)
+
 Git命令
 ===
 
@@ -5,11 +7,11 @@ Git命令
 ![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/git.jpg)                  
 图中的index部分就是暂存区           
 
-- 安装好git后我们要先配置一下。以便`git`跟踪。
+- 安装好git后我们要先配置一下。以便`git`跟踪。           
     ```
-    git config --global "user.name xxx"
-	git config --global "user.email xxx@xxx.com"
-	```
+    git config --global user.name "xxx"            
+	git config --global user.email "xxx@xxx.com"
+	```          
 	上面修改后可以使用`cat ~/.gitconfig`查看                      
 	如果指向修改仓库中的用户名时可以不加`--global`，这样可以用`cat .git/config`来查看             
 	`git config --list`来查看所有的配置。   
@@ -84,42 +86,43 @@ Git命令
 
 - 分支                   
     `git`分支的创建和合并都是非常快的，因为增加一个分支其实就是增加一个指针，合并其实就是让某个分支的指针指向某一个位置。        
-    ![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/git_master_branch.png?raw=true) 
+ ![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/git_master_branch.png?raw=true) 
 
-	创建分支                   
-	`git branch devBranch`创建名为`devBranch`的分支。          
-	`git checkout devBranch`切换到`devBranch`分支。            
-	`git branch`查看当前仓库中的分支                   
-	`git branch -r`查看远程仓库的分支            
-	```
-	origin/HEAD -> origin/master
-	origin/developer
-	origin/developer_sg
-	origin/master
-	origin/master_sg
-	origin/offline
-	```
-	`git branch -d devBranch`删除`devBranch`分支。           
-	当时如果在新建了一个分支后进行修改但是还没有合并到其他分支的时候就去使用`git branch -d xxx`删除的时候系统会手提示说这个分支没有被合并，删除失败。
-	这时如果你要强行删除的话可以使用命令`git branch -D xxx`.
-	如何删除远程分支呢？
-	```
-	git branch -r -d origin/developer
-	git push origin :developer
-	```
-	如何本地创建分支并推送给远程仓库？
-	```
-	// 本地创建分支
-	git checkout master //进入master分支
-    git checkout -b frommaster //以master为源创建分支frommaster
-	// 推送到远程仓库
-	git push origin frommaster// 推送到远程仓库所要使用的名字
-	```
-	
-	如何切到到远程仓库分支进行开发呢？
-	git checkout -b frommaster origin/frommaster// 本地新建frommaster分支并且与远程仓库的frommaster分支想关联
-	提交更改的话就用 
-	git push origin frommaster
+创建分支                   
+`git branch devBranch`创建名为`devBranch`的分支。          
+`git checkout devBranch`切换到`devBranch`分支。            
+`git branch`查看当前仓库中的分支                   
+`git branch -r`查看远程仓库的分支            
+```
+origin/HEAD -> origin/master
+origin/developer
+origin/developer_sg
+origin/master
+origin/master_sg
+origin/offline
+```
+`git branch -d devBranch`删除`devBranch`分支。           
+当时如果在新建了一个分支后进行修改但是还没有合并到其他分支的时候就去使用`git branch -d xxx`删除的时候系统会手提示说这个分支没有被合并，删除失败。
+这时如果你要强行删除的话可以使用命令`git branch -D xxx`.
+如何删除远程分支呢？
+```
+git branch -r -d origin/developer
+git push origin :developer
+```
+如何本地创建分支并推送给远程仓库？
+```
+// 本地创建分支
+git checkout master //进入master分支
+   git checkout -b frommaster //以master为源创建分支frommaster
+// 推送到远程仓库
+git push origin frommaster// 推送到远程仓库所要使用的名字
+```
+
+如何切到到远程仓库分支进行开发呢？         
+`git checkout -b frommaster origin/frommaster`
+// 本地新建frommaster分支并且与远程仓库的frommaster分支想关联
+提交更改的话就用 
+`git push origin frommaster`
 	
 
 - `git merge`合并指定分支到当前分支                         
@@ -173,3 +176,4 @@ Git命令
 
 
 	
+

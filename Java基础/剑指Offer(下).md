@@ -8,7 +8,8 @@
     思路:  在后序遍历得到的序列中，最后一个数字是树的根节点的值。
     数组中前面的数字可以分为两部分：第一部分是左子树结点的值，
     它们都比根节点的值小；第二部分是右子树结点的值，他们都比根节点的值大。     
-    ```java
+     
+    ```
     public class Problem24 {
         public static void main(String[] args) {
     		int[] array = { 5, 7, 6, 9, 11, 10, 8 };
@@ -60,12 +61,12 @@
 25. 二叉树中和为某一值的路径        
     输入一颗二叉树和一个整数，打印出二叉树中结点值的和为输入整数的所有路径。从树的根节点开始往下一直到叶结点所经过的所有的结点形成一条路径。      
     思路: 
-    ```java
+    
+    ```
     public class Problem25 {
         public static void main(String args[]) {
     		BinaryTreeNode root1 = new BinaryTreeNode();
     		BinaryTreeNode node1 = new BinaryTreeNode();
-    
     		BinaryTreeNode node2 = new BinaryTreeNode();
     		BinaryTreeNode node3 = new BinaryTreeNode();
     		BinaryTreeNode node4 = new BinaryTreeNode();
