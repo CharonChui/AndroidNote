@@ -551,8 +551,21 @@ android {
 
 ###`Resource Shrinking`    
 
-`Gradle`构建系统支持资源清理：对构建的应用会自动移除无用的资源。不仅会移除项目中未使用的资源，而且还会移除项目所以来的类库中的资源。注意，资源清理只能在与代码清理结合使用(例如`ProGuad`)。这就是为什么它能移除所依赖类库的无用资源。通常，类库中的所有资源都是使用的，只有类库中无用代码被移除后这些资源才会变成没有代码引用的无用资源。     
+`Gradle`构建系统支持资源清理：对构建的应用会自动移除无用的资源。不仅会移除项目中未使用的资源，而且还会移除项目所以来的类库中的资源。注意，资源清理只能在与代码清理结合使用(例如`ProGuad`)。这就是为什么它能移除所依赖类库的无用资源。通常，类库中的所有资源都是使用的，只有类库中无用代码被移除后这些资源才会变成没有代码引用的无用资源。    
+ 
+```
+android {
+    ...
 
+    buildTypes {
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+```
 		
 ---
 
