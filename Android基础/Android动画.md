@@ -158,16 +158,22 @@ The property animation system is a robust framework that allows you to animate a
 
 以下例子同时应用5个动画:   
 
-- 播放anim1；
-- 同时播放anim2,anim3,anim4；
-- 播放anim5。
+- Plays bounceAnim.
+- Plays squashAnim1, squashAnim2, stretchAnim1, and stretchAnim2 at the same time.
+- Plays bounceBackAnim.
+- Plays fadeAnim.
 
 ```java
 AnimatorSet bouncer = new AnimatorSet();
-bouncer.play(anim1).before(anim2);
-bouncer.play(anim2).with(anim3);
-bouncer.play(anim2).with(anim4)
-bouncer.play(anim5).after(amin2);
+bouncer.play(bounceAnim).before(squashAnim1);
+bouncer.play(squashAnim1).with(squashAnim2);
+bouncer.play(squashAnim1).with(stretchAnim1);
+bouncer.play(squashAnim1).with(stretchAnim2);
+bouncer.play(bounceBackAnim).after(stretchAnim2);
+ValueAnimator fadeAnim = ObjectAnimator.ofFloat(newBall, "alpha", 1f, 0f);
+fadeAnim.setDuration(250);
+AnimatorSet animatorSet = new AnimatorSet();
+animatorSet.play(bouncer).before(fadeAnim);
 animatorSet.start();
 ```
 
