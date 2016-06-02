@@ -24,6 +24,8 @@ MVC 分层同时也简化了分组开发。不同的开发人员可同时开发�
     - 视图与控制器间的过于紧密的连接
     - 增加系统结构和实现的复杂性
 
+![image](https://github.com/CharonChui/Pictures/blob/master/mvc_model.png?raw=true)
+
 MVP
 ---
 
@@ -34,8 +36,7 @@ MVP
 在`MVC`模型里，更关注的`Model`的不变，而同时有多个对`Model`的不同显示及`View`。所以，在`MVC`模型里，`Model`不依赖于`View`，但是`View`是依赖于`Model`的。
 不仅如此，因为有一些业务逻辑在`View`里实现了，导致要更改`View`也是比较困难的，至少那些业务逻辑是无法重用的。	
 
-![image](https://github.com/CharonChui/Pictures/blob/master/MVP.jpg?raw=true)
-![image](https://github.com/CharonChui/Pictures/blob/master/MVC.jpg?raw=true)
+![image](https://github.com/CharonChui/Pictures/blob/master/is-activity-god-the-mvp-architecture-10-638.jpg?raw=true)
 
 在`MVP`里，`Presenter`完全把`Model`和`View`进行了分离，主要的程序逻辑在`Presenter`里实现。而且`Presenter`与具体的`View`是没有直接关联的，
 而是通过定义好的接口进行交互，从而使得在变更`View`时候可以保持`Presenter`的不变，即重用！ 
