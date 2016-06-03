@@ -47,9 +47,15 @@ AndroidStudio提高Build速度
     ![image](https://raw.githubusercontent.com/CharonChui/Pictures/master/studio_speed.png?raw=true)
 
 
-- 使用`offline`模式        
+- 使用`offline`模式      
+  
     下一步就是开始`offline`模式，因为我们经常会在`gradle`中使用一下依赖库时用`+`这样的话就能保证你的依赖库是最新的版本，但是这样在每次`build`的时候都会去检查是不是最新的版本，所以就会耗时。        
     ![image](https://raw.githubusercontent.com/CharonChui/Pictures/master/studio_offline.png?raw=true)
+
+    在开发过程中是不建议使用动态版本的，在`Studio`中使用动态版本的`gradle`中间中使用`ALT+ENTER`键进行修复。
+    ![image](https://raw.githubusercontent.com/CharonChui/Pictures/master/studio_daymaic_version_tip.png?raw=true)
+    ![image](https://raw.githubusercontent.com/CharonChui/Pictures/master/studio_dymaic_version_fix.png?raw=true)
+    详细有关为什么不要使用动态版本的介绍，请参考[Don't use dynamic versions for your dependencies](http://blog.danlew.net/2015/09/09/dont-use-dynamic-versions-for-your-dependencies/)
 
 - 增加内存使用`SSD`         
     首先是增大内存,    `Mac`中在`Applications`中找到`Sutio`然后右键显示包内容`Contents/bin/studio.vmoptions`。
@@ -73,7 +79,8 @@ AndroidStudio提高Build速度
     - Xmx 是能使用的最大堆内存。
 
 
-- 使用`Instant Run`            
+- 使用`Instant Run`   
+         
     `Instantt Run`放在这里说可能不合适，但是用他确实能大大的减少运行时间。              
     如果还不了解的话可以参考[Instant Run](http://tools.android.com/tech-docs/instant-run)           
     ![image](https://raw.githubusercontent.com/CharonChui/Pictures/master/studio_instantrun.png?raw=true)
