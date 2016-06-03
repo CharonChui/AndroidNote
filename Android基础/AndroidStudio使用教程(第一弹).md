@@ -102,8 +102,15 @@ AndroidStudio使用教程(第一弹)
 	  不用再通过新开一个页面查看了，看代码实现的时候非常方便。     | `Ctrl+Shift+I`                              |  `Option+Space`                                            |
 	| 全局搜索                                                     | `Ctrl+Shift+F`                              |  `Command+Shift+F`                                            |	                     
     | 上一步、下一步                                                | ``                              |  `Command+[或]`                                            |	                     
+   | 高亮所有相同变量                                                | `Ctrl+Shift+F7`                              |  `Command+Shift+F7`                                            |
+  | 方法调用层级弹窗                                                | `Ctrl+Alt+H`                              |  `Control+Option+H`                                            |	
+  |立马知道某个类或者方法的来源同时又不想丢掉当前的编码环境     | `Ctrl+Shift+I`                              |  `Option+Space`                                            | 
+|书签(在当前行打上书签)                                                   | `F11`                              |  `F3`                                            | 
+|展示书签                                                   | `Shift+F11`                              |  `Command+F3`                                            | 
+|整行代码上下移动                                                   | `Alt+Shift++↑或↓`                              |  `Option+Shift+↑或↓`                                            | 
 
-	
+
+
 ---
 
 - 邮箱 ：charon.chui@gmail.com  
