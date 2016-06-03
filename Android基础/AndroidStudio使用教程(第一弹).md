@@ -98,13 +98,11 @@ AndroidStudio使用教程(第一弹)
 	| 进入父类方法的实现  UP                                       | `Ctrl+U`                                    | `Command+U`                            |	      		 
 	| 抽取某一个块代码为单独的变量或者方法                             | `Ctrl+Alt+V`                                    | `Command+Option+V`  方法是`Command+Option+M`                       |	    
 	| 选择最近所有复制过内容的列表                                 | `Ctrl+Shift+V`                              |  `Command+Shift+V`                                            |
-	| 通过卡片的方式，直接查看该方法的具体内容或者图片，
-	  不用再通过新开一个页面查看了，看代码实现的时候非常方便。     | `Ctrl+Shift+I`                              |  `Option+Space`                                            |
+	| 通过卡片的方式，直接查看该方法的具体内容或者图片     | `Ctrl+Shift+I`                              |  `Option+Space`                                            |
 	| 全局搜索                                                     | `Ctrl+Shift+F`                              |  `Command+Shift+F`                                            |	                     
     | 上一步、下一步                                                | ``                              |  `Command+[或]`                                            |	                     
    | 高亮所有相同变量                                                | `Ctrl+Shift+F7`                              |  `Command+Shift+F7`                                            |
   | 方法调用层级弹窗                                                | `Ctrl+Alt+H`                              |  `Control+Option+H`                                            |	
-  |立马知道某个类或者方法的来源同时又不想丢掉当前的编码环境     | `Ctrl+Shift+I`                              |  `Option+Space`                                            | 
 |书签(在当前行打上书签)                                                   | `F11`                              |  `F3`                                            | 
 |展示书签                                                   | `Shift+F11`                              |  `Command+F3`                                            | 
 |整行代码上下移动                                                   | `Alt+Shift++↑或↓`                              |  `Option+Shift+↑或↓`                                            | 
