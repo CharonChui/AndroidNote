@@ -93,26 +93,26 @@ public static int makeMeasureSpec(int size, int mode) {
 那我们如何从MeasureSpec值中提取模式和大小呢？该方法内部是采用位移计算.
 ```java
 /**
-         * Extracts the mode from the supplied measure specification.
-         *
-         * @param measureSpec the measure specification to extract the mode from
-         * @return {@link android.view.View.MeasureSpec#UNSPECIFIED},
-         *         {@link android.view.View.MeasureSpec#AT_MOST} or
-         *         {@link android.view.View.MeasureSpec#EXACTLY}
-         */
-        public static int getMode(int measureSpec) {
-            return (measureSpec & MODE_MASK);
-        }
+ * Extracts the mode from the supplied measure specification.
+ *
+ * @param measureSpec the measure specification to extract the mode from
+ * @return {@link android.view.View.MeasureSpec#UNSPECIFIED},
+ *         {@link android.view.View.MeasureSpec#AT_MOST} or
+ *         {@link android.view.View.MeasureSpec#EXACTLY}
+ */
+public static int getMode(int measureSpec) {
+    return (measureSpec & MODE_MASK);
+}
 
-        /**
-         * Extracts the size from the supplied measure specification.
-         *
-         * @param measureSpec the measure specification to extract the size from
-         * @return the size in pixels defined in the supplied measure specification
-         */
-        public static int getSize(int measureSpec) {
-            return (measureSpec & ~MODE_MASK);
-        }
+/**
+ * Extracts the size from the supplied measure specification.
+ *
+ * @param measureSpec the measure specification to extract the size from
+ * @return the size in pixels defined in the supplied measure specification
+ */
+public static int getSize(int measureSpec) {
+    return (measureSpec & ~MODE_MASK);
+}
 ```
 
 
@@ -127,17 +127,17 @@ public static int makeMeasureSpec(int size, int mode) {
 
 ```java
 // Account for padding
-       float xpad = (float)(getPaddingLeft() + getPaddingRight());
-       float ypad = (float)(getPaddingTop() + getPaddingBottom());
+float xpad = (float)(getPaddingLeft() + getPaddingRight());
+float ypad = (float)(getPaddingTop() + getPaddingBottom());
 
-       // Account for the label
-       if (mShowText) xpad += mTextWidth;
+// Account for the label
+if (mShowText) xpad += mTextWidth;
 
-       float ww = (float)w - xpad;
-       float hh = (float)h - ypad;
+float ww = (float)w - xpad;
+float hh = (float)h - ypad;
 
-       // Figure out how big we can make the pie.
-       float diameter = Math.min(ww, hh);
+// Figure out how big we can make the pie.
+float diameter = Math.min(ww, hh);
 ```
 
 
@@ -157,6 +157,48 @@ public static int makeMeasureSpec(int size, int mode) {
 
 - 绘制什么，由`Canvas`处理。
 - 怎么去绘制，由`Paint`处理。
+
+
+#####`Canvas`
+
+> The Canvas class holds the "draw" calls. To draw something, you need 4 basic components: A Bitmap to hold the pixels,  
+ a Canvas to host the draw calls (writing into the bitmap), a drawing primitive (e.g. Rect, Path, text, Bitmap),   
+and a paint (to describe the colors and styles for the drawing).  
+
+
+- `Canvas()`:创建一个空的画布，可以使用`setBitmap()`方法来设置绘制的具体画布； 
+- `Canvas(Bitmap bitmap)`:以`bitmap`对象创建一个画布，则将内容都绘制在`bitmap`上，`bitmap`不得为`null`; 
+- `canvas.drawRect(RectF,Paint)`方法用于画矩形，第一个参数为图形显示区域，第二个参数为画笔，设置好图形显示区域`Rect`和画笔`Paint`后，即可画图； 
+- `canvas.drawRoundRect(RectF, float, float, Paint)`方法用于画圆角矩形，第一个参数为图形显示区域，第二个参数和第三个参数分别是水平圆角半径和垂直圆角半径。 
+- `canvas.drawLine(startX, startY, stopX, stopY, paint)`：前四个参数的类型均为`float`，最后一个参数类型为`Paint`。表示用画笔`paint`从点`（startX,startY）`到点`（stopX,stopY）`画一条直线； 
+- `canvas.drawLines (float[] pts, Paint paint)``pts`:是点的集合，大家下面可以看到，这里不是形成连接线，而是每两个点形成一条直线，`pts`的组织方式为`｛x1,y1,x2,y2,x3,y3,……｝`，例如`float []pts={10,10,100,100,200,200,400,400};`就是有四个点：（10，10）、（100，100），（200，200），（400，400）），两两连成一条直线；
+- `canvas.drawArc(oval, startAngle, sweepAngle, useCenter, paint)`：第一个参数`oval`为`RectF`类型，即圆弧显示区域，`startAngle`和`sweepAngle`均为`float`类型，分别表示圆弧起始角度和圆弧度数,3点钟方向为0度，`useCenter`设置是否显示圆心，`boolean`类型，`paint`为画笔； 
+- `canvas.drawCircle(float,float, float, Paint)`方法用于画圆，前两个参数代表圆心坐标，第三个参数为圆半径，第四个参数是画笔； 
+- `canvas.drawBitmap(Bitmap bitmap, Rect src, Rect dst, Paint paint)` 位图，参数一就是我们常规的`Bitmap`对象，参数二是源区域(这里是`bitmap`)，参数三是目标区域(应该在`canvas`的位置和大小)，参数四是`Paint`画刷对象，因为用到了缩放和拉伸的可能，当原始`Rect`不等于目标`Rect`时性能将会有大幅损失。
+- `canvas.drawText(String text, float x, floaty, Paint paint)`渲染文本，`Canvas`类除了上
+面的还可以描绘文字，参数一是`String`类型的文本，参数二`x`轴，参数三`y`轴，参数四是`Paint`对象。
+- `canvas.drawPath (Path path, Paint paint)`，根据`Path`去画.
+    ```java
+    Path path = new Path();  
+    path.moveTo(10, 10); //设定起始点  
+    path.lineTo(10, 100);//第一条直线的终点，也是第二条直线的起点  
+    path.lineTo(300, 100);//画第二条直线  
+    path.lineTo(500, 100);//第三条直线  
+    path.close();//闭环  
+    canvas.drawPath(path, paint);  
+    ```
+
+#####`Paint`
+
+- `setARGB(int a, int r, int g, int b)` 设置`Paint`对象颜色，参数一为`alpha`透明值
+- `setAlpha(int a)` 设置`alpha`不透明度，范围为0~255
+- `setAntiAlias(boolean aa)`是否抗锯齿
+- `setColor(int color)`设置颜色
+- `setTextScaleX(float scaleX)`设置文本缩放倍数，1.0f为原始
+- `setTextSize(float textSize)`设置字体大小
+- `setUnderlineText(String underlineText)`设置下划线
+
+
 
 例如，`Canvas`提供了一个画一条线的方法，而`Paint`提供了指定这条线的颜色的方法。`Canvas`提供了绘制长方形的方法，而`Paint`提供了是用颜色填充整个长方形还是空着的方法。简单的说，`Canvas`指定了你想在屏幕上绘制的形状，而`Paint`指定了你要绘制的形状的颜色、样式、字体和样式等等。   
 
@@ -276,9 +318,9 @@ public class ToogleView extends View {
         super.onDraw(canvas);
         Paint paint = new Paint();
         paint.setAntiAlias(true);
-	// 先画背景图
+    // 先画背景图
         canvas.drawBitmap(backgroundBitmap, 0, 0, paint);
-	// 再画滑块，用mSlideMarginLeft来控制滑块距离左边的距离。
+    // 再画滑块，用mSlideMarginLeft来控制滑块距离左边的距离。
         canvas.drawBitmap(slideButton, mSlideMarginLeft, 0, paint);
     }
 ```
@@ -297,7 +339,7 @@ public class ToogleView extends View {
     </LinearLayout>
 ```
 
-    ![image](https://raw.githubusercontent.com/CharonChui/Pictures/master/toogle_1.png?raw=true)
+![image](https://raw.githubusercontent.com/CharonChui/Pictures/master/toogle_1.png?raw=true)
 很明显显示的不对，因为高设置为`warp_content`了，但是界面显示的确实整个屏幕，而且`paddingLeft`也没生效，那该怎么做呢？ 当然是重写`onMeasure()` 方法:   
 ```java
 public class ToogleView extends View {
@@ -383,18 +425,64 @@ public class ToogleView extends View {
 这样就可以了。简单的说明一下，就是如果当前的模式是`EXACTLY`那就把父`View`传递进来的宽高设置进来，如果是`AT_MOST`或者`UNSPECIFIED`的话就使用背景图片的宽高。
 
 
+最后再来一个自定义`ViewGroup`的例子:       
+
+之前的引导页面都是通过类似`ViewPager`这种方法左右滑动，现在想让他上下滑动，该怎么弄呢？    
+```java
+public class VerticalLayout extends ViewGroup {
+    public VerticalLayout(Context context) {
+        super(context);
+    }
+    public VerticalLayout(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+    public VerticalLayout(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+    }
+
+    @Override
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        
+    }
+}
+```
+继承`ViewGroup`必须要重写`onLayout`方法。其实这也很好理解，因为每个`ViewGroup`的排列方式不一样，所以让子类来自己实现是最好的。      
+当然畜类重写`onLayout`之外，也要重写`onMeasure`。
+代码如下，滑动手势处理的部分就不贴了。     
+```java
+	@Override
+	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+		int measureSpec = MeasureSpec.makeMeasureSpec(mScreenHeight
+				* getChildCount(), MeasureSpec.getMode(heightMeasureSpec));
+		super.onMeasure(widthMeasureSpec, measureSpec);
+		measureChildren(widthMeasureSpec, heightMeasureSpec);
+	}
+
+	@Override
+	protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        // 就像猴子捞月一样，让他们一个个的从上往下排就好了
+		if (changed) {
+			int childCount = getChildCount();
+			for (int i = 0; i < childCount; i++) {
+				View child = getChildAt(i);
+				if (child.getVisibility() != View.GONE) {
+					child.layout(l, i * mScreenHeight, r, (i + 1)
+							* mScreenHeight);
+				}
+			}
+		}
+	}
+```
 
 
 
 
-
-	
-http://blog.csdn.net/cyp331203/article/details/40736027
-
-http://blog.csdn.net/lmj623565791/article/details/24529807
+参考部分:   	
+- http://blog.csdn.net/cyp331203/article/details/40736027
 
 	
 ---
 
 - 邮箱 ：charon.chui@gmail.com  
-- Good Luck! 
+- Good Luck! I
