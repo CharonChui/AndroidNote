@@ -299,8 +299,86 @@ animatorScaleSet.start();
 
 ```
 
+`Android L`又增加了一种动画样式，叫做`Reveal Animation`。
+首先来看一下效果:    
 
+![image](https://raw.githubusercontent.com/CharonChui/Pictures/master/reveal.gif?raw=true)    
 
+可以直接通过`ViewAnimationUtils.createCircularReveal()`方法来创建。
+
+```java
+/**
+ * Returns an Animator which can animate a clipping circle.
+ * <p>
+ * Any shadow cast by the View will respect the circular clip from this animator.
+ * <p>
+ * Only a single non-rectangular clip can be applied on a View at any time.
+ * Views clipped by a circular reveal animation take priority over
+ * {@link View#setClipToOutline(boolean) View Outline clipping}.
+ * <p>
+ * Note that the animation returned here is a one-shot animation. It cannot
+ * be re-used, and once started it cannot be paused or resumed. It is also
+ * an asynchronous animation that automatically runs off of the UI thread.
+ * As a result {@link AnimatorListener#onAnimationEnd(Animator)}
+ * will occur after the animation has ended, but it may be delayed depending
+ * on thread responsiveness.
+ *
+ * @param view The View will be clipped to the animating circle.
+ * @param centerX The x coordinate of the center of the animating circle, relative to
+ *                <code>view</code>.
+ * @param centerY The y coordinate of the center of the animating circle, relative to
+ *                <code>view</code>.
+ * @param startRadius The starting radius of the animating circle.
+ * @param endRadius The ending radius of the animating circle.
+ */
+public static Animator createCircularReveal(View view,
+        int centerX,  int centerY, float startRadius, float endRadius) {
+    return new RevealAnimator(view, centerX, centerY, startRadius, endRadius);
+}
+```
+
+代码如下:    
+
+```java
+void enterReveal() {
+    final View myView = findViewById(R.id.my_view);
+
+    int cx = myView.getMeasuredWidth() / 2;
+    int cy = myView.getMeasuredHeight() / 2;
+
+    int finalRadius = Math.max(myView.getWidth(), myView.getHeight()) / 2;
+
+    Animator anim =
+        ViewAnimationUtils.createCircularReveal(myView, cx, cy, 0, finalRadius);
+
+    anim.start();
+}
+
+void exitReveal() {
+    final View myView = findViewById(R.id.my_view);
+
+    int cx = myView.getMeasuredWidth() / 2;
+    int cy = myView.getMeasuredHeight() / 2;
+
+    int initialRadius = myView.getWidth() / 2;
+
+    Animator anim =
+        ViewAnimationUtils.createCircularReveal(myView, cx, cy, initialRadius, 0);
+
+    anim.addListener(new AnimatorListenerAdapter() {
+        @Override
+        public void onAnimationEnd(Animator animation) {
+            super.onAnimationEnd(animation);
+            myView.setVisibility(View.INVISIBLE);
+        }
+    });
+
+    anim.start();
+}
+
+```
+
+有关如何提高动画性能请看:[通过Hardware Layer提高动画性能](https://github.com/CharonChui/AndroidNote/blob/master/Android%E5%8A%A0%E5%BC%BA/%E9%80%9A%E8%BF%87Hardware%20Layer%E6%8F%90%E9%AB%98%E5%8A%A8%E7%94%BB%E6%80%A7%E8%83%BD.md)
 
 ---
 

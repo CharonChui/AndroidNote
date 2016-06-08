@@ -105,8 +105,8 @@ AndroidStudio使用教程(第一弹)
   | 方法调用层级弹窗                                                | `Ctrl+Alt+H`                              |  `Control+Option+H`                                            |	
 |书签(在当前行打上书签)                                                   | `F11`                              |  `F3`                                            | 
 |展示书签                                                   | `Shift+F11`                              |  `Command+F3`                                            | 
-|整行代码上下移动                                                   | `Alt+Shift++↑或↓`                              |  `Option+Shift+↑或↓`                                            | 
-
+|整行代码上下移动                                                   | `Alt+Shift++↑或↓`                              |  `Option+Shift+↑或↓`                                         | 
+|搜索设置操作命令                                                   | `Ctrl+Shift+A`                              |  `Command+Shift+A`                                         |
 
 
 ---
