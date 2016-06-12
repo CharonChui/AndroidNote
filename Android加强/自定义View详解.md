@@ -318,9 +318,9 @@ public class ToogleView extends View {
         super.onDraw(canvas);
         Paint paint = new Paint();
         paint.setAntiAlias(true);
-    // 先画背景图
+        // 先画背景图
         canvas.drawBitmap(backgroundBitmap, 0, 0, paint);
-    // 再画滑块，用mSlideMarginLeft来控制滑块距离左边的距离。
+        // 再画滑块，用mSlideMarginLeft来控制滑块距离左边的距离。
         canvas.drawBitmap(slideButton, mSlideMarginLeft, 0, paint);
     }
 ```
@@ -475,6 +475,44 @@ public class VerticalLayout extends ViewGroup {
 	}
 ```
 
+上面介绍了通过继承`View`以及`ViewGroup`的方式来自定义`View`，平时开发过程中有时不需要继承他俩，我们直接继承功能接近
+的类进行扩展就好，例如:我想自定义一个`Meterial Design`样式的`EditText`。那我们该怎么实现呢？ 当然是继承`EditText`了，它比`EditText`多了一条底下的线，那我们给它`draw`上就可以了。
+
+![image](https://raw.githubusercontent.com/CharonChui/Pictures/master/meterial_edittext.png?raw=true)
+
+```java
+public class MetrailEditText extends EditText {
+    private NinePatchDrawable mDrawable;
+
+    public MetrailEditText(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        init();
+    }
+
+    public MetrailEditText(Context context) {
+        super(context);
+        init();
+    }
+
+    private void init() {
+        setBackgroundResource(0);
+        mDrawable = (NinePatchDrawable) getResources().getDrawable(R.drawable.edittext_meterial_bg_activated);
+    }
+
+    @Override
+    protected void onDraw(final Canvas canvas) {
+        super.onDraw(canvas);
+        mDrawable.setBounds(-getCompoundPaddingLeft(), 0, getWidth() + getCompoundPaddingRight(), getHeight());
+        mDrawable.draw(canvas);
+    }
+}
+```
+
+看到这里你可能会糊涂，这哪行啊？ 我们的`edittext_meterial_bg_activated`可不是普通的图，当然是`9 patch`图了。
+
+![image](https://raw.githubusercontent.com/CharonChui/Pictures/master/meterial_edittext_line.png?raw=true)
+
+当然你可以在`onDraw()`的时候加一个自定义线的颜色`mDrawable.setColorFilter(mLineColor, PorterDuff.Mode.SRC_ATOP);`等。
 
 
 
