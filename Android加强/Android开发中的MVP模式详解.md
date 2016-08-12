@@ -3,8 +3,9 @@ Android开发中的MVP模式详解
 
 [MVC、MVP、MVVM介绍](https://github.com/CharonChui/AndroidNote/blob/master/Java%E5%9F%BA%E7%A1%80/MVC%E4%B8%8EMVP%E5%8F%8AMVVM.md)
 
+![image](https://raw.githubusercontent.com/CharonChui/Pictures/master/android_mvp.jpg?raw=true)
 
-在`Android`开发中，如果不注重架构的话，`Activity`类就会变得愈发庞大。这是因为在`Android`开发中`View`和其他的线程可以共存于`Activity`内。那最大的问题是什么呢？ 其实就是**`Activity`中同事存在业务逻辑和`UI`逻辑。这导致增加了单元测试和维护的成本。
+在`Android`开发中，如果不注重架构的话，`Activity`类就会变得愈发庞大。这是因为在`Android`开发中`View`和其他的线程可以共存于`Activity`内。那最大的问题是什么呢？ 其实就是`Activity`中同时存在业务逻辑和`UI`逻辑。这导致增加了单元测试和维护的成本。
 
 ![image](https://raw.githubusercontent.com/CharonChui/Pictures/master/activity_is_god.png?raw=true)
     	
@@ -165,6 +166,53 @@ Android开发中的MVP模式详解
     ```
 
 ---
+
+
+上面只是抛砖引玉。`MVP`的有点十分明显，就是代码解耦、可以让逻辑清晰，但是同样它也会有缺点，它的缺点就是项目的复杂程度会增加，项目中会多出很多类。
+之前很多人都在讨论该如何去正确的设计使用`MVP`来避免它的缺点，众说纷纭，很多人讨论的你死我活。直到`Google`发布了`MVP架构蓝图`，大家才意识到这才是规范。     
+
+项目地址:[android-architecture](https://github.com/googlesamples/android-architecture)
+`Google`将该项目命名为`Android`的架构蓝图，我想从名字上已可以看穿一切。
+
+在它的官方介绍中是这样说的:   
+
+> The Android framework offers a lot of flexibility when it comes to defining how to organize and architect an Android app. This freedom, whilst very valuable, can also result in apps with large classes, inconsistent naming and architectures (or lack of) that can make testing, maintaining and extending difficult.
+
+> Android Architecture Blueprints is meant to demonstrate possible ways to help with these common problems. In this project we offer the same application implemented using different architectural concepts and tools.
+
+> You can use these samples as a reference or as a starting point for creating your own apps. The focus here is on code structure, architecture, testing and maintainability. However, bear in mind that there are many ways to build apps with these architectures and tools, depending on your priorities, so these shouldn't be considered canonical examples. The UI is deliberately kept simple.
+
+
+
+已完成的示例:  
+
+- todo-mvp/ - Basic Model-View-Presenter architecture.
+- todo-mvp-loaders/ - Based on todo-mvp, fetches data using Loaders.
+- todo-mvp-databinding/ - Based on todo-mvp, uses the Data Binding Library.
+- todo-mvp-clean/ - Based on todo-mvp, uses concepts from Clean Architecture.
+- todo-mvp-dagger/ - Based on todo-mvp, uses Dagger2 for Dependency Injection
+- todo-mvp-contentproviders/ - Based on todo-mvp-loaders, fetches data using Loaders and uses Content Providers
+
+正在进行中的示例:   
+
+- dev-todo-mvp-rxjava/ - Based on todo-mvp, uses RxJava for concurrency and data layer abstraction.
+
+
+我们接下来就用`todo-mvp`来进行分析，这个应用非常简单，主要有以下几个功能:     
+
+- 列表页:展示所有的`todo`项   
+- 添加页:添加`todo`项
+- 详情页:查看`todo`项的详情
+- 统计页:查看当前所有已完成`todo`及未完成项的统计数据     
+
+
+
+
+
+
+
+---
+
 
 - 邮箱 ：charon.chui@gmail.com  
 - Good Luck! 

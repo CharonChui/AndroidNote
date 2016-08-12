@@ -102,7 +102,7 @@ InstantRun详解
 
 在`Instant Run`更改内容前，`Android Studio`会你的应用版本是否支持`Instant Run`并且`App Server`是否运行在对其有用的端口(内部使用了Socket)。 这样来确定你的应用是否在前台运行，并且找到`Studio`所需要的构建`ID`.   
 
-总结一下，其实就是内部会对每个`class`文件注入`instant run`相关的代码，然后自定义一个`application`内部指定自定义的`classLoader`(也就是说不使用默认的classLoader了，只要用了Instant Run就需要使用它自定义的classLoader)，然后在应用程序里面开启一个服务器，`Studio`将修改的代码发送到该服务器，然后再通过自定义的`classLoader`加载代码的时候会去请求该服务器判断代码是否有更新，如果有更新就会通过委托机制加载新更新的代码然后注入到应用程序中，这样就完成了替换的操作。
+总结一下，其实就是内部会对每个`class`文件注入`instant run`相关的代码，然后自定义一个`application`内部指定自定义的`classLoader`(也就是说不使用默认的`classLoader`了，只要用了`Instant Run`就需要使用它自定义的`classLoader`)，然后在应用程序里面开启一个服务器，`Studio`将修改的代码发送到该服务器，然后再通过自定义的`classLoader`加载代码的时候会去请求该服务器判断代码是否有更新，如果有更新就会通过委托机制加载新更新的代码然后注入到应用程序中，这样就完成了替换的操作。
 
 ###热修复过程               
 
