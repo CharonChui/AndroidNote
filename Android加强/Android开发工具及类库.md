@@ -68,6 +68,17 @@ Android开发工具及类库
 	    ![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/lint.png?raw=true)	
 	- 进入到`Android Studio`中的具体项目中执行`./gradlew clean`后再执行`./gradlew lint && android-resource-remover --xml app/build/outputs/lint-results.xml`
 
+9. [stetho](https://github.com/facebook/stetho)
+    `facebook`出品。快速查看布局、数据库、网络请求。实在不能再方便了。   
+10. [RxJava](https://github.com/ReactiveX/RxJava)
+    用了后你会爱上它。
+11. [Retrofilt](https://github.com/square/retrofit)
+    `Square`出品。大神`JakeWharton`主导出品的网络请求框架。内部结合`OkHttp`。结合`RxJava`使用非常方便。   
+12. [android-architecture](https://github.com/googlesamples/android-architecture)
+    放到这里可能不太合适，因为它并不是工具和类库，而是`Google`官方发布的`Android`架构示例。非常值得参考。  
+13. [AndroidWiFiADB](https://github.com/pedrovgs/AndroidWiFiADB)
+    还在为数据线不够用而烦恼嘛?
+    
 
 ---
 
