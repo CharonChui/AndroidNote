@@ -27,7 +27,7 @@ Android入门介绍
     	- 硬件驱动
 
 3. Android体系结构
-    - Applications:桌面应用、打电话应用、浏览器等应用程序
+    - Applications:桌面、电话、浏览器等应用程序
     - Applications Framework:ActivityManager、 WindowManager、ContentProvider、ResourceManager等     
     - Libraries: SQLite库、SurfaceManager、WebKit、OppenGL等。
         - Android运行时
@@ -50,7 +50,9 @@ Android入门介绍
         - intel
         - AMD
     2. ARM
-        - 摩托罗拉
+        - 联发科
+        - 高通
+        - 海思
         - 三星
 
 6. Android项目目录结构
@@ -63,7 +65,7 @@ Android入门介绍
         - anim：定义动画的XML
         - raw：原生文件
     4. assets：资源路径，不会在R文件注册
-    5. project.properties：供Eclipse使用，读取该项目使用Android版本号。早期版本名为default.properties
+    5. project.properties：供Eclipse使用，读取该项目使用Android版本号，早期版本名为default.properties
     6. AndroidManifest.xml：清单文件，在软件安装的时候被读取      
         Android中的四大组件（Activity、ContentProvider、BroadcastReceiver、Service）都需要在该文件中注册程序所需的权限也需要在此文件中声明，例如：电话、短信、互联网、访问SD卡
     7. bin：二进制文件，包括class、资源文件、dex、apk等
@@ -79,27 +81,25 @@ Android入门介绍
     7. 按照main.xml文件初始化界面
 
     简单的来说软件的安装都是两个过程
-    - 拷贝apk中得一些文件到系统的某个目录      
-	    1. `/data/app/`目录下             
-		2. 创建一个文件夹 `/data/data/com.test.helloworld/`来保存数据        
-		
-    - 在系统的注册表里面配置一些信息.  `data/system/packages.xml`
+    - 拷贝apk中的一些文件到系统的某个目录      
+	    1. `/data/app/`目录下   
+	    2. 创建一个文件夹 `/data/data/com.test.helloworld/`来保存数据  
+    - 在系统的packages.xml文件(类似于Windows的注册表)中里面配置应用权限等一些信息.  `/data/system/packages.xml`
     
 8. Android安全学    
     Android安全学中的一个重要的设计点是在默认情况下应用程序没有权限执行对其它应用程序、操作系统或用户有害的操作。
-	这些操作包括读/写用户的隐私数据（例如联系方式或e-mail），读/写其它应用程序的文件，执行网络访问，保持设备活动，等等。 
-	所以牵扯到付费或者可能与用户隐私相关的操作都要申请权限.
+	这些操作包括读/写用户的隐私数据（例如联系人或e-mail），读/写其它应用程序的文件，执行网络访问，保持设备活动，等等。 
+	所有牵扯到付费或者可能与用户隐私相关的操作都要申请权限。
 
 9. 测试分类    
-    单元测试(Unit test) -> 功能测试( Function test) ->集成测试(Intergation test)
+    单元测试(Unit test) -> 功能测试( Function test) -> 集成测试(Intergation test)
 	
 10. Android单元测试
     - AndroidManifest.xml中进行配置,导入android的junit环境
-    - 编写测试类继承Android的测试父类,AndroidTestCase这个类( AndroidTestCase是为了去模拟一个手机的运行环境， 
-	    这个类中有一个getContext方法能获取到当前测试类的应用上下文对象，所以这个方法必须要等到测试框架初始化完成后才可以去调用)
-    - 测试的方法名要求以小写的test开头,如不以test开头只能单独点这个方法运行,整体全部运行时没有这个方法，所有的测试方法都要抛出异常，要把异常抛给测试框架不能自己去捕获。
+    - 编写测试类继承Android的测试父类,AndroidTestCase这个类( AndroidTestCase是为了去模拟一个手机的运行环境，这个类中有一个getContext方法能获取到当前测试类的应用上下文对象，所以这个方法必须要等到测试框架初始化完成后才可以去调用)
+    - 测试的方法名要求以小写的test开头,如不以test开头只能单独点这个方法运行,整体全部运行时没有这个方法，所有的测试方法都要抛出异常，要把异常抛给测试框架不能自己去捕获
  
-    注意:测试得代码也是只能在手机上跑,它是在手机上测试完之后又将信息发送到了eclipse中
+    注意:测试的代码也是只能在手机上跑,它是在手机上测试完之后又将信息发送到了eclipse中
 
 
 ---
