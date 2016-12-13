@@ -986,22 +986,16 @@ Observable.from(folders)
 
 那位说话了：『你这代码明明变多了啊！简洁个毛啊！』大兄弟你消消气，我说的是逻辑的简洁，不是单纯的代码量少（逻辑简洁才是提升读写代码速度的必杀技对不？）。观察一下你会发现， `RxJava`的这个实现，是一条从上到下的链式调用，没有任何嵌套，这在逻辑的简洁性上是具有优势的。当需求变得复杂时，这种优势将更加明显（试想如果还要求只选取前`10`张图片，常规方式要怎么办？如果有更多这样那样的要求呢？再试想，在这一大堆需求实现完两个月之后需要改功能，当你翻回这里看到自己当初写下的那一片迷之缩进，你能保证自己将迅速看懂，而不是对着代码重新捋一遍思路？）。
 
+更多内容请看下一篇文章[RxJava详解(下)](https://github.com/CharonChui/AndroidNote/blob/master/Android%E5%8A%A0%E5%BC%BA/RxJava%E8%AF%A6%E8%A7%A3(%E4%B8%8B).md)
 
 参考:   
 
 - [RxJava Wiki](https://github.com/ReactiveX/RxJava/wiki)
-
 - [Grokking RxJava, Part 1: The Basics](http://blog.danlew.net/2014/09/15/grokking-rxjava-part-1/)
-
 - [NotRxJava](https://yarikx.github.io/NotRxJava/)
-
 - [When Not to Use RxJava](http://tomstechnicalblog.blogspot.hk/2016/07/when-not-to-use-rxjava.html)
-
 - [给 Android 开发者的 RxJava 详解](http://gank.io/post/560e15be2dca930e00da1083)
-
 - [Google Agera 从入门到放弃](http://blog.chengyunfeng.com/?p=984)
-
-
 
 ---
 

@@ -534,19 +534,15 @@ Observable.interval(1, TimeUnit.SECONDS, AndroidSchedulers.mainThread())
 
 是不是感觉没什么乱用，那就继续看下一部分吧。
 
+更多内容请看下一篇文章[RxJava详解(下)](https://github.com/CharonChui/AndroidNote/blob/master/Android%E5%8A%A0%E5%BC%BA/RxJava%E8%AF%A6%E8%A7%A3(%E4%B8%AD).md)
 
 参考:   
 
 - [RxJava Wiki](https://github.com/ReactiveX/RxJava/wiki)
-
 - [Grokking RxJava, Part 1: The Basics](http://blog.danlew.net/2014/09/15/grokking-rxjava-part-1/)
-
 - [NotRxJava](https://yarikx.github.io/NotRxJava/)
-
 - [When Not to Use RxJava](http://tomstechnicalblog.blogspot.hk/2016/07/when-not-to-use-rxjava.html)
-
 - [给 Android 开发者的 RxJava 详解](http://gank.io/post/560e15be2dca930e00da1083)
-
 - [Google Agera 从入门到放弃](http://blog.chengyunfeng.com/?p=984)
 
 
