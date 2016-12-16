@@ -42,55 +42,55 @@ https://api.github.com/users/{user}/repos
 ```
 
 - `Retrofit`会将你的`api`封装成`Java`接口   
-```java
-public interface GitHubService {
-  @GET("users/{user}/repos")
-  Call<List<Repo>> listRepos(@Path("user") String user);
-}
-```
+  ```java
+  public interface GitHubService {
+    @GET("users/{user}/repos")
+    Call<List<Repo>> listRepos(@Path("user") String user);
+  }
+  ```
 
 - `Retrofit`类会生成一个`GitHubService`接口的实现类:  
 
-```java
-Retrofit retrofit = new Retrofit.Builder()
-    .baseUrl("https://api.github.com/")
-    .build();
-
-GitHubService service = retrofit.create(GitHubService.class);
-```
+  ```java
+  Retrofit retrofit = new Retrofit.Builder()
+      .baseUrl("https://api.github.com/")
+      .build();
+  
+  GitHubService service = retrofit.create(GitHubService.class);
+  ```
 
 - 从创建的`GithubService`类返回的每个`Call`对象调用后都可以创建一个同步或异步的网络请求:   
 
-```java
-Call<List<Repo>> repos = service.listRepos("CharonChui");
-```
+  ```java
+  Call<List<Repo>> repos = service.listRepos("CharonChui");
+  ```
 
 - 上面返回的`Call`其实并不是真正的数据结果，它更像一条指令，你需要执行它:   
 
-```java
-// 同步调用
-List<Repo> data = repos.execute(); 
- 
-// 异步调用
-repos.enqueue(new Callback<List<Repo>>() {
-  @Override
-  public void onResponse(Call<List<Repo>> call, Response<List<Repo>> response) {
-      List<Repo> data = response.body();
-      Log.i("@@@", "data size : " + (data == null ? "null" : data.size() + ""));
-  }
+  ```java
+  // 同步调用
+  List<Repo> data = repos.execute(); 
+   
+  // 异步调用
+  repos.enqueue(new Callback<List<Repo>>() {
+    @Override
+    public void onResponse(Call<List<Repo>> call, Response<List<Repo>> response) {
+        List<Repo> data = response.body();
+        Log.i("@@@", "data size : " + (data == null ? "null" : data.size() + ""));
+    }
+  
+    @Override
+    public void onFailure(Call<List<Repo>> call, Throwable t) {
+  
+    }
+  });
+  ```
 
-  @Override
-  public void onFailure(Call<List<Repo>> call, Throwable t) {
+  那如何取消请求呢？ 
 
-  }
-});
-```
-
-那如何取消请求呢？ 
-
-```java
-repos.cancel();
-```
+  ```java
+  repos.cancel();
+  ```
 
 上面这一部分代码，你要是拷贝运行后是运行不了的。
 当然了，因为木有`Repo`对象。但是添加`Repo`对象也是运行不了的。会报错。 
@@ -126,7 +126,7 @@ Caused by: java.lang.IllegalArgumentException: Unable to create converter for ja
    at android.app.Activity.performCreate(Activity.java:5304)
    at android.app.Instrumentation.callActivityOnCreate(Instrumentation.java:1090)
    at android.app.ActivityThread.performLaunchActivity(ActivityThread.java:2245)
-   	... 12 more
+    ... 12 more
 Caused by: java.lang.IllegalArgumentException: Could not locate ResponseBody converter for java.util.List<com.charon.retrofitdemo.Repo>.
  Tried:
 ```
@@ -230,7 +230,7 @@ Url = "https://api.github.com/users/CharonChui/repos"
 
 假设我们有一个分页查询的功能:   
 ```java
-@GET("/list")
+GET("/list")
 Call<ResponseBody> list(@Query("page") int page);
 ```
 
@@ -263,6 +263,7 @@ Call<User> updateUser(@Part("photo") RequestBody photo, @Part("description") Req
 ```
 
 `@Headers`
+---
 
 可以通过`@Headers`来设置静态的请求头
 
@@ -291,63 +292,64 @@ Call<User> getUser(@Header("Authorization") String authorization)
 
 - 添加依赖
 
-```java
-compile 'com.squareup.retrofit2:retrofit:2.1.0'
-compile 'com.squareup.retrofit2:converter-gson:2.1.0'// 支持gson
-compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'// 支持rxjava
-
-// rxjava part
-compile 'io.reactivex:rxandroid:1.2.1'
-compile 'io.reactivex:rxjava:1.2.3'
-```
+  ```java
+  compile 'com.squareup.retrofit2:retrofit:2.1.0'
+  compile 'com.squareup.retrofit2:converter-gson:2.1.0'// 支持gson
+  compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'// 支持rxjava
+  
+  // rxjava part
+  compile 'io.reactivex:rxandroid:1.2.1'
+  compile 'io.reactivex:rxjava:1.2.3'
+  ```
 
 - 修改`Retrofit`的配置，让其支持`RxJava`   
 
-```java
-Retrofit retrofit = new Retrofit.Builder()
-    .baseUrl("https://api.github.com/")
-    .addConverterFactory(GsonConverterFactory.create())
-    .addCallAdapterFactory(RxJavaCallAdapterFactory.create()) // 支持RxJava
-    .build();
-```
+  ```java
+  Retrofit retrofit = new Retrofit.Builder()
+      .baseUrl("https://api.github.com/")
+      .addConverterFactory(GsonConverterFactory.create())
+      .addCallAdapterFactory(RxJavaCallAdapterFactory.create()) // 支持RxJava
+      .build();
+  ```
 
 - 修改`GitHubService`，将返回值改为`Observable`，而不是`Call`。     
 
-```java
-public interface GitHubService {
-    @GET("users/{user}/repos")
-    Observable<List<Repo>> listRepos(@Path("user") String user);
-}
-```
+  ```java
+  public interface GitHubService {
+      @GET("users/{user}/repos")
+      Observable<List<Repo>> listRepos(@Path("user") String user);
+  }
+  ```
 
 - 执行部分
-```java
-GitHubService service = retrofit.create(GitHubService.class);
 
-service.listRepos("CharonChui")
-    .subscribeOn(Schedulers.newThread())
-    .observeOn(AndroidSchedulers.mainThread())
-    .subscribe(new Subscriber<List<Repo>>() {
-        @Override
-        public void onCompleted() {
-            Log.i("@@@", "onCompleted");
-        }
+  ```java
+  GitHubService service = retrofit.create(GitHubService.class);
+  
+  service.listRepos("CharonChui")
+      .subscribeOn(Schedulers.newThread())
+      .observeOn(AndroidSchedulers.mainThread())
+      .subscribe(new Subscriber<List<Repo>>() {
+          @Override
+          public void onCompleted() {
+              Log.i("@@@", "onCompleted");
+          }
+  
+          @Override
+          public void onError(Throwable e) {
+              Log.i("@@@", "onError : " + e.toString());
+          }
+  
+          @Override
+          public void onNext(List<Repo> repos) {
+              Log.i("@@@", "onNext : " + repos.size());
+              Toast.makeText(MainActivity.this, "size : " + repos.size(), Toast.LENGTH_SHORT).show();
+          }
+      });
+  ```
+  
 
-        @Override
-        public void onError(Throwable e) {
-            Log.i("@@@", "onError : " + e.toString());
-        }
-
-        @Override
-        public void onNext(List<Repo> repos) {
-            Log.i("@@@", "onNext : " + repos.size());
-            Toast.makeText(MainActivity.this, "size : " + repos.size(), Toast.LENGTH_SHORT).show();
-        }
-    });
-```
-
-
-`RxJava`+`Retrofit`形式的时候，`Retrofit`把请求封装进`Observable`在请求结束后调用 `onNext()`或在请求失败后调用`onError()`。
+  `RxJava`+`Retrofit`形式的时候，`Retrofit`把请求封装进`Observable`在请求结束后调用 `onNext()`或在请求失败后调用`onError()`。
 
 
 `Proguard`配置

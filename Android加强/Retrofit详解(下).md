@@ -45,9 +45,9 @@ Retrofit retrofit = new Retrofit.Builder()
   .build();
 ```
 
-简单的一句话，确埋藏了很多。     
+简单的一句话，却埋藏了很多。     
 
-这是典型的***外观模式***      
+这是典型的***建造者模式、外观模式***      
 
 就想平时我们写的下载模块，作为一个公共的模块，我们可以对外提供一个`DownloadManager`供外界使用，而对于里面的实现我们完全可以闭门造车。    
 
@@ -70,204 +70,227 @@ public <T> T create(final Class<T> service) {
     }
     return (T) Proxy.newProxyInstance(service.getClassLoader(), new Class<?>[] { service },
         new InvocationHandler() {
+          // 这里的Platform主要是为了检测当前的运行平台，是java还是android，会根据当前的平台来返回默认的CallAdapter
           private final Platform platform = Platform.get();
 
           @Override public Object invoke(Object proxy, Method method, Object... args)
               throws Throwable {
             // If the method is a method from Object then defer to normal invocation.
             if (method.getDeclaringClass() == Object.class) {
+              // 代理调用
               return method.invoke(this, args);
             }
             if (platform.isDefaultMethod(method)) {
               return platform.invokeDefaultMethod(method, service, proxy, args);
             }
-            // 1
+            // 1，根据动态代理的方法去生成ServiceMethod这里动态代理的方法就是listRepos方法
             ServiceMethod serviceMethod = loadServiceMethod(method);
-            // 2
+            // 2，根绝ServiceMethod和参数去生成OkHttpCall，这里args是CharonChui
             OkHttpCall okHttpCall = new OkHttpCall<>(serviceMethod, args);
-            // 3
+            // 3, serviceMethod去进行处理并返回Call对象，拿到这个Call对象才能去执行网络请求。
             return serviceMethod.callAdapter.adapt(okHttpCall);
           }
         });
   }
 ```
 
-看到`Proxy.newProxyInstance()`发现使用了***动态代理***
+看到`Proxy.newProxyInstance()`就明白了，这里使用了***动态代理***。简单的说动态代理是在你要调用某个`Class`的方法前或后，插入你想要执行的代码。那这里要代理的是什么方法？ `Call<List<Repo>> call = gitHubService.listRepos("CharonChui");`，这里就是`listRepos()`方法。   就是说在调用`listRepos()`方法时会被动态代理所拦截，然后执行`Proxy.newProxyInstance()`里面的`InvocationHandler.invoke()`中的部分。   而`invoke()`方法的三个参数分别是啥？ 分别是`Object proxy`: 代理对象，`Method method`：调用的方法，就是`listRepos()`方法，`Object... args`：方法的参数，这里是`CharonChui`。   
+
+有关动态代理介绍可以看[张孝祥老师的java1.5高新技术系列中的动态代理]()
+
+这里就不仔细介绍动态代理了，上面的代码中又分为三部分:    
 
 - `loadServiceMethod()`
-实现如下:   
+- `new OkHttpCall()`
+- `serviceMethod.callAdapter.adapt()`
 
-```java
-ServiceMethod loadServiceMethod(Method method) {
-    ServiceMethod result;
-    synchronized (serviceMethodCache) {
-      result = serviceMethodCache.get(method);
-      if (result == null) {
-        // build
-        result = new ServiceMethod.Builder(this, method).build();
-        serviceMethodCache.put(method, result);
-      }
-    }
-    return result;
-  }
-```
+我们这里分别来进行分析。    
 
-会通过缓存的方式来获取一个`ServiceMethod`类。通过缓存来保证同一个`API`的同一个方法只会创建一次。 
-有关`ServiceMethod`类的文档介绍是:     
-```java
-Adapts an invocation of an interface method into an HTTP call.
-```
-大体翻译一下就是将一个请求接口的方法转换到`Http Call`中调用。    
+- `loadServiceMethod()`
+	实现如下:   
+	
+	```java
+	ServiceMethod loadServiceMethod(Method method) {
+	    ServiceMethod result;
+	    synchronized (serviceMethodCache) {
+	      // ServiceMethod包含了请求的所有相关数据，以及获取请求的request和把请求结果转换成java对象，所以相比较而言较重，用缓存来提高效率。
+	      result = serviceMethodCache.get(method);
+	      if (result == null) {
+	        // build
+	        result = new ServiceMethod.Builder(this, method).build();
+	        serviceMethodCache.put(method, result);
+	      }
+	    }
+	    return result;
+	  }
+	```
+	
+	会通过缓存的方式来获取一个`ServiceMethod`类。通过缓存来保证同一个`API`的同一个方法只会创建一次。 
+	有关`ServiceMethod`类的文档介绍是:     
+	```java
+	Adapts an invocation of an interface method into an HTTP call.
+	```
+	大体翻译一下就是将一个请求接口的方法转换到`Http Call`中调用。    
+	
+	而上面第一次使用的时候会通过`new ServiceMethod.Builder(this, method).build()`创建，那我们看一下它的实现:    
+	
+	```java
+	public ServiceMethod build() {
+	       // 创建CallAdapter用来代理Call
+	      callAdapter = createCallAdapter();
+	      responseType = callAdapter.responseType();
+	      if (responseType == Response.class || responseType == okhttp3.Response.class) {
+	        throw methodError("'"
+	            + Utils.getRawType(responseType).getName()
+	            + "' is not a valid response body type. Did you mean ResponseBody?");
+	      }
+	      // responseConverter用来解析结果将json等返回结果解析成java对象
+	      responseConverter = createResponseConverter();
+	
+	      for (Annotation annotation : methodAnnotations) {
+	        parseMethodAnnotation(annotation);
+	      }
+	
+	      if (httpMethod == null) {
+	        throw methodError("HTTP method annotation is required (e.g., @GET, @POST, etc.).");
+	      }
+	
+	      if (!hasBody) {
+	        if (isMultipart) {
+	          throw methodError(
+	              "Multipart can only be specified on HTTP methods with request body (e.g., @POST).");
+	        }
+	        if (isFormEncoded) {
+	          throw methodError("FormUrlEncoded can only be specified on HTTP methods with "
+	              + "request body (e.g., @POST).");
+	        }
+	      }
+	
+	      int parameterCount = parameterAnnotationsArray.length;
+	      parameterHandlers = new ParameterHandler<?>[parameterCount];
+	      for (int p = 0; p < parameterCount; p++) {
+	        Type parameterType = parameterTypes[p];
+	        if (Utils.hasUnresolvableType(parameterType)) {
+	          throw parameterError(p, "Parameter type must not include a type variable or wildcard: %s",
+	              parameterType);
+	        }
+			//  解析对应method的注解，这里是listRepos方法的注解。
+	        Annotation[] parameterAnnotations = parameterAnnotationsArray[p];
+	        if (parameterAnnotations == null) {
+	          throw parameterError(p, "No Retrofit annotation found.");
+	        }
+	        // 通过注解和参数类型，解析并赋值到parameterHandlers中
+	        parameterHandlers[p] = parseParameter(p, parameterType, parameterAnnotations);
+	      }
+	
+	      if (relativeUrl == null && !gotUrl) {
+	        throw methodError("Missing either @%s URL or @Url parameter.", httpMethod);
+	      }
+	      if (!isFormEncoded && !isMultipart && !hasBody && gotBody) {
+	        throw methodError("Non-body HTTP method cannot contain @Body.");
+	      }
+	      if (isFormEncoded && !gotField) {
+	        throw methodError("Form-encoded method must contain at least one @Field.");
+	      }
+	      if (isMultipart && !gotPart) {
+	        throw methodError("Multipart method must contain at least one @Part.");
+	      }
+	      // 创建`ServiceMethod()`对象
+	      return new ServiceMethod<>(this);
+	    }
+	```
+	总起来说，就是创建`CallAdapter`、`responseConverter`、解析注解、设置参数，然后创建`ServiceMethod`对象。   
+	
+	而`ServiceMethod`的构造函数如下:    
+	```java
+	ServiceMethod(Builder<T> builder) {
+	    this.callFactory = builder.retrofit.callFactory();
+	    this.callAdapter = builder.callAdapter;
+	    this.baseUrl = builder.retrofit.baseUrl();
+	    this.responseConverter = builder.responseConverter;
+	    this.httpMethod = builder.httpMethod;
+	    this.relativeUrl = builder.relativeUrl;
+	    this.headers = builder.headers;
+	    this.contentType = builder.contentType;
+	    this.hasBody = builder.hasBody;
+	    this.isFormEncoded = builder.isFormEncoded;
+	    this.isMultipart = builder.isMultipart;
+	    this.parameterHandlers = builder.parameterHandlers;
+	  }
+	```
+	
+	看到吗？ 这一部分我们应该都稍微有点印象，因为在上一篇文章介绍使用方法的时候，基本会用到这里。 
 
-而上面第一次使用的时候会通过`new ServiceMethod.Builder(this, method).build()`创建，那我们看一下它的实现:    
-
-```java
-public ServiceMethod build() {
-      callAdapter = createCallAdapter();
-      responseType = callAdapter.responseType();
-      if (responseType == Response.class || responseType == okhttp3.Response.class) {
-        throw methodError("'"
-            + Utils.getRawType(responseType).getName()
-            + "' is not a valid response body type. Did you mean ResponseBody?");
-      }
-      responseConverter = createResponseConverter();
-
-      for (Annotation annotation : methodAnnotations) {
-        parseMethodAnnotation(annotation);
-      }
-
-      if (httpMethod == null) {
-        throw methodError("HTTP method annotation is required (e.g., @GET, @POST, etc.).");
-      }
-
-      if (!hasBody) {
-        if (isMultipart) {
-          throw methodError(
-              "Multipart can only be specified on HTTP methods with request body (e.g., @POST).");
-        }
-        if (isFormEncoded) {
-          throw methodError("FormUrlEncoded can only be specified on HTTP methods with "
-              + "request body (e.g., @POST).");
-        }
-      }
-
-      int parameterCount = parameterAnnotationsArray.length;
-      parameterHandlers = new ParameterHandler<?>[parameterCount];
-      for (int p = 0; p < parameterCount; p++) {
-        Type parameterType = parameterTypes[p];
-        if (Utils.hasUnresolvableType(parameterType)) {
-          throw parameterError(p, "Parameter type must not include a type variable or wildcard: %s",
-              parameterType);
-        }
-
-        Annotation[] parameterAnnotations = parameterAnnotationsArray[p];
-        if (parameterAnnotations == null) {
-          throw parameterError(p, "No Retrofit annotation found.");
-        }
-
-        parameterHandlers[p] = parseParameter(p, parameterType, parameterAnnotations);
-      }
-
-      if (relativeUrl == null && !gotUrl) {
-        throw methodError("Missing either @%s URL or @Url parameter.", httpMethod);
-      }
-      if (!isFormEncoded && !isMultipart && !hasBody && gotBody) {
-        throw methodError("Non-body HTTP method cannot contain @Body.");
-      }
-      if (isFormEncoded && !gotField) {
-        throw methodError("Form-encoded method must contain at least one @Field.");
-      }
-      if (isMultipart && !gotPart) {
-        throw methodError("Multipart method must contain at least one @Part.");
-      }
-      // 创建`ServiceMethod()`对象
-      return new ServiceMethod<>(this);
-    }
-```
-
-而`ServiceMethod`的构造函数如下:    
-```java
-ServiceMethod(Builder<T> builder) {
-    this.callFactory = builder.retrofit.callFactory();
-    this.callAdapter = builder.callAdapter;
-    this.baseUrl = builder.retrofit.baseUrl();
-    this.responseConverter = builder.responseConverter;
-    this.httpMethod = builder.httpMethod;
-    this.relativeUrl = builder.relativeUrl;
-    this.headers = builder.headers;
-    this.contentType = builder.contentType;
-    this.hasBody = builder.hasBody;
-    this.isFormEncoded = builder.isFormEncoded;
-    this.isMultipart = builder.isMultipart;
-    this.parameterHandlers = builder.parameterHandlers;
-  }
-```
-
-看到吗？ 这一部分我们应该都稍微有点印象，因为在上一篇文章介绍使用方法的时候，基本会用到这里。 
-
+至于这里的`CallAdapter`、`ResponseConverter`、`Headers`、`ParamterHandlers`等这里就不分析了，最后我们再简单介绍下。
 
 - 创建`OkHttpCall`
 
-接下来会创建`OkHttpCall`，而`OkHttpCall`是`Call`的子类，那`Call`是什么鬼？ 
+	接下来会创建`OkHttpCall`，而`OkHttpCall`是`Call`的子类，那`Call`是什么鬼？ 它是具体的网络请求类。
+	
+	文档中对`Call`类的介绍如下:    
+	```java
+	/**
+	 * An invocation of a Retrofit method that sends a request to a webserver and returns a response.
+	 * Each call yields its own HTTP request and response pair. Use {@link #clone} to make multiple
+	 * calls with the same parameters to the same webserver; this may be used to implement polling or
+	 * to retry a failed call.
+	 *
+	 * <p>Calls may be executed synchronously with {@link #execute}, or asynchronously with {@link
+	 * #enqueue}. In either case the call can be canceled at any time with {@link #cancel}. A call that
+	 * is busy writing its request or reading its response may receive a {@link IOException}; this is
+	 * working as designed.
+	 *
+	 * @param <T> Successful response body type.
+	 */
+	public interface Call<T> extends Cloneable {
+		// 这里我特地把这句话放上，Call集成了Cloneable接口。
+		// 每一个 call 对象实例只能被用一次，所以说 request 和 response 都是一一对应的。你其实可以通过 Clone 方法来创建一个一模一样的实例，这个开销是很小的。比如说：你可以在每次决定发请求前 clone 一个之前的实例。
+		....
+	}
+	```
+	
+	`Retrofit`底层默认使用`OkHttp`，所以当然要创建`OkHttpCall`了。    
+	
+	- `serviceMethod.callAdapter.adapt(okHttpCall)`
+	
+	这个`CallApdater`是什么鬼？   
+	
+	```java
+	/**
+	 * Adapts a {@link Call} into the type of {@code T}. Instances are created by {@linkplain Factory a
+	 * factory} which is {@linkplain Retrofit.Builder#addCallAdapterFactory(Factory) installed} into
+	 * the {@link Retrofit} instance.
+	 */
+	```
+	
+	可以很简单的看出来这是一个结果类型转换的类。就是`Call`的适配器，作用就是创建/转换`Call`对象，把`Call`转换成预期的格式。`CallAdatper`创建是通过`CallAdapter.factory`工厂类进行的。`DefaultCallAdapter`为`Retrofit2`自带默认`Call`转换器，用来生成`OKHTTP`的`call`请求调用。
 
-文档中对`Call`类的介绍如下:    
-```java
-/**
- * An invocation of a Retrofit method that sends a request to a webserver and returns a response.
- * Each call yields its own HTTP request and response pair. Use {@link #clone} to make multiple
- * calls with the same parameters to the same webserver; this may be used to implement polling or
- * to retry a failed call.
- *
- * <p>Calls may be executed synchronously with {@link #execute}, or asynchronously with {@link
- * #enqueue}. In either case the call can be canceled at any time with {@link #cancel}. A call that
- * is busy writing its request or reading its response may receive a {@link IOException}; this is
- * working as designed.
- *
- * @param <T> Successful response body type.
- */
-```
-
-`Retrofit`底层默认使用`OkHttp`，所以当然要创建`OkHttpCall`了。    
-
-- `serviceMethod.callAdapter.adapt(okHttpCall)`
-
-这个`CallApdater`是什么鬼？   
-
-```java
-/**
- * Adapts a {@link Call} into the type of {@code T}. Instances are created by {@linkplain Factory a
- * factory} which is {@linkplain Retrofit.Builder#addCallAdapterFactory(Factory) installed} into
- * the {@link Retrofit} instance.
- */
-```
-
-可以很简单的看出来这是一个结果类型转换的类。
-
-而它里面的`adapt()`方法的作用呢？ 
-
-```java
-/**
-   * Returns an instance of {@code T} which delegates to {@code call}.
-   * <p>
-   * For example, given an instance for a hypothetical utility, {@code Async}, this instance would
-   * return a new {@code Async<R>} which invoked {@code call} when run.
-   * <pre><code>
-   * &#64;Override
-   * public &lt;R&gt; Async&lt;R&gt; adapt(final Call&lt;R&gt; call) {
-   *   return Async.create(new Callable&lt;Response&lt;R&gt;&gt;() {
-   *     &#64;Override
-   *     public Response&lt;R&gt; call() throws Exception {
-   *       return call.execute();
-   *     }
-   *   });
-   * }
-   * </code></pre>
-   */
-  <R> T adapt(Call<R> call);
-```
-
-所以分析到这里我们基本明白了`retrofit.create()`方法的作用，就是:将请求接口的服务类转换成`Call`，然后将`Call`的结果转换成实体类。
-
+	
+	而它里面的`adapt()`方法的作用呢？ 
+	
+	```java
+	/**
+	   * Returns an instance of {@code T} which delegates to {@code call}.
+	   * <p>
+	   * For example, given an instance for a hypothetical utility, {@code Async}, this instance would
+	   * return a new {@code Async<R>} which invoked {@code call} when run.
+	   * <pre><code>
+	   * &#64;Override
+	   * public &lt;R&gt; Async&lt;R&gt; adapt(final Call&lt;R&gt; call) {
+	   *   return Async.create(new Callable&lt;Response&lt;R&gt;&gt;() {
+	   *     &#64;Override
+	   *     public Response&lt;R&gt; call() throws Exception {
+	   *       return call.execute();
+	   *     }
+	   *   });
+	   * }
+	   * </code></pre>
+	   */
+	  <R> T adapt(Call<R> call);
+	```
+	
+	所以分析到这里我们基本明白了`retrofit.create()`方法的作用，就是将请求接口的服务类转换成`Call`，然后将`Call`的结果转换成实体类。
+	
 3. 调用方法，得到`Call`对象
 ---
 
@@ -313,13 +336,13 @@ Call<List<Repo>> call = gitHubService.listRepos("CharonChui");
     if (canceled) {
       call.cancel();
     }
-    // 加入到队列，执行网络请求，注意这里的Call是okhttp3.Call
+    // 把请求任务加入到okhttp的请求队列中，执行网络请求，注意这里的Call是okhttp3.Call
     call.enqueue(new okhttp3.Callback() {
       @Override public void onResponse(okhttp3.Call call, okhttp3.Response rawResponse)
           throws IOException {
         Response<T> response;
         try {
-          // 解析结果
+          // 解析结果，该方法内部会将OkHttp中Request的执行结果转换成对应的Java对象。
           response = parseResponse(rawResponse);
         } catch (Throwable e) {
           callFailure(e);
@@ -366,6 +389,7 @@ Call<List<Repo>> call = gitHubService.listRepos("CharonChui");
 我们分别进行分析，首先是`createRawCall()`方法的实现:    
 ```java
 private okhttp3.Call createRawCall() throws IOException {
+  // ServiceMethod.toRequest()方法的作用是将ServiceMethod中的网络请求相关的数据转换成一个OkHttp的网络请求所需要的Request对象。因为之前分析过所有Retrofit解析的网络请求相关的数据都是在ServiceMethod中
   Request request = serviceMethod.toRequest(args);
   // 调用Factory.newCall方法
   okhttp3.Call call = serviceMethod.callFactory.newCall(request);
@@ -628,7 +652,18 @@ private Response getResponseWithInterceptorChain(boolean forWebSocket) throws IO
 完了没有？ 完了....
 
 
+上面只是简单的分析了下大体的调用流程和主要的类，但是好像并没有什么乱用，因为没有具体的去分析里面各部分的实现，如果都分析下来内容太多了。这里就不仔细看了，大体总结一下。    
 
+通过上面的分析，最终的网络请求是在`OkHttp`的`Call`中去执行，也就是说`Retrofit`其实是将一个`Java`接口通过注解等方式来解析参数等然后转换成一个请求交给`OkHttp`去执行，然后将执行结果进行解析转换暴露给上层调用者。 
+而这一切是如何实现的呢？ 
+`Retrofit`非常巧妙的用注解来描述一个`HTTP`请求，将一个`HTTP`请求抽象成一个`Java`接口，然后用了`动态代理`的方式，动态的将这个接口的注解转换成一个`HTTP`请求，然后再将这个`Http`请求交给`OkHttp`执行。
+
+动态代理用的太妙，而它的过程中也使用了大量的工厂模式，这里就不分析了。
+
+
+参考:   
+- [simple-http-retrofit-2](https://realm.io/news/droidcon-jake-wharton-simple-http-retrofit-2)
+- [Retrofit API](http://square.github.io/retrofit/2.x/retrofit/)
 
 
 ---
