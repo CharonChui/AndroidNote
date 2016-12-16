@@ -192,10 +192,7 @@ Android开发中的MVP模式详解
 - todo-mvp-clean/ - Based on todo-mvp, uses concepts from Clean Architecture.
 - todo-mvp-dagger/ - Based on todo-mvp, uses Dagger2 for Dependency Injection
 - todo-mvp-contentproviders/ - Based on todo-mvp-loaders, fetches data using Loaders and uses Content Providers
-
-正在进行中的示例:   
-
-- dev-todo-mvp-rxjava/ - Based on todo-mvp, uses RxJava for concurrency and data layer abstraction.
+- todo-mvp-rxjava/ - Based on todo-mvp, uses RxJava for concurrency and data layer abstraction.
 
 
 我们接下来就用`todo-mvp`来进行分析，这个应用非常简单，主要有以下几个功能:     
@@ -204,6 +201,10 @@ Android开发中的MVP模式详解
 - 添加页:添加`todo`项
 - 详情页:查看`todo`项的详情
 - 统计页:查看当前所有已完成`todo`及未完成项的统计数据     
+
+代码并不多:   
+
+![image](https://raw.githubusercontent.com/CharonChui/Pictures/master/google_mvp.png?raw=true)
 
 
 
