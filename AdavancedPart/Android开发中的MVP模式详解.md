@@ -1,14 +1,14 @@
 Android开发中的MVP模式详解
 ===
 
-[MVC、MVP、MVVM介绍](https://github.com/CharonChui/AndroidNote/blob/master/Java%E5%9F%BA%E7%A1%80/MVC%E4%B8%8EMVP%E5%8F%8AMVVM.md)
+[MVC、MVP、MVVM介绍](https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledgePart/MVC%E4%B8%8EMVP%E5%8F%8AMVVM.md)
 
 ![image](https://raw.githubusercontent.com/CharonChui/Pictures/master/android_mvp.jpg?raw=true)
 
 在`Android`开发中，如果不注重架构的话，`Activity`类就会变得愈发庞大。这是因为在`Android`开发中`View`和其他的线程可以共存于`Activity`内。那最大的问题是什么呢？ 其实就是`Activity`中同时存在业务逻辑和`UI`逻辑。这导致增加了单元测试和维护的成本。
 
 ![image](https://raw.githubusercontent.com/CharonChui/Pictures/master/activity_is_god.png?raw=true)
-    	
+        
 这就是为什么要清晰架构的原因之一。不仅是因为`Activity`类变得臃肿，也是其他的一些问题，例如`Activity`和`Fragment`相结合时的生命周期、数据绑定等等。   
 
 ###MVP简介
@@ -29,7 +29,7 @@ Android开发中的MVP模式详解
 举个栗子:
 在`Android Studio`中新建一个`Activity`，系统提供了`LoginActivity`，直接用它是极好的。    
 
-![image](https://raw.githubusercontent.com/CharonChui/Pictures/master/loginactivity.png?raw=true)
+<img src="https://raw.githubusercontent.com/CharonChui/Pictures/master/loginactivity.png?raw=true" width="50%" height="50%" />
 
 不得不说，`Material Design`的效果真是美美哒！
 
@@ -112,7 +112,7 @@ Android开发中的MVP模式详解
                 mLoginView.hideLoading();
             }
         }
-    }		
+    }       
     ```
 - 创建`LoginActivity`，实现`ILoginView`的接口，然后内部调用`LoginPresenter`来处理业务逻辑。
     ```java
@@ -204,9 +204,386 @@ Android开发中的MVP模式详解
 
 代码并不多:   
 
-![image](https://raw.githubusercontent.com/CharonChui/Pictures/master/google_mvp.png?raw=true)
+
+<img src="https://raw.githubusercontent.com/CharonChui/Pictures/master/google_mvp.png?raw=true" width="50%" height="50%" />
+
+功能也比较简单:    
+
+<img src="https://raw.githubusercontent.com/CharonChui/Pictures/master/google_todo_main.png?raw=true" width="40%" height="40%" />    <img src="https://raw.githubusercontent.com/CharonChui/Pictures/master/google_todp_add.png?raw=true" width="40%" height="40%" />
+<img src="https://raw.githubusercontent.com/CharonChui/Pictures/master/google_todo_list.png?raw=true" width="40%" height="40%" />          <img src="https://raw.githubusercontent.com/CharonChui/Pictures/master/google_todo_delete.png?raw=true" width="40%" height="40%" />
+
+我们先从两个`Base`类开始看，分别是`BaseView`以及`BasePresenter`类。 
+
+`BaseView`类:   
+
+```java
+public interface BaseView<T> {
+
+    void setPresenter(T presenter);
+
+}
+```
+`BaseView`中的`setPresenter()`是将`Presenter`的实例传入到`View`中。    
+`BasePresenter`类:   
+```java
+public interface BasePresenter {
+
+    void start();
+
+}
+```
+`BasePresenter`中只有一个`start()`方法，从名字上我们就能看出他的作用。 
+
+接下来继续看一下项目的入口`Activity`，`TaskDetailActivity`的实现: 
+```java
+public class TaskDetailActivity extends AppCompatActivity {
+
+    public static final String EXTRA_TASK_ID = "TASK_ID";
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.taskdetail_act);
+
+        // Set up the toolbar.
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar ab = getSupportActionBar();
+        ab.setDisplayHomeAsUpEnabled(true);
+        ab.setDisplayShowHomeEnabled(true);
+
+        // Get the requested task id
+        String taskId = getIntent().getStringExtra(EXTRA_TASK_ID);
+        
+        TaskDetailFragment taskDetailFragment = (TaskDetailFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.contentFrame);
+
+        if (taskDetailFragment == null) {
+            // 创建对应的Fragment
+            taskDetailFragment = TaskDetailFragment.newInstance(taskId);
+
+            ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),
+                    taskDetailFragment, R.id.contentFrame);
+        }
+
+        // Create the presenter，因为Presenter是M和V的连接桥，所以在第二个参数中会传入TasksRepository
+        new TaskDetailPresenter(
+                taskId,
+                Injection.provideTasksRepository(getApplicationContext()),
+                taskDetailFragment);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+}
+```
+
+可以看到这里`Activity`相当于一个管理类，里面控制着`MVP`中的`V`和`P`,上面的代码主要做了两部分:  
+
+- 创建对应的`Fragment`
+- 创建对应的`Presenter`
+
+这里分别看一下`TaskDetailFragment`和`TaskDetailPresenter`的源码:   
+```java
+public class TaskDetailFragment extends Fragment implements TaskDetailContract.View {
+    private TaskDetailContract.Presenter mPresenter;
+
+    public static TaskDetailFragment newInstance(@Nullable String taskId) {
+        Bundle arguments = new Bundle();
+        arguments.putString(ARGUMENT_TASK_ID, taskId);
+        TaskDetailFragment fragment = new TaskDetailFragment();
+        fragment.setArguments(arguments);
+        return fragment;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // 调用Presenter.start()方法
+        mPresenter.start();
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        ....
+    }
+
+    @Override
+    public void setPresenter(@NonNull TaskDetailContract.Presenter presenter) {
+        // 将Prsenter传递给V中 
+        mPresenter = checkNotNull(presenter);
+    }
+
+    ....
+}
+```
+及
+```java
+public class TaskDetailPresenter implements TaskDetailContract.Presenter {
+    private final TasksRepository mTasksRepository;
+
+    private final TaskDetailContract.View mTaskDetailView;
+
+    @Nullable
+    private String mTaskId;
+
+    // 把M和V传递进来
+    public TaskDetailPresenter(@Nullable String taskId,
+                               @NonNull TasksRepository tasksRepository,
+                               @NonNull TaskDetailContract.View taskDetailView) {
+        mTaskId = taskId;
+        mTasksRepository = checkNotNull(tasksRepository, "tasksRepository cannot be null!");
+        mTaskDetailView = checkNotNull(taskDetailView, "taskDetailView cannot be null!");
+        // 将该Presenter设置给V
+        mTaskDetailView.setPresenter(this);
+    }
+
+    @Override
+    public void start() {
+        // 调用获取数据的方法
+        openTask();
+    }
+    ....
+}
+```
+
+可以看到上面分别实现了`TaskDetailContract`类中的`Presenter`和`View`接口，而不是`BasePresenter`和`BaseView`中的接口，那这个`TaskDetailContract`类是什么呢？ 
+```java
+/**
+ * This specifies the contract between the view and the presenter.
+ */
+public interface TaskDetailContract {
+
+    interface View extends BaseView<Presenter> {
+
+        void setLoadingIndicator(boolean active);
+
+        void showMissingTask();
+
+        void hideTitle();
+
+        void showTitle(String title);
+
+        void hideDescription();
+
+        void showDescription(String description);
+
+        void showCompletionStatus(boolean complete);
+
+        void showEditTask(String taskId);
+
+        void showTaskDeleted();
+
+        void showTaskMarkedComplete();
+
+        void showTaskMarkedActive();
+
+        boolean isActive();
+    }
+
+    interface Presenter extends BasePresenter {
+
+        void editTask();
+
+        void deleteTask();
+
+        void completeTask();
+
+        void activateTask();
+    }
+}
+```
+按照上面描述的介绍可以看出通过这个连接类将`VP`联系到了一起，它统一管理`view`和`presenter`中的所有接口，这样比起分开写会更加清晰。
+
+分析完`VP`之后我们继续看一下`TaskDetailPresenter`类，因为`Presenter`是`MV`的桥梁。
+```java
+public TaskDetailPresenter(@Nullable String taskId,
+                               @NonNull TasksRepository tasksRepository,
+                               @NonNull TaskDetailContract.View taskDetailView) {
+        mTaskId = taskId;
+        mTasksRepository = checkNotNull(tasksRepository, "tasksRepository cannot be null!");
+        mTaskDetailView = checkNotNull(taskDetailView, "taskDetailView cannot be null!");
+
+        mTaskDetailView.setPresenter(this);
+    }
+
+    @Override
+    public void start() {
+        openTask();
+    }
+
+    private void openTask() {
+        if (Strings.isNullOrEmpty(mTaskId)) {
+            mTaskDetailView.showMissingTask();
+            return;
+        }
+        // 控制V显示UI
+        mTaskDetailView.setLoadingIndicator(true);
+    // 通过M去获取数据
+        mTasksRepository.getTask(mTaskId, new TasksDataSource.GetTaskCallback() {
+            @Override
+            public void onTaskLoaded(Task task) {
+                // The view may not be able to handle UI updates anymore
+                if (!mTaskDetailView.isActive()) {
+                    return;
+                }
+                mTaskDetailView.setLoadingIndicator(false);
+                if (null == task) {
+                    mTaskDetailView.showMissingTask();
+                } else {
+                    showTask(task);
+                }
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                // The view may not be able to handle UI updates anymore
+                if (!mTaskDetailView.isActive()) {
+                    return;
+                }
+                mTaskDetailView.showMissingTask();
+            }
+        });
+    }
+
+```
+在它的构造函数中传入了一个`TasksRepository`，这个就是`Model`层。而在该`Presenter`中的`start()`方法回去调用获取数据的方法。   
+
+我们继续看一下`M`层`TasksRepository`的实现:    
+```java
+/**
+ * Concrete implementation to load tasks from the data sources into a cache.
+ * <p>
+ * For simplicity, this implements a dumb synchronisation between locally persisted data and data
+ * obtained from the server, by using the remote data source only if the local database doesn't
+ * exist or is empty.
+ */
+public class TasksRepository implements TasksDataSource {
+    ....
+}
+```
+
+先看一下`TasksDataSource`接口:   
+
+```java
+/**
+ * Main entry point for accessing tasks data.
+ * <p>
+ * For simplicity, only getTasks() and getTask() have callbacks. Consider adding callbacks to other
+ * methods to inform the user of network/database errors or successful operations.
+ * For example, when a new task is created, it's synchronously stored in cache but usually every
+ * operation on database or network should be executed in a different thread.
+ */
+public interface TasksDataSource {
+
+    interface LoadTasksCallback {
+
+        void onTasksLoaded(List<Task> tasks);
+
+        void onDataNotAvailable();
+    }
+
+    interface GetTaskCallback {
+
+        void onTaskLoaded(Task task);
+
+        void onDataNotAvailable();
+    }
+
+    void getTasks(@NonNull LoadTasksCallback callback);
+
+    void getTask(@NonNull String taskId, @NonNull GetTaskCallback callback);
+
+    void saveTask(@NonNull Task task);
+
+    void completeTask(@NonNull Task task);
+
+    void completeTask(@NonNull String taskId);
+
+    void activateTask(@NonNull Task task);
+
+    void activateTask(@NonNull String taskId);
+
+    void clearCompletedTasks();
+
+    void refreshTasks();
+
+    void deleteAllTasks();
+
+    void deleteTask(@NonNull String taskId);
+}
+
+```
+
+可以看出`M`层被赋予了数据获取的功能，与之前我们写的`M`层只定义实体对象截然不同，数据的增删改查都是`M`层实现的。`Presenter`只需要调用`M`层的方法即可。这样`model、presenter、view`都只处理各自的任务，此种实现确实是单一职责最好的诠释。
+
+这里我们就以上面用到的`getTasks()`方法为例来介绍一下:   
+```java
+public void getTask(@NonNull final String taskId, @NonNull final GetTaskCallback callback) {
+        checkNotNull(taskId);
+        checkNotNull(callback);
+        // 从缓存中获取数据
+        Task cachedTask = getTaskWithId(taskId);
+
+        // Respond immediately with cache if available
+        if (cachedTask != null) {
+            callback.onTaskLoaded(cachedTask);
+            return;
+        }
+
+        // Load from server/persisted if needed.
+
+        // Is the task in the local data source? If not, query the network.
+        mTasksLocalDataSource.getTask(taskId, new GetTaskCallback() {
+            @Override
+            public void onTaskLoaded(Task task) {
+                // Do in memory cache update to keep the app UI up to date
+                if (mCachedTasks == null) {
+                    mCachedTasks = new LinkedHashMap<>();
+                }
+                mCachedTasks.put(task.getId(), task);
+                callback.onTaskLoaded(task);
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                // 服务器的数据源
+                mTasksRemoteDataSource.getTask(taskId, new GetTaskCallback() {
+                    @Override
+                    public void onTaskLoaded(Task task) {
+                        // Do in memory cache update to keep the app UI up to date
+                        if (mCachedTasks == null) {
+                            mCachedTasks = new LinkedHashMap<>();
+                        }
+                        mCachedTasks.put(task.getId(), task);
+                        callback.onTaskLoaded(task);
+                    }
+
+                    @Override
+                    public void onDataNotAvailable() {
+                        callback.onDataNotAvailable();
+                    }
+                });
+            }
+        });
+    }
+```
+
+上面的注释说的非常明白了，这里就不去仔细看了。
 
 
+下面用一张图来总结一下:   
+
+![image](https://raw.githubusercontent.com/CharonChui/Pictures/master/google_todo_mvp.png?raw=true)
+
+
+由于架构的引入，虽然代码量有了一定的上升，但是功能分离的非常清晰明确，而且每个部分都可以进行单独的测试，对于后期的扩展维护会更加简单容易。
 
 
 
