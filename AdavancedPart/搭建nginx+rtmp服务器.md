@@ -21,10 +21,10 @@
 3. 配置`nginx`和`ramp`
 
     首先通过命令`brew info nginx-full`查看安装目录， 然后找到`nginx.conf`文件所在位置, 例如`/usr/local/etc/nginx/nginx.conf`。 
-
-![image](https://raw.githubusercontent.com/CharonChui/Pictures/master/nginx_path.png?raw=true)
+    ![image](https://raw.githubusercontent.com/CharonChui/Pictures/master/nginx_path.png?raw=true)
 
     打开`nginx.confg`文件后在文件的最后一行空白处添加如下代码。
+    
     ```java
     rtmp {
         server {
@@ -37,8 +37,7 @@
     }
     ```
     然后通过命令`[path] -s reload`重启`nginx`，我的是`/usr/local/opt/nginx-full/bin/nginx -s reload`。
-    
-   ![image](https://raw.githubusercontent.com/CharonChui/Pictures/master/nginx_reload.png?raw=true)
+    ![image](https://raw.githubusercontent.com/CharonChui/Pictures/master/nginx_reload.png?raw=true)
 
 4. 安装`ffmpeg`
 
