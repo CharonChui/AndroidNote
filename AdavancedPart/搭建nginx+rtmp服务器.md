@@ -51,7 +51,9 @@
 
 
 
+参考:  
 
+- [https://github.com/arut/nginx-rtmp-module/wiki](https://github.com/arut/nginx-rtmp-module/wiki)
 
 ---
 
