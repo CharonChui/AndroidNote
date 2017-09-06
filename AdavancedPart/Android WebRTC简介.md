@@ -2,7 +2,7 @@ Android WebRTC简介
 ===
 
 
-![image](https://raw.githubusercontent.com/CharonChui/Pictures/master/webrtc-logo.png?raw=true)
+![image](https://github.com/CharonChui/Pictures/blob/master/webrtc-logo.png?raw=true)
               
 
 WebRTC简介
@@ -56,7 +56,7 @@ dependencies {
 - `npm start`
 服务默认会运行在3000端口，你可以在浏览器中打开`localhost:3000`。  
 
-![image](https://raw.githubusercontent.com/CharonChui/Pictures/master/webrtc_web_1.png?raw=true)
+![image](https://github.com/CharonChui/Pictures/blob/master/webrtc_web_1.png?raw=true)
 
 如图就表示运行成功了。
 
@@ -73,21 +73,21 @@ dependencies {
 好了，现在再运行`android`项目，然后打开浏览器输入`localhost:3000`，在浏览器页面点击`start`，你就可以看到电脑摄像头获取的画面，如下图: 
 
 
-![image](https://raw.githubusercontent.com/CharonChui/Pictures/master/webrtc_web_start.png?raw=true)
+![image](https://github.com/CharonChui/Pictures/blob/master/webrtc_web_start.png?raw=true)
 
 
 然后点击左边的`call`，就会去申请连手机端，接下来你就可以在浏览器和手机端看到画面了，如下图:
 
-![image](https://raw.githubusercontent.com/CharonChui/Pictures/master/webrtc_web_call.png?raw=true)
+![image](https://github.com/CharonChui/Pictures/blob/master/webrtc_web_call.png?raw=true)
 
 手机端的画面:   
 
-![image](https://raw.githubusercontent.com/CharonChui/Pictures/master/webrtc_android.jpg?raw=true)
+![image](https://github.com/CharonChui/Pictures/blob/master/webrtc_android.jpg?raw=true)
 
 既然连通了，下面就仔细分析一下代码:   
 代码文件比较少，主要是三个类:  
 
-![image](https://raw.githubusercontent.com/CharonChui/Pictures/master/webrtc_demo_file.png?raw=true)
+![image](https://github.com/CharonChui/Pictures/blob/master/webrtc_demo_file.png?raw=true)
 
 其中在`WebRtcClient`中实现的逻辑最为核心，我们就从他入手。  
 
@@ -103,7 +103,7 @@ dependencies {
 
 我们先到`WebRtcClient`文件中找到`PeerConnectionFactory`初始化的地方:   
 
-![image](https://raw.githubusercontent.com/CharonChui/Pictures/master/webrtc_factory_code.png?raw=true)
+![image](https://github.com/CharonChui/Pictures/blob/master/webrtc_factory_code.png?raw=true)
 
 `initializeAndroidGlobals`的参数分别是:   
 - `context`:应用上下文
