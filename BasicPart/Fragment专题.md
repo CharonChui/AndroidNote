@@ -275,6 +275,60 @@ public class DepthPageTransformer implements ViewPager.PageTransformer {
 }
 ```
 
+
+## 判断首次进入`Fragment`的时机
+
+上面介绍了`Fragment`真正的`onPause`及`onResume`方法。也就是说`Fragment`和`ViewPager`一起用时，由于`ViewPager`的缓存机制，在打开一个`Fragment`时，它旁边的几个 `Fragment`其实也已经被创建了，如果我们是在`Fragment`的`onCreat()`或者`onCreateView()`里去跟服务器交互，下载界面数据，那么这时这些已经被创建的`Fragment`，就都会出现在后台下载数据的情况了。所以我们通常需要在`setUserVisibleHint()`里去判断当前`Fragment`是否可见，可见时再去下载数据，但是这样还是会出现一个问题，就是每次可见时都会重复去下载数据，即使我们在`setUserVisibleHint()`做了很多判断，实现了可见时加载并且只有第一次可见时才加载，可能还是会遇到其他问题。比如说，我下载完数据就直接需要对`ui`进行操作，将数据展示出来，但有时却报了`ui`控件`null`异常，这是因为`setUserVisibleHint()`有可能在`onCreateView()`创建`view`之前调用，而且数据加载时间很短，这就可能出现`null` 异常了，那么我们还需要再去做些判断，保证在数据下载完后`ui`控件已经创建完成。我最近就遇到了这个问题，想要在第一次进入
+某个`fragment`的时候在某个`view`上面显示一个`popunwindow`，我想到的就是在`setUserVisibleHint()`方法中去显示，但是发现有时候对应的`view`还没初始化。
+下面就是如何判断首次进入`Fragment`的时机。
+
+```
+public abstract class BaseFragment extends Fragment {
+    private View mRootView;
+    protected boolean isFirstVisible = true;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        isFirstVisible = true;
+        mRootView = null;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        if (mRootView == null) {
+            mRootView = view;
+            if (getUserVisibleHint()) {
+                if (isFirstVisible) {
+                    onFragmentFirstVisible();
+                    isFirstVisible = false;
+                }
+            }
+        }
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (mRootView == null) {
+            return;
+        }
+        if (isFirstVisible && isVisibleToUser) {
+            onFragmentFirstVisible();
+            isFirstVisible = false;
+        }
+    }
+
+    protected void onFragmentFirstVisible() {
+        // 首次进入改fragment的时机
+    }
+}
+
+```
+
+
+
 ---
 
 - 邮箱 ：charon.chui@gmail.com  
