@@ -31,7 +31,7 @@ public Window getWindow() {
 	return mWindow;
 }
 ```
-接下来，我们看一下`PhoneWindow.setContentView()`方法。(简单的理解是`PhoneWindow`把`DectorView(`FrameLayout的子类)`进行包装，将它作为窗口的根`View`)
+接下来，我们看一下`PhoneWindow.setContentView()`方法。(简单的理解是`PhoneWindow`把`DectorView`(`FrameLayout`的子类)进行包装，将它作为窗口的根`View`)
 ```java
 @Override
 public void setContentView(int layoutResID) {
@@ -64,8 +64,8 @@ public void setContentView(int layoutResID) {
 }
 ```
 
-上面简单的说明了installDecor()的作用，这里我们在源码中仔细说明一下, 通过这个源码
-我们知道设置主题要在setContentView之前去调用，如用代码设置`requestWindowFeature()`设置主题时要在`setContentView()`之前设置才有用.
+上面简单的说明了`installDecor()`的作用，这里我们在源码中仔细说明一下, 通过这个源码
+我们知道设置主题要在`setContentView()`之前去调用，如用代码设置`requestWindowFeature()`设置主题时要在`setContentView()`之前设置才有用.
 ```java
 private void installDecor() {
 	if (mDecor == null) {

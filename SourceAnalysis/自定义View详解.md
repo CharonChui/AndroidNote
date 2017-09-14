@@ -3,7 +3,7 @@
 
 虽然之前也分析过[View绘制过程](https://github.com/CharonChui/AndroidNote/blob/master/SourceAnalysis/View%E7%BB%98%E5%88%B6%E8%BF%87%E7%A8%8B%E8%AF%A6%E8%A7%A3.md)，但是如果让我自己集成`ViewGroup`然后自己重新`onMeasure,onLayout,onDraw`方法自定义`View`我还是会头疼。今天索性来系统的学习下。
 
-###onMeasure
+### `onMeasure`
 
 ```java
 /**
@@ -116,7 +116,7 @@ public static int getSize(int measureSpec) {
 ```
 
 
-###onLayout
+### `onLayout`
 
 为了能合理的去绘制定义`View`,你需要制定它的大小。复杂的自定义`View`通常需要根据屏幕的样式和大小来进行复杂的布局计算。你不应该假设你的屏幕上的`View`的大小。即使只有一个应用使用你的自定义`View`，也需要处理不同的屏幕尺寸、屏幕密度和横屏以及竖屏下的多种比率等。
 
@@ -141,17 +141,17 @@ float diameter = Math.min(ww, hh);
 ```
 
 
-###onDraw
+### `onDraw`
 
 自定义`View`最重要的就是展现样式。
 
-#####重写`onDraw()`方法
+##### 重写`onDraw()`方法
 
 绘制自定义`View`最重要的步骤就是重写`onDraw()`方法。`onDraw()`方法的参数是`Canvas`对象。可以用它来绘制自身。`Canvas`类定义了绘制文字、线、位图和很多其他图形的方法。你可以在`onDraw()`方法中使用这些方法来指定`UI`.
 
 在使用任何绘制方法之前，你都必须要创建一个`Paint`对象。  
 
-#####创建绘制的对象
+##### 创建绘制的对象
 
 `android.graphics`框架将绘制分为两步:     
 
@@ -159,7 +159,7 @@ float diameter = Math.min(ww, hh);
 - 怎么去绘制，由`Paint`处理。
 
 
-#####`Canvas`
+##### `Canvas`
 
 > The Canvas class holds the "draw" calls. To draw something, you need 4 basic components: A Bitmap to hold the pixels,  
  a Canvas to host the draw calls (writing into the bitmap), a drawing primitive (e.g. Rect, Path, text, Bitmap),   
@@ -188,7 +188,7 @@ and a paint (to describe the colors and styles for the drawing).
     canvas.drawPath(path, paint);  
     ```
 
-#####`Paint`
+##### `Paint`
 
 - `setARGB(int a, int r, int g, int b)` 设置`Paint`对象颜色，参数一为`alpha`透明值
 - `setAlpha(int a)` 设置`alpha`不透明度，范围为0~255

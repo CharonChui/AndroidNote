@@ -3,7 +3,7 @@ butterknife源码详解
 
 作为`Android`开发者，大家肯定都知道大名鼎鼎的[butterknife](https://github.com/JakeWharton/butterknife)。它大大的提高了开发效率，虽然在很早之前就开始使用它了，但是只知道是通过注解的方式实现的，却一直没有仔细的学习下大牛的代码。最近在学习运行时注解，决定今天来系统的分析下`butterknife`的实现原理。    
 
-如果你之前不了解`Annotation`，那强烈建议你先看[注解使用](https://github.com/CharonChui/AndroidNote/blob/master/Android%E5%8A%A0%E5%BC%BA/%E6%B3%A8%E8%A7%A3%E4%BD%BF%E7%94%A8.md).
+如果你之前不了解`Annotation`，那强烈建议你先看[注解使用](https://github.com/CharonChui/AndroidNote/blob/master/AdavancedPart/%E6%B3%A8%E8%A7%A3%E4%BD%BF%E7%94%A8.md).
 
 废多看图:  
 
@@ -11,7 +11,7 @@ butterknife源码详解
 
 从图中可以很直观的看出它的`module`结构，以及使用示例代码。
 
-它的目录和我们在[注解使用](https://github.com/CharonChui/AndroidNote/blob/master/Android%E5%8A%A0%E5%BC%BA/%E6%B3%A8%E8%A7%A3%E4%BD%BF%E7%94%A8.md)这篇文章中介绍的一样，大体也是分为三个部分:   
+它的目录和我们在[注解使用](https://github.com/CharonChui/AndroidNote/blob/master/AdavancedPart/%E6%B3%A8%E8%A7%A3%E4%BD%BF%E7%94%A8.md)这篇文章中介绍的一样，大体也是分为三个部分:   
 
 - app : butterknife
 - api : butterknife-annotations
