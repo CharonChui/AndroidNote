@@ -76,7 +76,7 @@ Android6.0权限系统
 
 下面介绍下如何使用`Android Support Library`来检查和请求权限。`Android`框架在`6.0`开始也提供了相同的方法。然而使用`support`包会比较简单，因为这样你就不需要在请求方法时判断当前的系统版本。(后面说的这几个类都是`android.support.v4`中的)    
 
-###检查权限    
+### 检查权限    
 
 如果应用需要使用`dangerous permission`，在任何时候执行需要该权限的操作时你都需要检查是否已经授权。用户可能会经常取消授权，所以即使昨天应用已经使用了摄像头，这也不能保证今天仍然有使用摄像头的权限。    
 
@@ -90,11 +90,11 @@ int permissionCheck = ContextCompat.checkSelfPermission(thisActivity,
 如果应用有该权限，该方法将返回`PackageManager.PERMISSION_GRANTED`，应用可以进行相关的操作。如果应用不能使用该权限，该方法将返回`PERMISSION_DENIED`，这是应用将必须要向用户申请该权限。    
 
 
-###申请使用权限
+### 申请使用权限
 
 如果应用需要使用清单文件中申明的`dangerous permission`，它必须要向用户申请来授权。`Android`提供了几种申请授权的方法。使用这些方法时将会弹出一个标准的系统对话框，该对话框不能自定义。     
 
-#####说明为什么应用需要使用这些权限      
+##### 说明为什么应用需要使用这些权限      
 
 在一些情况下，你可能需要帮助用力理解为什么需要该权限。例如，一个用户使用了一个照相的应用，用户不会奇怪为什么应用申请使用摄像头的权限，但是用户可能会不理解为什么应用需要获取位置或者联系人的权限。在请求一个权限之前，你需要该用户一个说明。一定要切记不要通过说明来压倒用户。如果你提供了太多的说明，用户可能会感觉沮丧并且会卸载它。   
 
@@ -105,7 +105,7 @@ int permissionCheck = ContextCompat.checkSelfPermission(thisActivity,
 > ***注意：***如果用户之前拒绝了权限申请并且选择了请求权限对话框中的`Don’t ask again`选项，该方法就会返回`false`。如果设备策略禁止了该应用使用该权限，该方法也会返回`false`。(我测试的时候发现请求权限的对话框中并没有`Don’t asdk again`这一项)
 > ![image](https://raw.githubusercontent.com/CharonChui/Pictures/master/request_permission_dialog.png?raw=true)      
 
-#####申请需要的权限      
+##### 申请需要的权限      
 
 如果应用没有所需的权限时，应用必须调用`ActivityCompat.requestPermissions (Activity activity, 
                 String[] permissions, 
@@ -147,7 +147,7 @@ if (ContextCompat.checkSelfPermission(thisActivity,
 
 > ***注意：***当调用`requestPermissions()`方法时，系统会显示一个标准的对话框。应用不能指定或者改变该对话框。如果你想提供一些信息或者说明给用户，你需要在调用`requestPermissions()`之前处理。    
 
-#####处理请求权限的的结果     
+##### 处理请求权限的的结果     
 
 如果应用申请权限，系统会显示一个对话框。当用户相应后，系统会调用应用中的`onRequestPermissionsResult (int requestCode, 
                 String[] permissions, 

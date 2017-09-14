@@ -1,7 +1,7 @@
 Android开发中的MVP模式详解
 ===
 
-[MVC、MVP、MVVM介绍](https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledgePart/MVC%E4%B8%8EMVP%E5%8F%8AMVVM.md)
+[MVC、MVP、MVVM介绍][1]
 
 ![image](https://raw.githubusercontent.com/CharonChui/Pictures/master/android_mvp.jpg?raw=true)
 
@@ -11,7 +11,7 @@ Android开发中的MVP模式详解
         
 这就是为什么要清晰架构的原因之一。不仅是因为`Activity`类变得臃肿，也是其他的一些问题，例如`Activity`和`Fragment`相结合时的生命周期、数据绑定等等。   
 
-###MVP简介
+### MVP简介
 
 `MVP(Model,View,Presenter)`      
 
@@ -587,7 +587,7 @@ public void getTask(@NonNull final String taskId, @NonNull final GetTaskCallback
 
 
 
-
+[1]: https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledge/MVC%E4%B8%8EMVP%E5%8F%8AMVVM.md  "MVC、MVP、MVVM介绍"
 
 ---
 

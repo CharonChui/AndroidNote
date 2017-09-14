@@ -1,7 +1,7 @@
 Handler导致内存泄露分析
 ===
 
-有关内存泄露请猛戳[内存泄露](https://github.com/CharonChui/AndroidNote/blob/master/Android%E5%9F%BA%E7%A1%80/%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F.md)
+有关内存泄露请猛戳[内存泄露][1]
 
 ```java
 Handler mHandler = new Handler() {
@@ -20,7 +20,7 @@ Handler mHandler = new Handler() {
 会有一条链`MessageQueue -> Message -> Handler -> Activity`，由于它的引用导致你的`Activity`被持有引用而无法被回收`
 - **在java中，no-static的内部类会隐式的持有当前类的一个引用。static的内部类则没有。**
 
-##具体分析
+## 具体分析
 ```java
 public class SampleActivity extends Activity {
 
@@ -46,7 +46,7 @@ public class SampleActivity extends Activity {
 ```
 在`finish()`的时候，该`Message`还没有被处理，`Message`持有`Handler`,`Handler`持有`Activity`,这样会导致该`Activity`不会被回收，就发生了内存泄露.
 
-##解决方法 
+## 解决方法 
 - 通过程序逻辑来进行保护。
     - 如果`Handler`中执行的是耗时的操作，在关闭`Activity`的时候停掉你的后台线程。线程停掉了，就相当于切断了`Handler`和外部连接的线，
 	`Activity`自然会在合适的时候被回收。 
@@ -97,6 +97,7 @@ public class MyActivity extends Activity {
 }
 ```
 
+[1]: https://github.com/CharonChui/AndroidNote/blob/master/BasicKnowledge/%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F.md   "内存泄露""
     
 ---
 

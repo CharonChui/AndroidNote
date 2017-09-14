@@ -73,7 +73,7 @@ observable.lift(new Observable.Operator<String, Integer>() {
 在不指定线程的情况下，`RxJava`遵循的是线程不变的原则，即在哪个线程调用`subscribe()`方法就在哪个线程生产事件；在哪个线程生产事件，就在哪个线程消费事件。也就是说事件的发出和消费都是在同一个线程的。观察者模式本身的目的就是『后台处理，前台回调』的异步机制，因此异步对于`RxJava`是至关重要的。而要实现异步，则需要用到`RxJava`的另一个概念：`Scheduler`。   
 
 
-####`Scheduler`简介
+#### `Scheduler`简介
 
 
 在`RxJava`中,`Scheduler`相当于线程控制器，`RxJava`通过它来指定每一段代码应该运行在什么样的线程。`RxJava`已经内置了几个`Scheduler`，它们已经适合大多数的使用场景：
@@ -101,7 +101,7 @@ Observable.just("Hello ", "World !")
 
 上面这段代码中，`subscribeOn(Schedulers.io())`的指定会让创建的事件的内容`Hello `、`World !`将会在`IO`线程发出；而由于`observeOn(AndroidScheculers.mainThread())` 的指定，因此`subscriber()`方法设置后的回调中内容的打印将发生在主线程中。事实上，这种在`subscribe()`之前写上两句`subscribeOn(Scheduler.io())`和`observeOn(AndroidSchedulers.mainThread())`的使用方式非常常见，它适用于多数的***后台线程取数据，主线程显示***的程序策略。
 
-####`Scheduler`的原理
+#### `Scheduler`的原理
 
 `RxJava`的`Scheduler API`很方便，也很神奇（加了一句话就把线程切换了，怎么做到的？而且 subscribe() 不是最外层直接调用的方法吗，它竟然也能被指定线程？）。然而 Scheduler 的原理需要放在后面讲，因为它的原理是以下一节《变换》的原理作为基础的。
 
@@ -165,7 +165,7 @@ Observable.create(onSubscribe)
 
 如上，在`doOnSubscribe()`的后面跟一个`subscribeOn()`，就能指定准备工作的线程了。
 
-####总结
+#### 总结
 
 
 `RxJava`辣么好，难道他就没有缺点吗？当然有那就是使用越来越多的订阅，内存开销也会变得很大，稍不留神就会出现内存溢出的情况。我们可以用`RxJava`实现基本任何功能，但是你并不能这么做，你要明白什么时候需要用它，而什么时候没必要用它，不要一味的把功能都有`RxJava`来实现。    

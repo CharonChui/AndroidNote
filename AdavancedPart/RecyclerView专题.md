@@ -12,7 +12,7 @@ RecyclerView比listview更先进更灵活，对于很多的视图它就是一个
 
 
 
-#####专业术语:
+##### 专业术语:
 
 - `Adapter`: `A subclass of RecyclerView.Adapter responsible for providing views that represent items in a data set.`
 - `Position`: `The position of a data item within an Adapter.`
@@ -22,7 +22,7 @@ RecyclerView比listview更先进更灵活，对于很多的视图它就是一个
 - `Scrap (view)`: `A child view that has entered into a temporarily detached state during layout. Scrap views may be reused without becoming fully detached from the parent RecyclerView, either unmodified if no rebinding is required or modified by the adapter if the view was considered dirty.`
 - `Dirty (view)`: `A child view that must be rebound by the adapter before being displayed.`
 
-#####`RecyclerView`中的位置:      
+##### `RecyclerView`中的位置:      
 
 `RecyclerView`在`RecyclerView.Adapter`和`RecyclerView.LayoutManager`中引进了一个抽象的额外中间层来保证在布局计算的过程中能批量的监听到数据变化。这样介绍了`LayoutManager`追踪`adapter`数据变化来计算动画的时间。因为所有的`View`绑定都是在同一时间执行，所以这样也提高了性能和避免了一些非必要的绑定。       
 因为这个原因，在`RecylcerView`中有两种`position`类型相关的方法:     
@@ -36,7 +36,7 @@ RecyclerView比listview更先进更灵活，对于很多的视图它就是一个
 
 
 
-###结构
+### 结构
 
 - `RecyclerView.Adapter`: 创建View并将数据集合绑定到View上
 - `ViewHolder`: 持有所有的用于绑定数据或者需要操作的View
@@ -47,20 +47,20 @@ RecyclerView比listview更先进更灵活，对于很多的视图它就是一个
 下图能更直观的了解:   
 ![image](https://raw.githubusercontent.com/CharonChui/Pictures/master/RecyclerView.png?raw=true)
 
-#####`RecyclerView`提供这些内置布局管理器:    
+##### `RecyclerView`提供这些内置布局管理器:    
 
 - `LinearLayoutManager`: 以垂直或水平滚动列表方式显示项目。
 - `GridLayoutManager`: 在网格中显示项目。
 - `StaggeredGridLayoutManager`: 在分散对齐网格中显示项目。
 
-#####`RecyclerView.ItemDecoration`是一个抽象类，可以通过重写以下三个方法，来实现Item之间的偏移量或者装饰效果:     
+##### `RecyclerView.ItemDecoration`是一个抽象类，可以通过重写以下三个方法，来实现Item之间的偏移量或者装饰效果:     
 
 - `public void onDraw(Canvas c, RecyclerView parent)` 装饰的绘制在Item条目绘制之前调用，所以这有可能被Item的内容所遮挡
 - `public void onDrawOver(Canvas c, RecyclerView parent)` 装饰的绘制在Item条目绘制之后调用，因此装饰将浮于Item之上
 - `public void getItemOffsets(Rect outRect, int itemPosition, RecyclerView parent)` 与padding或margin类似，LayoutManager在测量阶段会调用该方法，计算出每一个Item的正确尺寸并设置偏移量。
 
 
-#####`ItemAnimator`触发于以下三种事件:    
+##### `ItemAnimator`触发于以下三种事件:    
 
 - 某条数据被插入到数据集合中
 - 从数据集合中移除某条数据
@@ -74,7 +74,7 @@ RecyclerView比listview更先进更灵活，对于很多的视图它就是一个
 
 
 
-###使用介绍:     
+### 使用介绍:     
 
 - 添加依赖库           
     ```
@@ -179,7 +179,7 @@ RecyclerView比listview更先进更灵活，对于很多的视图它就是一个
 
 
 
-###点击事件
+### 点击事件
 
 之前在使用`ListView`的时候，设置点击事件是非常方便的。    
 ```java
@@ -555,7 +555,7 @@ manager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
 ```
 具体实现就不写了。
 
-#####实现滑动自动加载更多功能
+##### 实现滑动自动加载更多功能
 
 实现方式和`ListView`的实现方式类似，就是通过监听`scroll`时间，然后判断当前显示的`item`。
 

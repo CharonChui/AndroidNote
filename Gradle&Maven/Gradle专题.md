@@ -2,7 +2,7 @@ Gradle专题
 ===
 
 随着`Google`对`Eclipse`的无情抛弃以及`Studio`的不断壮大，`Android`开发者逐渐拜倒在`Studio`的石榴裙下。       
-而作为`Studio`的默认编译方式，`Gradle`已逐渐普及。我最开始是被它的多渠道打包所吸引。关于多渠道打包，请看之前我写的文章[AndroidStudio使用教程(第七弹)](https://github.com/CharonChui/AndroidNote/blob/master/Android%E5%9F%BA%E7%A1%80/AndroidStudio%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B(%E7%AC%AC%E4%B8%83%E5%BC%B9).md)
+而作为`Studio`的默认编译方式，`Gradle`已逐渐普及。我最开始是被它的多渠道打包所吸引。关于多渠道打包，请看之前我写的文章[AndroidStudio使用教程(第七弹)][1]
 
 接下来我们就系统的学习一下`Gradle`。    
 
@@ -21,7 +21,7 @@ Gradle专题
 
 一个`Gradle`项目通过一个在项目根目录中的`build.gradle`文件来描述它的构建。
 
-###简单的`Build`文件
+### 简单的`Build`文件
 
 最简单的`Android`应用中的`build.gradle`都会包含以下几个配置：   
 `Project`根目录的`build.gradle`:       
@@ -58,7 +58,7 @@ android {
 
 重要: 这里只能使用`com.android.application`插件。如果使用`java`插件将会报错。
 
-###目录结构
+### 目录结构
 `module/src/main`下的目录结构，因为有时候很多人把`so`放到`libs`目录就会报错:    
 
 - java/
@@ -70,7 +70,7 @@ android {
 - jni/  
 - rs/
 
-###配置目录结构
+### 配置目录结构
 如果项目的结构不标准的时候，可能就需要去配置它。`Android`插件使用了相似的语法，但是因为它有自己的`sourceSets`，所以要在`android`代码块中进行配置。下面就是一个从`Eclipse`的老项目结构中配置主要代码并且将`androidTest`的`sourceSet`设置给`tests`目录的例子:     
 
 ```
@@ -95,6 +95,7 @@ android {
 
 Build Tasks
 ---
+
 对构建文件声明插件时通常或自动创建一些列的构建任务去执行。不管`Java`插件还是`Android`插件都是这样。`Android`常规的任务如下：    
 
 - `assemble`生成项目`output`目录中的内容的任务。
@@ -119,11 +120,11 @@ Build Tasks
     - `uninstallRelease`
     - `uninstallDebugAndroidTest`
     
-###基本的`Build`定制
+### 基本的`Build`定制
 
 `Android`插件提供了一些列的`DSL`来让直接从构建系统中做大部分的定制。
  
-#####`Manifest`整体部分
+##### `Manifest`整体部分
 `DSL`提供了很多重要的配置`manifest`文件的参数，例如:     
 
 - `minSdkVersion`
@@ -158,7 +159,7 @@ android {
 ```
 ***注意:***不要使用可能与现有给定冲突的方法名。例如`defaultConfig{...}`中使用`getVersionName()`方法将会自动使用`defaultConfig.getVersionName()`来带起自定义的方法。
 
-#####`Build Types`
+##### `Build Types`
 
 默认情况下`Android`插件会自动将应用程序设置成有一个`debug`版本和一个`release`版本。    
 这就是通过调用`BuildType`对象完成。默认情况下会创建两个实例，一个`debug`实例和一个`release`实例。`Android`插件同样允许通过其他的`Build Types`来定制其他的实例。这就是通过`buildTypes`来设置的:     
@@ -187,7 +188,7 @@ android {
  
 不管使用`initWith()`还是使用其他的代码块，创建一个新的`Build Types`都是非常简单的在`buildTypes`代码块中创建一个新的元素就可以了。
  
-#####签名配置
+##### 签名配置
 
 为应用签名需要使用如下几个部分:      
 - `A keystore`
@@ -230,7 +231,7 @@ android {
 
 
 
-###`Dependencies, Android Libraries and Multi-project setup`
+### `Dependencies, Android Libraries and Multi-project setup`
 
 `Gradle`项目可以依赖其他的外部二进制包、或者其他的`Gradle`项目。
 
@@ -258,7 +259,7 @@ android {
 
 当然我们可以使用`compile`和`<buildtype>.compile`这两种配置。创建一个新的`Build Type`通常会自动基于它的名字创建一个新的配置部分。这样在像`debug`版本而`release`版本不适用的一些特别的`library`时非常有用。
 
-#####远程仓库
+##### 远程仓库
 
 `Gradle`只是使用`Maven`和`Ivy`仓库。但是仓库必须要添加到列表中，并且必须声明所依赖仓库的`Maven`或者`Ivy`定义。      
 
@@ -281,7 +282,7 @@ android {
 ***注意: ***`jcenter()`是指定仓库`URL`的快捷设置。`Gradle`支持远程和本地仓库。
 ***注意: ***`Gradle`会直接识别所有的依赖关系。这就意味着如果一个依赖库自身又依赖别的库时，他们会被一起下下来。
 
-#####本地`AAR`库     
+##### 本地`AAR`库     
 
 ```
 dependencies {
@@ -289,7 +290,7 @@ dependencies {
 }
 ```
 
-#####多项目设置      
+##### 多项目设置      
 
 `Gradle`项目通常使用多项目设置来依赖其他的`gradle`项目。例如:      
 
@@ -330,11 +331,11 @@ dependencies {
 }
 ```
 
-###`Library`项目
+### `Library`项目
 
 上面用到了`:libraries:lib1`和`:libraries:lib2`可以是`Java`项目，`:app`项目会使用他们俩的输出的`jar`包。但是如果你需要使用`android`资源等，这些`libraries`就不能是普通的`Java`项目了，他们必须是`Android Library`项目。    
 
-#####创建一个`Library`项目      
+##### 创建一个`Library`项目      
 
 `Library`项目和普通的`Android`项目的区别比较少，由于`libraries`的构建类型与应用程序的构建不同，所有它会使用一个别的构建插件。但是他们所使用的插件内部有很多相同的代码，他们都是由`com.android.tools.build.gradle`这个`jar`包提供的。
 
@@ -360,11 +361,11 @@ android {
 }
 ```
 
-#####普通项目与`Library`项目的区别       
+##### 普通项目与`Library`项目的区别       
 
 `Library`项目的主要输出我`.aar`包。它结合了代码(例如`jar`包或者本地`.so`文件)和资源(`manifest`,`res`,`assets`)。每个`library`也可以单独设置`Build Type`等来指定生成不同版本的`aar`。
 
-###`Lint Support`
+### `Lint Support`
  
 你可以通过指定对应的变量来设置`lint`的运行。可以通过添加`lintOptions`来进行配置:      
 
@@ -383,12 +384,12 @@ android {
 }
 ```
 
-###`Build`变量
+### `Build`变量
 
 
 构建系统的一个目标就是能对同一个应用创建多个不同的版本。    
 
-#####`Product flavors`    
+##### `Product flavors`    
 
 一个`product flavor`可以针对一个项目制定不同的构建版本。一个应用可以有多个不同的`falvors`来改变生成的应用。   
 `Product flavors`是通过`DSL`语法中的`productFlavors`来声明的:    
@@ -411,7 +412,7 @@ android {
 }
 ```
 
-#####`Build Type + Product Flavor = Build Variant`
+##### `Build Type + Product Flavor = Build Variant`
 
 像我们之前看到的，每个`Build Type`都会生成一个`apk`.`Product Flavors`也是同样的：项目的输出僵尸所有`Build Types`与`Product Flavors`的结合。每种结合方式称之为`Build Variant`。例如，如果有`debug`和`release`版本的`Build Types`，上面的例子就会生成4种`Build Variants`：    
 - `Flavor1` - `debug`
@@ -421,7 +422,7 @@ android {
 
 没有配置`flavors`的项目仍然有`Build Variants`，它只是用了一个默认的`flavor/config`，没有名字，这导致`variants`的列表和`Build Types`的列表比较相同。
 
-#####`Product Flavor`配置
+##### `Product Flavor`配置
 
 ```
 android {
@@ -471,7 +472,7 @@ dependencies {
 }
 ```
 
-###`BuildConfig`      
+### `BuildConfig`      
 
 在编译阶段，`Android Studio`会生成一个叫做`BuildConfig`的类，该类包含了编译时使用的一些变量的值。你可以观看这些值来改变不同变量的行为:       
 
@@ -495,7 +496,7 @@ private void javaCode() {
 - `String FLAVOR` - `flavor`的名字，例如`flavor1`      
 
 
-###`ProGuard`配置      
+### `ProGuard`配置      
 
 `Android`插件默认会使用`ProGuard`插件，并且如果`Build Type`中使用`ProGuard`的`minifyEnabled`属性开启的话，会默认创建对应的`task`。   
 
@@ -517,8 +518,8 @@ android {
     }
 }
 ```
-
-###`Tasks`控制     
+ 
+### `Tasks`控制     
 
 基本的`Java`项目有一系列的`tasks`一起制作输出文件。     
 `classes task`就是编译`Java`源码的任务。 我们可以在`build.gradle`中通过使用`classes`很简单的获取到它。就是`project.tasks.classes`.    
@@ -537,7 +538,7 @@ android.applicationVariants.all { variant ->
 }
 ```
 
-###设置编译语言版本
+### 设置编译语言版本
 
 可以使用`compileOptions`代码块来设置编译时使用的语言版本。默认是基于`compileSdkVersion`的值。
 ```
@@ -549,7 +550,7 @@ android {
 }
 ```
 
-###`Resource Shrinking`    
+### `Resource Shrinking`    
 
 `Gradle`构建系统支持资源清理：对构建的应用会自动移除无用的资源。不仅会移除项目中未使用的资源，而且还会移除项目所以来的类库中的资源。注意，资源清理只能在与代码清理结合使用(例如`ProGuad`)。这就是为什么它能移除所依赖类库的无用资源。通常，类库中的所有资源都是使用的，只有类库中无用代码被移除后这些资源才会变成没有代码引用的无用资源。    
  
@@ -566,6 +567,9 @@ android {
     }
 }
 ```
+
+[1]: https://github.com/CharonChui/AndroidNote/blob/master/AndroidStudioCourse/AndroidStudio%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B(%E7%AC%AC%E4%B8%83%E5%BC%B9).md       "AndroidStudio使用教程(第七弹)"
+
 		
 ---
 

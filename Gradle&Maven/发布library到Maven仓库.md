@@ -436,3 +436,8 @@ dependencies {
 - `windows`下执行`gradlew install`编译`javadoc`时会提示`GBK`编码错误，这时候需要修改编译时的编码，具体放狗搜下，当时我改在`mac`上用了，就没解决。
 - 编译生成`javadoc`时提示很多找不到类，不能使用`<br/>`等错误，这里建议在写注释的时候一定要规范，不要使用汉字，而且不要使用`<br/>`，`<p>`等。
 
+
+---
+
+- 邮箱 ：charon.chui@gmail.com  
+- Good Luck! 

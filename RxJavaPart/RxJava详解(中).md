@@ -11,7 +11,7 @@ RxJava详解(中)
 
 > 有一个服务提供了一些`API`来搜索整个网络上的符合查询关键字的所有猫的图片。 每个图片包含一个可爱程度的参数(一个整数值表示其可爱程度)。 我们的任务就是下载所有猫的列表并选择最可爱的那个，把它的图片保存到本地。
 
-####`Model`和`API`
+#### `Model`和`API`
 
 
 下面是猫的数据结构`Cat`:   
@@ -59,12 +59,12 @@ public class CatsHelper {
 
 非常简单、有效。接下来我们看一下这种方式的其他优点。  
 
-####组合
+#### 组合
 
 
 可以看到我们的`saveTheCutestCat`由其他三个函数调用所组成的。我们通过函数来把一个大功能分割为每个容易理解的小功能。通过函数调用来组合使用这些小功能。使用和理解起来都相当简单
 
-####异常传递
+#### 异常传递
 
 
 另外一个使用函数的好处就是方便处理异常。每个函数都可以通过抛出异常来结束运行。该异常可以在抛出异常的函数里面处理，也可以在调用该函数的外面处理，所以我们无需每次都处理每个异常，我们可以在一个地方处理所有可能抛出的异常。
@@ -92,7 +92,7 @@ try{
 就那`Android`的`OnClickListener`接口来说吧，如果你需要处理一个`View`的点击事件，你必须提供一个该`Listener` 的实现来处理用户的点击事件。下面来看看如何处理异步调用。
 
 
-####异步网络调用
+#### 异步网络调用
 
 
 假设我们的`cats-sdk.jar`使用了异步调用的`API`来访问网络资源，
@@ -218,14 +218,14 @@ public class CatsHelper {
 上面说好的异常处理也没有了，异步代码中的异常不会自动传递，我们需要手动的去重新传递。(`onStoreFailed()`和`onQueryFailed()`就是干这事的)
 
 
-####结果？
+#### 结果？
 
 
 然后呢？我们可以怎么做？我们能不能使用无回调的模式？我们试着修复一下。 
 
 
-####奔向更好的世界     
-####通用的回调
+#### 奔向更好的世界     
+#### 通用的回调
 
 
 如果我们仔细的观察下回调接口，我们会发现它们的共性:   
@@ -310,7 +310,7 @@ public class CatsHelper{
 
 好了，现在比之前的代码稍微简单点了。但是我们能不能做的更好？ 当然可以！
 
-####保持参数和回调的分离性
+#### 保持参数和回调的分离性
 
 
 
@@ -421,7 +421,7 @@ public class CatsHelper {
 这里其实我们返回的是一个`AsyncJob`对象，该对象和客户端代码组合使用，这样在`Activity`或者`Fragment`客户端代码中就可以操作这个返回的对象了。
 代码虽然目前看起来比较复杂，下面我们就来改进一下。
 
-####分解
+#### 分解
 
 
 下面是流程图:   
@@ -498,7 +498,7 @@ public class CatsHelper {
 虽然代码量多了，但是看起来更加清晰了。 嵌套的回调函数没那么多层级了，异步操作的名字也更容易理解了(`catsListAsyncJob`,`cutestCatAsyncJob`, `storedUriAsyncJob`)。
 看起来还不错，但是还可以更好。
 
-####简单的映射
+#### 简单的映射
 
 
 先来看看我们创建 AsyncJob cutestCatAsyncJob 的代码：
@@ -624,7 +624,7 @@ public class CatsHelper {
 新创建的`AsyncJob cutestCatAsyncJob()`的代码只有6行，并且只有一层嵌套。
 
 
-####高级映射
+#### 高级映射
 
 
 但是`AsyncJob storedUriAsyncJob()`看起来还是非常糟糕。 这里也能使用映射吗？ 下面就来试试吧！
@@ -913,7 +913,7 @@ public class CatsHelper {
 
 把 Observable 替换为 AsyncJob 后 他们的代码是一样的。
 
-####结论
+#### 结论
 
 
 通过简单的转换操作，我们可以把异步操作抽象出来。这种抽象的结果可以像操作简单的阻塞函数一样来操作异步操作并组合异步操作。这样我们就可以摆脱层层嵌套的回调接口了，并且不用手工的去处理每次异步操作的异常。
@@ -986,7 +986,7 @@ Observable.from(folders)
 
 那位说话了：『你这代码明明变多了啊！简洁个毛啊！』大兄弟你消消气，我说的是逻辑的简洁，不是单纯的代码量少（逻辑简洁才是提升读写代码速度的必杀技对不？）。观察一下你会发现， `RxJava`的这个实现，是一条从上到下的链式调用，没有任何嵌套，这在逻辑的简洁性上是具有优势的。当需求变得复杂时，这种优势将更加明显（试想如果还要求只选取前`10`张图片，常规方式要怎么办？如果有更多这样那样的要求呢？再试想，在这一大堆需求实现完两个月之后需要改功能，当你翻回这里看到自己当初写下的那一片迷之缩进，你能保证自己将迅速看懂，而不是对着代码重新捋一遍思路？）。
 
-更多内容请看下一篇文章[RxJava详解(下)](https://github.com/CharonChui/AndroidNote/blob/master/Android%E5%8A%A0%E5%BC%BA/RxJava%E8%AF%A6%E8%A7%A3(%E4%B8%8B).md)
+更多内容请看下一篇文章[RxJava详解(下)][1]
 
 参考:   
 
@@ -996,6 +996,8 @@ Observable.from(folders)
 - [When Not to Use RxJava](http://tomstechnicalblog.blogspot.hk/2016/07/when-not-to-use-rxjava.html)
 - [给 Android 开发者的 RxJava 详解](http://gank.io/post/560e15be2dca930e00da1083)
 - [Google Agera 从入门到放弃](http://blog.chengyunfeng.com/?p=984)
+
+[1]: https://github.com/CharonChui/AndroidNote/blob/master/RxJavaPart/RxJava%E8%AF%A6%E8%A7%A3(%E4%B8%8B).md "RxJava详解(下)"
 
 ---
 

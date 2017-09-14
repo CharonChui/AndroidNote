@@ -129,8 +129,11 @@ void Java_com_charon_uninstallfeedback_MainActivity_initUninstallFeedback(
 - 编译so文件。`Windows`下要用`cygwin`来操作。
 上面的介绍是在`Eclipse`中进行的，用`ndk-build`命令来编译`so`。具体请看之前写的`JNI基础`这篇文章。
 
-有关如何在`Android Stuido`中进行`ndk`开发请看另一篇文章。
+有关如何在[Android Stuido中进行ndk开发请看][1]。
    		
+
+[1]: https://github.com/CharonChui/AndroidNote/blob/master/AndroidStudioCourse/AndroidStudio%E4%B8%AD%E8%BF%9B%E8%A1%8Cndk%E5%BC%80%E5%8F%91.md "Android Stuido中进行ndk开发"
+
 ---
 
 - 邮箱 ：charon.chui@gmail.com  

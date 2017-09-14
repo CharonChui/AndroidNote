@@ -1,7 +1,7 @@
 `RxJava Android`开发全系列
 ===
 
-有关`RxJava`的介绍请看[RxJava详解系列](https://github.com/CharonChui/AndroidNote/blob/master/AdavancedPart/RxJava%E8%AF%A6%E8%A7%A3(%E4%B8%8A).md)
+有关`RxJava`的介绍请看[RxJava详解系列][1]
 
 要说16年`android`开发中要说那个应用最流行，那就是`RxJava`了，现在越来越多的`android`项目都会用到`RxJava`，下面就介绍一些`RxJava`必备的扩张库。 
 
@@ -24,6 +24,7 @@
 > The utilities provided here allow for automatic completion of sequences based on Activity or Fragment lifecycle events. This capability is useful in Android, where incomplete subscriptions can cause memory leaks.
 
 `RxLifecycle`提供了一些配合`Activity`、`Fragment`生命周期使用的订阅管理的相关功能。例如使用`RxJava`执行一些耗时的操作，但是在执行过程中，用户退出了当前`Activity`，这时如果`Observable`未取消订阅就会导致内存泄漏，而`RxLifecycle`就是为了接着这些问题的。在`Activity`销毁的时候`RxLifecycle`会自动取消订阅。   
+
 `RxBinding`
 ---
 
@@ -60,6 +61,7 @@
 `Android M`上动态权限申请的类库。
 
 
+[1]: https://github.com/CharonChui/AndroidNote/tree/master/RxJavaPart "RxJava详解系列"
 
 - 邮箱 ：charon.chui@gmail.com  
 - Good Luck! 

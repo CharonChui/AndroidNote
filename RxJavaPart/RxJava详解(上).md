@@ -30,7 +30,7 @@ RxJava详解(上)
 但是`RxJava`的好处是简洁。异步操作很关键的一点是程序的简洁性，因为在调度过程比较复杂的情况下，异步代码经常会既难写也难被读懂。 `Android`创造的`AsyncTask`和`Handler`其实都是为了让异步代码更加简洁。虽然`RxJava`的优势也是简洁，但它的简洁的与众不同之处在于，随着程序逻辑变得越来越复杂，它依然能够保持简洁。
 
 
-####扩展的观察者模式
+#### 扩展的观察者模式
 
 
 `RxJava`的异步实现，是通过一种扩展的观察者模式来实现的。
@@ -48,7 +48,7 @@ RxJava详解(上)
 而`RxJava`作为一个工具库，使用的就是通用形式的观察者模式。
 
 
-####`RxJava`的观察者模式
+#### `RxJava`的观察者模式
 
  
 `RxJava`的基本概念：
@@ -74,7 +74,7 @@ RxJava详解(上)
 ![image](https://raw.githubusercontent.com/CharonChui/Pictures/master/rxjava_observer_1.jpg?raw=true)
 
 
-####基本实现
+#### 基本实现
 
 
 基于上面的概念， `RxJava`的基本实现主要有三点:    
@@ -291,7 +291,7 @@ observable.subscribe(onNextAction, onErrorAction, onCompletedAction);
 操作符就是为了解决对`Observable`对象的变换的问题，操作符用于在`Observable`和最终的`Subscriber`之间修改`Observable`发出的事件。`RxJava`提供了很多很有用的操作符。
 比如`map`操作符，就是用来把把一个事件转换为另一个事件的。
 
-####`map`
+#### `map`
 
 
 `Returns an Observable that applies a specified function to each item emitted by the source Observable and emits the results of these function applications.`
@@ -358,7 +358,7 @@ map.subscribe(new Action1<Integer>() {
     在`Observable`和`Subscriber`中间 可以增减任何数量的`map`。整个系统是高度可组合的，操作数据是一个很简单的过程。
 
 
-####`flatmap`
+#### `flatmap`
 
 
 `Returns an Observable that emits items based on applying a function that you supply to each item emitted 
@@ -445,7 +445,7 @@ Observable.from(students)
 ![image](https://raw.githubusercontent.com/CharonChui/Pictures/master/rxjava_flatmap.jpg?raw=true)
 
 
-####`throttleFirst()`
+#### `throttleFirst()`
 
 
 在每次事件触发后的一定时间间隔内丢弃新的事件。常用作去抖动过滤。 
@@ -456,7 +456,7 @@ RxView.clickEvents(button); // RxBinding 代码`
     .subscribe(subscriber); // 妈妈再也不怕我的用户手抖点开两个重复的界面啦。
 ```
 
-####`from`
+#### `from`
 
 
 `convert various other objects and data types into Observables`
@@ -473,7 +473,7 @@ Observable.from(s).subscribe(new Action1<String>() {
 });
 ```
 
-####`filter`
+#### `filter`
 
 
 返回满足过滤条件的数据。  
@@ -494,7 +494,7 @@ Observable.from(new Integer[]{1, 2, 3, 4, 5, 6, 7, 8, 9})
                 });
 ```
 
-####`timer`
+#### `timer`
 
 
 `Timer`会在指定时间后发射一个数字0，该操作符运行在`Computation Scheduler`。
@@ -509,7 +509,7 @@ Observable.timer(3, TimeUnit.SECONDS).observeOn(AndroidSchedulers.mainThread())
                 });
 ```
 
-####`interval`
+#### `interval`
 
 
 创建一个按固定时间间隔发射整数序列的`Observable`.
@@ -525,7 +525,7 @@ Observable.interval(1, TimeUnit.SECONDS, AndroidSchedulers.mainThread())
         });
 ```
 
-####`Repeat`
+#### `Repeat`
 
 
 重复执行 
@@ -534,7 +534,7 @@ Observable.interval(1, TimeUnit.SECONDS, AndroidSchedulers.mainThread())
 
 是不是感觉没什么乱用，那就继续看下一部分吧。
 
-更多内容请看下一篇文章[RxJava详解(下)](https://github.com/CharonChui/AndroidNote/blob/master/Android%E5%8A%A0%E5%BC%BA/RxJava%E8%AF%A6%E8%A7%A3(%E4%B8%AD).md)
+更多内容请看下一篇文章[RxJava详解(中)][1]
 
 参考:   
 
@@ -546,6 +546,7 @@ Observable.interval(1, TimeUnit.SECONDS, AndroidSchedulers.mainThread())
 - [Google Agera 从入门到放弃](http://blog.chengyunfeng.com/?p=984)
 
 
+[1]: https://github.com/CharonChui/AndroidNote/blob/master/RxJavaPart/RxJava%E8%AF%A6%E8%A7%A3(%E4%B8%AD).md "RxJava详解(中)"
 
 ---
 
