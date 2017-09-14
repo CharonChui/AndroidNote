@@ -1,7 +1,7 @@
 自定义View详解
 ===
 
-虽然之前也分析过[View回执过程](https://github.com/CharonChui/AndroidNote/blob/master/Android%E5%8A%A0%E5%BC%BA/View%E7%BB%98%E5%88%B6%E8%BF%87%E7%A8%8B%E8%AF%A6%E8%A7%A3.md)，但是如果让我自己集成`ViewGroup`然后自己重新`onMeasure,onLayout,onDraw`方法自定义`View`我还是会头疼。今天索性来系统的学习下。
+虽然之前也分析过[View绘制过程](https://github.com/CharonChui/AndroidNote/blob/master/SourceAnalysis/View%E7%BB%98%E5%88%B6%E8%BF%87%E7%A8%8B%E8%AF%A6%E8%A7%A3.md)，但是如果让我自己集成`ViewGroup`然后自己重新`onMeasure,onLayout,onDraw`方法自定义`View`我还是会头疼。今天索性来系统的学习下。
 
 ###onMeasure
 
