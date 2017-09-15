@@ -129,7 +129,7 @@ The property animation system is a robust framework that allows you to animate a
 - `Animation Set`: 动画合集。用来同时或者顺序播放多个动画。
 - `Frame Refresh Delay`: 多长时间刷新一次，默认是`10ms`。
 
-###`ValueAnimator`    
+### `ValueAnimator`    
 
 
 `ValueAnimator`包含`Property Animation`动画的所有核心功能，如动画时间，开始、结束属性值，相应时间属性值计算方法等。应用`Property Animation`有两个步聚：       
@@ -139,7 +139,7 @@ The property animation system is a robust framework that allows you to animate a
 
 `ValuAnimiator`只完成了第一步工作，如果要完成第二步，需要实现`ValueAnimator.onUpdateListener`接口，这个接口只有一个函数`onAnimationUpdate()`，在这个函数中会传入`ValueAnimator`对象做为参数，通过这个`ValueAnimator`对象的`getAnimatedValue()`函数可以得到当前的属性值。
 
-###`ObjectAnimator`   
+### `ObjectAnimator`   
 
 继承自`ValueAnimator`，要指定一个对象及该对象的一个属性，当属性值计算完成时自动设置为该对象的相应属性，即完成了`Property Animation`的全部两步操作。实际应用中一般都会用`ObjectAnimator`来改变某一对象的某一属性，但用`ObjectAnimator`有一定的限制，要想使用`ObjectAnimator`，应该满足以下条件：
 
@@ -151,7 +151,7 @@ The property animation system is a robust framework that allows you to animate a
 如果上述条件不满足，则不能用`ObjectAnimator`，应用`ValueAnimator`代替。
 也就是说`ObjectAnimator`内部的工作机制是通过寻找特定属性的`get`和`set`方法，然后通过方法不断地对值进行改变，从而实现动画效果的。
 
-###`AnimationSet`
+### `AnimationSet`
 
 
 `AnimationSet`提供了一个把多个动画组合成一个组合的机制，并可设置组中动画的时序关系，如同时播放，顺序播放等。
@@ -177,7 +177,7 @@ animatorSet.play(bouncer).before(fadeAnim);
 animatorSet.start();
 ```
 
-###TypeEvalutors
+### `TypeEvalutors`
 
 
 根据属性的开始、结束值与`TimeInterpolation`计算出的比例值来计算当前时间对应的属性值，`Android`提供了一下几种`evalutor`:    
@@ -213,7 +213,7 @@ Time interplator定义了属性值变化的方式，如线性均匀改变，开�
 - TimeInterpolator　　　　　　　　   一个接口，允许你自定义interpolator，以上几个都是实现了这个接口
 
 
-###`PropertyValuesHolder`
+### `PropertyValuesHolder`
 
 如果要实现一个对象不同属性的动画效果，除了`Set`，我们还可以利用`PropertyValuesHolder`和`ViewPropertyAnimator`对象来实现，具体做法如下：
 ```
@@ -222,7 +222,7 @@ PropertyValuesHolder pvhY = PropertyValuesHolder.ofFloat("y", 100f);
 ObjectAnimator.ofPropertyValuesHolder(myView, pvhX, pvyY).start();
 ```
 
-###`ViewPropertyAnimator`
+### `ViewPropertyAnimator`
 
 `* <p>This class is not constructed by the caller, but rather by the View whose properties
  * it will animate. Calls to {@link android.view.View#animate()} will return a reference
@@ -239,7 +239,7 @@ myView.animate().x(50f).y(100f);
 
 
 
-###XML中定义
+### `XML`中定义
 
 在`res/animator`中定义对应的动画`xml`       
 - <animator>  对应代码中的ValueAnimator

@@ -1,7 +1,7 @@
 InstantRun详解
 ===
 
-之前在写[AndroidStudio提高Build速度](https://github.com/CharonChui/AndroidNote/blob/master/AndroidStudioCourse/AndroidStudio%E6%8F%90%E9%AB%98Build%E9%80%9F%E5%BA%A6.md)这篇文章的时候写到，想要快，就用`Instant Run`。最近有朋友发来邮件讨论它的原理，最近项目不忙，索性就来系统的学习下。
+之前在写[AndroidStudio提高Build速度][1]]这篇文章的时候写到，想要快，就用`Instant Run`。最近有朋友发来邮件讨论它的原理，最近项目不忙，索性就来系统的学习下。
 
 
 `Android Studio`2.0开始引入了`Instant Run`，它主要是在`Run`和`Debug`的时候可以去减少更新应用的时间。虽然第一次`Build`的时候可能会消耗稍长的时间来完成，但是`Instant Run`可以把更新内容推送到设备上，而无需重新`build`一个新的`apk`，这样就会很快速的让我们观察到改变。
@@ -11,7 +11,7 @@ InstantRun详解
 部署完应用后，会在`Run`![image](https://raw.githubusercontent.com/CharonChui/Pictures/master/as-irrun.png?raw=true)(或者(Debug![image](https://raw.githubusercontent.com/CharonChui/Pictures/master/as-irdebug.png?raw=true)))图标上面出现一个小黄色的闪电符号，这就意味着`Instant Run`已经准备就绪，在你下次点击按钮的时候可以推送更新内容。它不需要重新构建一个新的`APK`,它只推送那些新改变的地方，有些情况下`app`都不需要重启就可以直接显示新改变的下效果。
 
 
-###配置你的应用来使用`Instant Run`
+### 配置你的应用来使用`Instant Run`
 
 `Android Stuido`中项目使用`Gralde`2.0.0及以上版本会默认使用`Instant Run`。  
 让项目更新到最新的版本:     
@@ -22,7 +22,7 @@ InstantRun详解
 
 
 
-###修复类型
+### 修复类型
 
 `Instant Run`通过热修复、暖修复或者冷修复来推送改变的代码和资源到你的设备或者模拟器上。它会根据你更改的内容来自动选择对应的修复类型。
 
@@ -62,12 +62,12 @@ InstantRun详解
     在更新`Android UI widget`时，你需要执行`Clean and Rerun`才能看到更改的内容，因为在使用`Instant Run`时执行`clean`会需要很长的时间，所以你在更新`UI widget`时可以禁用`Instant Run`。 
 
 
-#####使用Rerun
+##### 使用Rerun
   
 如果修改了一些会影响到初始化的内容时，例如修改了应用的`onCreate()`方法，你需要重启你的应用来让这些改变生效，你可以点击`Rerun`图标。它将会停止应用运行，并且执行`clean`操作后重新部署一个新的`APK`到你的设备。   
 
 
-###实现原理      
+### 实现原理      
 
 正常情况下，我们修改了内容，想让让它生效，那就需要如下的步骤:           
 
@@ -104,7 +104,7 @@ InstantRun详解
 
 总结一下，其实就是内部会对每个`class`文件注入`instant run`相关的代码，然后自定义一个`application`内部指定自定义的`classLoader`(也就是说不使用默认的`classLoader`了，只要用了`Instant Run`就需要使用它自定义的`classLoader`)，然后在应用程序里面开启一个服务器，`Studio`将修改的代码发送到该服务器，然后再通过自定义的`classLoader`加载代码的时候会去请求该服务器判断代码是否有更新，如果有更新就会通过委托机制加载新更新的代码然后注入到应用程序中，这样就完成了替换的操作。
 
-###热修复过程               
+### 热修复过程               
 
 
 ![image](https://raw.githubusercontent.com/CharonChui/Pictures/master/hot_swapping.png?raw=true)
@@ -124,7 +124,7 @@ InstantRun详解
 
 这种重新指定方法的方式在改变方法实现时非常有效，但是对于那种需要在`Activity`启动时加载的改变呢？   
 
-###暖修复      
+### 暖修复      
 
 暖修复会重启`Activity`。资源文件会在`Activity`启动时被加载，所以修改它们需要`activity`重新启动来进行加载。    
 
@@ -136,7 +136,7 @@ InstantRun详解
 
 非常不幸的是，重启`activity`在做一些结构性的改变时无效。对于这些改变需要使用冷修复。   
 
-###冷修复     
+### 冷修复     
 
 在部署时，你的应用和他的子项目会被分派到10个不同的部分，每个都在自己单独的`dex`文件。不同部分的类会通过包名来分配。在使用冷修复时，修改的类需要其他所有相关的`class`文件都被重新打包后才能被部署到设备上。      
 这就需要依赖`Android Runtime`能支持加载多个`.dex`文件,这是一个在`ART`中新增的功能，它只有在`Android 5.0(API 21)`以上的设备总才支持。    
@@ -148,12 +148,12 @@ InstantRun详解
 ![image](https://raw.githubusercontent.com/CharonChui/Pictures/master/instant_run_restart.gif?raw=true)
 
 
-###Instant Run使用技巧及提示      
+### Instant Run使用技巧及提示      
 
 `Instant Run`是由`Android Studio`控制的，所以你只能通过`IDE`来`start/restart`你的`debug`实例，不要直接在设备中`start/restart`你的应用，不然的话就会发生错乱。    
 
 
-#####Instant Run限制条件    
+##### Instant Run限制条件    
 
 - 部署到多个设备
 
@@ -179,6 +179,9 @@ InstantRun详解
 - [官网](https://developer.android.com/studio/run/index.html#instant-run)
 - [Instant Run: How Does it Work?!](https://medium.com/google-developers/instant-run-how-does-it-work-294a1633367f#.8xmpk8xvc)
     	
+
+[1]: https://github.com/CharonChui/AndroidNote/blob/master/AndroidStudioCourse/AndroidStudio%E6%8F%90%E9%AB%98Build%E9%80%9F%E5%BA%A6.md "AndroidStudio提高Build速度"
+
 ---
 
 - 邮箱 ：charon.chui@gmail.com  

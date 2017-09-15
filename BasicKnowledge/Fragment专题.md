@@ -1,7 +1,7 @@
 Fragment专题
 ===
 
-##简介
+## 简介
 
 A Fragment is a piece of an application's user interface or behavior that can be placed in an Activity. 
 Interaction with fragments is done through FragmentManager, 
@@ -19,7 +19,7 @@ and needs to be able to find this constructor to instantiate it.
 If the no-argument constructor is not available, a runtime exception will occur in some cases during state restore.
 
 
-##生命周期
+## 生命周期
 
 `onAttach()`(`Fragment`被绑定到`Activity`时调用) ---> `onCreate()`(`Fragment`创建) --> 
 `onCreateView()`(创建和`Fragment`关联的`View Hierarchy`时调用) --> `onActivityCreated()`(`Activity`的`onCreate()`方法返回时调用) 
@@ -28,7 +28,7 @@ If the no-argument constructor is not available, a runtime exception will occur 
 	
 ![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/complete_android_fragment_lifecycle.png)    
 
-##使用
+## 使用
 
 1. 布局添加
 	```xml
@@ -115,7 +115,7 @@ If the no-argument constructor is not available, a runtime exception will occur 
 	}
 	```
 	
-##管理Fragment
+## 管理Fragment
 
 要在`activity`中管理`fragment`,需要使用`FragmentManager`. 通过调用`activity`的`getFragmentManager()`取得它的实例.
 可以通过`FragmentManager`做一些事情, 包括:           
@@ -162,7 +162,7 @@ public void setUserVisibleHint(boolean isVisibleToUser) {
 通过阅读`ViewPager`和`PageAdapter`相关的代码，切换`Fragment`实际上就是通过设置`setUserVisibleHint`和`setMenuVisibility`来实现的，
 调用这个方法时并不会释放掉`Fragment`（即不会执行`onDestoryView`）。
 
-##Fragment与ViewPager搭配
+## Fragment与ViewPager搭配
 `FragmentStatePagerAdapter`，会自动保存和恢复`Fragment`。
 ```java
 import android.support.v4.app.Fragment;

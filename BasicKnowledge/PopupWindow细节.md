@@ -1,7 +1,7 @@
 PopupWindow细节
 ===
 
-##简介
+## 简介
 
 `A popup window that can be used to display an arbitrary view. The popup windows is a floating container that appears on top of the current activity.`
  
@@ -34,7 +34,7 @@ PopupWindow细节
 	通常可以给它设置为透明色,这样再播放动画就有效果了
 	`popwindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));`
 	
-##让`PopupWindow`响应`Back`键后关闭。
+## 让`PopupWindow`响应`Back`键后关闭。
 
 - 最简单        
     在`new`的时候，使用下面的方法：          

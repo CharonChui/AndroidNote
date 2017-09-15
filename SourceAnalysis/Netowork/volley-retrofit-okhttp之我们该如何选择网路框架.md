@@ -6,7 +6,7 @@ volley-retrofit-okhttp之我们该如何选择网路框架
 也就是说`OkHttp`是基于`http`协议封装的一套请求客户端。它是真正的网络请求部分，
 与`HttpClient`、`HttpUrlConnection`是一样的，
 但是显然它的效率非常高(说到这里顺便提一嘴，从`Android 4.4`开始`HttpUrlConnection`内部默认使用的也是`OkHttp`，
-具体请参考之前的文章[HttpUrlConnection详解](https://github.com/CharonChui/AndroidNote/blob/master/Android%E5%8A%A0%E5%BC%BA/HttpURLConnection%E8%AF%A6%E8%A7%A3.md))。
+具体请参考之前的文章[HttpUrlConnection详解][1]
 而`Volley`、`Retrofit`是控制请求的队列、切换、解析、缓存等逻辑。所以`Volley`和`Retrofit`都可以结合`OkHttp`来使用。 
 
 
@@ -16,7 +16,7 @@ volley-retrofit-okhttp之我们该如何选择网路框架
 - `Retrofit`:良心企业    `Square`由大神`JakeWharton`主导的开源项目,是基于`OkHttp`封装的一套`Resetful`网络请求框架。`Type-safe HTTP client for Android and Java by Square, Inc.`
 
 
-有关`Volley`的介绍请看之前发布的文章[Volley源码分析](https://github.com/CharonChui/AndroidNote/blob/master/Android%E5%8A%A0%E5%BC%BA/Volley%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90.md)
+有关`Volley`的介绍请看之前发布的文章[Volley源码分析][2]
 
 
 这里就不分别介绍他俩了，直接说各自的优缺点:    
@@ -42,6 +42,9 @@ volley-retrofit-okhttp之我们该如何选择网路框架
 
 所以综合起来说使用`Volley+OKHttp`的组合是非常不错的，既可以保证速度又可以满足对缓存、重试等的处理。但是如果你是`RxJava`的使用者那你可能会更偏向于使用`Retrofit`，因为`Retrofit`可以无缝结合`RxJava`使用。目前主流的一套框架就是`Retrofit + OkHttp + RxJava + Dagger2 `，但是对使用者的要求也相对要高些。
 
+
+[1]: https://github.com/CharonChui/AndroidNote/blob/master/SourceAnalysis/Netowork/HttpURLConnection%E8%AF%A6%E8%A7%A3.md "HttpUrlConnection详解"
+[2]: https://github.com/CharonChui/AndroidNote/blob/master/SourceAnalysis/Netowork/Volley%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90.md "Volley源码分析"
 		
 ---
 

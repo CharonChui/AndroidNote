@@ -89,7 +89,7 @@ JNI基础
 	改成这样       
 	`PATH="/usr/local/bin:/usr/bin:${PATH}:/cygdrive/d/android-ndk-r7b"`//注意这里的路径是在linux系统下的ndk路径而不是windows下的路径,/cygdrive/d/是在linux下看到的d盘。
 
-###JNI开发步骤：
+### JNI开发步骤：
 
 1. 创建一个android工程
 2. JAVA代码中写声明native 方法 public native String helloFromJNI();
@@ -99,7 +99,7 @@ JNI基础
 6. Ndk编译生成动态库
 7. Java代码load 动态库.调用native代码
 
-###JNI开发之Java中调用C代码步骤
+### JNI开发之Java中调用C代码步骤
 
 1. 在java中定义一个要调用的C的方法(本地方法)            
 	//1.定义一个native的方法            
