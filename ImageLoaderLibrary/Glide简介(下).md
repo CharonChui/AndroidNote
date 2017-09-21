@@ -149,7 +149,7 @@ GlideApp
 ```
 
 
-###调试及`Debug`
+### 调试及`Debug`
 
 可以通过`adb`命令来开启`Glide`的调试`log` 
 `adb shell setprop log.tag.GenericRequest DEBUG`
