@@ -60,7 +60,17 @@ Android学习笔记
     - [MAT内存分析][37]
 
 - [Kotlin学习][48]
-    - [Kotlin学习教程(一)][38]
+    - [Kotlin学习教程(一)][180]
+    - [Kotlin学习教程(二)][181]
+    - [Kotlin学习教程(三)][182]
+    - [Kotlin学习教程(四)][183]
+    - [Kotlin学习教程(五)][184]
+    - [Kotlin学习教程(六)][185]
+    - [Kotlin学习教程(七)][186]
+    - [Kotlin学习教程(八)][187]
+    - [Kotlin学习教程(九)][188]
+
+
 
 - [Gradle&Maven][49]
     - [Gradle专题][39]
@@ -382,6 +392,19 @@ Android学习笔记
 [177]: https://github.com/CharonChui/AndroidNote/blob/master/BasicKnowledge/Widget(%E7%AA%97%E5%8F%A3%E5%B0%8F%E9%83%A8%E4%BB%B6).md   "Widget(窗口小部件)"
 [178]: https://github.com/CharonChui/AndroidNote/blob/master/BasicKnowledge/Wifi%E7%8A%B6%E6%80%81%E7%9B%91%E5%90%AC.md   "Wifi状态监听"
 [179]: https://github.com/CharonChui/AndroidNote/blob/master/BasicKnowledge/XmlPullParser.md   "XmlPullParser"
+
+
+[180]: https://github.com/CharonChui/AndroidNote/blob/master/KotlinCourse/Kotlin%E5%AD%A6%E4%B9%A0%E6%95%99%E7%A8%8B(%E4%B8%80).md "Kotlin学习教程(一)"
+[181]: https://github.com/CharonChui/AndroidNote/blob/master/KotlinCourse/Kotlin%E5%AD%A6%E4%B9%A0%E6%95%99%E7%A8%8B(%E4%BA%8C).md "Kotlin学习教程(二)"
+[182]: https://github.com/CharonChui/AndroidNote/blob/master/KotlinCourse/Kotlin%E5%AD%A6%E4%B9%A0%E6%95%99%E7%A8%8B(%E4%B8%89).md "Kotlin学习教程(三)"
+[183]: https://github.com/CharonChui/AndroidNote/blob/master/KotlinCourse/Kotlin%E5%AD%A6%E4%B9%A0%E6%95%99%E7%A8%8B(%E5%9B%9B).md "Kotlin学习教程(四)"
+[184]: https://github.com/CharonChui/AndroidNote/blob/master/KotlinCourse/Kotlin%E5%AD%A6%E4%B9%A0%E6%95%99%E7%A8%8B(%E4%BA%94).md "Kotlin学习教程(五)"
+[185]: https://github.com/CharonChui/AndroidNote/blob/master/KotlinCourse/Kotlin%E5%AD%A6%E4%B9%A0%E6%95%99%E7%A8%8B(%E5%85%AD).md "Kotlin学习教程(六)"
+[186]: https://github.com/CharonChui/AndroidNote/blob/master/KotlinCourse/Kotlin%E5%AD%A6%E4%B9%A0%E6%95%99%E7%A8%8B(%E4%B8%83).md "Kotlin学习教程(七)"
+[187]: https://github.com/CharonChui/AndroidNote/blob/master/KotlinCourse/Kotlin%E5%AD%A6%E4%B9%A0%E6%95%99%E7%A8%8B(%E5%85%AB).md "Kotlin学习教程(八)"
+[188]: https://github.com/CharonChui/AndroidNote/blob/master/KotlinCourse/Kotlin%E5%AD%A6%E4%B9%A0%E6%95%99%E7%A8%8B(%E4%B9%9D).md "Kotlin学习教程(九)"
+
+
 
 
 Developed By
