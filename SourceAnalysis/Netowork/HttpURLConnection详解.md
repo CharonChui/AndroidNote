@@ -18,7 +18,7 @@ public URLConnection openConnection() throws IOException {
 }
 ```
 
-接下来就要看一下`streamHandler`究竟是何方神圣？我们搜一下他的赋值，实在`setupStreamHandler`方法中进行的：    
+接下来就要看一下`streamHandler`究竟是何方神圣？我们搜一下他的赋值，是在`setupStreamHandler`方法中进行的：    
 ```java
 /**
  * Sets the receiver's stream handler to one which is appropriate for its
