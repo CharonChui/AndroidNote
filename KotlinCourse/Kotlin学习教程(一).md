@@ -30,19 +30,20 @@ Kotlin学习教程(一)
 
 上面说简洁简洁，到底简洁在哪里？这里先用一个例子开始，在`Java`开发过程中经常会写一些`Bean`类:  
 ```java
-public class Artist {
-    private long id;
-    private String name;
-    private String url;
-    private String mbid;
+package com.charon.kotlinstudydemo;
 
-    public long getId() {
-        return id;
+public class Person {
+    private int age;
+    private String name;
+    private float height;
+    private float weight;
+
+    public int getAge() {
+        return age;
     }
 
-
-    public void setId(long id) {
-        this.id = id;
+    public void setAge(int age) {
+        this.age = age;
     }
 
     public String getName() {
@@ -53,41 +54,41 @@ public class Artist {
         this.name = name;
     }
 
-    public String getUrl() {
-        return url;
+    public float getHeight() {
+        return height;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setHeight(float height) {
+        this.height = height;
     }
 
-    public String getMbid() {
-        return mbid;
+    public float getWeight() {
+        return weight;
     }
 
-    public void setMbid(String mbid) {
-        this.mbid = mbid;
+    public void setWeight(float weight) {
+        this.weight = weight;
     }
 
-    @Override public String toString() {
-        return "Artist{" +
-          "id=" + id +
-          ", name='" + name + '\'' +
-          ", url='" + url + '\'' +
-          ", mbid='" + mbid + '\'' +
-          '}';
+    @Override
+    public String toString() {
+        return "Person name is : " + name + " age is : " + age + " height is :"
+                + height + " weight is :" + weight;
     }
 }
 ```
 使用`Kotlin`:  
 ```kotlin
-data class Artist(
-    var id: Long,
-    var name: String,
-    var url: String,
-    var mbid: String)
+package com.charon.kotlinstudydemo
+
+data class Person(
+        var name: String,
+        var age: Int,
+        var height: Float,
+        var weight: Float)
 ```
 这个数据类，它会自动生成所有属性和它们的访问器，以及一些有用的方法，比如`toString()`方法。   
+这里插一嘴，从上面的例子中我们可以看到对于包的声明基本是一样的，唯一不同的是`kotlin`中后面结束不用分号。 
 
 
 ### 创建`Kotlin`项目      
@@ -129,17 +130,18 @@ class MainActivity : AppCompatActivity() {
 
 声明:  
 ```kotlin
-val i: Int = 7
-var j: String = "haha"
+var age: Int = 18
+val name: String = "charon"
 ```
+
+再提示一下:`kotlin`中每行代码结束不需要分号了，不要和`java`是的每行都带分号
 
 字面上可以写明具体的类型。这个不是必须的，但是一个通用的`Kotlin`实践时省略变量的类型我们可以让编译器自己去推断出具体的类型:   
 ```kotlin
-val i = 12 // An Int
-val iHex = 0x0f // 一个十六进制的Int类型
-val l = 3L // A Long
-val d = 3.5 // A Double
-val f = 3.5F // A Float
+var age = 18 // int
+val name = "charon" // string
+var height = 180.5f // flat
+var weight = 70.5 // double
 ```
 
 在`Kotlin`中，一切都是对象。没有像`Java`中那样的原始基本类型。
@@ -148,12 +150,10 @@ val f = 3.5F // A Float
 - 数字类型中不会自动转型。举个例子，你不能给`Double`变量分配一个`Int`。必须要做一个明确的类型转换，可以使用众多的函数之一:   
 
 ```kotlin
-val i:Int=7
-val d: Double = i.toDouble()
-val c: Int
-c = 3
+private var age = 18
+private var weight = age.toFloat()
 ```
-- 字符（Char）不能直接作为一个数字来处理。在需要时我们需要把他们转换为一个数字：
+- 字符（`Char`）不能直接作为一个数字来处理。在需要时我们需要把他们转换为一个数字:
 ```kotlin
 val c: Char='c'
 val i: Int = c.toInt()
@@ -174,13 +174,13 @@ val bitwiseAnd = FLAG1 and FLAG2
 
 - 一个`String`可以像数组那样访问，并且被迭代：
 ```kotlin
-val s = "Example"
-val c = s[2] // 这是一个字符'a'
-// 迭代String
-val s = "Example"
-for(c in s){
-    print(c)
+var s = "charon"
+var c = s[2]
+
+for (a in s) {
+    Log.e("@@@", a +"");
 }
+
 ```
 
 
@@ -192,11 +192,15 @@ for(c in s){
 - 用`String`或原生类型值初始化
 - 没有自定义`getter`
 
-这些属性可以用在注解中: 
-
 ```kotlin
-const val SUBSYSTEM_DEPRECATED: String = "This subsystem is deprecated"
-@Deprecated(SUBSYSTEM_DEPRECATED) fun foo() { …… }
+// Const val are only allowed on top level or in objects
+const val NAME: String = "charon"
+class MainActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+    }
+}
 ```
 
 
@@ -226,22 +230,26 @@ set(value) {
 假如想在类内声明一个`null`属性，在需要时再进行初始化（最典型的就是懒汉式单例模式），与`Kotlin`的规则是相背的，此时我们可以声明一个属性并延迟其初始化，此属性用`lateinit`修饰符修饰。
 
 ```kotlin
-// 延迟初始化声明
-lateinit var late : String
-fun initLate(){
-    late = "I am late"
+class MainActivity : AppCompatActivity() {
+    lateinit var name : String
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        var test = MainActivity()
+        // 要先调用方法让其初始化
+        test.init()
+        // 再使用其属性
+        Log.e("@@@", test.name)
+    }
+
+    fun init() {
+        // 延迟初始化
+        name = "charon"
+    }
 }
-
-// 先调用方法，再调用属性
-var pf = PropertiesFields()
-pf.initLate()
-Log.d("text", pf.late)
-
-// 输出
-I am late
 ```
 需要注意的是，我们在使用的时候，一定要确保属性是被初始化过的，通常先调用初始化方法，否则会有异常。
-
 
 
 ### 类的定义:使用`class`关键字   
@@ -262,16 +270,18 @@ class MainActivity{
 
 如果有参数的话你只需要在类名后面写上它的参数，如果这个类没有任何内容可以省略大括号：
 ```kotlin
-class Person(name: String, surname: String)
+class Person(name: String, age: Int)
 ```
 
 ##### 创建类的实例  
 
 ```kotlin
-val person = Person("charon")
+val person = Person("charon", 18)
 ```
 
 上面的类有一个默认的构造函数。
+
+注意:创建类的实例不用`new`了啊。
 
 
 ### 构造函数 

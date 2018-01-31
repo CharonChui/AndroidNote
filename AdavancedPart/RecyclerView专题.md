@@ -8,7 +8,7 @@ RecyclerView专题
 官方文档中是这样介绍的:     
 `A flexible view for providing a limited window into a large data set.`
 
-RecyclerView比listview更先进更灵活，对于很多的视图它就是一个容器，可以有效的重用和滚动。当数据动态变化的时候请使用它。
+`RecyclerView`比`listview`更先进更灵活，对于很多的视图它就是一个容器，可以有效的重用和滚动。当数据动态变化的时候请使用它。
 
 
 
@@ -29,7 +29,7 @@ RecyclerView比listview更先进更灵活，对于很多的视图它就是一个
 - `layout position`:  在最近一次`layout`计算是`item`的位置。这是`LayoutManager`角度中的位置。   
 - `adapter position`: `item`在`adapter`中的位置。这是从`Adapter`的角度中的位置。
       
-这两种`position`除了在分发`adapter.notify*`事件与之后计算布局更新的这段时间之内外都是相同的。  
+这两种`position`除了在分发`adapter.notify`事件与之后计算布局更新的这段时间之内外都是相同的。  
 可以通过`getLayoutPosition(),findViewHolderForLayoutPosition(int)`方法来获取最近一次布局计算的`LayoutPosition`。这些`positions`包括从最近一次布局计算的所有改变。你可以根据这些位置来方便的得到用户当前从屏幕上所看到的。例如，如果在屏幕上有一个列表，用户请求的是第五个条目，你可以通过该方法来匹配当前用户正在看的内容。
             
 另一种`AdapterPosition`相关的方法是`getAdapterPosition(),findViewHolderForAdapterPosition(int)`，当及时一些数据可能没有来得及被展现到布局上时便需要获取最新的`adapter`位置可以使用这些相关的方法。例如，如果你想获取一个条目的`ViewHOlder`的`click`事件时，你应该使用`getAdapterPosition()`。需要知道这些方法在`notifyDataSetChange()`方法被调用和新布局还没有被计算之前是不能使用的。鉴于这个原因，你应该小心的去处理这些方法有可能返回`NO_POSITION`或者`null`的情况。
@@ -38,8 +38,8 @@ RecyclerView比listview更先进更灵活，对于很多的视图它就是一个
 
 ### 结构
 
-- `RecyclerView.Adapter`: 创建View并将数据集合绑定到View上
-- `ViewHolder`: 持有所有的用于绑定数据或者需要操作的View
+- `RecyclerView.Adapter`: 创建`View`并将数据集合绑定到`View`上
+- `ViewHolder`: 持有所有的用于绑定数据或者需要操作的`View`
 - `LayoutManager`: 布局管理器，负责摆放视图等相关操作
 - `ItemDecoration`: 负责绘制`Item`附近的分割线，通过`RecyclerView.addItemDecoration()`使用
 - `ItemAnimator`: 为`Item`的操作添加动画效果，如，增删条目等，通过`RecyclerView.setItemAnimator(new DefaultItemAnimator());`使用
@@ -333,6 +333,7 @@ mListView.setOnItemLongClickListener();
         ...
     }
     ```
+
     说的和明白了，而且还让你看`SimpleOnItemTouchListener`，猜也能猜出来是一个默认的实现类。
     好了直接上代码:      
     ```java
@@ -340,10 +341,7 @@ mListView.setOnItemLongClickListener();
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLayoutManager;
     private MyAdapter mAdapter;
-
     private String[] mDatas = {"Android", "ios", "jack", "tony", "window", "mac", "1234", "hehe", "495948", "89757", "66666"};
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -531,7 +529,7 @@ manager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
 
 ### 下拉刷新、自动加载
 
-#####实现下拉刷新      
+##### 实现下拉刷新      
 实现下拉刷新也很简单了，可以使用`SwipeRefrshLayout`,`SwipeRefrshLayout`是`Google`官方提供的组件，可以实现下拉刷新的功能。已包含到`support.v4`包中。
 
 主要方法有:      

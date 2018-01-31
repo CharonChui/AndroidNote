@@ -62,11 +62,13 @@ If the no-argument constructor is not available, a runtime exception will occur 
 	}
 	```
 	**每一个fragment 都需要一个唯一的标识,如果activity重启,系统可以用来恢复fragment(并且你也可以用来捕获fragment 来处理事务,例如移除它.)**                
+
 	有3 种方法来为一个`fragment` 提供一个标识:             
-		1. 为`android:id`属性提供一个唯一ID.
-		2. 为`android:tag`属性提供一个唯一字符串.
-		3. 如果以上2个你都没有提供,系统使用容器`view`的`ID`.
-		
+
+		1. 为`android:id`属性提供一个唯一ID.      
+		2. 为`android:tag`属性提供一个唯一字符串.       
+		3. 如果以上2个你都没有提供,系统使用容器`view`的`ID`.         
+		 
 	```java
 	public static ArticleFragment newInstance(int index) {
 		ArticleFragment f = new ArticleFragment();

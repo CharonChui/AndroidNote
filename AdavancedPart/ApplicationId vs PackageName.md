@@ -53,7 +53,7 @@ android {
 ```
 
 像之前一样，你需要在`Manifest`文件中指定你在代码中使用的'package name'，像上面`AndroidManifest.xml`的例子。        
-***下面进入关键部分了：***当你按照上面的方式做完后，这两个包就是相互独立的了。你现在可以很简单的重构你的代码-通过修改`Manifest`中的包名来修改在你的`activitise`和`services`中使用的包和在重构你在代码中的引用声明。这不会影响你应用的最终`id`，也就是在`Gradle`文件中的`applicationId`。       
+下面进入关键部分了:当你按照上面的方式做完后，这两个包就是相互独立的了。你现在可以很简单的重构你的代码-通过修改`Manifest`中的包名来修改在你的`activitise`和`services`中使用的包和在重构你在代码中的引用声明。这不会影响你应用的最终`id`，也就是在`Gradle`文件中的`applicationId`。       
 
 你可以通过以下`Gradle DSL`方法为应用的`flavors`和`build types`指定不同的`applicationId`:       
 
@@ -78,9 +78,9 @@ buildTypes {
 ```
 (在`Android Studio`中你也可以通过图形化的`Project Structure`的对话框来更改上面所有的配置)
 
-***注意:***为了兼容性，如果你在`build.gradle`文件中没有定义`applicationId` ，那`applicationId`就是与`AndroidManifest.xml`中配置的包名相同的默认值。在这种情况下，这两者显然脱不了干系，如果你试图重构代码中的包就将会导致同时会改变你应用程序的`id`！在`Android Studio`中新创建的项目都是同时指定他们俩。     
+注意:为了兼容性，如果你在`build.gradle`文件中没有定义`applicationId` ，那`applicationId`就是与`AndroidManifest.xml`中配置的包名相同的默认值。在这种情况下，这两者显然脱不了干系，如果你试图重构代码中的包就将会导致同时会改变你应用程序的`id`！在`Android Studio`中新创建的项目都是同时指定他们俩。     
 
-***注意2:***`package name`必须在默认的`AndroidManifest.xml`文件中指定。如果有多个`manifest`文件(例如对每个`flavor`制定一个`manifest`或者每个`build type`制定一个`manifest`)时，`package name`是可选的，但是如果你指定的话，它必须与主`manifest`中指定的`pakcage`相同。
+注意2:`package name`必须在默认的`AndroidManifest.xml`文件中指定。如果有多个`manifest`文件(例如对每个`flavor`制定一个`manifest`或者每个`build type`制定一个`manifest`)时，`package name`是可选的，但是如果你指定的话，它必须与主`manifest`中指定的`pakcage`相同。
 
 		
 ---

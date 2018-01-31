@@ -9,11 +9,11 @@ Android6.0权限系统
 
 ![image](https://raw.githubusercontent.com/CharonChui/Pictures/master/runtimepermission.jpg?raw=true)  
 
-**注意:**上面请求权限的对话框不会自动弹出。开发者需要手动的调用。如果开发者调用了一些需要权限的功能，但是用户又拒绝授权的话，应用就会`crash`。   
+注意:上面请求权限的对话框不会自动弹出。开发者需要手动的调用。如果开发者调用了一些需要权限的功能，但是用户又拒绝授权的话，应用就会`crash`。   
 
 系统权限被分为两类，`normal`和`dangerous`:    
 
-- `Normal Permissions`不需要用户直接授权，如果你的应用在清单文件中声明了Normal Permissions`，系统会自动授权该权限。    
+- `Normal Permissions`不需要用户直接授权，如果你的应用在清单文件中声明了`Normal Permissions`，系统会自动授权该权限。    
 - `Dangerous Permissions`可以让应用获取用户的私人数据。如果你的应用在清单文件中申请了`Dangerous Permissions`，那就必须要用户来授权给应用。   
 
 `Normal Permissions`:    
@@ -72,7 +72,7 @@ Android6.0权限系统
 
 所以如果你的应用没有支持运行时权限的功能，那千万不要讲`targetSdkVersion`设置为23，否则就麻烦了。  
 
-> ***注意:***从`Android 6.0(API Level 23)`开始，即使应用的`targetSdkVersion`是比较低的版本，但是用户仍然可以在任何时候撤销对应用的授权。所以不管应用的`targetSdkVerison`是什么版本，你都要测试你的应用在不能获取权限时能不能正常运行。 
+> 注意:从`Android 6.0(API Level 23)`开始，即使应用的`targetSdkVersion`是比较低的版本，但是用户仍然可以在任何时候撤销对应用的授权。所以不管应用的`targetSdkVerison`是什么版本，你都要测试你的应用在不能获取权限时能不能正常运行。 
 
 下面介绍下如何使用`Android Support Library`来检查和请求权限。`Android`框架在`6.0`开始也提供了相同的方法。然而使用`support`包会比较简单，因为这样你就不需要在请求方法时判断当前的系统版本。(后面说的这几个类都是`android.support.v4`中的)    
 
@@ -102,7 +102,7 @@ int permissionCheck = ContextCompat.checkSelfPermission(thisActivity,
 
 为了能找到用户可能需要说明的情况，`android`提供了一个工具类方法`ActivityCompat.shouldShowRequestPermissionRationale().`。如果应用之前申请了该权限但是用户拒绝授权后该方法会返回`true`。(在Android 6.0之前调用的时候会直接返回false)     
 
-> ***注意：***如果用户之前拒绝了权限申请并且选择了请求权限对话框中的`Don’t ask again`选项，该方法就会返回`false`。如果设备策略禁止了该应用使用该权限，该方法也会返回`false`。(我测试的时候发现请求权限的对话框中并没有`Don’t asdk again`这一项)
+> 注意:如果用户之前拒绝了权限申请并且选择了请求权限对话框中的`Don’t ask again`选项，该方法就会返回`false`。如果设备策略禁止了该应用使用该权限，该方法也会返回`false`。(我测试的时候发现请求权限的对话框中并没有`Don’t asdk again`这一项)
 > ![image](https://raw.githubusercontent.com/CharonChui/Pictures/master/request_permission_dialog.png?raw=true)      
 
 ##### 申请需要的权限      
@@ -145,7 +145,7 @@ if (ContextCompat.checkSelfPermission(thisActivity,
 }
 ```
 
-> ***注意：***当调用`requestPermissions()`方法时，系统会显示一个标准的对话框。应用不能指定或者改变该对话框。如果你想提供一些信息或者说明给用户，你需要在调用`requestPermissions()`之前处理。    
+> 注意:当调用`requestPermissions()`方法时，系统会显示一个标准的对话框。应用不能指定或者改变该对话框。如果你想提供一些信息或者说明给用户，你需要在调用`requestPermissions()`之前处理。    
 
 ##### 处理请求权限的的结果     
 
@@ -183,7 +183,7 @@ public void onRequestPermissionsResult(int requestCode,
 
 系统提示的对话框会描述应用所需的`permission groud`。它不会列出特定的权限。例如，如果你申请了`READ_CONTACTS`权限，系统的对话框只会说你的应用需要获取设备的联系人信息。用户只需要授权每个`permission group`一次。如果你应用需要申请其他任何一个在该`permission group`中的权限时，系统会自动授权。在申请这些授权时，系统会像用户明确通过系统对话框统一授权时一样去调用`onRequestPermissionsResult()`方法并且传递`PERMISSION_GRANTED`参数。    
 
-> ***注意：***虽然用户已经授权了同一`permission group`中其他的任何权限，但是应用仍然需要明确申请每个需要的权限。例外，`permission group`中的权限在以后可能会发生变化。    
+> 注意:虽然用户已经授权了同一`permission group`中其他的任何权限，但是应用仍然需要明确申请每个需要的权限。例外，`permission group`中的权限在以后可能会发生变化。    
 
 例如，假设在应用的`manifest`文件中同时声明了`READ_CONTACTS`和`WRITE_CONTACTS`权限。如果你申请`READ_CONTACTS`权限而且用户同意了该权限，如果你想继续申请`WRITE_CONTACTS`权限，系统不会与用户有任何交互就会直接进行授权。     
 

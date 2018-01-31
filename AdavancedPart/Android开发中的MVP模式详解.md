@@ -50,11 +50,11 @@ Android开发中的MVP模式详解
 开始做:   
 
 - 先把`Model`做好吧，创建`User`类。  
+
     ```java
     public class User {
         private String email;
         private String password;
-    
         public User(String email, String password) {
             this.email = email;
             this.password = password;
@@ -66,7 +66,9 @@ Android开发中的MVP模式详解
         }
     }
     ```
+
 - 创建`ILoginView`接口，定义登录所需要的`ui`逻辑。    
+
     ```java
     public interface ILoginView {
         void showLoading();
@@ -78,6 +80,7 @@ Android开发中的MVP模式详解
 
 - 创建`LoginPresenter`类，使用`ILoginView`接口，那该类主要有什么功能呢？ 它主要是处理业务逻辑的，
     对于登录的话，当然是用户在`UI`页面输入邮箱和密码，然后`Presenter`去开线程、请求接口。然后得到登录结果再去让`UI`显示对应的视图。那自然就是有一个`void login(String email, String passowrd)`的方法了  
+
     ```java
     public class LoginPresenter {
         private ILoginView mLoginView;
@@ -115,6 +118,7 @@ Android开发中的MVP模式详解
     }       
     ```
 - 创建`LoginActivity`，实现`ILoginView`的接口，然后内部调用`LoginPresenter`来处理业务逻辑。
+
     ```java
     public class LoginActivity extends AppCompatActivity implements ILoginView {
         private LoginPresenter mLoginPresenter;
@@ -168,7 +172,7 @@ Android开发中的MVP模式详解
 ---
 
 
-上面只是抛砖引玉。`MVP`的有点十分明显，就是代码解耦、可以让逻辑清晰，但是同样它也会有缺点，它的缺点就是项目的复杂程度会增加，项目中会多出很多类。
+上面只是抛砖引玉。`MVP`的优点十分明显，就是代码解耦、可以让逻辑清晰，但是同样它也会有缺点，它的缺点就是项目的复杂程度会增加，项目中会多出很多类。
 之前很多人都在讨论该如何去正确的设计使用`MVP`来避免它的缺点，众说纷纭，很多人讨论的你死我活。直到`Google`发布了`MVP架构蓝图`，大家才意识到这才是规范。     
 
 项目地址:[android-architecture](https://github.com/googlesamples/android-architecture)

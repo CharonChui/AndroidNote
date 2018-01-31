@@ -7,14 +7,15 @@ ContentProvider
 安卓应用程序默认是无法获取到其他程序的数据，这是安卓安全学的基石(沙盒原理)。但是经常我们需要给其他应用分享数据，内容提供者就是一个这种可以分享数据给其他应用的接口。
 可以简单的理解为，内容提供者就是一个可以在不同应用程序间共享数据的组件，相当于一个中间人，一个程序把数据暴露给这个中间人，另一个则通过这个中间人获取相应的数据.        
 
-下面的这张图片能更直观的显示：
+下面的这张图片能更直观的显示:     
+
 ![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/ContentProvider_1.png)    
 
 - `ContentProvider`中的`getContext`和`AndroidTestCast`中的`getContext`方法一样，都是一个模拟的上下文，必须在该类初始化之后才会调用`setContext`方法将`context`设置成自己的成员变量中记录，
 	所以对于获取`getContext`的时候只能放在方法内，不能放到成员位置，因为在成员上时是null，而在方法内调用时该类就会已经初始化完了      
 
 - `ContentProvider`中的`query()`后不能关闭数据库，因为其他的应用在调用该`query`方法时需要继续使用该返回值`Cursor`，所以不能关闭数据库，因为数据库关闭之后`Cursor`就不能用了，
-	`Cursor`中保存的数据其实是数据库的一个引用，如果数据库关了`Cursor`就不能找到里面的数据了，`Cursor.close()`只是释放·Cursor·用到的资源。说到这里就多数一句
+	`Cursor`中保存的数据其实是数据库的一个引用，如果数据库关了`Cursor`就不能找到里面的数据了，`Cursor.close()`只是释放`Cursor`用到的资源。说到这里就多数一句
 	`According to Dianne Hackborn (Android framework engineer) there is no need to close the database in a content provider.`以为内容提供者是因为进程启动时便加载，之后就一直存在，当进程销毁
 	释放资源时会去关闭数据库。
 	

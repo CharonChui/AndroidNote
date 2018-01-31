@@ -4,9 +4,9 @@ Android四大组件之Service
 服务的两种开启方式：
 ---
 
-1. startService();开启服务.      
+1. `startService()`:开启服务.      
 	开启服务后 服务就会长期的后台运行,即使调用者退出了.服务仍然在后台继续运行.服务和调用者没有什么关系, 调用者是不可以访问服务里面的方法.
-2. bindService();绑定服务.           
+2. `bindService()`:绑定服务.           
 	服务开启后,生命周期与调用者相关联.调用者挂了,服务也会跟着挂掉.不求同时生,但求同时死.调用者和服务绑定在一起,调用者可以间接的调用到服务里面的方法.
 
 AIDL
@@ -14,8 +14,8 @@ AIDL
 
 本地服务:服务代码在本应用中     
 远程服务:服务在另外一个应用里面(另外一个进程里面)      
-aidl: android interface defination language
-IPC implementation : inter process communication        
+`aidl`: `android interface defination language`
+`IPC implementation` : `inter process communication`        
 
 服务混合调用的生命周期      
 ---

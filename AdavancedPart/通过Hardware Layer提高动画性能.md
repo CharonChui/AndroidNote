@@ -61,7 +61,7 @@ animator.addListener(new AnimatorListenerAdapter() {
 animator.start();  
 
 ```
-但是如果在`4.0.x`的版本中使用上面的代码会本亏，必须要把`setLayerType`放到`Runnable`中。如下:   
+但是如果在`4.0.x`的版本中使用上面的代码会崩溃，必须要把`setLayerType`放到`Runnable`中。如下:   
 ```java
 mView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
 
