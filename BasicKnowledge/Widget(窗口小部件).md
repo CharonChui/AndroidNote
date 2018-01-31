@@ -122,37 +122,42 @@ Widget简介
 
 ## Widget的声明周期
 
-	`Widget`就是一个特殊的广播接收者
-	1. 当界面上第一个`widget`被创建的时候
-		01-14 02:17:14.348: INFO/System.out(1853): onEnabled   当`widget`第一次被创建的时候调用. 非常适合做应用程序的初始化.
-		01-14 02:17:14.348: INFO/System.out(1853): onReceive
-		01-14 02:17:14.357: INFO/System.out(1853): onUpdate     当有新的`widget`被创建的时候 更新界面的操作. 当时间片到的时候`onupdate()`调用.
-		01-14 02:17:14.357: INFO/System.out(1853): onReceive
+`Widget`就是一个特殊的广播接收者
+1. 当界面上第一个`widget`被创建的时候
+	```
+	01-14 02:17:14.348: INFO/System.out(1853): onEnabled   当`widget`第一次被创建的时候调用. 非常适合做应用程序的初始化.
+	01-14 02:17:14.348: INFO/System.out(1853): onReceive
+	01-14 02:17:14.357: INFO/System.out(1853): onUpdate     当有新的`widget`被创建的时候 更新界面的操作. 当时间片到的时候`onupdate()`调用.
+	01-14 02:17:14.357: INFO/System.out(1853): onReceive
+	```
 
-	2. 当界面上第二个`widget`被创建的时候 
-		01-14 02:18:10.148: INFO/System.out(1853): onUpdate
-		01-14 02:18:10.148: INFO/System.out(1853): onReceive
-
-	3. 再创建新的`widget`
-		01-14 02:18:10.148: INFO/System.out(1853): onUpdate
-		01-14 02:18:10.148: INFO/System.out(1853): onReceive
-
-	4. 从界面上移除一个`widget`
-		01-14 02:19:11.709: INFO/System.out(1853): onDeleted
-		01-14 02:19:11.709: INFO/System.out(1853): onReceive
-
-	5. 最后一个`widget`被移除
-		01-14 02:19:37.509: INFO/System.out(1853): onDeleted
-		01-14 02:19:37.509: INFO/System.out(1853): onReceive
-		01-14 02:19:37.509: INFO/System.out(1853): onDisabled  当`widget`从界面上全部移除的时候调用的方法. 非常适合删除临时文件停止后台服务.
-		01-14 02:19:37.509: INFO/System.out(1853): onReceive
-
-	6. `widget`就是一个特殊的广播接受者 当有新的事件产生的是 肯定会调用 `onReceive()`;
+2. 当界面上第二个`widget`被创建的时候 
+	```
+	01-14 02:18:10.148: INFO/System.out(1853): onUpdate
+	01-14 02:18:10.148: INFO/System.out(1853): onReceive
+	```
+3. 再创建新的`widget`
+	```
+	01-14 02:18:10.148: INFO/System.out(1853): onUpdate
+	01-14 02:18:10.148: INFO/System.out(1853): onReceive
+	```
+4. 从界面上移除一个`widget`
+    ```
+	01-14 02:19:11.709: INFO/System.out(1853): onDeleted
+	01-14 02:19:11.709: INFO/System.out(1853): onReceive
+    ```
+5. 最后一个`widget`被移除
+    ```
+	01-14 02:19:37.509: INFO/System.out(1853): onDeleted
+	01-14 02:19:37.509: INFO/System.out(1853): onReceive
+	01-14 02:19:37.509: INFO/System.out(1853): onDisabled  当`widget`从界面上全部移除的时候调用的方法. 非常适合删除临时文件停止后台服务.
+	01-14 02:19:37.509: INFO/System.out(1853): onReceive
+    ```
+6. `widget`就是一个特殊的广播接受者 当有新的事件产生的是 肯定会调用 `onReceive()`;
 	
-**
+
 注意: 在不同的手机上  widget的生命周期调用方法 可能有细微的不同.
 360桌面 go桌面 awt桌面 腾讯桌面 小米桌面
-**
 	
 ---
 
