@@ -52,7 +52,7 @@ android {
 ```
 
 
-- `buildscript { ... }`配置了编译时的代码驱动. 这种情况下，它声明所使用的是`jCenter`仓库。还有一个声明所依赖的在`Maven`文件的路径。这里声明的包含了`Android`插件所使用的1.5.0版本的`Gradle`. ***注意:***这只会影响`build`中运行的代码，不是项目中。项目中需要声明它自己所需要仓库和依赖关系。
+- `buildscript { ... }`配置了编译时的代码驱动. 这种情况下，它声明所使用的是`jCenter`仓库。还有一个声明所依赖的在`Maven`文件的路径。这里声明的包含了`Android`插件所使用的1.5.0版本的`Gradle`. 注意:这只会影响`build`中运行的代码，不是项目中。项目中需要声明它自己所需要仓库和依赖关系。
 - `apply plugin : com.android.application`，声明使用`com.androdi.application`插件。这是构建`Android`应用所需要的插件。
 - `android{...}`配置了所有`Android`构建时的参数。默认情况下，只有编译的目标版本以及编译工具的版本是需要的。
 
@@ -91,7 +91,7 @@ android {
 }
 ```
 就像有些人就是要把`so`放到`libs`目录中(这类人有点犟)，那就需要这样进行修改。    
-***注意:***因为在旧的项目结构中所有的源文件(`Java`,`AIDL`和`RenderScript`)都放到同一个目录中，我们需要将`sourceSet`中的这些新部件都设置给`src`目录。
+注意:因为在旧的项目结构中所有的源文件(`Java`,`AIDL`和`RenderScript`)都放到同一个目录中，我们需要将`sourceSet`中的这些新部件都设置给`src`目录。
 
 Build Tasks
 ---
@@ -108,7 +108,7 @@ Build Tasks
     - `assembleDebug`
     - `assembleRelease`  
     
-***提示:***`Gradle`支持通过命令行执行任务首字母缩写的方式。例如:      
+提示:`Gradle`支持通过命令行执行任务首字母缩写的方式。例如:      
 在没有其他任务符合`aR`的前提下，`gradle aR`与`gradle assembleRelease`是相同的。
 
 最后，构建插件创建了为所有`build type(debug, release, test)`类型安装和卸载的任务，只要他们能被安装(需要签名)。
@@ -157,7 +157,7 @@ android {
     }
 }
 ```
-***注意:***不要使用可能与现有给定冲突的方法名。例如`defaultConfig{...}`中使用`getVersionName()`方法将会自动使用`defaultConfig.getVersionName()`来带起自定义的方法。
+注意:不要使用可能与现有给定冲突的方法名。例如`defaultConfig{...}`中使用`getVersionName()`方法将会自动使用`defaultConfig.getVersionName()`来带起自定义的方法。
 
 ##### `Build Types`
 
@@ -249,7 +249,7 @@ android {
     ...
 }
 ```
-***注意:***`DSL`元素中的`dependencies`是`Gradle API`中的标准元素。不属于`andorid`元素。      
+注意:`DSL`元素中的`dependencies`是`Gradle API`中的标准元素。不属于`andorid`元素。      
 `compile`配置是用来编译主应用的。它配置的所有部分都会被打包到`apk`中。当然也有一些其他的配置:      
 
 - `compile`: `main application`
@@ -279,8 +279,8 @@ android {
 }
 ```
 
-***注意: ***`jcenter()`是指定仓库`URL`的快捷设置。`Gradle`支持远程和本地仓库。
-***注意: ***`Gradle`会直接识别所有的依赖关系。这就意味着如果一个依赖库自身又依赖别的库时，他们会被一起下下来。
+注意:`jcenter()`是指定仓库`URL`的快捷设置。`Gradle`支持远程和本地仓库。
+注意:`Gradle`会直接识别所有的依赖关系。这就意味着如果一个依赖库自身又依赖别的库时，他们会被一起下下来。
 
 ##### 本地`AAR`库     
 

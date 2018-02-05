@@ -47,11 +47,11 @@ Retrofit retrofit = new Retrofit.Builder()
 
 简单的一句话，却埋藏了很多。     
 
-这是典型的***建造者模式、外观模式***      
+这是典型的建造者模式、外观模式      
 
 就想平时我们写的下载模块，作为一个公共的模块，我们可以对外提供一个`DownloadManager`供外界使用，而对于里面的实现我们完全可以闭门造车。    
 
-具体`baseUrl()`、`addConverterFactory()`方法里面的具体实现就不去看了，比较简单。当然这里也用到了***工厂设计模式***。
+具体`baseUrl()`、`addConverterFactory()`方法里面的具体实现就不去看了，比较简单。当然这里也用到了工厂设计模式。
 
 2. 创建对应的服务类
 ---
@@ -94,7 +94,7 @@ public <T> T create(final Class<T> service) {
   }
 ```
 
-看到`Proxy.newProxyInstance()`就明白了，这里使用了***动态代理***。简单的说动态代理是在你要调用某个`Class`的方法前或后，插入你想要执行的代码。那这里要代理的是什么方法？ `Call<List<Repo>> call = gitHubService.listRepos("CharonChui");`，这里就是`listRepos()`方法。   就是说在调用`listRepos()`方法时会被动态代理所拦截，然后执行`Proxy.newProxyInstance()`里面的`InvocationHandler.invoke()`中的部分。   而`invoke()`方法的三个参数分别是啥？ 分别是`Object proxy`: 代理对象，`Method method`：调用的方法，就是`listRepos()`方法，`Object... args`：方法的参数，这里是`CharonChui`。   
+看到`Proxy.newProxyInstance()`就明白了，这里使用了动态代理。简单的说动态代理是在你要调用某个`Class`的方法前或后，插入你想要执行的代码。那这里要代理的是什么方法？ `Call<List<Repo>> call = gitHubService.listRepos("CharonChui");`，这里就是`listRepos()`方法。   就是说在调用`listRepos()`方法时会被动态代理所拦截，然后执行`Proxy.newProxyInstance()`里面的`InvocationHandler.invoke()`中的部分。   而`invoke()`方法的三个参数分别是啥？ 分别是`Object proxy`: 代理对象，`Method method`：调用的方法，就是`listRepos()`方法，`Object... args`：方法的参数，这里是`CharonChui`。   
 
 有关动态代理介绍可以看[张孝祥老师的java1.5高新技术系列中的动态代理]()
 

@@ -641,7 +641,7 @@ private View makeAndAddView(int position, int y, boolean flow, int childrenLeft,
 }
 ```
 在`makeAndAddView()`方法里面就是通过`RecycleBin`来复用`View`，如果不存在可以复用的`View`时就创建一个新的。     
-那我们就先看一下`obtainView()方法，这个方法中的注释写的非常清楚，谷歌大神写代码就是规范，不想某些牛逼哄哄的人整天咋呼敏捷开发，一个注释也不写，那能叫敏捷？。      
+那我们就先看一下`obtainView()`方法，这个方法中的注释写的非常清楚，谷歌大神写代码就是规范，不想某些牛逼哄哄的人整天咋呼敏捷开发，一个注释也不写，那能叫敏捷？。      
 ```java
 /**
  * Get a view and have it show the data associated with the specified
@@ -969,7 +969,7 @@ private View fillSpecific(int position, int top) {
 
 一个个的来，先看一下手势滑动部分，这个当然是从`onTouchEvent()`方法看了，         
 手势这一块不太清楚的可以看我之前的一篇文章
-[Android Touch事件分发详解](https://github.com/CharonChui/AndroidNote/blob/master/Android%E5%8A%A0%E5%BC%BA/Android%20Touch%E4%BA%8B%E4%BB%B6%E5%88%86%E5%8F%91%E8%AF%A6%E8%A7%A3.md)
+[Android Touch事件分发详解](https://github.com/CharonChui/AndroidNote/blob/master/SourceAnalysis/Android%20Touch%E4%BA%8B%E4%BB%B6%E5%88%86%E5%8F%91%E8%AF%A6%E8%A7%A3.md)
 
 
 发现`ListView`没有重写`onTouchEvent()`方法，这也好理解，因为`GridView`也有类似的滑动功能，所以去父类`AbsListView`中看.      

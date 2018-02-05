@@ -13,6 +13,7 @@
 	
 	具体实现:      
 	- 饿汉式              
+
 		```java
 		public class Singleton {
 			private Singleton() {
@@ -26,6 +27,7 @@
 		}
 		```
 	- 懒汉式
+
 		```java
 		public class Singleton {
 			private Singleton() {
@@ -47,6 +49,7 @@
 		}
 		```
 	- 枚举	
+
 	    ```java
 		public enum Singleton {
 			INSTANCE;
@@ -56,33 +59,35 @@
 		}		
 		```
 	
-	我这里写一种自我感觉是单例最完美的实现方式:　　
-	```java
-	public class Singleton {
-		// Private constructor prevents instantiation from other classes
-		private Singleton() { }
+	- 我这里写一种自我感觉是单例最完美的实现方式
+	　　
+		```java
+		public class Singleton {
+			// Private constructor prevents instantiation from other classes
+			private Singleton() { }
 
-		/**
-		* SingletonHolder is loaded on the first execution of Singleton.getInstance() 
-		* or the first access to SingletonHolder.INSTANCE, not before.
-		*/
-		private static class SingletonHolder { 
-				public static final Singleton INSTANCE = new Singleton();
+			/**
+			* SingletonHolder is loaded on the first execution of Singleton.getInstance() 
+			* or the first access to SingletonHolder.INSTANCE, not before.
+			*/
+			private static class SingletonHolder { 
+					public static final Singleton INSTANCE = new Singleton();
+			}
+			public static Singleton getInstance() {
+					return SingletonHolder.INSTANCE;
+			}
 		}
-
-		public static Singleton getInstance() {
-				return SingletonHolder.INSTANCE;
-		}
-	}
-	```
+		```
 	
 3. 二维数组中的查找            
     题目描述：一个二维数组，每一行从左到右递增，每一列从上到下递增．输入一个二维数组和一个整数，判断数组中是否含有整数。
 	             
 	分析:     
+	```
 	1   6   11
 	5   9   15
 	7   13   20
+	```
 	
 	假设我们要找7，那怎么找呢？                
 	我们先从第一行找，从后往前找，因为他是递增的，先是11，这里11>7所以肯定不是第三列的。这时候我们就找第二列，       
@@ -186,8 +191,8 @@
 			if (headNode.next != null) {
 				printListReverse(headNode.next);
 			}
+			System.out.println(headNode.data);
 		}
-		System.out.println(headNode.data);
 	}
 	```
 	
@@ -248,7 +253,7 @@
 	```
 
 7. 用两个栈实现队列                      
-    用两个栈实现一个队列，实现对了的两个函数`appendTail`和     
+    用两个栈实现一个队列，实现队列的两个函数`appendTail`和     
     `deleteHead`，分别完成在队列尾插入结点和在队列头部删除结点的功能。        
 	思路： 栈是啥？栈是先进后出，因为栈是一个出口啊，先进入的被压在最下面了，出要从上面开始出，也就是吃了吐出来。         
 	队列是啥？两头的，就想管道一样，先进先出。不雅的说，就是吃了拉出来。            
@@ -460,7 +465,7 @@
     ```
 12. 打印 1 到最大的 n 位数            
     输入数字n，按顺序打印出从1最大的的n位数十进制数。比如输入3，则打印出1，2，3一直到最大的3位数即999.           
-    思路: 1位数就是10-1，两位数就是10*10-1三位数就是10*10*10-1              
+    思路: 1位数就是`10-1`，两位数就是`10*10-1`三位数就是`10*10*10-1`              
     
     ```java
     public void print1ToMaxOfNDigits(int n) {
@@ -515,7 +520,8 @@
 			}
 		}
 	}
-```
+	```
+
 13. 在O(1)时间删除链表节点            
     给定单向链表的头指针和一个节点指针，定义一个函数在O(1)时间删除该节点。          
     思路：在单向链表中删除一个节点，最常规的方法无疑是从链表的头结点开始，顺序遍历查找要删除的节点，并在链表中删除该节点。删除就是将这个要被删除的节点的前一节点设置成该要被删除节点的下一节点。- -！ 

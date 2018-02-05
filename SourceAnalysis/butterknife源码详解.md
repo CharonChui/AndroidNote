@@ -56,7 +56,7 @@ public @interface OnClick {
   @IdRes int[] value() default { View.NO_ID };
 }
 ```
-作用到方法上的编译时注解。我们发现该`注解还使用了`ListenerClass`注解，当然从上面的声明中可以很容易看出它的作用。   
+作用到方法上的编译时注解。我们发现该注解还使用了`ListenerClass`注解，当然从上面的声明中可以很容易看出它的作用。   
 那我们就继续简单的看一下`ListenerClass`注解的实现:   
 
 ```java
