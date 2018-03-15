@@ -115,6 +115,9 @@ Android学习笔记
     - [RecyclerView专题][84]
 
 - [Java基础及算法][53]
+	- [八种排序算法][189]
+	- [线程池的原理][190]
+	- [设计模式][191]
     - [常用命令行大全][85]
     - [单例的最佳实现方式][86]
     - [单链表][87]
@@ -403,7 +406,9 @@ Android学习笔记
 [186]: https://github.com/CharonChui/AndroidNote/blob/master/KotlinCourse/Kotlin%E5%AD%A6%E4%B9%A0%E6%95%99%E7%A8%8B(%E4%B8%83).md "Kotlin学习教程(七)"
 [187]: https://github.com/CharonChui/AndroidNote/blob/master/KotlinCourse/Kotlin%E5%AD%A6%E4%B9%A0%E6%95%99%E7%A8%8B(%E5%85%AB).md "Kotlin学习教程(八)"
 [188]: https://github.com/CharonChui/AndroidNote/blob/master/KotlinCourse/Kotlin%E5%AD%A6%E4%B9%A0%E6%95%99%E7%A8%8B(%E4%B9%9D).md "Kotlin学习教程(九)"
-
+[189]: https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledge/%E5%85%AB%E7%A7%8D%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.md "八种排序算法"
+[190]: https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledge/%E7%BA%BF%E7%A8%8B%E6%B1%A0%E7%9A%84%E5%8E%9F%E7%90%86.md "线程池的原理"
+[191]: https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledge/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F.md "设计模式"
 
 
 
