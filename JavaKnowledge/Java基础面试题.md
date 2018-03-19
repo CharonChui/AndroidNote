@@ -3,25 +3,22 @@ Java基础面试题
 
 本部分全部内容是根据张孝祥老师的Word文档整理而来。只不过是为了方便观看，把代码部分用`markdown`来展示。整理时脑海中不断回忆起张老师上课的情景，真是怀念。
 
-1. 一个".java"源文件中是否可以包括多个类（不是内部类）？有什么限制？            
+1. 一个`.java`源文件中是否可以包括多个类（不是内部类）？有什么限制？            
     可以有多个类，但只能有一个public的类，并且public的类名必须与文件名相一致。
-2. Java有没有goto?       
-	java中的保留字，现在没有在java中使用。
-3. 说说&和&&的区别。        
-	&和&&都可以用作逻辑与的运算符，表示逻辑与（and），当运算符两边的表达式的结果都为true时，整个运算结果才为true，否则，只要有一方为false，则结果为false。
-	&&还具有短路的功能，即如果第一个表达式为false，则不再计算第二个表达式，例如，对于if(str != null && !str.equals(“”))表达式，当str为null时，
-	后面的表达式不会执行，所以不会出现NullPointerException如果将&&改为&，则会抛出NullPointerException异常。If(x==33 & ++y>0) y会增长，
-	If(x==33 && ++y>0)不会增长&还可以用作位运算符，当&操作符两边的表达式不是boolean类型时，&表示按位与操作，
-	我们通常使用0x0f来与一个整数进行&运算，来获取该整数的最低4个bit位，例如，0x31 & 0x0f的结果为0x01。 
-	备注：这道题先说两者的共同点，再说出&&和&的特殊之处，并列举一些经典的例子来表明自己理解透彻深入、实际经验丰富。 
-4. 在JAVA中如何跳出当前的多重嵌套循环？         
-	在Java中，要想跳出多重循环，可以在外面的循环语句前定义一个标号，然后在里层循环体的代码中使用带有标号的break 语句，即可跳出外层循环。例如，
+2. `Java`有没有`goto`?       
+    `java`中的保留字，现在没有在`java`中使用。
+3. 说说`&`和`&&`的区别。        
+	`&`和`&&`都可以用作逻辑与的运算符，表示逻辑与`(and)`，当运算符两边的表达式的结果都为`true`时，整个运算结果才为`true`，
+    否则，只要有一方为`false`，则结果为`false`。
+	`&&`还具有短路的功能，即如果第一个表达式为`false`，则不再计算第二个表达式，例如，对于`if(str != null && !str.equals(“”))`表达式，当`str`为`null`时，
+	后面的表达式不会执行，所以不会出现`NullPointerException`如果将`&&`改为`&`，则会抛出`NullPointerException`异常。
+
+4. 在`JAVA`中如何跳出当前的多重嵌套循环？         
+	在`Java`中，要想跳出多重循环，可以在外面的循环语句前定义一个标号，然后在里层循环体的代码中使用带有标号的`break`语句，即可跳出外层循环。例如，
 	```java
 	ok:
-	for(int i=0;i<10;i++)
-	{
-		for(int j=0;j<10;j++)
-		{
+	for(int i=0;i<10;i++) {
+		for(int j=0;j<10;j++) {
 			System.out.println(“i=” + i + “,j=” + j);
 			if(j == 5) break ok;
 		}
@@ -31,13 +28,10 @@ Java基础面试题
 	```java
 	int arr[][] = {{1,2,3},{4,5,6,7},{9}};
 	boolean found = false;
-	for(int i=0;i<arr.length && !found;i++)
-		{
-			for(int j=0;j<arr[i].length;j++)
-			{
+	for(int i=0;i<arr.length && !found;i++) {
+			for(int j=0;j<arr[i].length;j++) {
 				System.out.println(“i=” + i + “,j=” + j);
-				if(arr[i][j]  == 5) 
-				{
+				if(arr[i][j]  == 5) {
 					found = true;
 					break;
 				}
@@ -45,26 +39,26 @@ Java基础面试题
 		} 
 	}
 	```
-5. switch语句能否作用在byte上，能否作用在long上，能否作用在String上?                   
-	在switch（expr1）中，expr1只能是一个整数表达式或者枚举常量（更大字体），整数表达式可以是int基本类型或Integer包装类型，由于，
-	byte,short,char都可以隐含转换为int，所以，这些类型以及这些类型的包装类型也是可以的。显然，long和String类型都不符合switch的语法规定，
-	并且不能被隐式转换成int类型，所以，它们不能作用于swtich语句中。 
-6. short s1 = 1; s1 = s1 + 1;有什么错? short s1 = 1; s1 += 1;有什么错?               
-	对于short s1 = 1; s1 = s1 + 1; 由于s1+1运算时会自动提升表达式的类型，所以结果是int型，再赋值给short类型s1时，编译器将报告需要强制转换类型的错误。
-	对于short s1 = 1; s1 += 1;由于 += 是java语言规定的运算符，java编译器会对它进行特殊处理，因此可以正确编译。 
-7. char型变量中能不能存贮一个中文汉字?为什么?               
-	char型变量是用来存储Unicode编码的字符的，unicode编码字符集中包含了汉字，所以，char型变量中当然可以存储汉字啦。不过，
-	如果某个特殊的汉字没有被包含在unicode编码字符集中，那么，这个char型变量中就不能存储这个特殊汉字。补充说明：unicode编码占用两个字节，
-	所以char类型的变量也是占用两个字节。
+5. `switch`语句能否作用在`byte`上，能否作用在`long`上，能否作用在`String`上?                   
+	在`switch（expr1）`中，`expr1`只能是一个整数表达式或者枚举常量（更大字体），整数表达式可以是`int`基本类型或`Integer`包装类型，由于，
+	`byte`,`short`,`char`都可以隐含转换为`int`，所以，这些类型以及这些类型的包装类型也是可以的。显然，`long`和`String`类型都不符合`switch`的语法规定，
+	并且不能被隐式转换成`int`类型，所以，它们不能作用于`swtich`语句中。 
+6. `short s1 = 1; s1 = s1 + 1`;有什么错? `short s1 = 1; s1 += 1`;有什么错?               
+	对于`short s1 = 1; s1 = s1 + 1`; 由于`s1+1`运算时会自动提升表达式的类型，所以结果是`int`型，再赋值给`short`类型`s1`时，编译器将报告需要强制转换类型的错误。
+	对于`short s1 = 1; s1 += 1`;由于`+=`是`java`语言规定的运算符，`java`编译器会对它进行特殊处理，因此可以正确编译。 
+7. `char`型变量中能不能存贮一个中文汉字?为什么?               
+	`char`型变量是用来存储`Unicode`编码的字符的，`unicode`编码字符集中包含了汉字，所以`char`型变量中当然可以存储汉字啦。不过，
+	如果某个特殊的汉字没有被包含在`unicode`编码字符集中，那么这个`char`型变量中就不能存储这个特殊汉字。补充说明：`unicode`编码占用两个字节，
+	所以`char`类型的变量也是占用两个字节。
 	备注：后面一部分回答虽然不是在正面回答题目，但是，为了展现自己的学识和表现自己对问题理解的透彻深入，可以回答一些相关的知识，做到知无不言，言无不尽。 
 8. 用最有效率的方法算出2乘以8等於几?             
-	2 << 3，            
-	因为将一个数左移n位，就相当于乘以了2的n次方，那么，一个数乘以8只要将其左移3位即可，而位运算cpu直接支持的，效率最高，
-	所以2乘以8等於几的最效率的方法是2 << 3。
+	`2 << 3`，            
+	因为将一个数左移`n`位，就相当于乘以了`2`的`n`次方，那么，一个数乘以8只要将其左移3位即可，而位运算`cpu`直接支持的，效率最高，
+	所以2乘以8等於几的最效率的方法是`2 << 3`。
 9. 请设计一个一百亿的计算器                   
 	首先要明白这道题目的考查点是什么，一是大家首先要对计算机原理的底层细节要清楚、要知道加减法的位运算原理和知道计算机中的算术运算会发生越界的情况，
 	二是要具备一定的面向对象的设计思想。首先，计算机中用固定数量的几个字节来存储的数值，所以计算机中能够表示的数值是有一定的范围的，
-	为了便于讲解和理解，我们先以byte 类型的整数为例，它用1个字节进行存储，表示的最大数值范围为-128到+127。-1在内存中对应的二进制数据为11111111，
+	为了便于讲解和理解，我们先以`byte` 类型的整数为例，它用1个字节进行存储，表示的最大数值范围为-128到+127。-1在内存中对应的二进制数据为11111111，
 	如果两个-1相加，不考虑Java运算时的类型提升，运算后会产生进位，二进制结果为1,11111110，由于进位后超过了byte类型的存储空间，所以进位部分被舍弃，
 	即最终的结果为11111110，也就是-2，这正好利用溢位的方式实现了负数的运算。-128在内存中对应的二进制数据为10000000，如果两个-128相加，
 	不考虑Java运算时的类型提升，运算后会产生进位，二进制结果为1,00000000，由于进位后超过了byte类型的存储空间，所以进位部分被舍弃，
@@ -91,16 +85,12 @@ Java基础面试题
 			val = ;
 		}
 		public BigInteger add(BigInteger other) {
-			
 		}
 		public BigInteger subtract(BigInteger other) {
-			
 		}
 		public BigInteger multiply(BigInteger other) {
-			
 		}
 		public BigInteger divide(BigInteger other) {
-			
 		}
 	}
 	```
@@ -111,8 +101,8 @@ Java基础面试题
 	机会当然就属于你了。另外，答案中的框架代码也很重要，体现了一些面向对象设计的功底，特别是其中的方法命名很专业，用的英文单词很精准，
 	这也是能力、经验、专业性、英语水平等多个方面的体现，会给人留下很好的印象，在编程能力和其他方面条件差不多的情况下，英语好除了可以使你获得更多机会外，
 	薪水可以高出一千元。 
-10. 使用final关键字修饰一个变量时，是引用不能变，还是引用的对象不能变？           
-	使用final关键字修饰一个变量时，是指引用变量不能变，引用变量所指向的对象中的内容还是可以改变的。例如，对于如下语句：
+10. 使用`final`关键字修饰一个变量时，是引用不能变，还是引用的对象不能变？           
+	使用`final`关键字修饰一个变量时，是指引用变量不能变，引用变量所指向的对象中的内容还是可以改变的。例如，对于如下语句：
 	`final StringBuffer a=new StringBuffer("immutable");`         
 	执行如下语句将报告编译期错误：         
 	`a=new StringBuffer("");`         
@@ -125,10 +115,10 @@ Java基础面试题
 	```
 	实际上，这是办不到的，在该方法内部仍然可以增加如下代码来修改参数对象：
 	`param.append("a");`
-11. "=="和equals方法究竟有什么区别？    
+11. `==`和`equals`方法究竟有什么区别？    
 	（单独把一个东西说清楚，然后再说清楚另一个，这样，它们的区别自然就出来了，混在一起说，则很难说清楚）
-	==操作符专门用来比较两个变量的值是否相等，也就是用于比较变量所对应的内存中所存储的数值是否相同，要比较两个基本类型的数据或两个引用变量是否相等，
-	只能用==操作符。如果一个变量指向的数据是对象类型的，那么，这时候涉及了两块内存，对象本身占用一块内存（堆内存），变量也占用一块内存，
+	`==`操作符专门用来比较两个变量的值是否相等，也就是用于比较变量所对应的内存中所存储的数值是否相同，要比较两个基本类型的数据或两个引用变量是否相等，
+	只能用`==`操作符。如果一个变量指向的数据是对象类型的，那么，这时候涉及了两块内存，对象本身占用一块内存（堆内存），变量也占用一块内存，
 	例如`Objet obj = new Object();`变量obj是一个内存，new Object()是另一个内存，此时，变量obj所对应的内存中存储的数值就是对象占用的那块内存的首地址。
 	对于指向对象类型的变量，如果要比较两个变量是否指向同一个对象，即要看这两个变量所对应的内存中的数值是否相等，这时候就需要用==操作符进行比较。
 	equals方法是用于比较两个独立对象的内容是否相同，就好比去比较两个人的长相是否相同，它比较的两个对象是独立的。例如，对于下面的代码：            
@@ -148,11 +138,11 @@ Java基础面试题
 	这时候使用equals和使用==会得到同样的结果，如果比较的是两个独立的对象则总返回false。如果你编写的类希望能够比较该类创建的两个实例对象的内容是否相同，
 	那么你必须覆盖equals方法，由你自己写代码来决定在什么情况即可认为两个对象的内容是相同的。
 12. 静态变量和实例变量的区别？ 
-	在语法定义上的区别：静态变量前要加static关键字，而实例变量前则不加。     
+	在语法定义上的区别：静态变量前要加`static`关键字，而实例变量前则不加。     
 	在程序运行时的区别：实例变量属于某个对象的属性，必须创建了实例对象，其中的实例变量才会被分配空间，才能使用这个实例变量。静态变量不属于某个实例对象，
 	而是属于类，所以也称为类变量，只要程序加载了类的字节码，不用创建任何实例对象，静态变量就会被分配空间，静态变量就可以被使用了。
 	总之实例变量必须创建对象后才可以通过这个对象来使用，静态变量则可以直接使用类名来引用。
-	例如，对于下面的程序，无论创建多少个实例对象，永远都只分配了一个staticVar变量，并且每创建一个实例对象，这个staticVar就会加1；但是，每创建一个实例对象，
+	例如，对于下面的程序，无论创建多少个实例对象，永远都只分配了一个`static Var`变量，并且每创建一个实例对象，这个staticVar就会加1；但是，每创建一个实例对象，
 	就会分配一个instanceVar，即可能分配多个instanceVar，并且每个instanceVar的值都只自加了1次。
 	```java
 	public class VariantTest {
@@ -184,10 +174,12 @@ Java基础面试题
 	该方法就表示向上取整，所以，Math.ceil(11.3)的结果为12,Math.ceil(-11.3)的结果是-11；floor的英文意义是地板，该方法就表示向下取整，
 	所以，Math.floor(11.6)的结果为11,Math.floor(-11.6)的结果是-12；最难掌握的是round方法，它表示“四舍五入”，算法为Math.floor(x+0.5)，
 	即将原来的数字加上0.5后再向下取整，所以，Math.round(11.5)的结果为12，Math.round(-11.5)的结果为-11。
-15. 下面的代码有什么不妥之处?                
-	- if(username.equals(“zxx”){}
-	- int  x = 1;
+15. 下面的代码有什么不妥之处?    
+    ```java
+	if(username.equals(“zxx”){}
+	int  x = 1;
 	    return x==1?true:false;
+    ```
 	这个我就不说了吧，你能看出来的。
 16. Overload和Override的区别。Overloaded的方法是否可以改变返回值的类型?          
 	Overload是重载的意思，Override是覆盖的意思，也就是重写。     
@@ -339,7 +331,6 @@ Java基础面试题
 			}
 			Inner2 inner2 = new Inner2();
 		}
-
 		public class Inner1   //在方法体外面定义的内部类
 		{
 		}			
@@ -383,7 +374,6 @@ Java基础面试题
 		public static void main(String[] args) {
 			new Test().test();
 		}
-		
 		public void test(){
 			System.out.println(super.getClass().getName());
 		}
@@ -499,7 +489,6 @@ Java基础面试题
 	也许你的答案是在return之前，但往更细地说，我的答案是在return中间执行，请看下面程序代码的运行结果： 
 	```java
 	public  class Test {
-
 		/**
 		 * @param args add by zxx ,Dec 9, 2008
 		 */
@@ -507,9 +496,7 @@ Java基础面试题
 			// TODO Auto-generated method stub
 			System.out.println(new Test().test());;
 		}
-
-		static int test()
-		{
+		static int test() {
 			int x = 1;
 			try
 			{
@@ -520,7 +507,6 @@ Java基础面试题
 				++x;
 			}
 		}
-		
 	}
 	```
 	---------执行结果 ---------
@@ -536,7 +522,6 @@ Java基础面试题
 			int  b  =  t.get();
 			System.out.println(b);
 		}
-		
 		public int  get() {
 			try
 			{
@@ -548,7 +533,6 @@ Java基础面试题
 			}
 		}
 	}
-
 	返回的结果是2。
 	我可以通过下面一个例子程序来帮助我解释这个答案，从下面例子的运行结果中可以发现，try中的return语句调用的函数先于finally中调用的函数执行，
 	也就是说return语句先执行，finally语句后执行，所以，返回的结果是2。Return并不是让函数马上返回，而是return语句执行后，将把返回结果放置进函数栈中，
@@ -563,7 +547,6 @@ Java基础面试题
 			// TODO Auto-generated method stub
 			System.out.println(new Test().test());;
 		}
-
 		int test() {
 			try
 			{
@@ -574,7 +557,6 @@ Java基础面试题
 				return func2();
 			}
 		}
-		
 		int func1() {
 			System.out.println("func1");
 			return 1;
@@ -585,13 +567,11 @@ Java基础面试题
 		}	
 	}
 	-----------执行结果-----------------
-
 	func1
 	func2
 	2
 	```
 	结论：finally中的代码比return 和break语句后执行
-
 39. final, finally, finalize的区别。          
 	final 用于声明属性，方法和类，分别表示属性不可变，方法不可覆盖，类不可继承。 
 	内部类要访问局部变量，局部变量必须定义成final类型.       
@@ -615,7 +595,7 @@ Java基础面试题
 		public void run(){
 		}
 	}.start();
-
+	```
 	第二种：         
 	```java
 	new Thread(new Runnable(){}).start();这表示调用Thread对象接受的Runnable对象的run方法，new Runnable(){}表示一个Runnable的匿名子类的实例对象,runnable的子类加上run方法后的代码如下：
@@ -624,7 +604,6 @@ Java基础面试题
 			}	
 		}
 	).start();
-		
 	```
 	从java5开始，还有如下一些线程池创建多线程的方式：    
 	```java
@@ -692,49 +671,35 @@ Java基础面试题
 	   } 
 	} 
 	} 
-
 	----------随手再写的一个-------------
-	class A
-	{
-	JManger j =new JManager();
-	main()
-	{
-		new A().call();
-	}
-
-	void call
-	{
-		for(int i=0;i<2;i++)
-		{
-			new Thread(
-				new Runnable(){ public void run(){while(true){j.accumulate()}}}
-			).start();
-			new Thread(new Runnable(){ public void run(){while(true){j.sub()}}}).start();
+	class A {
+		JManger j =new JManager();
+		main() {
+			new A().call();
+		}
+		void call {
+			for(int i=0;i<2;i++) {
+				new Thread(
+					new Runnable(){ public void run(){while(true){j.accumulate()}}}
+				).start();
+				new Thread(new Runnable(){ public void run(){while(true){j.sub()}}}).start();
+			}
 		}
 	}
-	}
-
-	class JManager
-	{
-		private j = 0;
-		
-		public synchronized void subtract()
-		{
+	class JManager {
+		private j = 0;	
+		public synchronized void subtract() {
 			j--
 		}
-		
-		public synchronized void accumulate()
-		{
+		public synchronized void accumulate() {
 			j++;
 		}
-		
 	}
 	```
 	
 46. 子线程循环10次，接着主线程循环100，接着又回到子线程循环10次，接着再回到主线程又循环100，如此循环50次，请写出程序。         
 	```java
 	public class ThreadTest {
-
 		/**
 		 * @param args
 		 */
@@ -742,36 +707,24 @@ Java基础面试题
 			// TODO Auto-generated method stub
 			new ThreadTest().init();
 		}
-
-		public void init()
-		{
+		public void init() {
 			final Business business = new Business();
 			new Thread(
-					new Runnable()
-					{
-
+					new Runnable() {
 						public void run() {
-							for(int i=0;i<50;i++)
-							{
+							for(int i=0;i<50;i++) {
 								business.SubThread(i);
 							}						
 						}
-						
 					}
-			
 			).start();
-			
-			for(int i=0;i<50;i++)
-			{
+			for(int i=0;i<50;i++) {
 				business.MainThread(i);
 			}		
 		}
-		
-		private class Business
-		{
+		private class Business {
 			boolean bShouldSub = true;//这里相当于定义了控制该谁执行的一个信号灯
-			public synchronized void MainThread(int i)
-			{
+			public synchronized void MainThread(int i) {
 				if(bShouldSub)
 					try {
 						this.wait();
@@ -779,27 +732,21 @@ Java基础面试题
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}		
-					
-				for(int j=0;j<5;j++)
-				{
+				for(int j=0;j<5;j++) {
 					System.out.println(Thread.currentThread().getName() + ":i=" + i +",j=" + j);
 				}
 				bShouldSub = true;
 				this.notify();
 			}	
-		
-			public synchronized void SubThread(int i)
-			{
+			public synchronized void SubThread(int i) {
 				if(!bShouldSub)
 					try {
 						this.wait();
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
-					}	
-					
-				for(int j=0;j<10;j++)
-				{
+					}	 
+				for(int j=0;j<10;j++) {
 					System.out.println(Thread.currentThread().getName() + ":i=" + i +",j=" + j);
 				}
 				bShouldSub = false;				
@@ -807,122 +754,98 @@ Java基础面试题
 			}
 		}
 	}
-
 	备注：不可能一上来就写出上面的完整代码，最初写出来的代码如下，问题在于两个线程的代码要参照同一个变量，即这两个线程的代码要共享数据，
-	所以，把这两个线程的执行代码搬到同一个类中去：
-
+	所以，把这两个线程的执行代码搬到同一个类中去:   
+	```java
 	package com.huawei.interview.lym;
-
 	public class ThreadTest {
-		
 		private static boolean bShouldMain = false;
-		
 		public static void main(String[] args) {
 			// TODO Auto-generated method stub
 			/*new Thread(){
-			public void run()
-			{
-				for(int i=0;i<50;i++)
-				{
-					for(int j=0;j<10;j++)
-					{
+			public void run() {
+				for(int i=0;i<50;i++) {
+					for(int j=0;j<10;j++) {
 						System.out.println("i=" + i + ",j=" + j);
 					}
 				}				
 			}
-			
 		}.start();*/		
-			
-			//final String str = new String("");
-			new Thread(
-					new Runnable()
-					{
-						public void run()
-						{
-							for(int i=0;i<50;i++)
-							{
-								synchronized (ThreadTest.class) {
-									if(bShouldMain)
-									{
-										try {
-											ThreadTest.class.wait();} 
-										catch (InterruptedException e) {
-											e.printStackTrace();
-										}
+		//final String str = new String("");
+		new Thread(
+				new Runnable() {
+					public void run() {
+						for(int i=0;i<50;i++) {
+							synchronized (ThreadTest.class) {
+								if(bShouldMain) {
+									try {
+										ThreadTest.class.wait();} 
+									catch (InterruptedException e) {
+										e.printStackTrace();
 									}
-									for(int j=0;j<10;j++)
-									{
-										System.out.println(
-												Thread.currentThread().getName() + 
-												"i=" + i + ",j=" + j);
-									}
-									bShouldMain = true;
-									ThreadTest.class.notify();
-								}							
-							}						
-						}
+								}
+								for(int j=0;j<10;j++) {
+									System.out.println(
+											Thread.currentThread().getName() + 
+											"i=" + i + ",j=" + j);
+								}
+								bShouldMain = true;
+								ThreadTest.class.notify();
+							}							
+						}						
 					}
-			).start();
+				}
+		).start();
 			
-			for(int i=0;i<50;i++)
-			{
-				synchronized (ThreadTest.class) {
-					if(!bShouldMain)
-					{
-						try {
-							ThreadTest.class.wait();} 
-						catch (InterruptedException e) {
-							e.printStackTrace();
-						}
-					}				
-					for(int j=0;j<5;j++)
-					{
-						System.out.println(
-								Thread.currentThread().getName() + 						
-								"i=" + i + ",j=" + j);
+		for(int i=0;i<50;i++) {
+			synchronized (ThreadTest.class) {
+				if(!bShouldMain) {
+					try {
+						ThreadTest.class.wait();} 
+					catch (InterruptedException e) {
+						e.printStackTrace();
 					}
-					bShouldMain = false;
-					ThreadTest.class.notify();				
-				}			
-			}
+				}				
+				for(int j=0;j<5;j++) {
+					System.out.println(
+							Thread.currentThread().getName() + 						
+							"i=" + i + ",j=" + j);
+				}
+				bShouldMain = false;
+				ThreadTest.class.notify();				
+			}			
 		}
 	}
-	下面使用jdk5中的并发库来实现的：
+	```
+	下面使用jdk5中的并发库来实现的:   
+	```java
 	import java.util.concurrent.Executors;
 	import java.util.concurrent.ExecutorService;
 	import java.util.concurrent.locks.Lock;
 	import java.util.concurrent.locks.ReentrantLock;
 	import java.util.concurrent.locks.Condition;
 
-	public class ThreadTest
-	{
+	public class ThreadTest {
 		private static Lock lock = new ReentrantLock();
 		private static Condition subThreadCondition = lock.newCondition();
 		private static boolean bBhouldSubThread = false;
-		public static void main(String [] args)
-		{
+		public static void main(String [] args) {
 			ExecutorService threadPool = Executors.newFixedThreadPool(3);
 			threadPool.execute(new Runnable(){
-				public void run()
-				{
-					for(int i=0;i<50;i++)
-					{
+				public void run() {
+					for(int i=0;i<50;i++) {
 						lock.lock();					
-						try
-						{					
+						try {					
 							if(!bBhouldSubThread)
 								subThreadCondition.await();
-							for(int j=0;j<10;j++)
-							{
+							for(int j=0;j<10;j++) {
 								System.out.println(Thread.currentThread().getName() + ",j=" + j);
 							}
 							bBhouldSubThread = false;
 							subThreadCondition.signal();
-						}catch(Exception e)
-						{						
+						}catch(Exception e) {						
 						}
-						finally
-						{
+						finally {
 							lock.unlock();
 						}
 					}			
@@ -930,24 +853,19 @@ Java基础面试题
 				
 			});
 			threadPool.shutdown();
-			for(int i=0;i<50;i++)
-			{
+			for(int i=0;i<50;i++) {
 					lock.lock();					
-					try
-					{	
+					try {	
 						if(bBhouldSubThread)
 								subThreadCondition.await();								
-						for(int j=0;j<10;j++)
-						{
+						for(int j=0;j<10;j++) {
 							System.out.println(Thread.currentThread().getName() + ",j=" + j);
 						}
 						bBhouldSubThread = true;
 						subThreadCondition.signal();					
-					}catch(Exception e)
-					{						
+					} catch(Exception e) {						
 					}
-					finally
-					{
+					finally {
 						lock.unlock();
 					}					
 			}
@@ -1068,9 +986,7 @@ Java基础面试题
 	在软件发布后，assertion检查通常是关闭的。 
 	```java
 	package com.huawei.interview;
-
 	public class AssertTest {
-
 		/**
 		 * @param args
 		 */
@@ -1085,7 +1001,6 @@ Java基础面试题
 			--i;
 			assert i==5;		
 		}
-
 	}
 	```
 
@@ -1098,7 +1013,6 @@ Java基础面试题
 	（下面的例如主要是便于大家学习理解只用，不要作为答案的一部分，否则，人家怀疑是题目泄露了）例如，运行下面的程序：
     ```java
 	package java.lang;
-
 	public class String {
 		/**
 		 * @param args
@@ -1125,14 +1039,11 @@ Java基础面试题
 	```java
 	import java.util.regex.Matcher;
 	import java.util.regex.Pattern;
-
 	public class RegexTest {
-
 		/**
 		 * @param args
 		 */
 		public static void main(String[] args) {
-			
 			// 测试是否为合法的身份证号码
 			String[] strs = { "130681198712092019", "13068119871209201x",
 					"13068119871209201", "123456789012345", "12345678901234x",
@@ -1142,7 +1053,6 @@ Java基础面试题
 				Matcher matcher = p1.matcher(strs[i]);
 				System.out.println(strs[i] + ":" + matcher.matches());
 			}
-
 			Pattern p2 = Pattern.compile("\\d{6}(\\d{8}).*"); // 用于提取出生日字符串
 			Pattern p3 = Pattern.compile("(\\d{4})(\\d{2})(\\d{2})");// 用于将生日字符串进行分解为年月日
 			for (int i = 0; i < strs.length; i++) {
@@ -1158,22 +1068,17 @@ Java基础面试题
 										+ matcher2.group(3) + "日");
 					}
 				}
-
 			}
-
 		}
-
 	}
 	```
 	
 2. 编写一个程序，将a.txt文件中的单词与b.txt文件中的单词交替合并到c.txt文件中，a.txt文件中的单词用回车符分隔，b.txt文件中用回车或空格进行分隔。             
 	```java
 	package cn.itcast;
-
 	import java.io.File;
 	import java.io.FileReader;
 	import java.io.FileWriter;
-
 	public class MainClass{
     	public static void main(String[] args) throws Exception{
     		FileManager a = new FileManager("a.txt",new char[]{'\n'});
@@ -1187,14 +1092,12 @@ Java基础面试题
     			if(bWord != null)
     				c.write(bWord + "\n");
     		}
-    		
     		while((bWord = b.nextWord()) != null){
     			c.write(bWord + "\n");
     		}	
     		c.close();
     	}
 	}
-
 	class FileManager{
     	String[] words = null;
     	int pos = 0;
@@ -1212,7 +1115,6 @@ Java基础面试题
     		}
     		words = results.split(regex);
     	}
-    
     	public String nextWord(){
     		if(pos == words.length)
     			return null;
@@ -1231,23 +1133,18 @@ Java基础面试题
 	import java.io.IOException;
 	import java.io.InputStream;
 	import java.io.OutputStream;
-
 	public class Jad2Java {
-
 	public static void main(String[] args) throws Exception {
 		File srcDir = new File("java");
 		if(!(srcDir.exists() && srcDir.isDirectory()))
 				throw new Exception("目录不存在");
 		File[] files = srcDir.listFiles(
 			new FilenameFilter(){
-
 					public boolean accept(File dir, String name) {
 						return name.endsWith(".java");
 					}
-					
 				}
 		);
-		
 		System.out.println(files.length);
 		File destDir = new File("jad");
 		if(!destDir.exists()) destDir.mkdir();
@@ -1260,7 +1157,6 @@ Java基础面试题
 			fos.close();
 		}
 	}
-
 	private static void copy(InputStream ips,OutputStream ops) throws Exception{
 		int len = 0;
 		byte[] buf = new byte[1024];
@@ -1281,7 +1177,6 @@ Java基础面试题
 					return pathname.getName().endsWith(".java")
 				}
 			}
-			
 		2.将每个文件复制到另外一个目录，并改扩展名
 			2.1 得到目标目录，如果目标目录不存在，则创建之
 			2.2 根据源文件名得到目标文件名，注意要用正则表达式，注意.的转义。
@@ -1305,7 +1200,6 @@ Java基础面试题
 				acceptedFiles[pos++] = file;
 			}		
 		}
-		
 		Arrays.copyOf(acceptedFiles,pos);
 		//return (File[])accpetedFilesList.toArray();
 	}
@@ -1322,12 +1216,10 @@ Java基础面试题
 		int num = trimGBK(str.getBytes("GBK"),5);
 		System.out.println(str.substring(0,num) );
 	}
-	
 	public static int  trimGBK(byte[] buf,int n){
 		int num = 0;
 		boolean bChineseFirstHalf = false;
-		for(int i=0;i<n;i++)
-		{
+		for(int i=0;i<n;i++) {
 			if(buf[i]<0 && !bChineseFirstHalf){
 				bChineseFirstHalf = true;
 			}else{
@@ -1382,12 +1274,10 @@ Java基础面试题
 	代码如下：
 	```java
 	package com.huawei.interview;
-
 	public class Node {
 		public int value;
 		public Node left;
 		public Node right;
-		
 		public void store(int value) {
 			if(value<this.value) {
 				if(left == null) {
@@ -1405,7 +1295,6 @@ Java基础面试题
 				}			
 			}
 		}
-		
 		public boolean find(int value) {	
 			System.out.println("happen " + this.value);
 			if (value == this.value) {
@@ -1418,13 +1307,11 @@ Java基础面试题
 				return left.find(value);
 			}
 		}
-		
 		public  void preList() {
 			System.out.print(this.value + ",");
 			if(left!=null) left.preList();
 			if(right!=null) right.preList();
 		}
-		
 		public void middleList() {
 			if(left!=null) left.preList();
 			System.out.print(this.value + ",");
@@ -1442,15 +1329,12 @@ Java基础面试题
 				System.out.print(data[i] + ",");
 			}
 			System.out.println();
-			
 			Node root = new Node();
 			root.value = data[0];
 			for(int i=1;i<data.length;i++) {
 				root.store(data[i]);
 			}
-			
 			root.find(data[19]);
-			
 			root.preList();
 			System.out.println();
 			root.middleList();
@@ -1463,18 +1347,15 @@ Java基础面试题
 	```java
 	import java.util.Arrays;
 	import java.util.Iterator;
-
 	public class Node {
 		private Node left;
 		private Node right;
 		private int value;
 		//private int num;
-		
 		public Node(int value){
 			this.value = value;
 		}
 		public void add(int value){
-			
 			if(value > this.value) {
 				if(right != null) {
 					right.add(value);
@@ -1491,7 +1372,6 @@ Java基础面试题
 				}			
 			}
 		}
-		
 		public boolean find(int value){
 			if(value == this.value) {
 				return true;
@@ -1503,17 +1383,13 @@ Java基础面试题
 				else return left.find(value);			
 			}
 		}
-		
 		public void display(){
 			System.out.println(value);
 			if(left != null) left.display();
 			if(right != null) right.display();
 		}
-		
 		/*public Iterator iterator(){
-			
 		}*/
-		
 		public static void main(String[] args){
 			int[] values = new int[8];
 			for(int i=0;i<8;i++){
@@ -1525,29 +1401,21 @@ Java基础面试题
 				else
 					i--;
 			}
-			
 			System.out.println(Arrays.toString(values));
-			
 			Node root  = new Node(values[0]);
 			for(int i=1;i<values.length;i++){
 				root.add(values[i]);
 			}
-			
 			System.out.println(root.find(13));
-			
 			root.display();
-			
 		}
-		
 		public static boolean contains(int [] arr, int value){
 			int i = 0;
 			for(;i<arr.length;i++){
 				if(arr[i] == value) return true;
-				
 			}
 			return false;
 		}
-		
 	}
 	```
 	
@@ -1585,7 +1453,6 @@ Java基础面试题
 		// TODO Auto-generated method stub
 		//InputStream ips = GetNameTest.class.getResourceAsStream("/com/huawei/interview/info.txt");
 		//用上一行注释的代码和下一行的代码都可以，因为info.txt与GetNameTest类在同一包下面，所以，可以用下面的相对路径形式
-		
 		Map results = new HashMap();
 		InputStream ips = GetNameTest.class.getResourceAsStream("info.txt");
 		BufferedReader in = new BufferedReader(new InputStreamReader(ips));
@@ -1601,28 +1468,22 @@ Java基础面试题
 			e.printStackTrace();
 		}
 	}
-
-	static class User
-	{
+	static class User {
 		public  String name;
 		public Integer value;
-		public User(String name,Integer value)
-		{
+		public User(String name,Integer value) {
 			this.name = name;
 			this.value = value;
 		}
-
 		@Override
 		public boolean equals(Object obj) {
-			// TODO Auto-generated method stub
-				
+			// TODO Auto-generated method stub		
 			//下面的代码没有执行，说明往treeset中增加数据时，不会使用到equals方法。
 			boolean result = super.equals(obj);
 			System.out.println(result);
 			return result;
 		}
 	}
-
 	private static void sortResults(Map results) {
 		// TODO Auto-generated method stub
 		TreeSet sortedResults = new TreeSet(
@@ -1633,53 +1494,40 @@ Java基础面试题
 						User user2 = (User)o2;
 						/*如果compareTo返回结果0，则认为两个对象相等，新的对象不会增加到集合中去
 						 * 所以，不能直接用下面的代码，否则，那些个数相同的其他姓名就打印不出来。
-						 * */
-						
+						 * */					
 						//return user1.value-user2.value;
 						//return user1.value<user2.value?-1:user1.value==user2.value?0:1;
-						if(user1.value<user2.value)
-						{
+						if(user1.value<user2.value) {
 							return -1;
-						}else if(user1.value>user2.value)
-						{
+						}else if(user1.value>user2.value) {
 							return 1;
-						}else
-						{
+						}else {
 							return user1.name.compareTo(user2.name);
 						}
 					}
-					
 				}
 		);
 		Iterator iterator = results.keySet().iterator();
-		while(iterator.hasNext())
-		{
+		while(iterator.hasNext()) {
 			String name = (String)iterator.next();
 			Integer value = (Integer)results.get(name);
-			if(value > 1)
-			{				
+			if(value > 1) {				
 				sortedResults.add(new User(name,value));				
 			}
 		}
-		
 		printResults(sortedResults);
 	}
-	private static void printResults(TreeSet sortedResults) 
-	{
+	private static void printResults(TreeSet sortedResults) {
 		Iterator iterator  = sortedResults.iterator();
-		while(iterator.hasNext())
-		{
+		while(iterator.hasNext()) {
 			User user = (User)iterator.next();
 			System.out.println(user.name + ":" + user.value);
 		}	
 	}
-	public static void dealLine(String line,Map map)
-	{
-		if(!"".equals(line.trim()))
-		{
+	public static void dealLine(String line,Map map) {
+		if(!"".equals(line.trim())) {
 			String [] results = line.split(",");
-			if(results.length == 3)
-			{
+			if(results.length == 3) {
 				String name = results[1];
 				Integer value = (Integer)map.get(name);
 				if(value == null) value = 0;
@@ -1687,47 +1535,8 @@ Java基础面试题
 			}
 		}
 	}
-
 	}
-	```
-    
-8. 写一个Singleton出来。             
-	Singleton模式主要作用是保证在Java应用程序中，一个类Class只有一个实例存在。 
-	- 饱汉模式
-	```java
-	public class SingleTon {
-		private SingleTon(){
-		}
-
-		//实例化放在静态代码块里可提高程序的执行效率，但也可能更占用空间	
-		private final static SingleTon instance = new SingleTon();
-		public static SingleTon getInstance(){
-			return instance;
-		}
-	}
-	```
-	- 饿汉模式
-	```java
-	public class SingleTon {
-		private SingleTon(){}
-		
-		private static instance = null;//new SingleTon();
-		
-		public static synchronized SingleTon getInstance(){
-			if(instance == null)
-				instance = new SingleTon();
-			return instance;
-		}
-	}
-	```
-	- 用枚举
-	```java
-	public enum SingleTon{
-		ONE;
-	
-	}
-	```
- 
+	``` 
 9. 递归算法题                          
 	一个整数，大于0，不用循环和本地变量，按照n，2n，4n，8n的顺序递增，当值大于5000时，把值按照指定顺序输出来。
 	例：n=1237
@@ -1754,21 +1563,16 @@ Java基础面试题
 	第1个人10，第2个比第1个人大2岁，依次递推，请用递归方式计算出第8个人多大？
 	```java
 	package cn.itcast;
-
 	import java.util.Date;
-
 	public class A1 {
-
 		public static void main(String [] args) {
 			System.out.println(computeAge(8));
 		}
-		
 		public static int computeAge(int n) {
 			if(n==1) return 10;
 			return computeAge(n-1) + 2;
 		}
 	}
-
 	public static void toBinary(int n,StringBuffer result) {
 		if(n/2 != 0)
 			toBinary(n/2,result);
@@ -1805,7 +1609,6 @@ Java基础面试题
 				j--;
 				}
 			}while(i<=j); //当两者交错6时停止
-
 			if(i<right){
 				quickSort(strDate,i,right);//从
 			}
@@ -1830,9 +1633,7 @@ Java基础面试题
 12. 有数组a[n]，用java代码将数组元素顺序颠倒             
 	```java
 	import java.util.Arrays;
-
 	public class SwapDemo{
-
 		public static void main(String[] args){
 			int [] a = new int[]{
 							(int)(Math.random() * 1000),
@@ -1841,13 +1642,11 @@ Java基础面试题
 							(int)(Math.random() * 1000),						
 							(int)(Math.random() * 1000)																		
 			};	
-			
 			System.out.println(a);
 			System.out.println(Arrays.toString(a));
 			swap(a);
 			System.out.println(Arrays.toString(a));		
 		}
-		
 		public static void swap(int a[]){
 			int len = a.length;
 			for(int i=0;i<len/2;i++){
@@ -1863,9 +1662,7 @@ Java基础面试题
 	```java
 	// 去零的代码：
 	return sb.reverse().toString().replaceAll("零[拾佰仟]","零").replaceAll("零+万","万").replaceAll("零+元","元").replaceAll("零+","零");
-
 	public class RenMingBi {
-
 		/**
 		 * @param args add by zxx ,Nov 29, 2008
 		 */
@@ -1880,7 +1677,6 @@ Java基础面试题
 			System.out.println(
 					convert(135689123));
 		}
-
 		public static String convert(int money) {
 			StringBuffer sbf = new StringBuffer();
 			int unit = 0;
@@ -1890,7 +1686,6 @@ Java基础面试题
 				sbf.insert(0, data[number]);
 				money /= 10;
 			}
-
 			return sbf.toString();
 		}
 	}

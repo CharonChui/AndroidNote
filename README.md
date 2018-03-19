@@ -95,7 +95,7 @@ Android学习笔记
 - [进阶部分][52]  
     - [布局优化][65]
     - [屏幕适配之百分比方案详解][66]
-    - [热修复实现(未完)][67]
+    - [热修复实现][67]
     - [如何让Service常驻内存][68]
     - [通过Hardware Layer提高动画性能][69]
     - [性能优化][70]
@@ -113,6 +113,7 @@ Android学习笔记
     - [Mac下配置adb及Android命令][82]
     - [MaterialDesign使用][83]
     - [RecyclerView专题][84]
+    - [ConstraintLaayout简介][194]
 
 - [Java基础及算法][53]
 	- [八种排序算法][189]
@@ -413,6 +414,7 @@ Android学习笔记
 [191]: https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledge/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F.md "设计模式"
 [192]: https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledge/%E7%AE%97%E6%B3%95%E7%9A%84%E5%A4%8D%E6%9D%82%E5%BA%A6.md "算法复杂度"
 [193]: https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledge/%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86.md "动态代理"
+[194]: https://github.com/CharonChui/AndroidNote/blob/master/AdavancedPart/ConstraintLaayout%E7%AE%80%E4%BB%8B.md "ConstraintLaayout简介"
 
 
 
