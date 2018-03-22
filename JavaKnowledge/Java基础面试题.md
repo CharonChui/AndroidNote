@@ -26,7 +26,7 @@ Java基础面试题
 	```
 	另外，我个人通常并不使用标号这种方式，而是让外层的循环条件表达式的结果可以受到里层循环体代码的控制，例如，要在二维数组中查找到某个数字。
 	```java
-	int arr[][] = {{1,2,3},{4,5,6,7},{9}};
+	int arr[][] = ...;
 	boolean found = false;
 	for(int i=0;i<arr.length && !found;i++) {
 			for(int j=0;j<arr[i].length;j++) {

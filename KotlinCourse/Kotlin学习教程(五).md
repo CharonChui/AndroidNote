@@ -99,10 +99,27 @@ outter.Inner().execute()
 匿名内部类
 
 ```kotlin
+// 通过对象表达式来 创建匿名内部类的对象，可以避免重写抽象类的子类和接口的实现类，这和Java中匿名内部类的是接口和抽象类的延伸一致。
 text.setOnClickListener(object : View.OnClickListener{
     override fun onClick(p0: View?) {
         Log.d("test", p0.string())
     }
+})
+
+或
+mViewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+    override fun onPageScrollStateChanged(state: Int) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun onPageSelected(position: Int) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
 })
 ```
 
@@ -172,6 +189,17 @@ val s = when(x){
 val s = try { x as String } catch(e: ClassCastException) { null }
 ```
 
+### 对象`(Object)`
+
+声明对象就如同声明一个雷，你只需要用保留字`object`替代`class`，其他都相同。只需要考虑到对象不能有构造函数，因为我们不调用任何构造函数来访问它们。    
+事实上，对象就是具有单一实现的数据类型。
+
+```kotlin
+object Resource {
+    val name = "Name"
+}
+```
+
 ### 单例
 
 ```kotlin
@@ -179,6 +207,50 @@ object Resource {
     val name = "Name"
 }
 ```
+
+因为对象就是具有单一实现的数据类型，所以在`kotlin`中对象就是单例。   
+对象的实例在我们第一次使用时，被创建。所以这里有一个懒惰实例化:如果一个对象永远不会被使用，这个实例永远不会被创建。
+
+### 对象表达式
+
+对象也能用于创建匿名类实现。
+
+```java
+recycler.adapter = object : RecyclerView.Adapter() {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
+    }
+ 
+    override fun getItemCount(): Int {
+    }
+ 
+    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecyclerView.ViewHolder {
+    }
+}
+```
+例如，每次想要创建一个接口的内联实现，或者扩展另一个类时，你将使用上面的符号。
+
+
+### 伴生对象`(Companion Object)`
+
+每个类都可以实现一个伴生对象，它是该类的所有实例共有的对象。它将类似于`Java`中的静态字段。
+```java
+class App : Application() {
+    companion object {
+         lateinit var instance: App
+             private set
+     }
+ 
+     override fun onCreate() {
+         super.onCreate()
+         instance = this
+    }
+}
+```
+
+在这例子中，创建一个由`Application`扩展的（派送）的类，并且在`companion object`中存储它的唯一实例。     
+`lateinit`表示这个属性开始是没有值得，但是，在使用前将被赋值（否则，就会抛出异常）。     
+`private set`用于说明外部类不能对其进行赋值。   
+
 
 ### 委托(代理)
 
@@ -215,8 +287,7 @@ BaseImpl -> 5
 
 ##### 属性委托
 
-语法是`val/var <属性名>: <类型> by <表达式>`。在`by`后面的表达式是该委托，因为属性对应的`get()`和`set()`会被委托给它的`getValue()`和`setValue()`方法。 属性的委托不必实现任何的接口，但是需要提供一个`getValue()`函数（和`setValue()`——对于`var属性）。
-
+语法是`val/var <属性名>: <类型> by <表达式>`。在`by`后面的表达式是该委托，因为属性对应的`get()`和`set()`会被委托给它的`getValue()`和`setValue()`方法。 属性的委托不必实现任何的接口，但是需要提供一个`getValue()`函数（和`setValue()`——对于`var`属性）。
 
 ```kotlin
 class Example {

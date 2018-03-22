@@ -5,12 +5,13 @@ Kotlin学习教程(一)
 
 在`5月18`日谷歌在`I/O`开发者大会上宣布，将`Kotlin`语言作为安卓开发的一级编程语言。并且会在`Android Studio 3.0`版本全面支持`Kotlin`。   
 
-- `Kotlin`是一个基于`JVM`的新的编程语言，由`JetBrains`开发。`JetBrains`作为目前广受欢迎的`Java IDE IntelliJ`的提供商，在`Apache`许可下已经开源其`Kotlin`编程语言。     
+- `Kotlin`是一个基于`JVM`的新的编程语言，由[JetBrains](https://www.jetbrains.com/)开发。`JetBrains`作为目前广受欢迎的`Java IDE IntelliJ`的提供商，在`Apache`许可下已经开源其`Kotlin`编程语言。     
 - `Kotlin`可以编译成`Java`字节码，也可以编译成`JavaScript`，方便在没有`JVM`的设备上运行。      
 - `Kotlin`已正式成为`Android`官方开发语言。
 
 [Kotlin官网](https://kotlinlang.org/)
 
+`JetBrains`这家公司非常牛逼，开发了很多著名的软件，他们在使用`Java`的过程中发现`java`比较笨重不方便，所以就开发了`kotlin`，`kotlin`是一种全栈的开发语言，可以用它进行开发`web`、`web`后端、`Android`等。    
 
 很多开发者都说`Google`学什么不好，非要学苹果，出个`android`的`swift`版本，一定会搞不起来没人用，所以不用浪费时间去学习。在这里想引用马云的一句话: 
 > 拥抱变化
@@ -26,6 +27,23 @@ Kotlin学习教程(一)
 - `Kotlin`比`Java`更简洁，通过支持`variable type inference，higher-order functions (closures)，extension functions，mixins and first-class delegation`等实现
 - `Kotlin`可与`Java`语言无缝通信。这意味着我们可以在`Kotlin`代码中使用任何已有的`Java`库；同样的`Kotlin`代码还可以为`Java`代码所用
 - `Kotlin`在代码中很少需要在代码中指定类型，因为编译器可以在绝大多数情况下推断出变量或是函数返回值的类型。这样就能获得两个好处:简洁与安全
+
+
+### `Kotlin`优势 
+
+- 全面支持`Lambda`表达式
+- 数据类`Data classes`
+- 函数字面量和内联函数`Function literals & inline functions`
+- 函数扩展`Extension functions`
+- 空安全`Null safety`
+- 智能转换`Smart casts`
+- 字符串模板`String templates`
+- 主构造函数`Primary constructors`
+- 类委托`Class delegation`
+- 类型推判`Type inference`
+- 单例`Singletons`
+- 声明点变量`Declaration-site variance`
+- 区间表达式`Range expressions`
 
 
 上面说简洁简洁，到底简洁在哪里？这里先用一个例子开始，在`Java`开发过程中经常会写一些`Bean`类:  
@@ -110,7 +128,7 @@ import android.os.Bundle
 // 定义类，继承AppCompatActivity
 class MainActivity : AppCompatActivity() {
 	
-	// 重写方法用overide，函数名用fun声明  参数是a: 类型的形式 ?是啥？它是指明该对象可能为null
+	// 重写方法用overide，函数名用fun声明  参数是a: 类型的形式 ?是啥？它是指明该对象可能为null，如果有了?那在调用该方法的时候参数可以传递null进入，如果没有?传递null就会报错
     override fun onCreate(savedInstanceState: Bundle?) {
     	// super 
         super.onCreate(savedInstanceState)
@@ -145,43 +163,44 @@ var weight = 70.5 // double
 ```
 
 在`Kotlin`中，一切都是对象。没有像`Java`中那样的原始基本类型。
-当然，像`Integer`，`Float`或者`Boolean`等类型仍然存在，但是它们全部都会作为对象存在的。基本类型的名字和它们工作方式都是与`Java`非常相似的，但是有一些不同之处你可能需要考虑到:   
+当然，像`Integer`，`Float`或者`Boolean`等类型仍然存在，但是它们全部都会作为对象存在的。基本类型的名字和它们工作方式都是与`Java`非常相似的，但是有一些不同之处你可能需要考虑到:    
 
 - 数字类型中不会自动转型。举个例子，你不能给`Double`变量分配一个`Int`。必须要做一个明确的类型转换，可以使用众多的函数之一:   
 
-```kotlin
-private var age = 18
-private var weight = age.toFloat()
-```
-- 字符（`Char`）不能直接作为一个数字来处理。在需要时我们需要把他们转换为一个数字:
-```kotlin
-val c: Char='c'
-val i: Int = c.toInt()
-```
-- 位运算也有一点不同。在`Android`中，我们经常在`flags`中使用`或`: 
+	```kotlin
+	private var age = 18
+	private var weight = age.toFloat()
+	```
+- 字符（`Char`）不能直接作为一个数字来处理。在需要时我们需要把他们转换为一个数字:       
 
-```java
-// Java
-int bitwiseOr = FLAG1 | FLAG2;
-int bitwiseAnd = FLAG1 & FLAG2;
-```
+	```kotlin
+	val c: Char='c'
+	val i: Int = c.toInt()
+	```
+- 位运算也有一点不同。在`Android`中，我们经常在`flags`中使用`或`:      
 
-```kotlin
-// Kotlin
-val bitwiseOr = FLAG1 or FLAG2
-val bitwiseAnd = FLAG1 and FLAG2
-```
+	```java
+	// Java
+	int bitwiseOr = FLAG1 | FLAG2;
+	int bitwiseAnd = FLAG1 & FLAG2;
+	```
 
-- 一个`String`可以像数组那样访问，并且被迭代：
-```kotlin
-var s = "charon"
-var c = s[2]
+	```kotlin
+	// Kotlin
+	val bitwiseOr = FLAG1 or FLAG2
+	val bitwiseAnd = FLAG1 and FLAG2
+	```
 
-for (a in s) {
-    Log.e("@@@", a +"");
-}
+- 一个`String`可以像数组那样访问，并且被迭代:     
 
-```
+	```kotlin
+	var s = "charon"
+	var c = s[2]
+
+	for (a in s) {
+	    Log.e("@@@", a +"");
+	}
+	```
 
 
 ##### 编译期常量

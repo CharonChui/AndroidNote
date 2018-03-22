@@ -1,4 +1,4 @@
-Kotlin学习教程(三)
+Kotlin学习教程(四)
 ===
 
 
@@ -282,6 +282,26 @@ studentArray[0] = Student("james")
 `Kotlin`没有专门的语法结构创建`list`或`set`。要用标准库的方法如`listOf()`、`mutableListOf()`、`setOf()`、`mutableSetOf()`。创建`map`可以用`mapOf(a to b, c to d)`。
 
 ```kotlin
+fun main(args : Array<String>) {
+    var lists = listOf("a", "b", "c")
+    for(list in lists) {
+        println(list)
+    }
+}
+```
+
+```kotlin
+fun main(args : Array<String>) {
+    var map = TreeMap<String, String>()
+    map["0"] = "0 haha"
+    map["1"] = "1 haha"
+    map["2"] = "2 haha"
+    
+    println(map["1"])
+}
+```
+
+```kotlin    
 val numbers: MutableList<Int> = mutableListOf(1, 2, 3)
 val readOnlyView: List<Int> = numbers
 println(numbers)        // 输出 "[1, 2, 3]"
@@ -311,7 +331,7 @@ value2 = null       // 编译能通过
 ```kotlin
 var str : String? = null
 str.length    // 编译不错误
-str?.length   // 编译能通过
+str?.length   // 编译能通过，这表示如果str不为空的时候执行length方法
 ```
 
 那么问题来了，我们知道在`java`中`String.length`返回的是`int`，上面的`str?.length`既然编译通过了，那么它返回了什么？我们可以这么写:  
@@ -449,7 +469,15 @@ loop@ for (i in 1..100) {
 
 ### Ranges
 
-`Range`表达式使用一个`..`操作符。
+`Range`表达式使用一个`..`操作符。表示就是一个该范围内的数据的数组，包含头和尾
+
+```kotlin
+var nums = 1..100 
+for(num in nums) {
+	println(num)
+	// 打印出1 2 3 ....100
+}
+```
 
 ```kotlin
 if(i >= 0 && i <= 10) 
@@ -458,7 +486,7 @@ if(i >= 0 && i <= 10)
 转换成 
 
 ```kotlin
-if (i in 0..10)
+if (i in 0..10) 
     println(i)
 ```
 Ranges默认会自增长，所以如果像以下的代码：
@@ -476,6 +504,18 @@ for(i in 10 downTo 0)
 ```kotlin
 for (i in 1..4 step 2) println(i)
 for (i in 4 downTo 1 step 2) println(i)
+```
+
+### Until
+
+上面的`Range`是包含了头和尾，那如果只想包含头不包含尾呢？ 就要用`until`
+
+```kotlin
+var nums = 1 until 100
+for(num in nums) {
+	println(num)
+	// 这样打印出来是1 2 3 .....99
+}
 ```
 
 
