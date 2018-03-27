@@ -146,6 +146,8 @@ Android学习笔记
     - [RMB大小写转换][107]
     - [Vim使用教程][108]
     - [volatile和Synchronized区别][109]
+    - [Http与Https的区别][195]
+    - [Top-K问题][196]
 - [基础部分][54] 
     - [安全退出应用程序][110]
     - [病毒][111]
@@ -415,6 +417,9 @@ Android学习笔记
 [192]: https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledge/%E7%AE%97%E6%B3%95%E7%9A%84%E5%A4%8D%E6%9D%82%E5%BA%A6.md "算法复杂度"
 [193]: https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledge/%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86.md "动态代理"
 [194]: https://github.com/CharonChui/AndroidNote/blob/master/AdavancedPart/ConstraintLaayout%E7%AE%80%E4%BB%8B.md "ConstraintLaayout简介"
+[195]: https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledge/Http%E4%B8%8EHttps%E7%9A%84%E5%8C%BA%E5%88%AB.md "Http与Https的区别"
+[196]: https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledge/Top-K%E9%97%AE%E9%A2%98.md "Top-K问题"
+
 
 
 
