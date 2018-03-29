@@ -89,7 +89,7 @@ val charon2 = charon.copy(age = 19)
 
 ### 多声明
 
-多声明，也可以理解为变量映射，这就是编译器自动生成的componentN()方法。
+多声明，也可以理解为变量映射，这就是编译器自动生成的`componentN()`方法。
 
 ```kotlin
 var personD = PersonData("PersonData", 20, "male")
@@ -321,16 +321,16 @@ assert(strings.size == 3)
 `Kotlin`通过`?`将是否允许为空分割开来，比如`str:String`为不能空，加上`?`后的`str:String?`为允许空，通过这种方式，将本是不能确定的变量人为的加入了限制条件。而不符合条件的输入，则会在`IDE`上显示编译错误而无法执行。
 
 ```kotlin
-var value1 : String = "abc"
-value1 = null        // 编译不错误
+var value1: String
+value1 = null        // 编译错误 Null can not be a value of a non-null type String
 
-var value2 : String? = "abc"
-value2 = null       // 编译能通过
+var value2 : String? 
+value2 = null       // 编译通过
 ```
 在对变量进行操作时，如果变量是可能为空的，那么将不能直接调用，因为编译器不知道你的变量是否为空，所以编译器就要求你一定要对变量进行判断
 ```kotlin
 var str : String? = null
-str.length    // 编译不错误
+str.length    // 编译错误 Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type String?
 str?.length   // 编译能通过，这表示如果str不为空的时候执行length方法
 ```
 
@@ -518,6 +518,8 @@ for(num in nums) {
 }
 ```
 
+
+[1]: https://github.com/CharonChui/AndroidNote/blob/master/KotlinCourse/Kotlin%E5%AD%A6%E4%B9%A0%E6%95%99%E7%A8%8B(%E4%B8%80).md "Kotlin学习教程(一)"
 
 ---
 

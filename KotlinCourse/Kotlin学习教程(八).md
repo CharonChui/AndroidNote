@@ -128,15 +128,14 @@ class App : Application() {
 inline fun <T> with(t: T, body: T.() -> Unit) { t.body() }
 ```
 
-- 扩张
 
 
 参考
 ===
 
-- [https://leanpub.com/kotlin-for-android-developers]https://leanpub.com/kotlin-for-android-developers
-- [https://developer.android.com/kotlin/resources.html]https://developer.android.com/kotlin/resources.html
-- [https://www.kotlincn.net/docs/reference/coding-conventions.html]https://www.kotlincn.net/docs/reference/coding-conventions.html
+- [Kotlin for Android Developers](https://leanpub.com/kotlin-for-android-developers)
+- [Resources to Learn Kotlin](https://developer.android.com/kotlin/resources.html)
+- [Kotlin语言中文站](https://www.kotlincn.net/docs/reference/coding-conventions.html)
 
 
 ---

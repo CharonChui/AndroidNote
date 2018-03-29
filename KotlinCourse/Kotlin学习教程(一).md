@@ -142,7 +142,7 @@ class MainActivity : AppCompatActivity() {
 
 ### 变量
 
-变量可以很简单地定义成可变`var`和不可变`val`的变量。
+变量可以很简单地定义成可变`var`(可读可写)和不可变`val`(只读)的变量。
 
 `val`与`Java`中使用的`final`很相似。一个不可变对象意味着它在实例化之后就不能再去改变它的状态了。如果你需要一个这个对象修改之后的版本，那就会再创建一个新的对象。
 
@@ -205,7 +205,7 @@ var weight = 70.5 // double
 
 ##### 编译期常量
 
-已知值的属性可以使用`const`修饰符标记为编译期常量(类似`java`中的`public static final`)。这些属性需要满足以下要求:  
+已知值的属性可以使用`const`修饰符标记为编译期常量(类似`java`中的`public static final`)。`const`只能修复`val`不能修复`var`,这些属性需要满足以下要求:  
 
 - 位于顶层或者是`object`的一个成员
 - 用`String`或原生类型值初始化
@@ -214,6 +214,7 @@ var weight = 70.5 // double
 ```kotlin
 // Const val are only allowed on top level or in objects
 const val NAME: String = "charon"
+
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
