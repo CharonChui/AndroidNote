@@ -123,7 +123,7 @@ Android学习笔记
     - [动态代理][193]
     - [常用命令行大全][85]
     - [单例的最佳实现方式][86]
-    - [单链表][87]
+    - [数据结构][87]
     - [获取今后多少天后的日期][88]
     - [剑指Offer(上)][89]
     - [剑指Offer(下)][90]
@@ -307,7 +307,7 @@ Android学习笔记
 [84]: https://github.com/CharonChui/AndroidNote/blob/master/AdavancedPart/RecyclerView%E4%B8%93%E9%A2%98.md   "RecyclerView专题"
 [85]: https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledge/%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%A4%A7%E5%85%A8.md   "常用命令行大全"
 [86]: https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledge/%E5%8D%95%E4%BE%8B%E7%9A%84%E6%9C%80%E4%BD%B3%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F.md   "单例的最佳实现方式"
-[87]: https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledge/%E5%8D%95%E9%93%BE%E8%A1%A8.md   "单链表"
+[87]: https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledge/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84.md   "数据结构"
 [88]: https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledge/%E8%8E%B7%E5%8F%96%E4%BB%8A%E5%90%8E%E5%A4%9A%E5%B0%91%E5%A4%A9%E5%90%8E%E7%9A%84%E6%97%A5%E6%9C%9F.md   "获取今后多少天后的日期"
 [89]: https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledge/%E5%89%91%E6%8C%87Offer(%E4%B8%8A).md   "剑指Offer(上)"
 [90]: https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledge/剑指Offer(下).md   "剑指Offer(下)"
