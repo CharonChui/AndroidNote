@@ -1,20 +1,85 @@
 Git命令
 ===
 
+`Git`和其他版本控制系统(包括`Subvversion`及其他相似的工具)的主要差别在于`Git`对待数据的方法。概念上来区分，其它大部分系统以文件变更列表的方式存储信息。 
+这类系统(`CVS、Subversion、Perforce、Bazaar`等等)将它们保存的信息看作是一组基本文件和每个文件随时间逐步累积的差异。存储每个文件与初始版本的差异。   
+
+
+`Git`不按照以上方式对待或保存数据。反之，`Git`更像是把数据看作是对小型文件系统的一组快照。每次你提交更新，或在`Git`中保存项目状态时，
+它主要对当时的全部文件制作一个快照并保存这个快照的索引。为了高效，如果文件没有修改，`Git`不再重新存储该文件，而是只保留一个链接指向之前存储的文件。`Git`对待数据更像是一个快照流。
+
+`Git`是分布式版本控制系统，集中式和分布式版本控制有什么区别呢？   
+
+- 集中式版本控制系统    
+    版本库是集中存放在中央服务器的，而干活的时候，用的都是自己的电脑，所以要先从中央服务器取得最新的版本，然后开始干活，干完活了，再把自己的活推送给中央服务器。中央服务器就好比是一个图书馆，你要改一本书，必须先从图书馆借出来，然后回到家自己改，改完了，再放回图书馆。集中式版本控制系统最大的毛病就是必须联网才能工作，如果在局域网内还好，带宽够大，速度够快，可如果在互联网上，遇到网速慢的话，可能提交一个10M的文件就需要5分钟，这还不得把人给憋死啊。    
+    ![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/git_jizhong.jpeg)                
+
+- 分布式版本控制系统     
+    分布式版本控制系统根本没有“中央服务器”，每个人的电脑上都是一个完整的版本库，这样，你工作的时候，就不需要联网了，因为版本库就在你自己的电脑上。既然每个人电脑上都有一个完整的版本库，那多个人如何协作呢？比方说你在自己电脑上改了文件A，你的同事也在他的电脑上改了文件A，这时，你们俩之间只需把各自的修改推送给对方，就可以互相看到对方的修改了。     
+    和集中式版本控制系统相比，分布式版本控制系统的安全性要高很多，因为每个人电脑里都有完整的版本库，某一个 人   的电脑坏掉了不要紧，随便从其他人那里复制一个就可以了。而集中式版本控制系统的中央服务器要是出了问题，所有人都没法干活了。    
+    在实际使用分布式版本控制系统的时候，其实很少在两人之间的电脑上推送版本库的修改，因为可能你们俩不在一个局域网内，两台电脑互相访问不了，也可能今天你的同事病了，他的电脑压根没有开机。因此，分布式版本控制系统通常也有一台充当“中央服务器”的电脑，但这个服务器的作用仅仅是用来方便“交换”大家的修改，没有它大家也一样干活，只是交换修改不方便而已。          
+    ![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/git_fenbu.jpeg)             
+
+
+版本库
+---
+
+什么是版本库呢？版本库又名仓库，英文名`repository`，你可以简单理解成一个目录，这个目录里面的所有文件都可以被`Git`管理起来，每个文件的修改、删除，`Git`都能跟踪，
+以便任何时刻都可以追踪历史，或者在将来某个时刻可以“还原”。
+
+所以，创建一个版本库非常简单:   
+
+- 创建一个空目录
+- 通过`git init`命令把这个目录变成`Git`可以管理的仓库：
+    瞬间`Git`就把仓库建好了，而且告诉你是一个空的仓库`（empty Git repository）`，细心的读者可以发现当前目录下多了一个`.git`的目录，
+    这个目录是`Git`来跟踪管理版本库的，没事千万不要手动修改这个目录里面的文件，不然改乱了，就把`Git`仓库给破坏了。
+- 使用命令`git add <file>`，注意，可反复多次使用，添加多个文件；
+- 使用命令`git commit`，完成。
+
+
+三种状态 
+---
+
+
+ `Git`有三种状态，你的文件可能处于其中之一:     
+
+ - 已提交`(committed)`
+ - 已修改`(modified)`
+ - 已暂存`(staged)`
+
+  已提交表示数据已经安全的保存在本地数据库中。 已修改表示修改了文件，但还没保存到数据库中。 已暂存表示对一个已修改文件的当前版本做了标记，使之包含在下次提交的快照中。
+
+![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/git_list.png)                
+
+
+`Git`仓库目录是`Git`用来保存项目的元数据和对象数据库的地方。这是`Git`中最重要的部分，从其它计算机克隆仓库时，拷贝的就是这里的数据。
+工作目录是对项目的某个版本独立提取出来的内容。这些从`Git`仓库的压缩数据库中提取出来的文件，放在磁盘上供你使用或修改。
+
+暂存区域是一个文件，保存了下次将提交的文件列表信息，一般在`Git`仓库目录中。 有时候也被称作‘索引’，不过一般说法还是叫暂存区域。
+
+基本的`Git`工作流程如下:     
+
+- 在工作目录中修改文件。
+- 暂存文件，将文件的快照放入暂存区域。
+- 提交更新，找到暂存区域的文件，将快照永久性存储到`Git`仓库目录。
+
+
 先上一张图             
 ![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/git.jpg)                  
 图中的index部分就是暂存区           
 
 - 安装好git后我们要先配置一下。以便`git`跟踪。           
+
     ```
     git config --global user.name "xxx"            
-	git config --global user.email "xxx@xxx.com"
+    git config --global user.email "xxx@xxx.com"
 	```          
 	上面修改后可以使用`cat ~/.gitconfig`查看                      
 	如果指向修改仓库中的用户名时可以不加`--global`，这样可以用`cat .git/config`来查看             
 	`git config --list`来查看所有的配置。   
 	
-- 新建仓库                          
+- 新建仓库             
+
     `mkdir gitDemo`
     `cd gitDemo`
     `git init`
@@ -49,16 +114,62 @@ Git命令
     `git merge devBrach`
 
 - `git log`查看当前分支下的提交记录             
+    用`git log`可以查看提交历史，以便确定要回退到哪个版本。
+    如果已经使用`git log`查出版本`commit id`后`reset`到某一次提交后，又要重返回来，用`git reflog`查看命令历史，以便确定要回到未来的哪个版本。
 
-- `git reset`命令回退到某一版本(回退已经暂存的文件)                      
-    `Git`中用`HEAD`表示当前版本，上一版本就是`HEAD^`,上上一版本就是`HEAD^^`.如果往前一千个版本呢？ 那就是`HEAD~1000`.             
+- `git reflog`               
+
+    可以查看所有操作记录包括`commit`和`reset`操作以及删除的`commit`记录
+
+- `git reset`
+    
+    `git reset`命令用于将当前HEAD复位到指定状态。一般用于撤消之前的一些操作(如:`git add`,`git commit`等)。               
+
+    在`git`的一般使用中，如果发现错误的将不想暂存的文件被`git add`进入索引之后，想回退取消，则可以使用命令:`git reset HEAD <file>`，
+    同时`git add`完毕之后，`git`也会做相应的提示，比如:    
+    ```shell
+    # Changes to be committed: 
+    #   (use "git reset HEAD <file>..." to unstage) 
+    # 
+    # new file:   test.py
+    ```
+
+    `git reset [--hard|soft|mixed|merge|keep] [<commit>或HEAD]`:将当前的分支重设`(reset)`到指定的`<commit>`或者`HEAD`(默认，如果不显示指定`<commit>`，默认是`HEAD`，即最新的一次提交)，并且根据`[mode]`有可能更新索引和工作目录。`mode`的取值可以是`hard、soft、mixed、merged、keep`。下面来详细说明每种模式的意义和效果。
+
+    - `--hard`:重设`(reset)`索引和工作目录，自从`<commit>`以来在工作目录中的任何改变都被丢弃，并把`HEAD`指向`<commit>`。
+
+    下面是具体一个例子，假设有三个`commit`，执行`git status`结果如下:     
+    ```
+    commit3: add test3.c
+    commit2: add test2.c
+    commit1: add test1.c
+    ```
+    执行`git reset --hard HEAD~1`命令后，
+    显示:`HEAD is now at commit2`，运行`git log`，如下所示:     
+    ```
+    commit2: add test2.c
+    commit1: add test1.c
+    ```
+
+    - 回滚最近一次提交
+
+    ```
+    $ git commit -a -m "这是提交的备注信息"
+    $ git reset --soft HEAD^      #(1) 
+    $ edit code                        #(2) 编辑代码操作
+    $ git commit -a -c ORIG_HEAD  #(3)
+    ```
+
+    1) 当提交了之后，又发现代码没有提交完整，或者想重新编辑一下提交的信息，可执行`git reset --soft HEAD^`，让工作目录还跟`reset`之前一样，不作任何改变。
+`HEAD^`表示指向`HEAD`之前最近的一次提交。            
+    (2) 对工作目录下的文件做修改，比如：修改文件中的代码等。       
+    (3) 然后使用`reset`之前那次提交的注释、作者、日期等信息重新提交。注意，当执行`git reset`命令时，`git`会把老的`HEAD`拷贝到文件`.git/ORIG_HEAD`中，在命令中可以使用`ORIG_HEAD`引用这个提交。`git commit`命令中 `-a`参数的意思是告诉`git`，自动把所有修改的和删除的文件都放进暂存区，未被`git`跟踪的新建的文件不受影响。`commit`命令中`-c <commit>`或者`-C <commit>`意思是拿已经提交的对象中的信息(作者，提交者，注释，时间戳等)提交，那么这条`git commit` 命令的意思就非常清晰了，把所有更改的文件加入暂存区，并使用上次的提交信息重新提交。
+
+    - `Git`中用`HEAD`表示当前版本，上一版本就是`HEAD^`,上上一版本就是`HEAD^^`.如果往前一千个版本呢？ 那就是`HEAD~1000`.             
     `git reset —-hard HEAD^`       
     `git reset —-hard commit_id`
 	`git reset HEAD fileName`可以把用`git add`之后但是还没有`commit`之前暂存区中的修改撤销。          
     说到这里就说一个问题，如果你reset到某一个版本之后，发现弄错了，还想返回去，这时候用`git log`已经找不到之前的`commit id`了。那怎么办？这时候可以使用下面的命令来找。
-
-- `git reflog`               
-    可以查看所有操作记录包括`commit`和`reset`操作以及删除的`commit`记录
 
 - `git checkout`撤销修改或者切换分支           
     `git checkout -- xx.txt`意思就是将`xx.txt`文件在工作区的修改全部撤销。可能会有两种情况:      
@@ -86,42 +197,46 @@ Git命令
     `git`分支的创建和合并都是非常快的，因为增加一个分支其实就是增加一个指针，合并其实就是让某个分支的指针指向某一个位置。        
  ![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/git_master_branch.png?raw=true) 
 
-创建分支                   
-`git branch devBranch`创建名为`devBranch`的分支。          
-`git checkout devBranch`切换到`devBranch`分支。            
-`git branch`查看当前仓库中的分支                   
-`git branch -r`查看远程仓库的分支            
-```
-origin/HEAD -> origin/master
-origin/developer
-origin/developer_sg
-origin/master
-origin/master_sg
-origin/offline
-```
-`git branch -d devBranch`删除`devBranch`分支。           
-当时如果在新建了一个分支后进行修改但是还没有合并到其他分支的时候就去使用`git branch -d xxx`删除的时候系统会手提示说这个分支没有被合并，删除失败。
-这时如果你要强行删除的话可以使用命令`git branch -D xxx`.
-如何删除远程分支呢？
-```
-git branch -r -d origin/developer
-git push origin :developer
-```
-如何本地创建分支并推送给远程仓库？
-```
-// 本地创建分支
-git checkout master //进入master分支
-   git checkout -b frommaster //以master为源创建分支frommaster
-// 推送到远程仓库
-git push origin frommaster// 推送到远程仓库所要使用的名字
-```
+- 创建分支                   
 
-如何切到到远程仓库分支进行开发呢？         
-`git checkout -b frommaster origin/frommaster`
-// 本地新建frommaster分支并且与远程仓库的frommaster分支想关联
-提交更改的话就用 
-`git push origin frommaster`
-	
+    `git branch devBranch`创建名为`devBranch`的分支。          
+    `git checkout devBranch`切换到`devBranch`分支。            
+    `git branch`查看当前仓库中的分支                   
+    `git branch -r`查看远程仓库的分支            
+    ```
+    origin/HEAD -> origin/master
+    origin/developer
+    origin/developer_sg
+    origin/master
+    origin/master_sg
+    origin/offline
+    ```
+    `git branch -d devBranch`删除`devBranch`分支。           
+    当时如果在新建了一个分支后进行修改但是还没有合并到其他分支的时候就去使用`git branch -d xxx`删除的时候系统会手提示说这个分支没有被合并，删除失败。
+    这时如果你要强行删除的话可以使用命令`git branch -D xxx`.
+    如何删除远程分支呢？
+    ```
+    git branch -r -d origin/developer
+    git push origin :developer
+    ```
+    如何本地创建分支并推送给远程仓库？
+    ```
+    // 本地创建分支
+    git checkout master //进入master分支
+    git checkout -b frommaster //以master为源创建分支frommaster
+    // 推送到远程仓库
+    git push origin frommaster// 推送到远程仓库所要使用的名字
+    ```
+
+    如何切到到远程仓库分支进行开发呢？         
+    `git checkout -b frommaster origin/frommaster`
+    // 本地新建frommaster分支并且与远程仓库的frommaster分支想关联
+    提交更改的话就用 
+    `git push origin frommaster`
+
+    // 重命名分支	
+    `git branch -m new_branch wchar_support`
+
 
 - `git merge`合并指定分支到当前分支                         
    `git merge devBranch`将`devBranch`分支合并到`master`。          
@@ -131,8 +246,9 @@ git push origin frommaster// 推送到远程仓库所要使用的名字
 	`git tag`查看所有`tag`          
     如果我想在之前提交的某次`commit`上打`tag`，`git tag v1.0 commitID`     
 	当然也可以在打`tag`时带上参数 `git tag v1.0 -m "version 1.0 released" commitID`
+    `git tag -d xxx`删除xxx
 
-	`git show tagName`来查看某`tag`的详细信息。          
+    `git show tagName`来查看某`tag`的详细信息。          
 - 打完`tag`后怎么推送到远程仓库         
     `git push origin tagName`	   
 
@@ -165,6 +281,43 @@ git push origin frommaster// 推送到远程仓库所要使用的名字
 命令时，会用`HEAD`指向的`master`分支中的全部或部分文件替换暂存区和工作区中的文件。这个命令也是极度危险的。因为不但会清楚工作区中未提交的改动，也会清楚暂存区中未提交的改动。
 - `git reset HEAD <file>` 是在添加到暂存区后，撤出暂存区使用，他只会把文件撤出暂存区，但是你的修改还在，仍然在工作区。当然如果使用`git reset --hard HEAD`这样就完了，工作区所有的内容都会被远程仓库最新代码覆盖。
 - `git checkout -- xxx.txt`是用于修改后未添加到暂存区时使用(如果修改后添加到暂存区后就没效果了，必须要先reset撤销暂存区后再使用checkout)，这时候会把之前的修改覆盖掉。所以是危险的。
+
+
+- 隐藏操作     
+
+    假设您正在为产品新的功能编写/实现代码，当正在编写代码时，突然出现软件客户端升级。这时，您必须将新编写的功能代码保留几个小时然后去处理升级的问题。在这段时间内不能提交代码，也不能丢弃您的代码更改。 所以需要一些临时等待一段时间，您可以存储部分更改，然后再提交它。
+    
+    在`Git`中，隐藏操作将使您能够修改跟踪文件，阶段更改，并将其保存在一系列未完成的更改中，并可以随时重新应用。
+    
+    假设你现在在`a`分支上开发新版本内容，已经开发了一部分，但是还没有达到可以提交的程度。你需要切换到`b`分支进行另一个升级的开发。那么可以
+    把当前工作的改变隐藏起来，要将一个新的存根推到堆栈上，运行`git stash`命令。   
+    
+    ```shell
+    $ git stash
+    Saved working directory and index state WIP on master: ef07ab5 synchronized with the remote repository
+    HEAD is now at ef07ab5 synchronized with the remote repository
+    ```
+    现在，工作目录是干净的，所有更改都保存在堆栈中。 现在使用`git status`命令来查看当前工作区状态:   
+    ```shell
+    $ git status
+    On branch master
+    Your branch is up-to-date with 'origin/master'.
+    
+    nothing to commit, working directory clean
+    ```
+    
+    现在，可以安全地切换分支并在其他地方工作。通过使用`git stash list`命令来查看已存在更改的列表。
+    ```shell
+    $ git stash list
+    stash@{0}: WIP on master: ef07ab5 synchronized with the remote repository
+    ```
+    
+    假设您已经解决了客户升级问题，想要重新开始新的功能的代码编写，查找上次没有写完成的代码，
+    只需执行`git stash pop`命令即可从堆栈中删除更改并将其放置在当前工作目录中。
+    
+    这样你之前隐藏的内容就会重新出现了，你可以继续开发了。    
+
+
 
 ---
 
