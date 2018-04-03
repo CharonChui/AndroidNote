@@ -368,6 +368,38 @@ val data = ……
 val email = data["email"] ?: throw IllegalStateException("Email is missing!")
 ```
 
+如果`?:`左侧表达式非空，`elvis`操作符就返回其左侧表达式，否则返回右侧表达式。
+请注意，当且仅当左侧为空时，才会对右侧表达式求值。
+
+
+##### `!!`操作符
+
+我们可以写`b!!`，这会返回一个非空的`b`值
+(例如:在我们例子中的`String`)或者如果`b`为空，就会抛出一个空指针异常:     
+```kotlin
+val l = b!!.length
+```
+
+因此，如果你想要一个 NPE，你可以得到它，但是你必须显式要求它，否则它不会不期而至。
+
+
+#### 安全的类型转换
+
+如果对象不是目标类型，那么常规类型转换可能会导致`ClassCastException`。
+另一个选择是使用安全的类型转换，如果尝试转换不成功则返回`null{: .keyword }`:    
+
+```kotlin
+val aInt: Int? = a as? Int
+```
+
+#### 可空类型的集合
+
+如果你有一个可空类型元素的集合，并且想要过滤非空元素，你可以使用`filterNotNull`来实现。
+```kotlin
+val nullableList: List<Int?> = listOf(1, 2, null, 4)
+val intList: List<Int> = nullableList.filterNotNull()
+```
+
 ### 表达式    
 
 ##### `if`表达式    

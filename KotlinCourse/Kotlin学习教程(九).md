@@ -2,40 +2,150 @@ Kotlin学习教程(九)
 ===
 
 
-### `Kotlin`用到的关键字
+`Kotlin`团队为`Android`开发提供了一套超越标准语言功能的工具:    
 
-- `var`：定义变量
-- `val`：定义常量
-- `fun`：定义方法
-- `Unit`：默认方法返回值，类似于Java中的void，可以理解成返回没什么用的值
-- `vararg`：可变参数
-- `$`：字符串模板(取值)
-- 位运算符：`or`(按位或)，`and`(按位与)，`shl`(有符号左移)，`shr`(有符号右移)，
-- `ushr`(无符号右移)，`xor`(按位异或)，`inv`(按位取反)
-- `in`：在某个范围中 检查值是否在或不在(`in/!in`)范围内或集合中
-- `downTo`：递减，循环时可用，每次减1
-- `step`:步长，循环时可用，设置每次循环的增加或减少的量
-- `when`:`Kotlin`中增强版的`switch`，可以匹配值，范围，类型与参数
-- `is`：判断类型用，类似于`Java`中的`instanceof()`，`is`运算符检查表达式是否是类型的实例。 如果一个不可变的局部变量或属性是指定类型，则不需要显式转换
-- `private`仅在同一个文件中可见
-- `protected`同一个文件中或子类可见
-- `public`所有调用的地方都可见
-- `internal`同一个模块中可见
-- `abstract`抽象类标示
-- `final`标示类不可继承，默认属性
-- `enum`标示类为枚举
-- `open`类可继承，类默认是`final`的
-- `annotation`注解类
-- `init`主构造函数不能包含任何的代码。初始化的代码可以放到以`init`关键字作为前缀的初始化块(`initializer blocks`)中
-- `field`只能用在属性的访问器内。特别注意的是，`get set`方法中只能能使用`filed`。属性访问器就是`get set`方法。
-- `:`用于类的继承，变量的定义 
--  `..`围操作符(递增的) `1..5`，`2..6`千万不要`6..2`
-- `::`作用域限定符
-- `inner`类可以标记为`inner {: .keyword }`以便能够访问外部类的成员。内部类会带有一个对外部类的对象的引用
-- `object`对象声明并且它总是在`object{: .keyword }`关键字后跟一个名称。对象表达式：在要创建一个继承自某个(或某些)类型的匿名类的对象会用到
+- `Kotlin Android Extensions`是一个编译器扩展，可以让您摆脱代码中的`findViewById()`调用，并将其替换为合成编译器生成的属性。
+- `Anko`是一个提供围绕`Android API`和`DSL`的一组`Kotlin`友好的包装器，可以用`Kotlin`代码替换`layout .xml`文件。
+
+
+### `Anko`
+
+[Anko](https://github.com/Kotlin/anko)是`Kotlin`官方出品用于`Android`开发的库。
+
+
+> `Anko is a Kotlin library which makes Android application development faster and easier. It makes your code clean and easy to read, and lets you forget about rough edges of the Android SDK for Java.`
+
+
+> Anko consists of several parts:
+>
+> Anko Commons: a lightweight library full of helpers for intents, dialogs, logging and so on;
+> Anko Layouts: a fast and type-safe way to write dynamic Android layouts;
+> Anko SQLite: a query DSL and parser collection for Android SQLite;
+> Anko Coroutines: utilities based on the kotlinx.coroutines library.
+
+
+一个Anko扩展函数可以被用来简化获取一个RecyclerView：
+```kotlin
+val forecastList: RecyclerView = find(R.id.forecast_list)
+```
+
+
+
+### Kotlin Android Extensions
+
+相信每一位安卓开发人员对`findViewById()`这个方法再熟悉不过了，毫无疑问，潜在的`bug`和脏乱的代码令后续开发无从下手的。 尽管存在一系列的开源库能够为这个问题带来解决方案，然而对于运行时依赖的库，需要为每一个`View`注解变量字段。
+
+现在`Kotlin`安卓扩展插件能够提供与这些开源库功能相同的体验，不需要添加任何额外代码，也不影响任何运行时体验。
+另一个`Kotlin`团队研发的可以让开发更简单的插件是`Kotlin Android Extensions`。当前仅仅包括了`view`的绑定。这个插件自动创建了很多的属性来让我们直接访问`XML`中的`view`。这种方式不需要你在开始使用之前明确地从布局中去找到这些`views`。
+
+这些属性的名字就是来自对应`view`的`id`，所以我们取`id`的时候要十分小心，因为它们将会是我们类中非常重要的一部分。这些属性的类型也是来自`XML`中的，所以我们不需要去进行额外的类型转换。
+
+`Kotlin Android Extensions`的一个优点是它不需要在我们的代码中依赖其它额外的库。它仅仅由插件组层，需要时用于生成工作所需的代码，只需要依赖于`Kotlin`的标准库。
+
+开发者仅需要在模块的`build.gradle`文件中启用`Gradle`安卓扩展插件即可:   
+
+```
+apply plugin: 'kotlin-android-extensions'
+```
+
+我们在使用`Android Sutdio 3.0`创建`Kotlin`项目时默认已经添加了该依赖。   
+
+```kotlin
+// 使用来自主代码集的 R.layout.activity_main
+import kotlinx.android.synthetic.main.activity_main.*
+
+class MyActivity : Activity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        textView.setText("Hello, world!")
+        // 而不是 findViewById(R.id.textView) as TextView
+    }
+}
+```
+`textView`是对`Activity`的一项扩展属性，与在`activity_main.xml`中的声明具有同样类型。
+
+
+### 网络请求   
+
+
+`Kotlin`提供了一些扩展函数来执行网络请求，同时也可以使用第三方库来执行.     
+```kotlin
+public class Request(val url: String) {
+    public fun run() {
+        val forecastJsonStr = URL(url).readText()
+        Log.d(javaClass.simpleName, forecastJsonStr)
+    }
+}
+```
+
+如你所知，HTTP请求不被允许在主线程中执行，否则它会抛出异常。这是因为阻塞住UI线程是一个非常差的体验。Android中通用的做法是使用AsyncTask，但是这些类是非常丑陋的，并且使用它们无任何副作用地实现功能也是非常困难的。Anko提供了非常简单的DSL来处理异步任务，它满足大部分的需求。它提供了一个基本的async函数用于在其它线程执行代码，也可以选择通过调用uiThread的方式回到主线程。在子线程中执行请求如下这么简单：
+```kotlin
+async() {
+    Request(url).run()
+    uiThread { longToast("Request performed") }
+}
+```
+UIThread有一个很不错的一点就是可以依赖于调用者。如果它是被一个Activity调用的，那么如果activity.isFinishing()返回true，则uiThread不会执行，这样就不会在Activity销毁的时候遇到崩溃的情况了。
+
+##### 解析`gson`
+
+`Kotlin`允许我们去定义一些行为与静态对象一样的对象。尽管这些对象可以用众所周知的模式来实现，比如容易实现的单例模式。
+我们需要一个类里面有一些静态的属性、常量或者函数，我们可以使用`companion objecvt`。这个对象被这个类的所有对象所共享，就像`Java`中的静态属性或者方法。
+```kotlin
+public class ForecastRequest(val zipCode: String) {
+    companion object {
+        private val APP_ID = "15646a06818f61f7b8d7823ca833e1ce"
+        private val URL = "http://api.openweathermap.org/data/2.5/" +
+                "forecast/daily?mode=json&units=metric&cnt=7"
+        private val COMPLETE_URL = "$URL&APPID=$APP_ID&q="
+    }
+    
+    fun execute(): ForecastResult {
+        val forecastJsonStr = URL(COMPLETE_URL + zipCode).readText()
+        return Gson().fromJson(forecastJsonStr, ForecastResult::class.java)
+    }
+}
+```
+
+
+### 创建Application 
+
+```kotlin
+class App : Application() {
+    companion object {
+        private var instance: Application? = null
+        fun instance() = instance!!
+    }
+    override fun onCreate() {
+        super.onCreate()
+        instance = this
+    }
+}
+
+```
+
+
+
+
+- with() 
+
+```kotlin
+inline fun <T> with(t: T, body: T.() -> Unit) { t.body() }
+```
+
+
+
+参考
+===
+
+- [Kotlin for Android Developers](https://leanpub.com/kotlin-for-android-developers)
+- [Resources to Learn Kotlin](https://developer.android.com/kotlin/resources.html)
+- [Kotlin语言中文站](https://www.kotlincn.net/docs/reference/coding-conventions.html)
 
 
 ---
 
 - 邮箱 ：charon.chui@gmail.com  
 - Good Luck! 
+

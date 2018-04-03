@@ -4,7 +4,7 @@ Kotlin学习教程(七)
 这篇文章主要学习下`lambda`表达式。因为后续一些例子会用到。
 
 
-> “Lambda 表达式”(lambda expression)是一个匿名函数，Lambda表达式基于数学中的λ演算得名，直接对应于其中的lambda抽象(lambda abstraction)，是一个匿名函数，即没有函数名的函数。Lambda表达式可以表示闭包（注意和数学传统意义上的不同）。
+> “Lambda 表达式”(lambda expression)其实就是匿名函数，`Lambda`表达式基于数学中的`λ`演算得名，直接对应于其中的`lambda`抽象`(lambda abstraction)`，是一个匿名函数，即没有函数名的函数。`Lambda`表达式可以表示闭包（注意和数学传统意义上的不同）。
 
 `Java 8`的一个大亮点是引入`Lambda`表达式，使用它设计的代码会更加简洁。
 
