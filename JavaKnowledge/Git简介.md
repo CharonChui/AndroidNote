@@ -1,4 +1,4 @@
-Git命令
+Git简介
 ===
 
 `Git`和其他版本控制系统(包括`Subvversion`及其他相似的工具)的主要差别在于`Git`对待数据的方法。概念上来区分，其它大部分系统以文件变更列表的方式存储信息。 
@@ -37,17 +37,20 @@ Git命令
 - 使用命令`git commit`，完成。
 
 
-三种状态 
+五种状态 
 ---
 
 
- `Git`有三种状态，你的文件可能处于其中之一:     
+`Git`有五种状态，你的文件可能处于其中之一:     
 
- - 已提交`(committed)`
- - 已修改`(modified)`
- - 已暂存`(staged)`
+- 未修改`(origin)`
+- 已修改`(modified)`
+- 已暂存`(staged)`
+- 已提交`(committed)`
+- 已推送`(pushed)`
 
-  已提交表示数据已经安全的保存在本地数据库中。 已修改表示修改了文件，但还没保存到数据库中。 已暂存表示对一个已修改文件的当前版本做了标记，使之包含在下次提交的快照中。
+
+已提交表示数据已经安全的保存在本地数据库中。 已修改表示修改了文件，但还没保存到数据库中。 已暂存表示对一个已修改文件的当前版本做了标记，使之包含在下次提交的快照中。
 
 ![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/git_list.png)                
 
@@ -64,67 +67,118 @@ Git命令
 - 提交更新，找到暂存区域的文件，将快照永久性存储到`Git`仓库目录。
 
 
+四个区
+---
+
+`Git`主要分为四个区:    
+
+- 工作区`(Working Area)`
+- 暂存区`(Stage)`
+- 本地仓库`(Local Repository)`
+- 远程仓库`(Remote Repository)`
+
+
+
+上面说了`git add`和`git commit`的惭怍，总体分为了三个部分，其实更加详细的来分析，还需要一个`git push`的过程，也就是把更改`push`到远程仓库中。   
+
+![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/git_buzhou.jpg)       
+
+正常情况下，我们的工作流程就是三个步骤，分别对应上图中的三个箭头线:    
+
+```shell
+git add . // 把所有文件放入暂存区
+git commit -m "comment"  // 把所有文件从暂存区提交进本地仓库
+git push  // 把所有文件从本地仓库推送进远程仓库
+```
+
 先上一张图             
 ![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/git.jpg)                  
-图中的index部分就是暂存区           
+图中的`index`部分就是暂存区           
 
 - 安装好git后我们要先配置一下。以便`git`跟踪。           
 
     ```
     git config --global user.name "xxx"            
     git config --global user.email "xxx@xxx.com"
-	```          
-	上面修改后可以使用`cat ~/.gitconfig`查看                      
-	如果指向修改仓库中的用户名时可以不加`--global`，这样可以用`cat .git/config`来查看             
-	`git config --list`来查看所有的配置。   
-	
-- 新建仓库             
-
-    `mkdir gitDemo`
-    `cd gitDemo`
-    `git init`
+    ```          
+    上面修改后可以使用`cat ~/.gitconfig`查看                      
+    如果指向修改仓库中的用户名时可以不加`--global`，这样可以用`cat .git/config`来查看             
+    `git config --list`来查看所有的配置。   
+    
+- 新建仓库     
+    ```        
+    mkdir gitDemo
+    cd gitDemo
+    git init
+    ```
     这样就创建完了。
 
-- clone仓库                 
-	在某一目录下执行.          
+- `clone`仓库                 
+    在某一目录下执行.          
     `git clone [git path]`                                    
-	只是后`Git`会自动把当地仓库的`master`分支和远程仓库的`master`分支对应起来，远程仓库默认的名称是`origin`。
+    只是后`Git`会自动把当地仓库的`master`分支和远程仓库的`master`分支对应起来，远程仓库默认的名称是`origin`。
 
 - `git add`提交文件更改(修改和新增),把当前的修改添加到暂存区                                 
     `git add xxx.txt`添加某一个文件                
     `git add .`添加当前目录所有的文件            
-	
+    
 - `git commit`提交，把修改由暂存区提交到仓库中                         
     `git commit`提交，然后在出来的提示框内查看当前提交的内容以及输入注释。          
     或者也可以用`git commit -m "xxx"` 提交到本地仓库并且注释是xxx      
-	
+
+    `git commit`是很小的一件事情，但是往往小的事情往往引不起大家的关注，不妨打开公司的任一个`repo`，查看`commit log`，满篇的`update`和`fix`，
+    完全不知道这些`commit`是要做啥。在提交`commit`的时候尽量保证这个`commit`只做一件事情，比如实现某个功能或者修改了配置文件。注意是保证每个`commit`
+    只做一件事，而不是让你做了一件事`commit`后就`push`，那样就有点过分了。  
+
+- `git cherry-pick`          
+    `git cherry-pick`可以选择某一个分支中的一个或几个`commit(s)`来进行操作。例如，假设我们有个稳定版本的分支，叫`v2.0`，另外还有个开发版本的分支`v3.0`，我们不能直接把两个分支合并，这样会导致稳定版本混乱，但是又想增加一个`v3.0`中的功能到`v2.0`中，这里就可以使用`cherry-pick`了。     
+    就是对已经存在的`commit`进行 再次提交；     
+    简单用法:    
+    `git cherry-pick <commit id>`
+
+    
 - `git status`查看当前仓库的状态和信息，会提示哪些内容做了改变已经当前所在的分支。              
 
-- `git diff`对比区别                
-    `git diff` 直接查看所有的区别                 
-	`git diff HEAD -- xx.txt`查看工作区与版本库最新版的差别。            
-    `git diff`比较只是当前工作区和暂存区之间的区别。如果想要查看暂存起来的文件和上次提交时的差异可以使用`git diff --staged`。或者想看和远程仓库最新内容的差异可以使用`git diff HEAD`。
+- `git diff`                 
+    `git diff`直接查看所有的区别                 
+    `git diff HEAD -- xx.txt`查看工作区与版本库最新版的差别。            
+    
+    - 首先如果我们只是本地修改了一个文件，但是还没有执行`git add .`之前，该如何查看有那些修改。这种情况下直接执行`git diff`就可以了。   
+    - 那如果我们执行了`git add .`操作，然后你再执行`git diff`这时就会发现没有任何结果，这时因为`git diff`这个命令只是检查工作区和暂存区之间的差异。    
+    如果我们要查看暂存区和本地仓库之间的差异就需要加一个参数使用`--staged`参数或者`--cached`，`git diff --cached`。这样再执行就可以看到暂存区和本地仓库之间的差异。     
+    - 现在如果我们把修改使用`git commit`从暂存区提交到本地仓库，再看一下差异。这时候再执行`git diff --cached`就会发现没有任何差异。
+    如果我们行查看本地仓库和远程仓库的差异，就要换另一个参数，执行`git diff master origin/master`这样就可以看到差异了。 这里面`master`是本地的仓库，而`origin/master`是
+    远程仓库，因为默认都是在主分支上工作，所以两边都是`master`而`origin`代表远程。    
 
 - `git push` 提交到远程仓库                        
     可以直接调用`git push`推送到当前分支         
-	或者`git push origin master`推送到远程`master`分支         
-	`git push origin devBranch`推送到远程`devBranch`分支           
-
-- `git merge`合并目标分支到当前分支               
-    `git merge devBrach`
+    或者`git push origin master`推送到远程`master`分支         
+    `git push origin devBranch`推送到远程`devBranch`分支           
 
 - `git log`查看当前分支下的提交记录             
     用`git log`可以查看提交历史，以便确定要回退到哪个版本。
-    如果已经使用`git log`查出版本`commit id`后`reset`到某一次提交后，又要重返回来，用`git reflog`查看命令历史，以便确定要回到未来的哪个版本。
+    如果已经使用`git log`查出版本`commit id`后`reset`到某一次提交后，又要重返回来，
+    用`git reflog`查看命令历史，以便确定要回到未来的哪个版本。     
+    ```
+    git log -p -2 // -p 是仅显示最近的x次提交   
+    git log --stat // stat简略的显示每次提交的内容梗概，如哪些文件变更，多少删除，多少天剑
+    git log --oneline --graph
+    ```
+    下面是常用的参数:   
+    - `–author=“Alex Kras”` ——只显示某个用户的提交任务
+    - `–name-only` ——只显示变更文件的名称
+    - `–oneline`——将提交信息压缩到一行显示
+    - `–graph` ——显示所有提交的依赖树
+    - `–reverse` ——按照逆序显示提交记录（最先提交的在最前面）
+    - `–after` ——显示某个日期之后发生的提交
+    - `–before` ——显示发生某个日期之前的提交
 
-- `git reflog`               
-
+   
+- `git reflog`                
     可以查看所有操作记录包括`commit`和`reset`操作以及删除的`commit`记录
 
-- `git reset`
-    
-    `git reset`命令用于将当前HEAD复位到指定状态。一般用于撤消之前的一些操作(如:`git add`,`git commit`等)。               
-
+- `git reset`       
+    `git reset`命令用于将当前HEAD复位到指定状态。一般用于撤消之前的一些操作(如:`git add`,`git commit`等)。                 
     在`git`的一般使用中，如果发现错误的将不想暂存的文件被`git add`进入索引之后，想回退取消，则可以使用命令:`git reset HEAD <file>`，
     同时`git add`完毕之后，`git`也会做相应的提示，比如:    
     ```shell
@@ -133,10 +187,10 @@ Git命令
     # 
     # new file:   test.py
     ```
-
-    `git reset [--hard|soft|mixed|merge|keep] [<commit>或HEAD]`:将当前的分支重设`(reset)`到指定的`<commit>`或者`HEAD`(默认，如果不显示指定`<commit>`，默认是`HEAD`，即最新的一次提交)，并且根据`[mode]`有可能更新索引和工作目录。`mode`的取值可以是`hard、soft、mixed、merged、keep`。下面来详细说明每种模式的意义和效果。
-
-    - `--hard`:重设`(reset)`索引和工作目录，自从`<commit>`以来在工作目录中的任何改变都被丢弃，并把`HEAD`指向`<commit>`。
+    `git reset [--hard|soft|mixed|merge|keep] [<commit>或HEAD]`:将当前的分支重设`(reset)`到指定的`<commit>`或者`HEAD`(默认，如果不显示指定`<commit>`，默认是`HEAD`，即最新的一次提交)，并且根据`[mode]`有可能更新索引和工作目录。`mode`的取值可以是`hard、soft、mixed、merged、keep`。下面来详细说明每种模式的意义和效果:    
+    - `--hard`:重设`(reset)`索引和工作目录，自从`<commit>`以来在工作目录中的任何改变都被丢弃，并把`HEAD`指向`<commit>`。会将其之后的修改全部撤回，并且会影响到工作区
+    - `--mixed`改变分支和暂存区，不影响工作区
+    - `soft`只改变分支的提交        
 
     下面是具体一个例子，假设有三个`commit`，执行`git status`结果如下:     
     ```
@@ -160,38 +214,77 @@ Git命令
     $ git commit -a -c ORIG_HEAD  #(3)
     ```
 
-    1) 当提交了之后，又发现代码没有提交完整，或者想重新编辑一下提交的信息，可执行`git reset --soft HEAD^`，让工作目录还跟`reset`之前一样，不作任何改变。
-`HEAD^`表示指向`HEAD`之前最近的一次提交。            
-    (2) 对工作目录下的文件做修改，比如：修改文件中的代码等。       
-    (3) 然后使用`reset`之前那次提交的注释、作者、日期等信息重新提交。注意，当执行`git reset`命令时，`git`会把老的`HEAD`拷贝到文件`.git/ORIG_HEAD`中，在命令中可以使用`ORIG_HEAD`引用这个提交。`git commit`命令中 `-a`参数的意思是告诉`git`，自动把所有修改的和删除的文件都放进暂存区，未被`git`跟踪的新建的文件不受影响。`commit`命令中`-c <commit>`或者`-C <commit>`意思是拿已经提交的对象中的信息(作者，提交者，注释，时间戳等)提交，那么这条`git commit` 命令的意思就非常清晰了，把所有更改的文件加入暂存区，并使用上次的提交信息重新提交。
-
     - `Git`中用`HEAD`表示当前版本，上一版本就是`HEAD^`,上上一版本就是`HEAD^^`.如果往前一千个版本呢？ 那就是`HEAD~1000`.             
     `git reset —-hard HEAD^`       
     `git reset —-hard commit_id`
-	`git reset HEAD fileName`可以把用`git add`之后但是还没有`commit`之前暂存区中的修改撤销。          
+    `git reset HEAD fileName`可以把用`git add`之后但是还没有`commit`之前暂存区中的修改撤销。          
     说到这里就说一个问题，如果你reset到某一个版本之后，发现弄错了，还想返回去，这时候用`git log`已经找不到之前的`commit id`了。那怎么办？这时候可以使用下面的命令来找。
 
 - `git checkout`撤销修改或者切换分支           
     `git checkout -- xx.txt`意思就是将`xx.txt`文件在工作区的修改全部撤销。可能会有两种情况:      
-	
-	- 修改后还没有调用`git add`添加到暂存区，现在撤销后就会和版本库一样的状态。
-	- 修改后已经调用`git add`添加到暂存区后又做了修改，这时候撤销就会回到暂存区的状态。
+    
+    - 修改后还没有调用`git add`添加到暂存区，现在撤销后就会和版本库一样的状态。
+    - 修改后已经调用`git add`添加到暂存区后又做了修改，这时候撤销就会回到暂存区的状态。
 
     总的来说`git checkout`就是让这个文件回到最近一次`git commit`或者`git add`的状态。
-	这里还有一个问题就是我胡乱修改了某个文件内容然后调用了`git add`添加到缓存区中，这时候想丢弃修改该怎么办？也是要分两步:
-	- 使用`git reset HEAD file`命令，将暂存区中的内容回退，这样修改的内容会从暂存区回到工作区。             
-	- 使用`git checkout --file`直接丢弃工作区的修改。            
+    这里还有一个问题就是我胡乱修改了某个文件内容然后调用了`git add`添加到缓存区中，这时候想丢弃修改该怎么办？也是要分两步:
+    - 使用`git reset HEAD file`命令，将暂存区中的内容回退，这样修改的内容会从暂存区回到工作区。             
+    - 使用`git checkout --file`直接丢弃工作区的修改。            
 
-	`git checkout`把当前目录所有修改的文件从`HEAD`都撤销修改。        
-	为什么分支的地方也是用`git checkout`这里撤销还是用它呢？他们的区别在于`--`，如果没有`--`那就是检出分支了。
-	`git checkout origin/developer`  // 切换到orgin/developer分支   
+    `git checkout`把当前目录所有修改的文件从`HEAD`都撤销修改。        
+    为什么分支的地方也是用`git checkout`这里撤销还是用它呢？他们的区别在于`--`，如果没有`--`那就是检出分支了。
+    `git checkout origin/developer`  // 切换到orgin/developer分支   
+
+
+上面介绍了`git reset`和`git checkout`，这里就总结一下如何来对修改进行撤销操作:     
+
+- 已经修改，但是并未执行`git add .`进行暂存        
+    如果只是修改了本地文件，但是还没有执行`git add .`这时候我们的修改还是再工作区，并未进入暂存区，我们可以使用:`git checkouot .`或者`git reset --hard`来进行
+    撤销操作。   
+
+    `git add .`的反义词是`git checkout .`做完修改后，如果想要向前一步，让修改进入暂存区执行`git add .`如果想退后一步，撤销修改就执行`git checkout .`。   
+
+- 已暂存，未提交    
+    如果已经执行了`git add .`但是还没有执行`git commit -m "comment"`这时候你意识到了错误，想要撤销，可以执行:      
+
+    ```
+    <!-- git reset   // git reset 只是把修改退回到了git add .之前的状态，也就是让文件还处于已修改未暂存的状态
+    git checkout .   // 上面让文件处于已修改未暂存的状态，还要执行git checkout .来撤销工作区的状态
+    ```    
+    或`git reset --hard`
+
+    上面两个例子中都使用了`git reset --hard`这个命令也可以完成，这个命令可以一步到位的把你的修改完全恢复到本地仓库的未修改的状态。     
+
+- 已提交，未推送  
+    如果执行了`git add .`又执行了`git commit -m "comment"`提交了代码，这时候代码已经进入到了本地仓库，然而你发现问题了，想要撤销，怎么办？   
+    执行`git reset --hard origin/master`还是`git reset --hard`命令，只不过这次多了一个参数`origin/master`，这代表远程仓库，既然本地仓库已经有了
+    你提交的脏代码，那么就从远程仓库中把代码恢复把。   
+
+- 已推送到远程仓库  
+    如果你执行`git add .`后又`commit`又执行了`git push`操作了，这时候你的代码已经进入到了远程仓库中，如果你发现你提交的代码又问题想恢复的话，那你只能先把本地仓库的
+    代码恢复，然后再强制执行`git push`仓做，`push`到远程仓库就可以了。    
+    
+    ```
+    git reset --hard HEAD^  // HEAD^代表最新提交的前一次  
+    git push -f  // 强制推送
+    ```
+
+
+- `git revert`撤销提交   
+    `git revert`在撤销一个提交的同时会创建一个新的提交，这是一个安全的方法，因为它不会重写提交历史。
+
+    - `git revert`是生成一个新的提交来撤销某次提交，此次提交之前的`commit`都会被保留
+    - `git reset`是回到某次提交，提交及之前的`commit`都会被保留，但是此次之后的修改都会被退回到暂存区     
+    
+    相比`git reset`它不会改变现在得提交历史。`git reset`是直接删除制定的`commit`
+    并把`HEAD`向后移动了一下。而`git revert`是一次新的特殊的`commit`，`HEAD`继续前进，本质和普通`add commit`一样，仅仅是`commit`内容很特殊。内容是与前面普通`commit`变化的反操作。
+    比如前面普通`commit`是增加一行`a`，那么`revert`内容就是删除一行`a`。
+
 
 - `git rm`删除文件     
     该文件就不再纳入版本管理了。如果删除之前修改过并且已经放到暂存区域的话，则必须要用强制删除选项 -f（译注：即 force 的首字母），以防误删除文件后丢失修改的内容。
     另外一种情况是，我们想把文件从 Git 仓库中删除（亦即从暂存区域移除），但仍然希望保留在当前工作目录中。换句话说，仅是从跟踪清单中删除。比如一些大型日志文件或者一堆 .a 编译文件，不小心纳入仓库后，要移除跟踪但不删除文件，以便稍后在 .gitignore 文件中补上，用 --cached 选项即可：`git rm --cached readme.txt`   
 
-- `git push`        
-    把本地仓库的内容推送到远程仓库中。
 
 - 分支                   
     `git`分支的创建和合并都是非常快的，因为增加一个分支其实就是增加一个指针，合并其实就是让某个分支的指针指向某一个位置。        
@@ -234,7 +327,7 @@ Git命令
     提交更改的话就用 
     `git push origin frommaster`
 
-    // 重命名分支	
+    // 重命名分支    
     `git branch -m new_branch wchar_support`
 
 
@@ -243,26 +336,26 @@ Git命令
 
 - 打`tag`                   
     `git tag v1.0`来进行打`tag`，默认为`HEAD`             
-	`git tag`查看所有`tag`          
+    `git tag`查看所有`tag`          
     如果我想在之前提交的某次`commit`上打`tag`，`git tag v1.0 commitID`     
-	当然也可以在打`tag`时带上参数 `git tag v1.0 -m "version 1.0 released" commitID`
+    当然也可以在打`tag`时带上参数 `git tag v1.0 -m "version 1.0 released" commitID`
     `git tag -d xxx`删除xxx
 
     `git show tagName`来查看某`tag`的详细信息。          
 - 打完`tag`后怎么推送到远程仓库         
-    `git push origin tagName`	   
+    `git push origin tagName`      
 
 - 删除`tag`        
-    `git tag -d tagName`	  
+    `git tag -d tagName`      
 
 - 删除完`tag`后怎么推送到远程仓库，这个写法有点复杂                  
-    `git push origin:refs/tags/tagName`	
+    `git push origin:refs/tags/tagName` 
 
-- 忽略文件	              
+- 忽略文件                
     在`git`根目录下创建一个特殊的`.gitignore`文件，把想要忽略的文件名填进去就可以了,匹配模式最后跟斜杠(/)说明要忽略的是目录,#是注释 。
-	其实不用一个个的去写，具体可以根据项目参考[https://github.com/github/gitignore](https://github.com/github/gitignore)
-	当然不要忘了把该文件提交上去                
-	在用`linux`的时候会自动生成一些以`~`结尾的备份文件，如果ignore掉呢？[https://github.com/github/gitignore/blob/master/Global/Linux.gitignore](https://github.com/github/gitignore/blob/master/Global/Linux.gitignore)
+    其实不用一个个的去写，具体可以根据项目参考[https://github.com/github/gitignore](https://github.com/github/gitignore)
+    当然不要忘了把该文件提交上去                
+    在用`linux`的时候会自动生成一些以`~`结尾的备份文件，如果ignore掉呢？[https://github.com/github/gitignore/blob/master/Global/Linux.gitignore](https://github.com/github/gitignore/blob/master/Global/Linux.gitignore)
 
 - 撤销最后一次提交
     有时候我们提交完了才发现漏掉了几个文件没有加或者提交信息写错了，想要撤销刚才的的提交操作。可以使用--amend选项重新提交:`git commit --amend`
@@ -271,7 +364,7 @@ Git命令
     `git remote -v`
 
 关于`git`的工作区、缓存区可以看下图`index`标记部分的区域就是暂存区                     
-![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/git_stage.jpg?raw=true)	      
+![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/git_stage.jpg?raw=true)         
 
 从这个图中能看到缓存区的存在，这就是为什么我们新加或者修改之后都要调用`git add`方法后再调用`git commit`。              
 其实我一直有点分不开`reset`和`checkout`的区别，从这个图里能明显看出来了：
@@ -326,5 +419,5 @@ Git命令
 
 
 
-	
+    
 
