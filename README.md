@@ -78,6 +78,7 @@ Android学习笔记
     - [发布library到Maven仓库][40]
 
 - [应用发布][50]
+    - [使用Jenkins实现自动化打包][198]
     - [Android应用发布][41]
     - [Zipalign优化][42]
 
@@ -137,7 +138,7 @@ Android学习笔记
     - [线程池的原理][97]
     - [原子性、可见性以及有序性][98]
     - [Base64加密][99]
-    - [Git命令][100]
+    - [Git简介][100]
     - [hashCode与equals][101]
     - [HashMap实现原理分析][102]
     - [Java基础面试题][103]
@@ -321,7 +322,7 @@ Android学习笔记
 [97]: https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledge/%E7%BA%BF%E7%A8%8B%E6%B1%A0%E7%9A%84%E5%8E%9F%E7%90%86.md   "线程池的原理"
 [98]: https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledge/%E5%8E%9F%E5%AD%90%E6%80%A7%E3%80%81%E5%8F%AF%E8%A7%81%E6%80%A7%E4%BB%A5%E5%8F%8A%E6%9C%89%E5%BA%8F%E6%80%A7.md   "原子性、可见性以及有序性"
 [99]: https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledge/Base64%E5%8A%A0%E5%AF%86.md   "Base64加密"
-[100]: https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledge/Git%E5%91%BD%E4%BB%A4.md   "Git命令"
+[100]: https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledge/Git%E7%AE%80%E4%BB%8B.md   "Git简介"
 [101]: https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledge/hashCode%E4%B8%8Eequals.md   "hashCode与equals"
 [102]: https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledge/HashMap%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90.md   "HashMap实现原理分析"
 [103]: https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledge/Java%E5%9F%BA%E7%A1%80%E9%9D%A2%E8%AF%95%E9%A2%98.md   "Java基础面试题"
@@ -421,7 +422,7 @@ Android学习笔记
 [195]: https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledge/Http%E4%B8%8EHttps%E7%9A%84%E5%8C%BA%E5%88%AB.md "Http与Https的区别"
 [196]: https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledge/Top-K%E9%97%AE%E9%A2%98.md "Top-K问题"
 [197]: https://github.com/CharonChui/AndroidNote/blob/master/KotlinCourse/Kotlin%E5%AD%A6%E4%B9%A0%E6%95%99%E7%A8%8B(%E5%8D%81).md "Kotlin学习教程(十)"
-
+[198]: https://github.com/CharonChui/AndroidNote/blob/master/AppPublish/%E4%BD%BF%E7%94%A8Jenkins%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E5%8C%96%E6%89%93%E5%8C%85.md "使用Jenkins实现自动化打包"
 
 
 
