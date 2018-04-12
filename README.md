@@ -11,6 +11,8 @@ Android学习笔记
 目录
 ===  
 
+- [史上最适合Android开发者学习的Go语言教程](https://github.com/CharonChui/GolangStudyNote)
+
 - [源码解析][43] 
     - [自定义View详解][1]
     - [Activity界面绘制过程详解][2]
