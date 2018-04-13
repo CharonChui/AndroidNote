@@ -5,18 +5,22 @@ Kotlin学习教程(一)
 
 在`5月18`日谷歌在`I/O`开发者大会上宣布，将`Kotlin`语言作为安卓开发的一级编程语言。并且会在`Android Studio 3.0`版本全面支持`Kotlin`。   
 
-- `Kotlin`是一个基于`JVM`的新的编程语言，由[JetBrains](https://www.jetbrains.com/)开发。`JetBrains`作为目前广受欢迎的`Java IDE IntelliJ`的提供商，在`Apache`许可下已经开源其`Kotlin`编程语言。     
+- `Kotlin`是一个基于`JVM`的新的编程语言，由[JetBrains](https://www.jetbrains.com/)开发。`JetBrains`作为目前广受欢迎的
+`Java IDE IntelliJ`的提供商，在`Apache`许可下已经开源其`Kotlin`编程语言。     
 - `Kotlin`可以编译成`Java`字节码，也可以编译成`JavaScript`，方便在没有`JVM`的设备上运行。      
 - `Kotlin`已正式成为`Android`官方开发语言。
 
 [Kotlin官网](https://kotlinlang.org/)
 
-`JetBrains`这家公司非常牛逼，开发了很多著名的软件，他们在使用`Java`的过程中发现`java`比较笨重不方便，所以就开发了`kotlin`，`kotlin`是一种全栈的开发语言，可以用它进行开发`web`、`web`后端、`Android`等。    
+`JetBrains`这家公司非常牛逼，开发了很多著名的软件，他们在使用`Java`的过程中发现`java`比较笨重不方便，所以就开发了`kotlin`，`kotlin`是
+一种全栈的开发语言，可以用它进行开发`web`、`web`后端、`Android`等。    
 
-很多开发者都说`Google`学什么不好，非要学苹果，出个`android`的`swift`版本，一定会搞不起来没人用，所以不用浪费时间去学习。在这里想引用马云的一句话: 
+很多开发者都说`Google`学什么不好，非要学苹果，出个`android`的`swift`版本，一定会搞不起来没人用，所以不用浪费时间去学习。在这里想引用马云
+的一句话: 
 > 拥抱变化
 
-`Google`做事，向来言出必行，之前在推行`Android Studio`时也是一片骂声，吐槽各种不好用，各种慢。但是现在`Android Studio`基本都已经普及了。我相信`Kotlin`也不会例外。所以我们不仅要学，还要要认真的学。    
+`Google`做事，向来言出必行，之前在推行`Android Studio`时也是一片骂声，吐槽各种不好用，各种慢。但是现在`Android Studio`基本都已经普及了。
+我相信`Kotlin`也不会例外。所以我们不仅要学，还要要认真的学。    
 
 
 ### `Kotlin`的特性
@@ -24,7 +28,8 @@ Kotlin学习教程(一)
 - 它更加易表现：这是它最重要的优点之一。你可以编写少得多的代码。
 - `Kotlin`是一种兼容`Java`的语言
 - `Kotlin`比`Java`更安全，能够静态检测常见的陷阱。如:引用空指针
-- `Kotlin`比`Java`更简洁，通过支持`variable type inference，higher-order functions (closures)，extension functions，mixins and first-class delegation`等实现
+- `Kotlin`比`Java`更简洁，通过支持`variable type inference，higher-order functions (closures)，extension functions，mixins 
+and first-class delegation`等实现
 - `Kotlin`可与`Java`语言无缝通信。这意味着我们可以在`Kotlin`代码中使用任何已有的`Java`库；同样的`Kotlin`代码还可以为`Java`代码所用
 - `Kotlin`在代码中很少需要在代码中指定类型，因为编译器可以在绝大多数情况下推断出变量或是函数返回值的类型。这样就能获得两个好处:简洁与安全
 
@@ -111,7 +116,9 @@ data class Person(
 
 ### 创建`Kotlin`项目      
 
-`Google`宣布在`Android Studio 3.0`版本会全面支持`Kotlin`，目前早就有预览版了[Android Studio Preview](https://developer.android.com/studio/preview/index.html)(个人感觉很好用，比2.3.3版本强多了)。直接通过`New Project`创建就可以，与创建普通`Java`项目唯一不同的是要勾选`Include Kotlin support`的选项。   
+`Google`宣布在`Android Studio 3.0`版本会全面支持`Kotlin`，目前早就有预览版了
+[Android Studio Preview](https://developer.android.com/studio/preview/index.html)(个人感觉很好用，比2.3.3版本强多了)。
+直接通过`New Project`创建就可以，与创建普通`Java`项目唯一不同的是要勾选`Include Kotlin support`的选项。   
 
 
 ![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/studio_create_kotlin.png?raw=true)
@@ -128,7 +135,8 @@ import android.os.Bundle
 // 定义类，继承AppCompatActivity
 class MainActivity : AppCompatActivity() {
 	
-	// 重写方法用overide，函数名用fun声明  参数是a: 类型的形式 ?是啥？它是指明该对象可能为null，如果有了?那在调用该方法的时候参数可以传递null进入，如果没有?传递null就会报错
+	// 重写方法用overide，函数名用fun声明  参数是a: 类型的形式 ?是啥？它是指明该对象可能为null，
+	// 如果有了?那在调用该方法的时候参数可以传递null进入，如果没有?传递null就会报错
     override fun onCreate(savedInstanceState: Bundle?) {
     	// super 
         super.onCreate(savedInstanceState)
@@ -144,7 +152,8 @@ class MainActivity : AppCompatActivity() {
 
 变量可以很简单地定义成可变`var`(可读可写)和不可变`val`(只读)的变量。
 
-`val`与`Java`中使用的`final`很相似。一个不可变对象意味着它在实例化之后就不能再去改变它的状态了。如果你需要一个这个对象修改之后的版本，那就会再创建一个新的对象。
+`val`与`Java`中使用的`final`很相似。一个不可变对象意味着它在实例化之后就不能再去改变它的状态了。如果你需要一个这个对象修改之后的版本，
+那就会再创建一个新的对象。
 
 声明:  
 ```kotlin
@@ -163,22 +172,20 @@ var weight = 70.5 // double
 ```
 
 在`Kotlin`中，一切都是对象。没有像`Java`中那样的原始基本类型。
-当然，像`Integer`，`Float`或者`Boolean`等类型仍然存在，但是它们全部都会作为对象存在的。基本类型的名字和它们工作方式都是与`Java`非常相似的，但是有一些不同之处你可能需要考虑到:    
+当然，像`Integer`，`Float`或者`Boolean`等类型仍然存在，但是它们全部都会作为对象存在的。基本类型的名字和它们工作方式都是与`Java`非常相似
+的，但是有一些不同之处你可能需要考虑到:    
 
 - 数字类型中不会自动转型。举个例子，你不能给`Double`变量分配一个`Int`。必须要做一个明确的类型转换，可以使用众多的函数之一:   
-
 	```kotlin
 	private var age = 18
 	private var weight = age.toFloat()
 	```
 - 字符（`Char`）不能直接作为一个数字来处理。在需要时我们需要把他们转换为一个数字:       
-
 	```kotlin
 	val c: Char='c'
 	val i: Int = c.toInt()
 	```
 - 位运算也有一点不同。在`Android`中，我们经常在`flags`中使用`或`:      
-
 	```java
 	// Java
 	int bitwiseOr = FLAG1 | FLAG2;
@@ -192,7 +199,6 @@ var weight = 70.5 // double
 	```
 
 - 一个`String`可以像数组那样访问，并且被迭代:     
-
 	```kotlin
 	var s = "charon"
 	var c = s[2]
@@ -205,8 +211,8 @@ var weight = 70.5 // double
 
 ##### 编译期常量
 
-已知值的属性可以使用`const`修饰符标记为编译期常量(类似`java`中的`public static final`)。`const`只能修复`val`不能修复`var`,这些属性需要满足以下要求:  
-
+已知值的属性可以使用`const`修饰符标记为编译期常量(类似`java`中的`public static final`)。
+`const`只能修复`val`不能修复`var`,这些属性需要满足以下要求:      
 - 位于顶层或者是`object`的一个成员
 - 用`String`或原生类型值初始化
 - 没有自定义`getter`
@@ -247,7 +253,8 @@ set(value) {
 ##### 延迟初始化   
 
 我们说过，在类内声明的属性必须初始化，如果设置非`null`的属性，应该将此属性在构造器内进行初始化。
-假如想在类内声明一个`null`属性，在需要时再进行初始化（最典型的就是懒汉式单例模式），与`Kotlin`的规则是相背的，此时我们可以声明一个属性并延迟其初始化，此属性用`lateinit`修饰符修饰。
+假如想在类内声明一个`null`属性，在需要时再进行初始化（最典型的就是懒汉式单例模式），与`Kotlin`的规则是相背的，此时我们可以声明一个属性并
+延迟其初始化，此属性用`lateinit`修饰符修饰。
 
 ```kotlin
 class MainActivity : AppCompatActivity() {
@@ -351,7 +358,8 @@ class Person{
 }
 ```
 
-如果类有一个主构造函数，每个次构造函数都需要委托给主构造函数(不然会报错)， 可以直接委托或者通过别的次构造函数间接委托。委托到同一个类的另一个构造函数用`this`关键字即可:    
+如果类有一个主构造函数，每个次构造函数都需要委托给主构造函数(不然会报错)， 可以直接委托或者通过别的次构造函数间接委托。
+委托到同一个类的另一个构造函数用`this`关键字即可:    
 ```kotlin
 class Person constructor(name: String) {
     constructor(name: String, surName: String) : this(name) {
@@ -372,7 +380,8 @@ class MainActivity : AppCompatActivity() {
 就会在`logcat`上打印:   
 `09-20 16:51:19.738 6010-6010/com.charon.kotlinstudydemo D/@@@: name is : charon surName is : chui`
 
-如果一个非抽象类没有声明任何（主或次）构造函数，它会有一个生成的不带参数的主构造函数。构造函数的可见性是`public`。如果你不希望你的类有一个公有构造函数，你需要声明一个带有非默认可见性的空的主构造函数：
+如果一个非抽象类没有声明任何（主或次）构造函数，它会有一个生成的不带参数的主构造函数。构造函数的可见性是`public`。
+如果你不希望你的类有一个公有构造函数，你需要声明一个带有非默认可见性的空的主构造函数：
 
 ```kotlin
 class Person private constructor(name: String) {
@@ -397,8 +406,7 @@ fun onCreate(savedInstanceState: Bundle?) {
 }
 ```
 如果你没有指定它的返回值，它就会返回`Unit`与`Java`中的`void`类似，但是`Unit`是一个真正的对象。`Unit`可以省略，
-你当然也可以指定任何其它的返回类型：
-
+你当然也可以指定任何其它的返回类型:      
 ```kotlin
 fun maxOf(a: Int, b: Int): Int {
     if (a > b) {
@@ -409,7 +417,7 @@ fun maxOf(a: Int, b: Int): Int {
 }
 ```
 
-然而如果返回的结果可以使用一个表达式计算出来，你可以不使用括号而是使用等号：    
+然而如果返回的结果可以使用一个表达式计算出来，你可以不使用括号而是使用等号:         
 ```kotlin
 fun add(x: Int,y: Int) : Int = x + y
 ```
