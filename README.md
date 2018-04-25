@@ -32,6 +32,16 @@ Android学习笔记
         - [Retrofit详解(上)][16]
         - [Retrofit详解(下)][17]
 
+- [Dagger2][199]        
+    - [1.Dagger2简介(一).md][200]
+    - [2.Dagger2入门demo(二).md][201]    
+    - [3.Dagger2入门demo扩展(三).md][202]
+    - [4.Dagger2单例(四).md][203]
+    - [5.Dagger2Lay和Provider(五).md][204]
+    - [6.Dagger2Android示例代码(六).md][205]
+    - [7.Dagger2之dagger-android(七).md][206]            
+    - [8.Dagger2与MVP(八).md][207]    
+
 - [音视频开发][44]
     - [搭建nginx+rtmp服务器][18]
     - [视频播放相关内容总结][19]
@@ -425,6 +435,15 @@ Android学习笔记
 [196]: https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledge/Top-K%E9%97%AE%E9%A2%98.md "Top-K问题"
 [197]: https://github.com/CharonChui/AndroidNote/blob/master/KotlinCourse/Kotlin%E5%AD%A6%E4%B9%A0%E6%95%99%E7%A8%8B(%E5%8D%81).md "Kotlin学习教程(十)"
 [198]: https://github.com/CharonChui/AndroidNote/blob/master/AppPublish/%E4%BD%BF%E7%94%A8Jenkins%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E5%8C%96%E6%89%93%E5%8C%85.md "使用Jenkins实现自动化打包"
+[199]: https://github.com/CharonChui/AndroidNote/tree/master/Dagger2 "Dagger2"
+[200]: https://github.com/CharonChui/AndroidNote/blob/master/Dagger2/1.Dagger2%E7%AE%80%E4%BB%8B(%E4%B8%80).md  "1.Dagger2简介(一).md"
+[201]: https://github.com/CharonChui/AndroidNote/blob/master/Dagger2/2.Dagger2%E5%85%A5%E9%97%A8demo(%E4%BA%8C).md  "2.Dagger2入门demo(二).md"
+[202]: https://github.com/CharonChui/AndroidNote/blob/master/Dagger2/3.Dagger2%E5%85%A5%E9%97%A8demo%E6%89%A9%E5%B1%95(%E4%B8%89).md  "3.Dagger2入门demo扩展(三).md"
+[203]: https://github.com/CharonChui/AndroidNote/blob/master/Dagger2/4.Dagger2%E5%8D%95%E4%BE%8B(%E5%9B%9B).md  "4.Dagger2单例(四).md"
+[204]: https://github.com/CharonChui/AndroidNote/blob/master/Dagger2/5.Dagger2Lay%E5%92%8CProvider(%E4%BA%94).md  "5.Dagger2Lay和Provider(五).md"
+[205]: https://github.com/CharonChui/AndroidNote/blob/master/Dagger2/6.Dagger2Android%E7%A4%BA%E4%BE%8B%E4%BB%A3%E7%A0%81(%E5%85%AD).md  "6.Dagger2Android示例代码(六).md"
+[206]: https://github.com/CharonChui/AndroidNote/blob/master/Dagger2/7.Dagger2%E4%B9%8Bdagger-android(%E4%B8%83).md  "7.Dagger2之dagger-android(七).md"
+[207]: https://github.com/CharonChui/AndroidNote/blob/master/Dagger2/8.Dagger2%E4%B8%8EMVP(%E5%85%AB).md  "8.Dagger2与MVP(八).md"
 
 
 
