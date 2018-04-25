@@ -4,19 +4,18 @@ Kotlin学习教程(八)
 `Kotlin`协程
 ---
 
-
-
-一些`API`启动长时间运行的操作(例如网络`IO`、文件`IO`、`CPU`或`GPU`密集型任务等)，并要求调用者阻塞直到它们完成。协程提供了一种避免阻塞线程并用更廉价、更可控的操作替代线程阻塞的方法：协程挂起。     
-
-协程通过将复杂性放入库来简化异步编程。程序的逻辑可以在协程中顺序地表达，而底层库会为我们解决其异步性。该库可以将用户代码的相关部分包装为回调、订阅相关事件、在不同线程(甚至不同机器！)上调度执行，而代码则保持如同顺序执行一样简单。     
-
+一些`API`启动长时间运行的操作(例如网络`IO`、文件`IO`、`CPU`或`GPU`密集型任务等)，并要求调用者阻塞直到它们完成。协程提供了一种避免阻塞线程
+并用更廉价、更可控的操作替代线程阻塞的方法:协程挂起。     
+协程通过将复杂性放入库来简化异步编程。程序的逻辑可以在协程中顺序地表达，而底层库会为我们解决其异步性。该库可以将用户代码的相关部分包装为回调、
+订阅相关事件、在不同线程(甚至不同机器！)上调度执行，而代码则保持如同顺序执行一样简单。     
 
 
 ### 阻塞 vs 挂起
 
-基本上，协程计算可以被挂起而无需阻塞线程。线程阻塞的代价通常是昂贵的，尤其在高负载时，因为只有相对少量线程实际可用，因此阻塞其中一个会导致一些重要的任务被延迟。
+基本上，协程计算可以被挂起而无需阻塞线程。线程阻塞的代价通常是昂贵的，尤其在高负载时，因为只有相对少量线程实际可用，因此阻塞其中一个会导致一些
+重要的任务被延迟。
 
-另一方面，协程挂起几乎是无代价的。不需要上下文切换或者`OS`的任何其他干预。最重要的是，挂起可以在很大程度上由用户库控制：
+另一方面，协程挂起几乎是无代价的。不需要上下文切换或者`OS`的任何其他干预。最重要的是，挂起可以在很大程度上由用户库控制:   
 作为库的作者，我们可以决定挂起时发生什么并根据需求优化/记日志/截获。
 
 另一个区别是，协程不能在随机的指令中挂起，而只能在所谓的挂起点挂起，这会调用特别标记的函数。
@@ -31,8 +30,10 @@ suspend fun doSomething(foo: Foo): Bar {
 }
 ```
 
-这样的函数称为挂起函数，因为调用它们可能挂起协程(如果相关调用的结果已经可用，库可以决定继续进行而不挂起)。挂起函数能够以与普通函数相同的方式获取参数和返回值，但它们只能从协程和其他挂起函数中调用。事实上，要启动协程，
-必须至少有一个挂起函数，它通常是匿名的(即它是一个挂起`lambda`表达式)。让我们来看一个例子，一个简化的`async()`函数(源自`kotlinx.coroutines`库):    
+这样的函数称为挂起函数，因为调用它们可能挂起协程(如果相关调用的结果已经可用，库可以决定继续进行而不挂起)。挂起函数能够以与普通函数相同的方式
+获取参数和返回值，但它们只能从协程和其他挂起函数中调用。事实上，要启动协程，
+必须至少有一个挂起函数，它通常是匿名的(即它是一个挂起`lambda`表达式)。让我们来看一个例子，一个简化的`async()`函数
+(源自`kotlinx.coroutines`库):    
 
 ```kotlin
 fun <T> async(block: suspend () -> T)
@@ -420,12 +421,130 @@ class Group<T>(val name: String) {
 
 
 
+常用操作符及函数
+---
 
+#### `let`操作符  
 
+如果对象的值不为空，则允许执行这个方法。返回值是函数里面最后一行，或者指定`return`
+```kotlin
+private var test: String? = null
 
+private fun switchFragment(position: Int) {
+    test?.let {
+        LogUtil.e("@@@", "test is not null")
+    }
+}    
+```
 
+说到可能有人会觉得没什么用，用`if`判断下是不是空不就完了.
+```kotlin
+private var test: String? = null
 
+private fun switchFragment(position: Int) {
+//        test?.let {
+//            LogUtil.e("@@@", "test is null")
+//        }
 
+    if (test == null) {
+        LogUtil.e("@@@", "test is null")
+    } else {
+        LogUtil.e("@@@", "test is not null ${test}")
+        check(test) // 报错
+    }
+}    
+```
+但是会报错:`Smart cast to 'String' is impossible, beacuase 'test' is a mutable property that could have been changed by this time`
+
+#### `sNullOrEmpty | isNullOrBlank`
+
+```kotlin
+public inline fun CharSequence?.isNullOrEmpty(): Boolean = this == null || this.length == 0
+
+public inline fun CharSequence?.isNullOrBlank(): Boolean = this == null || this.isBlank()
+
+// If we do not care about the possibility of only spaces...
+if (number.isNullOrEmpty()) {
+    // alert the user to fill in their number!
+}
+
+// when we need to block the user from inputting only spaces
+if (name.isNullOrBlank()) {
+    // alert the user to fill in their name!
+}
+```
+
+#### `with`函数
+
+`with`是一个非常有用的函数，它包含在`Kotlin`的标准库中。它接收一个对象和一个扩展函数作为它的参数，然后使这个对象扩展这个函数。
+这表示所有我们在括号中编写的代码都是作为对象（第一个参数）的一个扩展函数，我们可以就像作为`this`一样使用所有它的`public`方法和属性。
+当我们针对同一个对象做很多操作的时候这个非常有利于简化代码。
+
+```kotlin
+fun testWith() {
+    with(ArrayList<String>()) {
+        add("testWith")
+        add("testWith")
+        add("testWith")
+        println("this = " + this)
+    }
+}
+// 运行结果
+// this = [testWith, testWith, testWith]
+```
+
+#### `repeat`函数
+
+`repeat`函数是一个单独的函数，定义如下:     
+```kotlin
+/**
+ * Executes the given function [action] specified number of [times].
+ *
+ * A zero-based index of current iteration is passed as a parameter to [action].
+ */
+@kotlin.internal.InlineOnly
+public inline fun repeat(times: Int, action: (Int) -> Unit) {
+    contract { callsInPlace(action) }
+
+    for (index in 0..times - 1) {
+        action(index)
+    }
+}
+```
+通过代码很容易理解，就是循环执行多少次`block`中内容。
+```kotlin
+fun main(args: Array<String>) {
+    repeat(3) {
+        println("Hello world")
+    }
+}
+```
+运行结果是:    
+```kotlin
+Hello world
+Hello world
+Hello world
+```
+
+#### `apply`函数
+
+`apply`函数是这样的，调用某对象的`apply`函数，在函数范围内，可以任意调用该对象的任意方法，并返回该对象
+```kotlin
+fun testApply() {
+    ArrayList<String>().apply {
+        add("testApply")
+        add("testApply")
+        add("testApply")
+        println("this = " + this)
+    }.let { println(it) }
+}
+
+// 运行结果
+// this = [testApply, testApply, testApply]
+// [testApply, testApply, testApply]
+```
+
+`run`函数和`apply`函数很像，只不过run函数是使用最后一行的返回，apply返回当前自己的对象。
 
 ---
 

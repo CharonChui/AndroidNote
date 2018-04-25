@@ -43,7 +43,8 @@ Log.d("test", Data<String>().javaClass.name)
 com.study.jcking.weatherkotlin.exec.Data
 com.study.jcking.weatherkotlin.exec.Data
 ```
-声明了一个泛型类`Data<T>`，并实现了两种不同类型的实例。但是在获取类名是，却发现得到了同样的结果`com.study.jcking.weatherkotlin.exec.Data`，这其实是在编译期擦除了泛型类型声明。
+声明了一个泛型类`Data<T>`，并实现了两种不同类型的实例。但是在获取类名是，却发现得到了同样的结果
+`com.study.jcking.weatherkotlin.exec.Data`，这其实是在编译期擦除了泛型类型声明。
 
 ### 嵌套类
 
@@ -143,16 +144,15 @@ enum class Icon(val res: Int) {
 
 val searchIconRes = Icon.SEARCH.res
 ```
-枚举可以通过String匹配名字来获取，我们也可以获取包含所有枚举的Array，所以我们可以遍历它。
+枚举可以通过`String`匹配名字来获取，我们也可以获取包含所有枚举的`Array`，所以我们可以遍历它。
 ```kotlin
 val search: Icon = Icon.valueOf("SEARCH")
 val iconList: Array<Icon> = Icon.values()
 ```
-而且每一个枚举都有一些函数来获取它的名字、声明的位置：
+而且每一个枚举都有一些函数来获取它的名字、声明的位置:    
 ```kotlin
 val searchName: String = Icon.SEARCH.name()
 val searchPosition: Int = Icon.SEARCH.ordinal()
-
 ```
 
 ### 密封类     
@@ -191,11 +191,11 @@ fun eval(expr: Expr): Double = when(expr) {
 }
 ```
 
-
-
 ### 异常    
 
-在`Kotlin`中，所有的`Exception`都是实现了`Throwable`，含有一个`message`且未经检查。这表示我们不会强迫我们在任何地方使用`try/catch`。这与`Java`中不太一样，比如在抛出`IOException`的方法，我们需要使用`try-catch`包围代码块。但是通过检查`exception`来处理显示并不是一个好的方法。
+在`Kotlin`中，所有的`Exception`都是实现了`Throwable`，含有一个`message`且未经检查。这表示我们不会强迫我们在任何地方使用`try/catch`。
+这与`Java`中不太一样，比如在抛出`IOException`的方法，我们需要使用`try-catch`包围代码块。但是通过检查`exception`来处理显示并不是一个
+好的方法。
 
 抛出异常的方式与`Java`很类似：
 ```kotlin
@@ -229,8 +229,8 @@ val s = try { x as String } catch(e: ClassCastException) { null }
 
 ### 对象`(Object)`
 
-声明对象就如同声明一个类，你只需要用保留字`object`替代`class`，其他都相同。只需要考虑到对象不能有构造函数，因为我们不调用任何构造函数来访问它们。    
-事实上，对象就是具有单一实现的数据类型。
+声明对象就如同声明一个类，你只需要用保留字`object`替代`class`，其他都相同。只需要考虑到对象不能有构造函数，因为我们不调用任何构造函数来访问
+它们。事实上，对象就是具有单一实现的数据类型。    
 
 ```kotlin
 object Resource {
@@ -294,7 +294,8 @@ class App : Application() {
 
 ##### 类委托
 
-委托模式是最常用的设计模式的一种，在委托模式中，有两个对象参与处理同一个请求，接受请求的对象将请求委托给另一个对象来处理。`kotlin`中的委托可以算是对委托模式的官方支持。
+委托模式是最常用的设计模式的一种，在委托模式中，有两个对象参与处理同一个请求，接受请求的对象将请求委托给另一个对象来处理。
+`kotlin`中的委托可以算是对委托模式的官方支持。    
 `Kotlin`直接支持委托模式，更加优雅，简洁。`Kotlin`通过关键字`by`实现委托。
 
 ```kotlin
@@ -325,7 +326,8 @@ BaseImpl -> 5
 
 ##### 属性委托
 
-语法是`val/var <属性名>: <类型> by <表达式>`。在`by`后面的表达式是该委托，因为属性对应的`get()`和`set()`会被委托给它的`getValue()`和`setValue()`方法。 属性的委托不必实现任何的接口，但是需要提供一个`getValue()`函数（和`setValue()`——对于`var`属性）。
+语法是`val/var <属性名>: <类型> by <表达式>`。在`by`后面的表达式是该委托，因为属性对应的`get()`和`set()`会被委托给它的`getValue()`
+和`setValue()`方法。 属性的委托不必实现任何的接口，但是需要提供一个`getValue()`函数（和`setValue()`——对于`var`属性）。
 
 ```kotlin
 class Example {
@@ -372,7 +374,8 @@ DelegateProperty --> property --> new
 
 ##### 延迟属性    
 
-延迟属性我们应该不陌生，也就是通常说的懒汉，在定义的时候不进行初始化，把初始化的工作延迟到第一次调用的时候。`kotlin`中实现延迟属性很简单，来看一下。
+延迟属性我们应该不陌生，也就是通常说的懒汉，在定义的时候不进行初始化，把初始化的工作延迟到第一次调用的时候。`kotlin`中实现延迟属性很简单，
+来看一下。
 
 ```kotlin
 val lazyValue: String by lazy {
@@ -437,12 +440,16 @@ fun test(){
 `Delegates.observable()`接受两个参数:初始值和修改时处理程序`handler`。 每当我们给属性赋值时会调用该处理程序（在赋值后执行）。
 它有三个参数：被赋值的属性、旧值和新值。在上面的例子中，我们对`user.name`赋值，`set`变化触发了观察者，执行了`Log.d`代码段。
 
-除了`Delegates.observable()`之外，我们还把`gender`委托给了`Delegates.vetoable()`,和`observable`不同的是，`observable`是执行了`set`变化之后，才触发`observable`,而`vetoable`则是在`set`执行之前被触发，它返回一个`Boolean`，如果为`true`才会继续执行`set`。在上面的例子中，我们看到在第一次赋值`user.gender = 2`时，由于`2>0`，所以`old<new`判断成立，所以执行了`set`方法，`gender`为2,第二次赋值`user.gender = 1`则没有通过判断，所以`gender`依然为2。   
+除了`Delegates.observable()`之外，我们还把`gender`委托给了`Delegates.vetoable()`,和`observable`不同的是，`observable`是执行了
+`set`变化之后，才触发`observable`,而`vetoable`则是在`set`执行之前被触发，它返回一个`Boolean`，如果为`true`才会继续执行`set`。
+在上面的例子中，我们看到在第一次赋值`user.gender = 2`时，由于`2>0`，所以`old<new`判断成立，所以执行了`set`方法，`gender`为2,
+第二次赋值`user.gender = 1`则没有通过判断，所以`gender`依然为2。   
 
 
 ##### map映射
 
-一个常见的用例是在一个映射`map`里存储属性的值。这经常出现在像解析`JSON`或者做其他“动态”事情的应用中。在这种情况下，你可以使用映射实例自身作为委托来实现委托属性。
+一个常见的用例是在一个映射`map`里存储属性的值。这经常出现在像解析`JSON`或者做其他“动态”事情的应用中。在这种情况下，你可以使用映射实例自身作
+为委托来实现委托属性。
 
 ```kotlin
 class User(val map: Map<String, Any?>) {

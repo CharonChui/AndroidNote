@@ -227,7 +227,8 @@ open class SuperPerson(num: Int) : Person(num) {
 
 ### 抽象类
 
-类和其中的某些成员可以声明为`abstract`。抽象成员在本类中可以不用实现。 需要注意的是，我们并不需要用`open`标注一个抽象类或者函数——因为这不言而喻。
+类和其中的某些成员可以声明为`abstract`。抽象成员在本类中可以不用实现。 需要注意的是，我们并不需要用`open`标注一个抽象类或者函数——因为这不
+言而喻。
 
 我们可以用一个抽象成员覆盖一个非抽象的开放成员:  
 ```kotlin
@@ -245,14 +246,16 @@ abstract class Derived : Base() {
 `Kotlin`中修饰符是与`Java`中的有些不同。在`kotlin`中默认的修饰符是`public`，这节约了很多的时间和字符。
 
 - `private`        
-    `private`修饰符是最限制的修饰符，和`Java`中`private`一样。它表示它只能被自己所在的文件可见。所以如果我们给一个类声明为`private`，我们就不能在定义这个类之外的文件中使用它。
+    `private`修饰符是最限制的修饰符，和`Java`中`private`一样。它表示它只能被自己所在的文件可见。所以如果我们给一个类声明为`private`，
+    我们就不能在定义这个类之外的文件中使用它。
     另一方面，如果我们在一个类里面使用了private修饰符，那访问权限就被限制在这个类里面了。甚至是继承这个类的子类也不能使用它。
 
 - `protected`.    
     与`Java`一样，它可以被成员自己和继承它的成员可见。
 
 - `internal`
-    如果是一个定义为`internal`的包成员的话，对所在的整个`module`可见。如果它是一个其它领域的成员，它就需要依赖那个领域的可见性了。比如如果写了一个`private`类，那么它的`internal`修饰的函数的可见性就会限制与它所在的这个类的可见性。
+    如果是一个定义为`internal`的包成员的话，对所在的整个`module`可见。如果它是一个其它领域的成员，它就需要依赖那个领域的可见性了。
+    比如如果写了一个`private`类，那么它的`internal`修饰的函数的可见性就会限制与它所在的这个类的可见性。
 
 - `public`.   
     你应该可以才想到，这是最没有限制的修饰符。这是默认的修饰符，成员在任何地方被修饰为public，很明显它只限制于它的领域。
@@ -260,8 +263,9 @@ abstract class Derived : Base() {
 
 ### 数组  
 
-数组用类`Array`实现，并且还有一个`size`属性及`get`和`set`方法，由于使用`[]`重载了`get`和`set`方法，所以我们可以通过下标很方便的获取或者设置数组对应位置的值。
-`Kotlin`标准库提供了`arrayOf()`创建数组和`xxArrayOf`创建特定类型数组
+数组用类`Array`实现，并且还有一个`size`属性及`get`和`set`方法，由于使用`[]`重载了`get`和`set`方法，所以我们可以通过下标很方便的获取或者
+设置数组对应位置的值。       
+`Kotlin`标准库提供了`arrayOf()`创建数组和`xxArrayOf`创建特定类型数组      
 ```kotlin
 val array = arrayOf(1, 2, 3)
 val countries = arrayOf("UK", "Germany", "Italy")
@@ -272,7 +276,8 @@ val studentArray = Array<Student>(2)
 studentArray[0] = Student("james")
 ```
 
-和`Java`不一样的是`Kotlin`的数组是容器类，提供了`ByteArray`,`CharArray`,`ShortArray`,`IntArray`,`LongArray`,`BooleanArray`,`FloatArray`和`DoubleArray`。
+和`Java`不一样的是`Kotlin`的数组是容器类，提供了`ByteArray`,`CharArray`,`ShortArray`,`IntArray`,`LongArray`,`BooleanArray`,
+`FloatArray`和`DoubleArray`。
 
 ### 集合 
 
@@ -280,7 +285,8 @@ studentArray[0] = Student("james")
 `Kotlin`的`List<out T>`类型是一个提供只读操作如`size`、`get`等的接口。和`Java`类似，它继承自`Collection<T>`进而继承自`Iterable<T>`。
 改变`list`的方法是由`MutableList<T>`加入的。这一模式同样适用于`Set<out T>/MutableSet<T>`及`Map<K, out V>/MutableMap<K, V>`。
 
-`Kotlin`没有专门的语法结构创建`list`或`set`。要用标准库的方法如`listOf()`、`mutableListOf()`、`setOf()`、`mutableSetOf()`。创建`map`可以用`mapOf(a to b, c to d)`。
+`Kotlin`没有专门的语法结构创建`list`或`set`。要用标准库的方法如`listOf()`、`mutableListOf()`、`setOf()`、`mutableSetOf()`。
+创建`map`可以用`mapOf(a to b, c to d)`。
 
 ```kotlin
 fun main(args : Array<String>) {
@@ -319,7 +325,8 @@ assert(strings.size == 3)
 
 
 因为在`Kotlin`中一切都是对象，一切都是可`null`的。当某个变量的值可以为`null`的时候，必须在声明处的类型后添加`?`来标识该引用可为空。
-`Kotlin`通过`?`将是否允许为空分割开来，比如`str:String`为不能空，加上`?`后的`str:String?`为允许空，通过这种方式，将本是不能确定的变量人为的加入了限制条件。而不符合条件的输入，则会在`IDE`上显示编译错误而无法执行。
+`Kotlin`通过`?`将是否允许为空分割开来，比如`str:String`为不能空，加上`?`后的`str:String?`为允许空，通过这种方式，将本是不能确定的变
+量人为的加入了限制条件。而不符合条件的输入，则会在`IDE`上显示编译错误而无法执行。
 
 ```kotlin
 var value1: String
@@ -331,8 +338,10 @@ value2 = null       // 编译通过
 在对变量进行操作时，如果变量是可能为空的，那么将不能直接调用，因为编译器不知道你的变量是否为空，所以编译器就要求你一定要对变量进行判断
 ```kotlin
 var str : String? = null
-str.length    // 编译错误 Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type String?
-str?.length   // 编译能通过，这表示如果str不为空的时候执行length方法
+// 编译错误 Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type String?
+str.length    
+// 编译能通过，这表示如果str不为空的时候执行length方法
+str?.length   
 ```
 
 那么问题来了，我们知道在`java`中`String.length`返回的是`int`，上面的`str?.length`既然编译通过了，那么它返回了什么？我们可以这么写:  
@@ -347,13 +356,17 @@ if(str == null)
 else
     result = str.length;    // 这里result为Int
 ```
-那么如果我们需要的就是一个`Int`的结果(事实上大部分情况都是如此)，那又该怎么办呢？在`kotlin`中除了`?`表示可为空以外，还有一个新的符号:双感叹号`!!`，表示一定不能为空。所以上面的例子，如果要对`result`进行操作，可以这么写:  
+那么如果我们需要的就是一个`Int`的结果(事实上大部分情况都是如此)，那又该怎么办呢？在`kotlin`中除了`?`表示可为空以外，还有一个新的符号`:`双
+感叹号`!!`，表示一定不能为空。所以上面的例子，如果要对`result`进行操作，可以这么写:  
 ```kotlin
 var str : String? = null
 var result : Int = str!!.length
 ```
 
-这样的话，就能保证`result`的数据类型，但是这样还有一个问题，那就是`str`的定义是可为空的，上面的代码中，`str`就是空，这时候下面的操作虽然不会报编译异常，但是运行时就会见到我们熟悉的空指针异常`NullPointerExectpion`，这显然不是我们希望见到的，也不是`kotlin`愿意见到的。`java`中的三元操作符大家应该都很熟悉了，`kotlin`中也有类似的，它很好的解决了刚刚说到的问题。在`kotlin`中，三元操作符是`?:`，写起来也比`java`要方便一些。
+这样的话，就能保证`result`的数据类型，但是这样还有一个问题，那就是`str`的定义是可为空的，上面的代码中，`str`就是空，这时候下面的操作虽然
+不会报编译异常，但是运行时就会见到我们熟悉的空指针异常`NullPointerExectpion`，这显然不是我们希望见到的，也不是`kotlin`愿意见到的。
+`java`中的三元操作符大家应该都很熟悉了，`kotlin`中也有类似的，它很好的解决了刚刚说到的问题。在`kotlin`中，三元操作符是`?:`，写起来也
+比`java`要方便一些。
 
 ```kotlin
 var str : String? = null
@@ -420,7 +433,8 @@ val max = if (a > b) {
 
 ##### `when`表达式    
 
-`when`表达式与`Java`中的`switch/case`类似，但是要强大得多。这个表达式会去试图匹配所有可能的分支直到找到满意的一项。然后它会运行右边的表达式。
+`when`表达式与`Java`中的`switch/case`类似，但是要强大得多。这个表达式会去试图匹配所有可能的分支直到找到满意的一项。然后它会运行右边的表达
+式。      
 与`Java`的`switch/case`不同之处是参数可以是任何类型，并且分支也可以是一个条件。
 
 对于默认的选项，我们可以增加一个`else`分支，它会在前面没有任何条件匹配时再执行。条件匹配成功后执行的代码也可以是代码块:     
@@ -435,7 +449,8 @@ when (x){
 }
 ```
 
-因为它是一个表达式，它也可以返回一个值。我们需要考虑什么时候作为一个表达式使用，它必须要覆盖所有分支的可能性或者实现`else`分支。否则它不会被编译成功:   
+因为它是一个表达式，它也可以返回一个值。我们需要考虑什么时候作为一个表达式使用，它必须要覆盖所有分支的可能性或者实现`else`分支。否则它不会被
+编译成功:   
 
 ```kotlin
 val result = when (x) {
@@ -469,7 +484,8 @@ for (i in array.indices)
 
 ### 使用类型检测及自动类型转换
 
-`is`运算符检测一个表达式是否某类型的一个实例。 如果一个不可变的局部变量或属性已经判断出为某类型，那么检测后的分支中可以直接当作该类型使用，无需显式转换:   
+`is`运算符检测一个表达式是否某类型的一个实例。 如果一个不可变的局部变量或属性已经判断出为某类型，那么检测后的分支中可以直接当作该类型使用，
+无需显式转换:   
 
 ```kotlin
 fun getStringLength(obj: Any): Int? {
@@ -527,13 +543,13 @@ Ranges默认会自增长，所以如果像以下的代码：
 for (i in 10..0)
     println(i)
 ```
-它就不会做任何事情。但是你可以使用downTo函数：
+它就不会做任何事情。但是你可以使用`downTo`函数：
 ```kotlin
 for(i in 10 downTo 0)
     println(i)
 ```
 
-我们可以在`Ranges`中使用`step`来定义一个从1到一个值的不同的空隙:   
+我们可以在`Ranges`中使用`step`来定义一个从`1`到一个值的不同的空隙:   
 ```kotlin
 for (i in 1..4 step 2) println(i)
 for (i in 4 downTo 1 step 2) println(i)

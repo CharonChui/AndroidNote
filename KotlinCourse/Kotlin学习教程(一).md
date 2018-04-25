@@ -277,6 +277,43 @@ class MainActivity : AppCompatActivity() {
 }
 ```
 需要注意的是，我们在使用的时候，一定要确保属性是被初始化过的，通常先调用初始化方法，否则会有异常。
+如果只是用`lateinit`声明了，但是还没有调用初始化方法就使用，哪怕你判断了该变量是否为`null`也是会`crash`的。
+```kotlin
+private lateinit var test: String
+
+private fun switchFragment(position: Int) {
+    if (test == null) {
+        LogUtil.e("@@@", "test is null")
+    } else {
+        LogUtil.e("@@@", "test is not null")
+        check(test)
+    }
+}
+```
+会报`kotlin.UninitializedPropertyAccessException: lateinit property test has not been initialized`
+
+除了使用`lateinit`外还可以使用`by lazy {}`效果是一样的：   
+```kotlin
+private val test by lazy { "haha" }
+
+private fun switchFragment(position: Int) {
+    if (test == null) {
+        LogUtil.e("@@@", "test is null")
+    } else {
+        LogUtil.e("@@@", "test is not null ${test}")
+        check(test)
+    }
+}    
+```
+执行结果:   
+```
+test is not null haha
+```
+
+那`lateinit`和`by lazy`有什么区别呢？    
+
+- `by lazy{}`只能用在`val`类型而`lateinit`只能用在`var`类型
+- `lateinit`不能用在可空的属性上和`java`的基本类型上,否则会报`lateinit`错误   
 
 
 ### 类的定义:使用`class`关键字   
