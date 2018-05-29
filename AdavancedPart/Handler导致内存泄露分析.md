@@ -97,7 +97,7 @@ public class MyActivity extends Activity {
 }
 ```
 
-[更多内容请看内存泄露](https://github.com/CharonChui/AndroidNote/blob/master/BasicKnowledge/%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F.md)
+[1]:(https://github.com/CharonChui/AndroidNote/blob/master/BasicKnowledge/%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F.md)
 
 ---
 

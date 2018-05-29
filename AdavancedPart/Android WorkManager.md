@@ -20,6 +20,11 @@ Android WorkManager
     - 否则使用自定义的`AlarmManager + BroadcastReceiver`的实现方式
 
 
+![image](https://raw.githubusercontent.com/CharonChui/Pictures/master/workmanager.png)
+
+
+
+
 组成部分:   
 
 - `WorkManager`:通过对应的参数来接受`work`并排队执行`work`。

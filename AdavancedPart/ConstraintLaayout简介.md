@@ -7,6 +7,11 @@ ConstraintLaayout简介
 
 在`Android Studio`中可以很方便的将目前的布局直接转换成`ConstraintLayout`，可以在布局的编辑页面上直接右键然后选择就可以了。        
 
+当然项目中要添加它的依赖，目前最新版本: 
+```
+implementation 'com.android.support.constraint:constraint-layout:1.1.0'
+```
+
 <img src="https://raw.githubusercontent.com/CharonChui/Pictures/master/constraintlayout_convert.png?raw=true" width = "80%" />
 
 然后会提示添加`ConstraintLayout`支持库。   
