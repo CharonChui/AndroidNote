@@ -128,6 +128,7 @@ Android学习笔记
     - [MaterialDesign使用][83]
     - [RecyclerView专题][84]
     - [ConstraintLaayout简介][194]
+    - [Android WorkManager][208]
 
 - [Java基础及算法][53]
 	- [八种排序算法][189]
@@ -444,6 +445,7 @@ Android学习笔记
 [205]: https://github.com/CharonChui/AndroidNote/blob/master/Dagger2/6.Dagger2Android%E7%A4%BA%E4%BE%8B%E4%BB%A3%E7%A0%81(%E5%85%AD).md  "6.Dagger2Android示例代码(六).md"
 [206]: https://github.com/CharonChui/AndroidNote/blob/master/Dagger2/7.Dagger2%E4%B9%8Bdagger-android(%E4%B8%83).md  "7.Dagger2之dagger-android(七).md"
 [207]: https://github.com/CharonChui/AndroidNote/blob/master/Dagger2/8.Dagger2%E4%B8%8EMVP(%E5%85%AB).md  "8.Dagger2与MVP(八).md"
+[208]: https://github.com/CharonChui/AndroidNote/blob/master/Dagger2/8.Dagger2%E4%B8%8EMVP(%E5%85%AB).md  "Android WorkManager.md"
 
 
 
