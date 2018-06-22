@@ -38,21 +38,21 @@ DevicePolicyManager中的方法
 	```
     
 2. 在清单文件中配置自定义的类
-	```xml
-	<receiver
-		android:name=".receiver.MyAdmin"
-		android:description="@string/admin_des"
-		android:label="防卸载"
-		android:permission="android.permission.BIND_DEVICE_ADMIN" >
-		<meta-data
-			android:name="android.app.device_admin"
-			android:resource="@xml/device_admin_sample" />
+```xml
+<receiver
+	android:name=".receiver.MyAdmin"
+	android:description="@string/admin_des"
+	android:label="防卸载"
+	android:permission="android.permission.BIND_DEVICE_ADMIN" >
+	<meta-data
+		android:name="android.app.device_admin"
+		android:resource="@xml/device_admin_sample" />
 
-		<intent-filter>
-			<action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
-		</intent-filter>
-	</receiver>
-	```
+	<intent-filter>
+		<action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
+	</intent-filter>
+</receiver>
+```
 	
 3.  完成第二步中所需的meta-data。在res下新建一个xml文件，device_admin_sample.xml
 	```xml
