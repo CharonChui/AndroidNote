@@ -52,7 +52,7 @@ android {
     ...
 ```
 
-像之前一样，你需要在`Manifest`文件中指定你在代码中使用的'package name'，像上面`AndroidManifest.xml`的例子。        
+像之前一样，你需要在`Manifest`文件中指定你在代码中使用的`package name`，像上面`AndroidManifest.xml`的例子。        
 下面进入关键部分了:当你按照上面的方式做完后，这两个包就是相互独立的了。你现在可以很简单的重构你的代码-通过修改`Manifest`中的包名来修改在你的`activitise`和`services`中使用的包和在重构你在代码中的引用声明。这不会影响你应用的最终`id`，也就是在`Gradle`文件中的`applicationId`。       
 
 你可以通过以下`Gradle DSL`方法为应用的`flavors`和`build types`指定不同的`applicationId`:       

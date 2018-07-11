@@ -103,7 +103,8 @@ int permissionCheck = ContextCompat.checkSelfPermission(thisActivity,
 为了能找到用户可能需要说明的情况，`android`提供了一个工具类方法`ActivityCompat.shouldShowRequestPermissionRationale().`。如果应用之前申请了该权限但是用户拒绝授权后该方法会返回`true`。(在Android 6.0之前调用的时候会直接返回false)     
 
 > 注意:如果用户之前拒绝了权限申请并且选择了请求权限对话框中的`Don’t ask again`选项，该方法就会返回`false`。如果设备策略禁止了该应用使用该权限，该方法也会返回`false`。(我测试的时候发现请求权限的对话框中并没有`Don’t asdk again`这一项)
-> ![image](https://raw.githubusercontent.com/CharonChui/Pictures/master/request_permission_dialog.png?raw=true)      
+
+<img src="https://raw.githubusercontent.com/CharonChui/Pictures/master/request_permission_dialog.png?raw=true" width="100%" height="100%">
 
 ##### 申请需要的权限      
 

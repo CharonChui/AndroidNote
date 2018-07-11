@@ -56,7 +56,7 @@ Android动画
     contentView.startAnimation(set); // 播放一组动画. 
     ```
 
-6. Frame动画    
+6. Frame动画     
     在`SDK`中提到，不要在`onCreate`中调用`start`方法开始播放`Frame`动画，因为`AnimationDrawable`还没有完全跟`Window`相关联，如果想要界面显示时就开始播放帧动画的话，可以在`onWindowFocusChanged()`中调用`start()`。
 
     - 在`drawable`目录下新建一个`xml`文件，内容如下:
@@ -198,7 +198,7 @@ public class FloatEvaluator implements TypeEvaluator {
 `evaluate()`方法当中传入了三个参数，第一个参数`fraction`非常重要，这个参数用于表示动画的完成度的，我们应该根据它来计算当前动画的值应该是多少，第二第三个参数分别表示动画的初始值和结束值。那么上述代码的逻辑就比较清晰了，用结束值减去初始值，算出它们之间的差值，然后乘以`fraction`这个系数，再加上初始值，那么就得到当前动画的值了。
 
 
-###`TimeInterplator`   
+### `TimeInterplator`   
 Time interplator定义了属性值变化的方式，如线性均匀改变，开始慢然后逐渐快等。在Property Animation中是TimeInterplator，在View Animation中是Interplator，这两个是一样的，在3.0之前只有Interplator，3.0之后实现代码转移至了TimeInterplator。Interplator继承自TimeInterplator，内部没有任何其他代码。
 
 - AccelerateInterpolator　　　　　     加速，开始时慢中间加速
@@ -223,11 +223,11 @@ ObjectAnimator.ofPropertyValuesHolder(myView, pvhX, pvyY).start();
 ```
 
 ### `ViewPropertyAnimator`
-
-`* <p>This class is not constructed by the caller, but rather by the View whose properties
+```
+ * <p>This class is not constructed by the caller, but rather by the View whose properties
  * it will animate. Calls to {@link android.view.View#animate()} will return a reference
- * to the appropriate ViewPropertyAnimator object for that View.</p>`
-
+ * to the appropriate ViewPropertyAnimator object for that View.</p>
+```
 如果需要对一个View的多个属性进行动画可以用ViewPropertyAnimator类，该类对多属性动画进行了优化，会合并一些invalidate()来减少刷新视图，该类在3.1中引入。
 
 `view.animate()`方法会返回`ViewPropertyAnimator`类。
