@@ -5,6 +5,86 @@ RxJava详解(上)
 
 现在`RxJava`变的越来越流行了，很多项目中都使用了它。特别是大神`JakeWharton`等的加入，以及`RxBinding、Retrofit、RxLifecycle`等众多项目的，然开发越来越方便，但是上手比较难，不过一旦你入门后你就会发现真是太棒了。
 
+
+在介绍`RxJava`之前，感觉有必要说一下什么是函数响应式编程(`FRP`)？     
+
+函数响应式编程（`FRP`）为解决现代编程问题提供了全新的视角。一旦理解它，可以极大地简化你的项目，特别是处理嵌套回调的异步事件，复杂的列表过滤和变换，或者时间相关问题，而且`RxJava`是响应式编程的一个具体实现。
+
+这里以一个真实的例子来开始讲解函数响应式编程怎么提高我们代码的可读性。我们的任务是通过查询`GitHub`的`API`， 首先获取用户列表，然后请求每个用户的详细信息。这个过程包括两个`web`服务端点:
+`https://api.github.com/users`-获取用户列表；`https://api.github.com/users/{username}`－获取特定用户的详细信息，例如`https://api.github.com/users/mutexkid`。
+
+普通情况下是这样写的:    
+```java
+//The "Nested Callbacks" Way
+public void fetchUserDetails() {
+    //first, request the users...
+    mService.requestUsers(new Callback<GithubUsersResponse>() {
+        @Override
+        public void success(final GithubUsersResponse githubUsersResponse,
+                            final Response response) {
+            Timber.i(TAG, "Request Users request completed");
+            final synchronized List<GithubUserDetail> githubUserDetails = new ArrayList<GithubUserDetail>();
+            //next, loop over each item in the response
+            for (GithubUserDetail githubUserDetail : githubUsersResponse) {
+                //request a detail object for that user
+                mService.requestUserDetails(githubUserDetail.mLogin,
+                                            new Callback<GithubUserDetail>() {
+                    @Override
+                    public void success(GithubUserDetail githubUserDetail,
+                                        Response response) {
+                        Log.i("User Detail request completed for user : " + githubUserDetail.mLogin);
+                        githubUserDetails.add(githubUserDetail);
+                        if (githubUserDetails.size() == githubUsersResponse.mGithubUsers.size()) {
+                            //we've downloaded'em all - notify all who are interested!
+                            mBus.post(new UserDetailsLoadedCompleteEvent(githubUserDetails));
+                        }
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                        Log.e(TAG, "Request User Detail Failed!!!!", error);
+                    }
+                });
+            }
+        }
+
+        @Override
+        public void failure(RetrofitError error) {
+            Log.e(TAG, "Request User Failed!!!!", error);
+        }
+    });
+}
+```
+
+尽管这不是最差的代码－至少它是异步的，因此在等待每个请求完成的时候不会阻塞－但由于代码复杂（增加更多层次的回调代码复杂度将呈指数级增长）因此远非理想的代码。
+当我们不可避免要修改代码时（在前面的`web service`调用中，我们依赖前一次的回调状态，因此它不适用于模块化或者修改要传递给下一个回调的数据）也远非容易的工作。
+我们亲切的称这种情况为“回调地狱”。
+
+而通过`RxJava`的方式:    
+```java
+public void rxFetchUserDetails() {
+    //request the users
+    mService.rxRequestUsers().concatMap(Observable::from)
+    .concatMap((GithubUser githubUser) ->
+                    //request the details for each user
+                    mService.rxRequestUserDetails(githubUser.mLogin)
+    )
+    //accumulate them as a list
+    .toList()
+    //define which threads information will be passed on
+    .subscribeOn(Schedulers.newThread())
+    .observeOn(AndroidSchedulers.mainThread())
+    //post them on an eventbus
+    .subscribe(githubUserDetails -> {
+        EventBus.getDefault().post(new UserDetailsLoadedCompleteEvent(githubUserDetails));
+    });
+}
+```
+
+如你所见，使用函数响应式编程模型我们完全摆脱了回调，并最终得到了更短小的程序。让我们从函数响应式编程的基本定义开始慢慢解释到底发生了什么，并逐渐理解上面的代码，这些代码托管在`GitHub`上面。
+
+从根本上讲，函数响应式编程是在观察者模式的基础上，增加对`Observables`发送的数据流进行操纵和变换的功能。
+
 `RxJava`简介
 ---
 
