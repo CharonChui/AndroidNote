@@ -448,6 +448,272 @@ map.subscribe(new Action1<Integer>() {
 12-12 15:54:35.515 8521-8521/com.charon.rxjavastudydemo I/@@@: -2137068114
 12-12 15:54:35.516 8521-8521/com.charon.rxjavastudydemo I/@@@: -1105126669
 ```
+或者也可以通过`map`执行网络请求:    
+
+- 通过`Observable.create()`方法，调用`OkHttp`网络请求；
+- 通过`map`操作符集合`gson`，将`Response`转换为`bean`类；
+- 通过`doOnNext()`方法，解析`bean`中的数据，并进行数据库存储等操作；
+- 调度线程，在子线程中进行耗时操作任务，在主线程中更新`UI`；
+- 通过`subscribe()`，根据请求成功或者失败来更新`UI`。
+
+```java
+
+×
+这可能是最好的RxJava 2.x 教程（完结版）
+96  nanchen2251 
+2017.07.03 15:17* 字数 3856 阅读 108192评论 71喜欢 414赞赏 4
+这可能是最好的 RxJava 2.x 入门教程系列专栏
+文章链接：
+这可能是最好的RxJava 2.x 入门教程（一）
+这可能是最好的RxJava 2.x 入门教程（二）
+这可能是最好的RxJava 2.x 入门教程（三）
+这可能是最好的RxJava 2.x 入门教程（四）
+这可能是最好的RxJava 2.x 入门教程（五）
+GitHub 代码同步更新：https://github.com/nanchen2251/RxJava2Examples
+为了满足大家的饥渴难耐，GitHub将同步更新代码，主要包含基本的代码封装，RxJava 2.x所有操作符应用场景介绍和实际应用场景，后期除了RxJava可能还会增添其他东西，总之，GitHub上的Demo专为大家倾心打造。传送门：https://github.com/nanchen2251/RxJava2Examples
+
+为什么要学 RxJava？
+提升开发效率，降低维护成本一直是开发团队永恒不变的宗旨。近两年来国内的技术圈子中越来越多的开始提及 RxJava ，越来越多的应用和面试中都会有 RxJava ，而就目前的情况，Android 的网络库基本被 Retrofit + OkHttp 一统天下了，而配合上响应式编程 RxJava 可谓如鱼得水。想必大家肯定被近期的 Kotlin 炸开了锅，笔者也在闲暇之时去了解了一番（作为一个与时俱进的有理想的青年怎么可能不与时俱进？），发现其中有个非常好的优点就是简洁，支持函数式编程。是的， RxJava 最大的优点也是简洁，但它不止是简洁，而且是** 随着程序逻辑变得越来越复杂，它依然能够保持简洁 **（这货洁身自好呀有木有）。
+
+咳咳，要例子，猛戳这里：给 Android 开发者的 RxJava 详解
+什么是响应式编程
+上面我们提及了响应式编程，不少新司机对它可谓一脸懵逼，那什么是响应式编程呢？响应式编程是一种基于异步数据流概念的编程模式。数据流就像一条河：它可以被观测，被过滤，被操作，或者为新的消费者与另外一条流合并为一条新的流。
+
+响应式编程的一个关键概念是事件。事件可以被等待，可以触发过程，也可以触发其它事件。事件是唯一的以合适的方式将我们的现实世界映射到我们的软件中：如果屋里太热了我们就打开一扇窗户。同样的，当我们的天气app从服务端获取到新的天气数据后，我们需要更新app上展示天气信息的UI；汽车上的车道偏移系统探测到车辆偏移了正常路线就会提醒驾驶者纠正，就是是响应事件。
+
+今天，响应式编程最通用的一个场景是UI：我们的移动App必须做出对网络调用、用户触摸输入和系统弹框的响应。在这个世界上，软件之所以是事件驱动并响应的是因为现实生活也是如此。
+
+为什么出了一个系列后还有完结版？
+RxJava 这些年可谓越来越流行，而在去年的晚些时候发布了2.0正式版。大半年已过，虽然网上已经出现了大部分的 RxJava 教程（其实细心的你还是会发现 1.x 的超级多），前些日子，笔者花了大约两周的闲暇之时写了 RxJava 2.x 系列教程，也得到了不少反馈，其中就有不少读者觉得每一篇的教程太短，抑或是希望更多的侧重适用场景的介绍，在这样的大前提下，这篇完结版教程就此诞生，仅供各位新司机采纳。
+
+开始
+RxJava 2.x 已经按照 Reactive-Streams specification 规范完全的重写了，maven也被放在了io.reactivex.rxjava2:rxjava:2.x.y 下，所以 RxJava 2.x 独立于 RxJava 1.x 而存在，而随后官方宣布的将在一段时间后终止对 RxJava 1.x 的维护，所以对于熟悉 RxJava 1.x 的老司机自然可以直接看一下 2.x 的文档和异同就能轻松上手了，而对于不熟悉的年轻司机，不要慌，本酱带你装逼带你飞，马上就发车，坐稳了：https://github.com/nanchen2251/RxJava2Examples
+
+你只需要在 build.gradle 中加上：compile 'io.reactivex.rxjava2:rxjava:2.1.1'（2.1.1为写此文章时的最新版本）
+
+接口变化
+RxJava 2.x 拥有了新的特性，其依赖于4个基础接口，它们分别是
+
+Publisher
+Subscriber
+Subscription
+Processor
+其中最核心的莫过于 Publisher 和 Subscriber。Publisher 可以发出一系列的事件，而 Subscriber 负责和处理这些事件。
+
+其中用的比较多的自然是 Publisher 的 Flowable，它支持背压。关于背压给个简洁的定义就是：
+
+背压是指在异步场景中，被观察者发送事件速度远快于观察者的处理速度的情况下，一种告诉上游的被观察者降低发送速度的策略。
+
+简而言之，背压是流速控制的一种策略。有兴趣的可以看一下官方对于背压的讲解。
+
+可以明显地发现，RxJava 2.x 最大的改动就是对于 backpressure 的处理，为此将原来的  Observable 拆分成了新的 Observable 和 Flowable，同时其他相关部分也同时进行了拆分，但令人庆幸的是，是它，是它，还是它，还是我们最熟悉和最喜欢的 RxJava。
+
+观察者模式
+大家可能都知道， RxJava 以观察者模式为骨架，在 2.0 中依旧如此。
+
+不过此次更新中，出现了两种观察者模式：
+
+Observable ( 被观察者 ) / Observer ( 观察者 )
+Flowable （被观察者）/ Subscriber （观察者）
+
+
+
+在 RxJava 2.x 中，Observable 用于订阅 Observer，不再支持背压（1.x 中可以使用背压策略），而 Flowable 用于订阅 Subscriber ， 是支持背压（Backpressure）的。
+
+Observable
+在 RxJava 1.x 中，我们最熟悉的莫过于 Observable 这个类了，笔者在刚刚使用 RxJava 2.x 的时候，创建了 一个 Observable，瞬间一脸懵逼有木有，居然连我们最最熟悉的 Subscriber 都没了，取而代之的是 ObservableEmmiter，俗称发射器。此外，由于没有了Subscriber的踪影，我们创建观察者时需使用 Observer。而 Observer 也不是我们熟悉的那个 Observer，又出现了一个 Disposable 参数带你装逼带你飞。
+
+废话不多说，从会用开始，还记得 RxJava 的三部曲吗？
+
+
+
+** 第一步：初始化 Observable **
+** 第二步：初始化 Observer **
+** 第三步：建立订阅关系 **
+
+
+
+Observable.create(new ObservableOnSubscribe<Integer>() { // 第一步：初始化Observable
+            @Override
+            public void subscribe(@NonNull ObservableEmitter<Integer> e) throws Exception {
+                Log.e(TAG, "Observable emit 1" + "\n");
+                e.onNext(1);
+                Log.e(TAG, "Observable emit 2" + "\n");
+                e.onNext(2);
+                Log.e(TAG, "Observable emit 3" + "\n");
+                e.onNext(3);
+                e.onComplete();
+                Log.e(TAG, "Observable emit 4" + "\n" );
+                e.onNext(4);
+            }
+        }).subscribe(new Observer<Integer>() { // 第三步：订阅
+
+            // 第二步：初始化Observer
+            private int i;
+            private Disposable mDisposable;
+
+            @Override
+            public void onSubscribe(@NonNull Disposable d) {      
+                mDisposable = d;
+            }
+
+            @Override
+            public void onNext(@NonNull Integer integer) {
+                i++;
+                if (i == 2) {
+                    // 在RxJava 2.x 中，新增的Disposable可以做到切断的操作，让Observer观察者不再接收上游事件
+                    mDisposable.dispose();
+                }
+            }
+
+            @Override
+            public void onError(@NonNull Throwable e) {
+                Log.e(TAG, "onError : value : " + e.getMessage() + "\n" );
+            }
+
+            @Override
+            public void onComplete() {
+                Log.e(TAG, "onComplete" + "\n" );
+            }
+        });
+不难看出，RxJava 2.x 与 1.x 还是存在着一些区别的。首先，创建 Observable 时，回调的是 ObservableEmitter ，字面意思即发射器，并且直接 throws Exception。其次，在创建的 Observer 中，也多了一个回调方法：onSubscribe，传递参数为Disposable，Disposable 相当于 RxJava 1.x 中的 Subscription， 用于解除订阅。可以看到示例代码中，在 i 自增到 2 的时候，订阅关系被切断。
+
+07-03 14:24:11.663 18467-18467/com.nanchen.rxjava2examples E/RxCreateActivity: onSubscribe : false
+07-03 14:24:11.664 18467-18467/com.nanchen.rxjava2examples E/RxCreateActivity: Observable emit 1
+07-03 14:24:11.665 18467-18467/com.nanchen.rxjava2examples E/RxCreateActivity: onNext : value : 1
+07-03 14:24:11.666 18467-18467/com.nanchen.rxjava2examples E/RxCreateActivity: Observable emit 2
+07-03 14:24:11.667 18467-18467/com.nanchen.rxjava2examples E/RxCreateActivity: onNext : value : 2
+07-03 14:24:11.668 18467-18467/com.nanchen.rxjava2examples E/RxCreateActivity: onNext : isDisposable : true
+07-03 14:24:11.669 18467-18467/com.nanchen.rxjava2examples E/RxCreateActivity: Observable emit 3
+07-03 14:24:11.670 18467-18467/com.nanchen.rxjava2examples E/RxCreateActivity: Observable emit 4
+当然，我们的 RxJava 2.x 也为我们保留了简化订阅方法，我们可以根据需求，进行相应的简化订阅，只不过传入对象改为了 Consumer。
+
+Consumer 即消费者，用于接收单个值，BiConsumer 则是接收两个值，Function 用于变换对象，Predicate 用于判断。这些接口命名大多参照了 Java 8 ，熟悉 Java 8 新特性的应该都知道意思，这里也不再赘述。
+
+线程调度
+关于线程切换这点，RxJava 1.x 和 RxJava 2.x 的实现思路是一样的。这里简单的说一下，以便于我们的新司机入手。
+
+subScribeOn
+同 RxJava 1.x 一样，subscribeOn 用于指定 subscribe() 时所发生的线程，从源码角度可以看出，内部线程调度是通过 ObservableSubscribeOn来实现的。
+
+    @SchedulerSupport(SchedulerSupport.CUSTOM)
+    public final Observable<T> subscribeOn(Scheduler scheduler) {
+        ObjectHelper.requireNonNull(scheduler, "scheduler is null");
+        return RxJavaPlugins.onAssembly(new ObservableSubscribeOn<T>(this, scheduler));
+    }
+ObservableSubscribeOn 的核心源码在 subscribeActual 方法中，通过代理的方式使用 SubscribeOnObserver 包装 Observer 后，设置 Disposable 来将 subscribe 切换到 Scheduler 线程中。
+
+observeOn
+observeOn 方法用于指定下游 Observer 回调发生的线程。
+
+   @SchedulerSupport(SchedulerSupport.CUSTOM)
+    public final Observable<T> observeOn(Scheduler scheduler, boolean delayError, int bufferSize) {
+        ObjectHelper.requireNonNull(scheduler, "scheduler is null");
+        ObjectHelper.verifyPositive(bufferSize, "bufferSize");
+        return RxJavaPlugins.onAssembly(new ObservableObserveOn<T>(this, scheduler, delayError, bufferSize));
+    }
+线程切换需要注意的
+RxJava 内置的线程调度器的确可以让我们的线程切换得心应手，但其中也有些需要注意的地方。
+
+简单地说，subscribeOn() 指定的就是发射事件的线程，observerOn 指定的就是订阅者接收事件的线程。
+多次指定发射事件的线程只有第一次指定的有效，也就是说多次调用 subscribeOn() 只有第一次的有效，其余的会被忽略。
+但多次指定订阅者接收线程是可以的，也就是说每调用一次 observerOn()，下游的线程就会切换一次。
+
+Observable.create(new ObservableOnSubscribe<Integer>() {
+            @Override
+            public void subscribe(@NonNull ObservableEmitter<Integer> e) throws Exception {
+                Log.e(TAG, "Observable thread is : " + Thread.currentThread().getName());
+                e.onNext(1);
+                e.onComplete();
+            }
+        }).subscribeOn(Schedulers.newThread())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnNext(new Consumer<Integer>() {
+                    @Override
+                    public void accept(@NonNull Integer integer) throws Exception {
+                        Log.e(TAG, "After observeOn(mainThread)，Current thread is " + Thread.currentThread().getName());
+                    }
+                })
+                .observeOn(Schedulers.io())
+                .subscribe(new Consumer<Integer>() {
+                    @Override
+                    public void accept(@NonNull Integer integer) throws Exception {
+                        Log.e(TAG, "After observeOn(io)，Current thread is " + Thread.currentThread().getName());
+                    }
+                });
+输出：
+
+07-03 14:54:01.177 15121-15438/com.nanchen.rxjava2examples E/RxThreadActivity: Observable thread is : RxNewThreadScheduler-1
+07-03 14:54:01.178 15121-15121/com.nanchen.rxjava2examples E/RxThreadActivity: After observeOn(mainThread)，Current thread is main
+07-03 14:54:01.179 15121-15439/com.nanchen.rxjava2examples E/RxThreadActivity: After observeOn(io)，Current thread is RxCachedThreadScheduler-2
+实例代码中，分别用 Schedulers.newThread() 和 Schedulers.io() 对发射线程进行切换，并采用 observeOn(AndroidSchedulers.mainThread() 和 Schedulers.io() 进行了接收线程的切换。可以看到输出中发射线程仅仅响应了第一个 newThread，但每调用一次 observeOn() ，线程便会切换一次，因此如果我们有类似的需求时，便知道如何处理了。
+
+RxJava 中，已经内置了很多线程选项供我们选择，例如有：
+
+Schedulers.io() 代表io操作的线程, 通常用于网络,读写文件等io密集型的操作；
+Schedulers.computation() 代表CPU计算密集型的操作, 例如需要大量计算的操作；
+Schedulers.newThread() 代表一个常规的新线程；
+AndroidSchedulers.mainThread() 代表Android的主线程
+这些内置的 Scheduler 已经足够满足我们开发的需求，因此我们应该使用内置的这些选项，而 RxJava 内部使用的是线程池来维护这些线程，所以效率也比较高。
+
+操作符
+关于操作符，在官方文档中已经做了非常完善的讲解，并且笔者前面的系列教程中也着重讲解了绝大多数的操作符作用，这里受于篇幅限制，就不多做赘述，只挑选几个进行实际情景的讲解。
+
+map
+
+map 操作符可以将一个 Observable 对象通过某种关系转换为另一个Observable 对象。在 2.x 中和 1.x 中作用几乎一致，不同点在于：2.x 将 1.x 中的 Func1 和 Func2 改为了 Function 和 BiFunction。
+
+采用 map 操作符进行网络数据解析
+想必大家都知道，很多时候我们在使用 RxJava 的时候总是和 Retrofit 进行结合使用，而为了方便演示，这里我们就暂且采用 OkHttp3 进行演示，配合 map，doOnNext ，线程切换进行简单的网络请求：
+1）通过 Observable.create() 方法，调用 OkHttp 网络请求；
+2）通过 map 操作符集合 gson，将 Response 转换为 bean 类；
+3）通过 doOnNext() 方法，解析 bean 中的数据，并进行数据库存储等操作；
+4）调度线程，在子线程中进行耗时操作任务，在主线程中更新 UI ；
+5）通过 subscribe()，根据请求成功或者失败来更新 UI 。
+```java
+Observable.create(new ObservableOnSubscribe<Response>() {
+    @Override
+    public void subscribe(@NonNull ObservableEmitter<Response> e) throws Exception {
+        Builder builder = new Builder()
+                .url(mUrl)
+                .get();
+        Request request = builder.build();
+        Call call = new OkHttpClient().newCall(request);
+        Response response = call.execute();
+        e.onNext(response);
+    }
+}).map(new Function<Response, MobileAddress>() {
+    @Override
+    public MobileAddress apply(@NonNull Response response) throws Exception {
+        if (response.isSuccessful()) {
+            ResponseBody body = response.body();
+            if (body != null) {
+                Log.e(TAG, "map:转换前:" + response.body());
+                return new Gson().fromJson(body.string(), MobileAddress.class);
+            }
+        }
+        return null;
+    }
+}).observeOn(AndroidSchedulers.mainThread())
+.doOnNext(new Consumer<MobileAddress>() {
+    @Override
+    public void accept(@NonNull MobileAddress s) throws Exception {
+        Log.e(TAG, "doOnNext: 保存成功：" + s.toString() + "\n");
+    }
+}).subscribeOn(Schedulers.io())
+.observeOn(AndroidSchedulers.mainThread())
+.subscribe(new Consumer<MobileAddress>() {
+    @Override
+    public void accept(@NonNull MobileAddress data) throws Exception {
+        Log.e(TAG, "成功:" + data.toString() + "\n");
+}, new Consumer<Throwable>() {
+    @Override
+    public void accept(@NonNull Throwable throwable) throws Exception {
+        Log.e(TAG, "失败：" + throwable.getMessage() + "\n");
+    }
+});
+```
 
 `map()`的示意图：
 
