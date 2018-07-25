@@ -364,6 +364,30 @@ observable.subscribe(onNextAction, onErrorAction, onCompletedAction);
 在主线程中去执行`Subscriber`。另外，根据响应式函数编程的概念，`Subscribers`更应该做的事情是`响应`，响应`Observable`发出的事件，而不是去修改。
 那该怎么办呢？ 这就要用到下面的部分要讲的操作符。  
 
+
+
+接口变化
+---
+
+`RxJava 2.x`拥有了新的特性，其依赖于4个基础接口，它们分别是:     
+- `Publisher`
+- `Subscriber`
+- `Subscription`
+- `Processor`
+其中最核心的莫过于`Publisher`和`Subscriber`。`Publisher`可以发出一系列的事件，而`Subscriber`负责和处理这些事件。
+
+其中用的比较多的自然是`Publisher`的`Flowable`，它支持背压(`backpressure`)。关于背压给个简洁的定义就是: 
+
+> 背压是指在异步场景中，被观察者发送事件速度远快于观察者的处理速度的情况下，一种告诉上游的被观察者降低发送速度的策略。
+
+简而言之，背压是流速控制的一种策略。
+其实`RxJava 2.x`最大的改动就是对于`backpressure`的处理，为此将原来的`Observable`拆分成了新的`Observable`和`Flowable`，同时其他相关部分也同时进行了拆分。
+
+![image](https://raw.githubusercontent.com/CharonChui/Pictures/master/rxjava1vs2.png?raw=true)
+
+
+在`RxJava 2.x`中，`Observable`用于订阅`Observer`，不再支持背压（`1.x`中可以使用背压策略），而`Flowable`用于订阅`Subscriber`，是支持背压的。
+
 操作符(`Operators`)
 ---
 
