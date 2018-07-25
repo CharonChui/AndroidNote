@@ -133,10 +133,11 @@ public void rxFetchUserDetails() {
  
 `RxJava`的基本概念：
 
-- `Observable`(可观察者，即被观察者)、 
-- `Observer`(观察者)、 
-- `subscribe()`(订阅)、事件。        
+- `Observable`(可观察者，即被观察者):产生事件，例如去饭店吃饭的顾客。
+- `Observer`(观察者):接收事件，并给出响应动作，例如去饭店吃饭的厨房，会接受事件，并给出相应。
+- `subscribe()`(订阅):连接被观察者与观察者，例如去饭店吃饭的服务员。
     `Observable`和`Observer`通过`subscribe()` 方法实现订阅关系，从而`Observable`可以在需要的时候发出事件来通知`Observer`。
+- `Event`(事件):被观察者与观察者沟通的载体，例如顾客点的菜。
 
 与传统观察者模式不同，`RxJava`的事件回调方法除了普通事件`onNext()`(相当于`onClick()`/`onEvent()`)之外，还定义了两个特殊的事件：`onCompleted()`和`onError()`:     
 但是`RxJava`与传统的观察者设计模式有一点明显不同，那就是如果一个`Observerble`没有任何的的`Subscriber`，那么这个`Observable`是不会发出任何事件的。
