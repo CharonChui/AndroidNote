@@ -74,6 +74,7 @@ Android学习笔记
     - [Github个人主页绑定域名][35]
     - [Markdown学习手册][36]
     - [MAT内存分析][37]
+    - [调试平台Sonar][213]
 
 - [Kotlin学习][48]
     - [Kotlin学习教程(一)][180]
@@ -455,7 +456,7 @@ Android学习笔记
 [210]: https://github.com/CharonChui/AndroidNote/blob/master/RxJavaPart/5.RxJava%E8%AF%A6%E8%A7%A3%E4%B9%8B%E6%93%8D%E4%BD%9C%E7%AC%A6%E6%89%A7%E8%A1%8C%E5%8E%9F%E7%90%86(%E4%BA%94).md  "5.RxJava详解之操作符执行原理(五)"
 [211]: https://github.com/CharonChui/AndroidNote/blob/master/RxJavaPart/6.RxJava%E8%AF%A6%E8%A7%A3%E4%B9%8B%E7%BA%BF%E7%A8%8B%E8%B0%83%E5%BA%A6%E5%8E%9F%E7%90%86(%E5%85%AD).md  "6.RxJava详解之线程调度原理(六)"
 [212]: https://github.com/CharonChui/AndroidNote/blob/master/Dagger2/9.Dagger2%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90(%E4%B9%9D).md "9.Dagger2原理分析(九)"
-
+[213]: https://github.com/CharonChui/AndroidNote/blob/master/Tools%26Library/%E8%B0%83%E8%AF%95%E5%B9%B3%E5%8F%B0Sonar.md "调试平台Sonar"
 
 
 
