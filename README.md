@@ -41,6 +41,7 @@ Android学习笔记
     - [6.Dagger2Android示例代码(六).md][205]
     - [7.Dagger2之dagger-android(七).md][206]            
     - [8.Dagger2与MVP(八).md][207]    
+    - [9.Dagger2原理分析(九).md][212]
 
 - [音视频开发][44]
     - [搭建nginx+rtmp服务器][18]
@@ -453,7 +454,7 @@ Android学习笔记
 [209]: https://github.com/CharonChui/AndroidNote/blob/master/RxJavaPart/4.RxJava%E8%AF%A6%E8%A7%A3%E4%B9%8B%E6%89%A7%E8%A1%8C%E5%8E%9F%E7%90%86(%E5%9B%9B).md  "4.RxJava详解之执行原理(四)"
 [210]: https://github.com/CharonChui/AndroidNote/blob/master/RxJavaPart/5.RxJava%E8%AF%A6%E8%A7%A3%E4%B9%8B%E6%93%8D%E4%BD%9C%E7%AC%A6%E6%89%A7%E8%A1%8C%E5%8E%9F%E7%90%86(%E4%BA%94).md  "5.RxJava详解之操作符执行原理(五)"
 [211]: https://github.com/CharonChui/AndroidNote/blob/master/RxJavaPart/6.RxJava%E8%AF%A6%E8%A7%A3%E4%B9%8B%E7%BA%BF%E7%A8%8B%E8%B0%83%E5%BA%A6%E5%8E%9F%E7%90%86(%E5%85%AD).md  "6.RxJava详解之线程调度原理(六)"
-
+[212]: https://github.com/CharonChui/AndroidNote/blob/master/Dagger2/9.Dagger2%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90(%E4%B9%9D).md "9.Dagger2原理分析(九)"
 
 
 
