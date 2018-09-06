@@ -92,7 +92,7 @@ DLNA架构分为如下图7个层次：
 
 3. Device Discovery&Control 设备发现和控制。 
 	这一层是DLNA的基础协议框架。**DLNA用UPnP协议来实现设备的发现和控制**。下面重点看一下UPnP。    
-	`UPnP`，英文是`Universal Plug and play`，翻译过来就是通用即插即用。UPnP最开始Apple和Microsoft在搞，后来Apple不做了(这里多一嘴，为什么Apple不做了，因为Apple现在出了个)，Microsoft还在继续做，Intel也加进来做，Sony，Moto等等也有加入。UPnP有个网站http://www.upnp.org/，我们发现DLNA的网页和UPnP的网页很像，颜色也差不多，就可以知道他们关系很好了。DNLA主要是在推UPnP。  
+	`UPnP`，英文是`Universal Plug and play`，翻译过来就是通用即插即用。UPnP最开始Apple和Microsoft在搞，后来Apple不做了(这里多一嘴，为什么Apple不做了，因为Apple现在出了个)，Microsoft还在继续做，Intel也加进来做，Sony，Moto等等也有加入。UPnP有个网站[http://www.upnp.org/](http://www.upnp.org/)，我们发现DLNA的网页和UPnP的网页很像，颜色也差不多，就可以知道他们关系很好了。DNLA主要是在推UPnP。  
 
 	微软官方网站对UPnP的解释：通用即插即用 (UPnP) 是一种用于 PC 机和智能设备（或仪器）的常见对等网络连接的体系结构，尤其是在家庭中。UPnP 以 Internet 标准和技术（例如 TCP/IP、HTTP 和 XML）为基础，使这样的设备彼此可自动连接和协同工作，从而使网络（尤其是家庭网络）对更多的人成为可能。
     举个例子。我们在自己的PC（win7）里面打开网络服务的UPnP选项，然后再家庭网络中共享一个装着视频的文件夹，然后买一台SmartTV回来打开就可以找到这台PC的共享文件夹，然后就直接在电视上选文件播放了。

@@ -73,7 +73,7 @@ Git简介
 `Git`主要分为四个区:    
 
 - 工作区`(Working Area)`
-- 暂存区`(Stage)`
+- 暂存区`(Stage或Index Area)`
 - 本地仓库`(Local Repository)`
 - 远程仓库`(Remote Repository)`
 
@@ -294,8 +294,10 @@ git push  // 把所有文件从本地仓库推送进远程仓库
 
     `git branch devBranch`创建名为`devBranch`的分支。          
     `git checkout devBranch`切换到`devBranch`分支。            
-    `git branch`查看当前仓库中的分支                   
-    `git branch -r`查看远程仓库的分支            
+    `git checkout -b devBranch`创建+切换到分支`devBranch`。
+    `git branch`查看当前仓库中的分支。                   
+    `git branch -r`查看远程仓库的分支。
+    `git branch -d devBranch`删除`devBranch`分支。            
     ```
     origin/HEAD -> origin/master
     origin/developer
@@ -358,7 +360,9 @@ git push  // 把所有文件从本地仓库推送进远程仓库
     在用`linux`的时候会自动生成一些以`~`结尾的备份文件，如果ignore掉呢？[https://github.com/github/gitignore/blob/master/Global/Linux.gitignore](https://github.com/github/gitignore/blob/master/Global/Linux.gitignore)
 
 - 撤销最后一次提交
-    有时候我们提交完了才发现漏掉了几个文件没有加或者提交信息写错了，想要撤销刚才的的提交操作。可以使用--amend选项重新提交:`git commit --amend`
+    有时候我们提交完了才发现漏掉了几个文件没有加或者提交信息写错了，想要撤销刚才的的提交操作。可以使用--amend选项重新提交:`git commit --amend`，然后再执行`git push`操作。
+
+
 
 - 查看远程仓库克隆地址
     `git remote -v`
@@ -410,7 +414,55 @@ git push  // 把所有文件从本地仓库推送进远程仓库
     
     这样你之前隐藏的内容就会重新出现了，你可以继续开发了。    
 
+- Rebase操作
 
+    多人在同一个分支上协作时，很容易出现冲突，即使没有冲突，在`push`代码之前也要先`pull`，在本地合并后再`push`，所以就经常会出现这样的分支:
+```git
+$ git log --graph --pretty=oneline --abbrev-commit
+* d1be385 (HEAD -> master, origin/master) init hello
+*   e5e69f1 Merge branch 'dev'
+|\  
+| *   57c53ab (origin/dev, dev) fix env conflict
+| |\  
+| | * 7a5e5dd add env
+| * | 7bd91f1 add new env
+| |/  
+* |   12a631b merged bug fix 101
+|\ \  
+| * | 4c805e2 fix bug 101
+|/ /  
+* |   e1e9c68 merge with no-ff
+|\ \  
+| |/  
+| * f52c633 add merge
+|/  
+*   cf810e4 conflict fixed
+```
+看上去会很乱，有些强迫症的人会问：为什么`Git`的提交历史不能是一条干净的直线？
+`rebase`操作就是解决这个问题的，它可以把分叉的提交历史整理变成一条直线，看上去更直观。缺点是本地的分叉提交已经被修改过了。 
+
+也就是说`gie merge`和`git rebase`做的事情其实是一样的。它们都被设计来将一个分支的更改并入到另一个分支中。
+
+- git fetch与git pull的区别
+
+    `git`中`fetch`命令是将远程分支的最新内容拉到了本地，但是`fecth`后是看不到变化的，如果查看当前的分支，会发现此时本地多了一个`FETCH_HEAD`的指针，`checkout`到该指针后才可以查看远程分支的最新内容。
+
+    而`git pull`的作用相当于`fetch`和`merge`的组合，会自动合并:
+
+    ```git 
+    git fetch origin master
+    git merge FETCH_HEAD
+    ```
+
+- git pull 与git pull --rebase的使用
+
+    使用下面的关系区别这两个操作:   
+
+    ```git
+    git pull = git fetch + git merge
+    git pull --rebase = git fetch + git rebase
+    ```
+    `git rebase`的过程中，有时会有`conflit`这时`Git`会停止`rebase`并让用户去解决冲突，解决完冲突后，用`git add`命令去更新这些内容，然后不用执行`git commit`，直接执行`git rebase --continue`这样`git`会继续`apply`余下的补丁。   
 
 ---
 
