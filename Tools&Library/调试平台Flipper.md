@@ -34,7 +34,8 @@
 ### 首先，去官网下载桌面应用，下载完后是这个样子的。
 
 <img src="https://raw.githubusercontent.com/CharonChui/Pictures/master/sonar_desktop.png?raw=true" width="100%" height="100%">
-我们可以看到左边只有`log`部分。
+
+我们可以看到左边只有`log`的部分。
 
 
 ### 接下来在`app`中嵌入`flipper`的`sdk`
@@ -183,4 +184,5 @@ public class MySonarPlugin implements SonarPlugin {
 ---
 
 - 邮箱 ：charon.chui@gmail.com  
-- Good Luck! 
+-
+Good Luck! 
