@@ -1,7 +1,7 @@
 Git简介
 ===
 
-`Git`和其他版本控制系统(包括`Subvversion`及其他相似的工具)的主要差别在于`Git`对待数据的方法。概念上来区分，其它大部分系统以文件变更列表的方式存储信息。 
+`Git`和其他版本控制系统(包括`Subversion`及其他相似的工具)的主要差别在于`Git`对待数据的方法。概念上来区分，其它大部分系统以文件变更列表的方式存储信息。 
 这类系统(`CVS、Subversion、Perforce、Bazaar`等等)将它们保存的信息看作是一组基本文件和每个文件随时间逐步累积的差异。存储每个文件与初始版本的差异。   
 
 
@@ -248,7 +248,7 @@ git push  // 把所有文件从本地仓库推送进远程仓库
     如果已经执行了`git add .`但是还没有执行`git commit -m "comment"`这时候你意识到了错误，想要撤销，可以执行:      
 
     ```
-    <!-- git reset   // git reset 只是把修改退回到了git add .之前的状态，也就是让文件还处于已修改未暂存的状态
+    git reset   // git reset 只是把修改退回到了git add .之前的状态，也就是让文件还处于已修改未暂存的状态
     git checkout .   // 上面让文件处于已修改未暂存的状态，还要执行git checkout .来撤销工作区的状态
     ```    
     或`git reset --hard`
@@ -360,7 +360,7 @@ git push  // 把所有文件从本地仓库推送进远程仓库
     在用`linux`的时候会自动生成一些以`~`结尾的备份文件，如果ignore掉呢？[https://github.com/github/gitignore/blob/master/Global/Linux.gitignore](https://github.com/github/gitignore/blob/master/Global/Linux.gitignore)
 
 - 撤销最后一次提交
-    有时候我们提交完了才发现漏掉了几个文件没有加或者提交信息写错了，想要撤销刚才的的提交操作。可以使用--amend选项重新提交:`git commit --amend`，然后再执行`git push`操作。
+    有时候我们提交完了才发现漏掉了几个文件没有加或者提交信息写错了，想要撤销刚才的的提交操作。可以使用`--amend`选项重新提交:`git commit --amend`，然后再执行`git push`操作。
 
 
 
@@ -377,7 +377,7 @@ git push  // 把所有文件从本地仓库推送进远程仓库
 - 当执行`git checkout .`或`git checkout -- file`命令是，会用暂存区全部的文件或指定的文件替换工作区的文件。这个操作很危险，会清楚工作区中未添加到暂存区的改动。
 命令时，会用`HEAD`指向的`master`分支中的全部或部分文件替换暂存区和工作区中的文件。这个命令也是极度危险的。因为不但会清楚工作区中未提交的改动，也会清楚暂存区中未提交的改动。
 - `git reset HEAD <file>` 是在添加到暂存区后，撤出暂存区使用，他只会把文件撤出暂存区，但是你的修改还在，仍然在工作区。当然如果使用`git reset --hard HEAD`这样就完了，工作区所有的内容都会被远程仓库最新代码覆盖。
-- `git checkout -- xxx.txt`是用于修改后未添加到暂存区时使用(如果修改后添加到暂存区后就没效果了，必须要先reset撤销暂存区后再使用checkout)，这时候会把之前的修改覆盖掉。所以是危险的。
+- `git checkout -- xxx.txt`是用于修改后未添加到暂存区时使用(如果修改后添加到暂存区后就没效果了，必须要先`reset`撤销暂存区后再使用`checkout`)，这时候会把之前的修改覆盖掉。所以是危险的。
 
 
 - 隐藏操作     
