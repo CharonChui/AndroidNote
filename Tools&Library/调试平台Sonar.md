@@ -1,32 +1,32 @@
-调试平台Sonar
+调试平台Flipper
 ===
 
 子日:工欲善其事必先利其器
 
-[Sonar](https://fbsonar.com/)是之前`Facebook`的一个内部调试工具，旨在帮助开发人员以交互式和可扩展的方式检查和理解`iOS`及`Android`应用程序的结构和行为。
+[Flipper](https://fbflipper.com/docs)是之前`Facebook`的一个内部调试工具，旨在帮助开发人员以交互式和可扩展的方式检查和理解`iOS`及`Android`应用程序的结构和行为。
 
-根据`Facebook`工程师`EmilSjölander`的说法，`Sonar`基于[Stetho](http://facebook.github.io/stetho/)的经验基础而构建，`Stetho`是一个`Android`调试桥，允许开发人员使用`Chrome DevTools`调试他们的应用程序。
+根据`Facebook`工程师`EmilSjölander`的说法，`Flipper`基于[Stetho](http://facebook.github.io/stetho/)的经验基础而构建，`Stetho`是一个`Android`调试桥，允许开发人员使用`Chrome DevTools`调试他们的应用程序。
 
-`Facebook`推荐开发者使用`Sonar`来替代`Stetho`，除非是还没有从`Stetho`移植到`Sonar`的一些功能，例如基于`Dumper`的命令行工具。
+`Facebook`推荐开发者使用`Flipper`来替代`Stetho`，除非是还没有从`Stetho`移植到`Flipper`的一些功能，例如基于`Dumper`的命令行工具。
 
 
-前段时间`facebook`将`Sonar`开源了。
+前段时间`facebook`将`Flipper`开源了。最开始的时候是叫做`Sonar`后来改成`Flipper`了。
 
 
 这里就以`android`应用为例简单介绍一下它的使用。 
-`Sonar`包括两部分:  
+`Flipper`包括两部分:  
 
 - 桌面应用
-- `Sonar SDK`:移动应用程序需要集成`Sonar SDK`，`Sonar SDK`负责与基于`Electron`的桌面应用程序通信，以显示调试数据。
+- `Flipper SDK`:移动应用程序需要集成`Flipper SDK`，`Flipper SDK`负责与基于`Electron`的桌面应用程序通信，以显示调试数据。
 
-在扩展性方面，`Sonar`提供了一个插件`API`，开发人员可以使用这组`API`创建自己的插件来可视化和调试应用程序数据。`Sonar`初始版本包含许多即用型插件，例如:
+在扩展性方面，`Flipper`提供了一个插件`API`，开发人员可以使用这组`API`创建自己的插件来可视化和调试应用程序数据。`Flipper`初始版本包含许多即用型插件，例如:
 
 - `Logs`:用于检查应用程序的系统日志，默认集成的，不用手动添加。
 - `Layout Inspector`:用于检查`iOS`和`Android`应用程序的布局。
 - `Network Inspector`:用于检查网络流量。
 - `SharedPreferece`:用于查看`sharedpreference`文件的。
 
-这些只是`Sonar`提供的一些基本的功能。根据`Sjölander`的说法，`Facebook`工程师还开发了插件来监控`GraphQL`请求、跟踪性能标记等。
+这些只是`Flipper`提供的一些基本的功能。根据`Sjölander`的说法，`Facebook`工程师还开发了插件来监控`GraphQL`请求、跟踪性能标记等。
 
 
 下面介绍一下如何使用：   
@@ -37,7 +37,7 @@
 我们可以看到左边只有`log`部分。
 
 
-### 接下来在`app`中嵌入`sonar`的`sdk`
+### 接下来在`app`中嵌入`flipper`的`sdk`
 
 - 首先需要保证已声明如下权限:   
 ```xml
@@ -53,14 +53,14 @@ repositories {
 }
 
 dependencies {
-  debugImplementation 'com.facebook.sonar:sonar:0.6.13'
+  debugImplementation 'com.facebook.flipper:flipper:0.6.18'
 }
 ```
 
-- 自定义一个`Application`，并在`onCreate()`方法中初始化`sonar`
+- 自定义一个`Application`，并在`onCreate()`方法中初始化`flipper`
 
 ```java
-public class SonarApplication extends Application {
+public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
@@ -80,7 +80,8 @@ public class SonarApplication extends Application {
 上面我们添加了两个`plugin`，我们执行看一下:   
 
 <img src="https://raw.githubusercontent.com/CharonChui/Pictures/master/sonar_add_plugin.png?raw=true" width="100%" height="100%">
-看到了吗？ 左边现在有`log`、`network`和`sharedpreference`三个部分了。 但是这三个是远远不够的啊，我还想查看布局。 
+
+看到了吗？左边现在有`log`、`network`和`sharedpreference`三个部分了。 但是这三个是远远不够的啊，我还想查看布局。 
 
 这里需要注意一下，如果使用了`okhttp`,可以使用拦截器系统自动`hook`到现在的堆栈。
 
@@ -95,7 +96,7 @@ new OkHttpClient.Builder()
 - 增加对查看布局的支持
 
 ```java
-public class SonarApplication extends Application {
+public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
