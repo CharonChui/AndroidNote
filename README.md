@@ -12,6 +12,7 @@ Android学习笔记
 ===  
 
 - [史上最适合Android开发者学习的Go语言教程](https://github.com/CharonChui/GolangStudyNote)
+- [史上最适合Android开发者学习的iOS开发教程](https://github.com/CharonChui/iOSStudyNote)
 
 - [源码解析][43] 
     - [自定义View详解][1]
