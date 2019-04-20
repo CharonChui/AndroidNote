@@ -86,7 +86,7 @@ val sum: (Int, Int) -> Int = { x, y -> x + y }
 
 
 
-[上一篇:Kotlin学习教程(六)](https://github.com/CharonChui/AndroidNote/blob/master/KotlinCourse/Kotlin%E5%AD%A6%E4%B9%A0%E6%95%99%E7%A8%8B(%E5%85%AD).md)
+[上一篇:Kotlin学习教程(六)](https://github.com/CharonChui/AndroidNote/blob/master/KotlinCourse/Kotlin%E5%AD%A6%E4%B9%A0%E6%95%99%E7%A8%8B(%E5%85%AD).md)         
 [下一篇:Kotlin学习教程(八)](https://github.com/CharonChui/AndroidNote/blob/master/KotlinCourse/Kotlin%E5%AD%A6%E4%B9%A0%E6%95%99%E7%A8%8B(%E5%85%AB).md)
 
 

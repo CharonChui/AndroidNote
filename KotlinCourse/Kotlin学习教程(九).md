@@ -246,7 +246,7 @@ inline fun <T> with(t: T, body: T.() -> Unit) { t.body() }
 
 
 
-[上一篇:Kotlin学习教程(八)](https://github.com/CharonChui/AndroidNote/blob/master/KotlinCourse/Kotlin%E5%AD%A6%E4%B9%A0%E6%95%99%E7%A8%8B(%E5%85%AB).md)
+[上一篇:Kotlin学习教程(八)](https://github.com/CharonChui/AndroidNote/blob/master/KotlinCourse/Kotlin%E5%AD%A6%E4%B9%A0%E6%95%99%E7%A8%8B(%E5%85%AB).md)         
 [下一篇:Kotlin学习教程](https://github.com/CharonChui/AndroidNote/blob/master/KotlinCourse/Kotlin%E5%AD%A6%E4%B9%A0%E6%95%99%E7%A8%8B(%E5%8D%81).md)
 
 

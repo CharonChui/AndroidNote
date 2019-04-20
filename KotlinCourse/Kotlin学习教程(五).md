@@ -472,7 +472,7 @@ class MutableUser(val map: MutableMap<String, Any?>) {
 ```
 
 
-[上一篇:Kotlin学习教程(四)](https://github.com/CharonChui/AndroidNote/blob/master/KotlinCourse/Kotlin%E5%AD%A6%E4%B9%A0%E6%95%99%E7%A8%8B(%E5%9B%9B).md)
+[上一篇:Kotlin学习教程(四)](https://github.com/CharonChui/AndroidNote/blob/master/KotlinCourse/Kotlin%E5%AD%A6%E4%B9%A0%E6%95%99%E7%A8%8B(%E5%9B%9B).md)       
 [下一篇:Kotlin学习教程(六)](https://github.com/CharonChui/AndroidNote/blob/master/KotlinCourse/Kotlin%E5%AD%A6%E4%B9%A0%E6%95%99%E7%A8%8B(%E5%85%AD).md)
 
 
