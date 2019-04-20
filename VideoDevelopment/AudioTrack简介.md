@@ -1,0 +1,27 @@
+AudioTrack简介
+---
+
+Android系统提供了三种播放音频文件的方式:  
+
+- SoundPoll:适合播放短促且对反应速度要求比较高的情况(如游戏音效、按键声等)
+- AudioTrack:只支持播放解码后的PCM流，如果是文件的话只致辞WAV格式的音频文件，因为WAV格式的音频文件大部分都是PCM流，AudioTrack不创建解码器，所以只能播放不需要解码的WAV文件，但是CPU占用率低，内存消耗也比较小。因此如果是播放比较短时间的WAV音频文件，建议使用AudioTrack。
+- MediaPlayer:适合比较长且时间要求不那么高的情况,支持多种文件格式，如MP3、WAV、AAC等。其实MediaPlayer是基于AudioTrack的封装，内部也是使用AudioTrack，MediaPlayer在framework层也实例化了AudioTrack，MediaPlayer在framework层进行解码后，生成PCM流，然后代理委托给AudioTrack，最后AudioTrack传递给AudioFlinger进行混音，然后才传递给硬件播放。 
+
+
+AudioTrack播放声音时不能直接把WAV文件传递给AudioTrack进行播放，必须传递buffer，通过write函数把需要播放的缓冲区buffer传递给AudioTrack，然后才能播放。
+
+
+上面一直说PCM，那PCM究竟是啥?
+
+简单的说，PCM是一种数据编码格式，CD唱片上刻录的就是直接用PCM格式编码的数据文件，WAV是一种声音文件格式，WAV里面包含的声音数据可以是采用PCM格式编码的声音数据，也可以是采用其他格式编码的声音数据，但是目前一般采用PCM编码的声音数据两者之间的区别就是:PCM是一个通信上的概念，脉冲编码调制。WAV是媒体概念，体现的是封装。WAV文件可以封装PCM编码信息，也可以封装其他编码格式，例如MP3等。
+
+
+
+AudioTrack类可以完成Android平台上音频数据的输出任务。AudioTrack有两种数据加载模式:   
+
+- MODE_STREAM:通过write一次次把音频数据写到AudioTrack中。和平时通过write系统调用往文件中写数据类似，但是这种工作方式每次都需要把数据从用户提供的Buffer中拷贝到AudioTrack中的Buffer，这样会在一定程度上引入延迟，为了解决这个问题，AudioTrack引入了第二种方式。 
+- MODE_STATIC:这种模式下，在play之前只需要把所有数据通过一次write调用传递到AudioTrack中的内部缓冲区，后续就不必再传递数据。这种模式适用于铃声这种内存占用小，延时要求高的文件，但是它也有一个缺点，就是一次write的数据不能太多，否则系统无法分配足够的内存来存储全部数据。
+
+
+
+

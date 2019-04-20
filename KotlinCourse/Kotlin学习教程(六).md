@@ -193,6 +193,10 @@ Toast msg : hello, EXTENSION
 
 
 
+[上一篇:Kotlin学习教程(五)](https://github.com/CharonChui/AndroidNote/blob/master/KotlinCourse/Kotlin%E5%AD%A6%E4%B9%A0%E6%95%99%E7%A8%8B(%E4%BA%94).md)
+[下一篇:Kotlin学习教程(七)](https://github.com/CharonChui/AndroidNote/blob/master/KotlinCourse/Kotlin%E5%AD%A6%E4%B9%A0%E6%95%99%E7%A8%8B(%E4%B8%83).md)
+
+
 ---
 
 - 邮箱 ：charon.chui@gmail.com  

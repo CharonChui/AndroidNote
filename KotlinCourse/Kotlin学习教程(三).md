@@ -184,6 +184,11 @@ val s = "abc"
 val str = "$s.length is ${s.length}" // 求值结果为 "abc.length is 3"
 ```
 
+
+[上一篇:Kotlin学习教程(二)](https://github.com/CharonChui/AndroidNote/blob/master/KotlinCourse/Kotlin%E5%AD%A6%E4%B9%A0%E6%95%99%E7%A8%8B(%E4%BA%8C).md)
+[下一篇:Kotlin学习教程(四)](https://github.com/CharonChui/AndroidNote/blob/master/KotlinCourse/Kotlin%E5%AD%A6%E4%B9%A0%E6%95%99%E7%A8%8B(%E5%9B%9B).md)
+
+
 ---
 
 - 邮箱 ：charon.chui@gmail.com  
