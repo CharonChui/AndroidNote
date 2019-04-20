@@ -52,6 +52,7 @@ Android学习笔记
     - [Android WebRTC简介][22]
     - [Android音视频开发知识(未完)][23]
     - [DLNA简介][24]
+    - [AudioTrack简介]
 
 -  [图片加载][45]
     - [Glide简介(上)][25]
@@ -458,7 +459,7 @@ Android学习笔记
 [211]: https://github.com/CharonChui/AndroidNote/blob/master/RxJavaPart/6.RxJava%E8%AF%A6%E8%A7%A3%E4%B9%8B%E7%BA%BF%E7%A8%8B%E8%B0%83%E5%BA%A6%E5%8E%9F%E7%90%86(%E5%85%AD).md  "6.RxJava详解之线程调度原理(六)"
 [212]: https://github.com/CharonChui/AndroidNote/blob/master/Dagger2/9.Dagger2%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90(%E4%B9%9D).md "9.Dagger2原理分析(九)"
 [213]: https://github.com/CharonChui/AndroidNote/blob/master/Tools%26Library/%E8%B0%83%E8%AF%95%E5%B9%B3%E5%8F%B0Sonar.md "调试平台Sonar"
-
+[214]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/AudioTrack%E7%AE%80%E4%BB%8B.md   "AudioTrack简介"
 
 
 Developed By
