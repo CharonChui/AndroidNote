@@ -9,7 +9,7 @@ OOM(OutOfMemoryError)，最近线上版本出现了大量线程OOM的crash，尤
 
 #### [XXXClassName] of length XXX would overflow“是系统限制String/Array的长度所致，这种情况比较少。
 
-#### java.lang.OutOfMemoryError: Failed to allocate a XXX byte allocation with XXX free bytes and XXXKB until OOM
+#### java.lang.OutOfMemoryError:  "Failed to allocate a " << byte_count << " byte allocation with " << total_bytes_free  << " free bytes and " << PrettySize(GetFreeMemoryUntilOOME()) << " until OOM";
 
 通常情况下是因为`java`堆内存不足导致的，即`Runtime.getRuntime().maxMemory()`获取到的最大内存无法满足要申请的内存大小时，这种情况比较好模拟，例如我们可以通过`new byte[]`的方式来申请超过`maxMemory()`的内存,但是也有一些情况是堆内存充裕，而且设备内存也充裕的情况下发生的。
 #### java.lang.OutOfMemoryError: Could not allocate JNI Env(代号JNIEnv)
@@ -20,15 +20,15 @@ Limit                     Soft Limit           Hard Limit           Units
 Max cpu time              unlimited            unlimited            seconds   
 Max file size             unlimited            unlimited            bytes     
 Max data size             unlimited            unlimited            bytes     
-Max stack size            8388608              unlimited            bytes     
+Max stack size            8388608              unlimited            bytes   // 整个系统的   
 Max core file size        0                    unlimited            bytes     
 Max resident set          unlimited            unlimited            bytes     
-Max processes             17235                17235                processes 
-Max open files            32768                32768                files     
-Max locked memory         67108864             67108864             bytes     
+Max processes             17235                17235                processes // 整个系统的最大进程数，底层只有进程，线程也是通过进程实现的
+Max open files            32768                32768                files   // 每个进程最大打开文件的数量
+Max locked memory         67108864             67108864             bytes   // 线程创建过程中分配线程私有stack使用的mmap调用没有设置MAP_LOCKED，所以这个限制与线程创建过程无关  
 Max address space         unlimited            unlimited            bytes     
 Max file locks            unlimited            unlimited            locks     
-Max pending signals       17235                17235                signals   
+Max pending signals       17235                17235                signals   // c层信号个数阈值，与线程创建过程无关
 Max msgqueue size         819200               819200               bytes     
 Max nice priority         40                   40                   
 Max realtime priority     0                    0                    
@@ -212,6 +212,7 @@ void Thread::CreateNativeThread(JNIEnv* env, jobject java_peer, size_t stack_siz
   {
     std::string msg(child_jni_env_ext.get() == nullptr ?
         StringPrintf("Could not allocate JNI Env: %s", error_msg.c_str()) :
+        // 具体的错误信息由pthread_create_result的返回的错误码给出。
         StringPrintf("pthread_create (%s stack) failed: %s",
                                  PrettySize(stack_size).c_str(), strerror(pthread_create_result)));
     ScopedObjectAccess soa(env);
@@ -338,7 +339,7 @@ IndirectReferenceTable::IndirectReferenceTable(size_t max_count,
   last_known_previous_state_ = kIRTFirstSegment;
 }
 ```
-如果上面失败的话，那就只有一种情况就是 MemMap::MapAnonymous 失败了，我们继续看[MemMap](https://android.googlesource.com/platform/art/+/refs/tags/android-9.0.0_r41/runtime/mem_map.cc)
+如果上面失败的话，那就只有一种情况就是 MemMap::MapAnonymous 失败了，而MemMap::MapAnonymous的作用是为JNIEnv结构体中的Indirect_Reference_table(C层用于存储JNI局部/全局变量)申请内存，我们继续看[MemMap](https://android.googlesource.com/platform/art/+/refs/tags/android-9.0.0_r41/runtime/mem_map.cc)
 ```
 MemMap* MemMap::MapAnonymous(const char* name,
                              uint8_t* expected_ptr,
@@ -383,6 +384,7 @@ MemMap* MemMap::MapAnonymous(const char* name,
     debug_friendly_name += name;
     // 1. 创建
     fd.reset(ashmem_create_region(debug_friendly_name.c_str(), page_aligned_byte_count));
+    // == -1 就说明是fd超过了系统限制的最大fd量，错误信息中会有Too many open files的提示
     if (fd.get() == -1) {
       // We failed to create the ashmem region. Print a warning, but continue
       // anyway by creating a true anonymous mmap with an fd of -1. It is
@@ -429,6 +431,40 @@ MemMap* MemMap::MapAnonymous(const char* name,
                     page_aligned_byte_count, prot, reuse);
 }
 ```
+这里面又用到了`ashmem_create_region()`方法，该方法的作用就是创建一块ashmen匿名共享内存，并返回一个文件描述符，我们看一下[ashmem_create_region](https://android.googlesource.com/platform/system/core/+/4f6e8d7a00cbeda1e70cc15be9c4af1018bdad53/libcutils/ashmem-dev.c)的源码:   
+```
+/*
+ * ashmem_create_region - creates a new ashmem region and returns the file
+ * descriptor, or <0 on error
+ *
+ * `name' is an optional label to give the region (visible in /proc/pid/maps)
+ * `size' is the size of the region, in page-aligned bytes
+ */
+int ashmem_create_region(const char *name, size_t size)
+{
+	int fd, ret;
+  // 打开一个fd
+	fd = open(ASHMEM_DEVICE, O_RDWR);
+	if (fd < 0)
+		return fd;
+	if (name) {
+		char buf[ASHMEM_NAME_LEN];
+		strlcpy(buf, name, sizeof(buf));
+		ret = ioctl(fd, ASHMEM_SET_NAME, buf);
+		if (ret < 0)
+			goto error;
+	}
+	ret = ioctl(fd, ASHMEM_SET_SIZE, size);
+	if (ret < 0)
+		goto error;
+	return fd;
+error:
+	close(fd);
+	return ret;
+}
+```
+
+
 上面的两个步骤中，不论第一个步骤执行成功与否，都会执行第二步，但是执行的行为不同
 
 - 如果第一步执行成功，就会通过Andorid的匿名共享内存（Anonymous Shared Memory）分配4KB（一个page）内核态内存，然后再通过Linux的mmap调用映射到用户态虚拟内存地址空间。
