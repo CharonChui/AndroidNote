@@ -536,6 +536,7 @@ int pthread_create(pthread_t* thread_out, pthread_attr_t const* attr,
     if (thread->mmap_size != 0) {
       munmap(thread->attr.stack_base, thread->mmap_size);
     }
+    // clone失败就会报出clone failed的错误
     async_safe_format_log(ANDROID_LOG_WARN, "libc", "pthread_create failed: clone failed: %s",
                           strerror(clone_errno));
     return clone_errno;
@@ -659,7 +660,8 @@ static void* __create_thread_mapped_space(size_t mmap_size, size_t stack_guard_s
 
 
 最后总结一下: 不管是代号JNIEnv还是1040的OOM都是因为进程内虚拟内存地址空间耗尽导致的。
-在一个32位系统中，如果是4G的内存空间，系统内核将使用最上层的1G虚拟空间，用户空间的内存就只剩下3G或者更少，而创建一个进程需要1040k的虚拟内存，所以假设创建一个线程什么都不干，那最多也只能最大能创建3000个线程
+在一个32位系统中，如果是4G的内存空间，系统内核将使用最上层的1G虚拟空间，用户空间的内存就只剩下3G或者更少，而创建一个进程需要1040k的虚拟内存，所以假设创建一个线程什么都不干，那最多也只能最大能创建3000个线程。当逻辑地址空间不足(已用逻辑空间地址可以查看 /proc/pid/status中的VmPeak/VmSize查看)，就会报出创建线程的OOM问题，`W/libc: pthread_create failed: couldn't allocate 1069056-bytes mapped space: Out of memory
+W/art: Throwing OutOfMemoryError "pthread_create (1040KB stack) failed: Try again"`
 
 
 
@@ -710,32 +712,32 @@ PD1806:/ $ cat proc/15834/status
 Name:   com.example.oom
 Umask:  0077
 State:  S (sleeping)
-Tgid:   15834
+Tgid:   15834    // 进程组的ID
 Ngid:   0
-Pid:    15834
-PPid:   1001
-TracerPid:      0
+Pid:    15834     // 进程ID
+PPid:   1001      // 当前进程的父进程
+TracerPid:      0   // 跟踪当前进程的进程ID,如果是0表示没有跟踪
 Uid:    10458   10458   10458   10458
 Gid:    10458   10458   10458   10458
-FDSize: 128
+FDSize: 128  // 当前分配的文件描述符，这个值不是当前进程使用文件描述符的上线
 Groups: 9997 20458 50458 
-VmPeak:  4403108 kB
-VmSize:  4402056 kB
+VmPeak:  4403108 kB    // 当前进程运行过程中所占用内存的峰值
+VmSize:  4402056 kB    // 已用逻辑空间地址，虚拟内存大小。整个进程使用虚拟内存大小，是VmLib, VmExe, VmData, 和 VmStk的总和。
 VmLck:         0 kB
 VmPin:         0 kB
-VmHWM:     49108 kB
-VmRSS:     48920 kB
+VmHWM:     49108 kB    // 程序得到分配到物理内存的峰值
+VmRSS:     48920 kB    // 程序现在正在使用的物理内存
 RssAnon:            9268 kB
 RssFile:           39540 kB
 RssShmem:            112 kB
-VmData:  1737808 kB
-VmStk:      8192 kB
-VmExe:        20 kB
-VmLib:    163804 kB
-VmPTE:      1000 kB
+VmData:  1737808 kB        // 所占用的虚拟内存
+VmStk:      8192 kB        // 任务在用户态的栈的大小 (stack_vm) 
+VmExe:        20 kB        // 程序所拥有的可执行虚拟内存的大小，代码段，不包括任务使用的库 (end_code-start_code) 
+VmLib:    163804 kB        // 被映像到任务的虚拟内存空间的库的大小 (exec_lib) 
+VmPTE:      1000 kB        // 该进程的所有页表的大小，单位：kb 
 VmPMD:        32 kB
 VmSwap:    15776 kB
-Threads:        17
+Threads:        17        // 当前的线程数
 SigQ:   0/21568
 SigPnd: 0000000000000000
 ShdPnd: 0000000000000000
@@ -773,7 +775,12 @@ Thread.UncaughtExceptionHandler捕获到OutOfMemoryError时记录/proc/pid目录
 
 
 
+## 什么情况下虚拟内存地址空间才会耗尽
 
+
+说面分析了那么多，结论就是因为虚拟内存空间耗尽导致的，但是究竟什么情况才会出现耗尽的情况？ 
+[Virtual Memory and Linux](https://events.linuxfoundation.org/sites/events/files/slides/elc_2016_mem.pdf)
+[Android进程的内存管理分析](https://blog.csdn.net/gemmem/article/details/8920039)
 
 ---
 
