@@ -280,18 +280,7 @@ bool JNIEnvExt::CheckLocalsValid(JNIEnvExt* in) NO_THREAD_SAFETY_ANALYSIS {
   return in->locals_.IsValid();
 }
 ```
-所以根本原因是因为 JNIEnvExt::table_override_ 仍然为nullptr导致的返回false
-而它的赋值在GetFunctionTable方法中
-```
-const JNINativeInterface* JNIEnvExt::GetFunctionTable(bool check_jni) {
-  const JNINativeInterface* override = JNIEnvExt::table_override_;
-  if (override != nullptr) {
-    return override;
-  }
-  return check_jni ? GetCheckJniNativeInterface() : GetJniNativeInterface();
-}
-```
-GetFunctionTable方法又被构造函数调用
+从代码上看，基本排除是传入的参数nullptr导致的，所以根本原因是locals.IsValid返回了false，而locals是JNIEnvExt的一个成员变量，在JNIEnvExt构造的时候通过成员列表方式初始化
 ```
 JNIEnvExt::JNIEnvExt(Thread* self_in, JavaVMExt* vm_in, std::string* error_msg)
     : self_(self_in),
@@ -308,7 +297,15 @@ JNIEnvExt::JNIEnvExt(Thread* self_in, JavaVMExt* vm_in, std::string* error_msg)
   unchecked_functions_ = GetJniNativeInterface();
 }
 ```
-构造函数中又使用了[IndirectReferenceTable](https://android.googlesource.com/platform/art/+/refs/tags/android-9.0.0_r41/runtime/indirect_reference_table.cc)类，他的构造函数为
+
+而[locals_.isValid](https://android.googlesource.com/platform/art/+/refs/tags/android-9.0.0_r41/runtime/indirect_reference_table.cc)的方法的源码为:  
+```
+bool IndirectReferenceTable::IsValid() const {
+  return table_mem_map_.get() != nullptr;
+}
+```
+所以只可能是table_men_map为nullptr导致的。
+而[IndirectReferenceTable](https://android.googlesource.com/platform/art/+/refs/tags/android-9.0.0_r41/runtime/indirect_reference_table.cc)类，他的构造函数为
 ```
 IndirectReferenceTable::IndirectReferenceTable(size_t max_count,
                                                IndirectRefKind desired_kind,
@@ -339,6 +336,8 @@ IndirectReferenceTable::IndirectReferenceTable(size_t max_count,
   last_known_previous_state_ = kIRTFirstSegment;
 }
 ```
+
+
 如果上面失败的话，那就只有一种情况就是 MemMap::MapAnonymous 失败了，而MemMap::MapAnonymous的作用是为JNIEnv结构体中的Indirect_Reference_table(C层用于存储JNI局部/全局变量)申请内存，我们继续看[MemMap](https://android.googlesource.com/platform/art/+/refs/tags/android-9.0.0_r41/runtime/mem_map.cc)
 ```
 MemMap* MemMap::MapAnonymous(const char* name,
@@ -471,7 +470,7 @@ error:
 - 如果第一步执行失败，第二步就会通过Linux的mmap调用创建一段虚拟内存。
 
 而上面失败的情况主要有:  
-- 第一步失败的情况一般是内核分配内存失败，这种情况下，整个设备OS的内存应该都处于非常紧张的状态。
+- 第一步失败的情况一般是内核分配内存失败，这种情况下，整个设备OS的内存应该都处于非常紧张的状态。但是我们从crash的信息里面看用户的内存还是挺充足的，所以排除这种情况。
 - 第二步失败的情况一般是进程虚拟内存地址空间耗尽。而且会打印Failed anonymous mmap的错误
 
 所以这里child_jni_env_ext.get() == nullptr 通常是因为第二步失败，也就是进程虚拟内存地址空间耗尽。所以这就是代号JNIEnv OOM的原因。
@@ -779,6 +778,8 @@ Thread.UncaughtExceptionHandler捕获到OutOfMemoryError时记录/proc/pid目录
 
 
 说面分析了那么多，结论就是因为虚拟内存空间耗尽导致的，但是究竟什么情况才会出现耗尽的情况？ 
+Android系统给每个进程分配了一定的虚拟地址空间大小，进程使用的虚拟空间如果超过阈值，就会触发OOM。所以只可能是线程太多，消耗了大部分虚拟内存地址空间，从而引发了当前进程空间不足。
+
 [Virtual Memory and Linux](https://events.linuxfoundation.org/sites/events/files/slides/elc_2016_mem.pdf)
 [Android进程的内存管理分析](https://blog.csdn.net/gemmem/article/details/8920039)
 
