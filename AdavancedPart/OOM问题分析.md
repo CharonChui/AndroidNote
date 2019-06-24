@@ -858,6 +858,61 @@ Uptime: 31807223 Realtime: 31807223
   PAGECACHE_OVERFLOW:        0          MALLOC_SIZE:        0
 ```
 
+查看当前手机的内存信息可以通过`cat /proc/meminfo`来查看
+```
+1|PD1806:/ $ cat /proc/meminfo                                                                                                                                    
+MemTotal:        5772000 kB
+MemFree:          129500 kB
+MemAvailable:    2594764 kB
+Buffers:            3968 kB
+Cached:          2330100 kB
+SwapCached:        12780 kB
+Active:          2678740 kB
+Inactive:         759120 kB
+Active(anon):     804284 kB
+Inactive(anon):   303532 kB
+Active(file):    1874456 kB
+Inactive(file):   455588 kB
+Unevictable:        3500 kB
+Mlocked:            3500 kB
+SwapTotal:       2097148 kB
+SwapFree:         488020 kB
+Dirty:                60 kB
+Writeback:             0 kB
+AnonPages:       1102064 kB
+Mapped:           743796 kB    映射文件大小
+Shmem:              1416 kB
+Slab:             548448 kB
+SReclaimable:     241428 kB
+SUnreclaim:       307020 kB
+KernelStack:      171856 kB
+PageTables:       108432 kB
+NFS_Unstable:          0 kB
+Bounce:                0 kB
+WritebackTmp:          0 kB
+CommitLimit:     4983148 kB  // 请的内存总数超过这个阈值就算overcommit，CommitLimit 就是overcommit的阈值，申请的内存总数超过CommitLimit的话就算是overcommit。
+Committed_AS:   131533804 kB // 表示所有进程已经申请的内存总大小，（注意是已经申请的，不是已经分配的），如果 Committed_AS 超过 CommitLimit 就表示发生了 overcommit，超出越多表示 overcommit 越严重。Committed_AS 的含义换一种说法就是，如果要绝对保证不发生OOM (out of memory) 需要多少物理内存。
+VmallocTotal:   263061440 kB
+VmallocUsed:           0 kB
+VmallocChunk:          0 kB
+CmaTotal:         217088 kB
+CmaFree:            1740 kB
+NR_KMALLOC:        23312 kB
+NR_VMALLOC:        33844 kB
+NR_DMA_NOR:            0 kB
+NR_DMA_CMA:        58348 kB
+NR_ION:           268600 kB
+free_ion:         121060 kB
+free_ion_pool:    121060 kB
+free_ion_heap:         0 kB
+NR_GPU:           267812 kB
+free_gpu:         154260 kB
+zram_size:        609440 kB
+zcache_size:           0 kB
+pcppages:           6944 kB
+ALL_MEM:         5675448 kB
+```
+
 
 - [Virtual Memory and Linux](https://events.linuxfoundation.org/sites/events/files/slides/elc_2016_mem.pdf)
 - [Android进程的内存管理分析](https://blog.csdn.net/gemmem/article/details/8920039)
