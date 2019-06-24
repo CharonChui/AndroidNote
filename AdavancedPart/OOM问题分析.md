@@ -431,7 +431,7 @@ MemMap* MemMap::MapAnonymous(const char* name,
                     page_aligned_byte_count, prot, reuse);
 }
 ```
-这里面又用到了`ashmem_create_region()`方法，该方法的作用就是创建一块ashmen匿名共享内存，并返回一个文件描述符，我们看一下[ashmem_create_region](https://android.googlesource.com/platform/system/core/+/4f6e8d7a00cbeda1e70cc15be9c4af1018bdad53/libcutils/ashmem-dev.c)的源码:   
+这里面又用到了`ashmem_create_region()`方法，该方法的作用就是创建一块匿名共享内存（Anonymous Shared Memory-Ashmem），并返回一个文件描述符，我们看一下[ashmem_create_region](https://android.googlesource.com/platform/system/core/+/4f6e8d7a00cbeda1e70cc15be9c4af1018bdad53/libcutils/ashmem-dev.c)的源码:   
 ```
 /*
  * ashmem_create_region - creates a new ashmem region and returns the file
