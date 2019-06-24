@@ -777,11 +777,94 @@ Thread.UncaughtExceptionHandler捕获到OutOfMemoryError时记录/proc/pid目录
 ## 什么情况下虚拟内存地址空间才会耗尽
 
 
-说面分析了那么多，结论就是因为虚拟内存空间耗尽导致的，但是究竟什么情况才会出现耗尽的情况？ 
+说面分析了那么多，结论就是因为虚拟内存空间耗尽导致的，但是究竟什么情况才会出现耗尽的情况？
+
+内存是程序运行时的存储地址空间，可分为虚拟地址空间和物理地址空间。虚拟地址空间是相对进程而言的，每个进程都有独立的地址空间（如32位程序都有4GB的虚拟地址空间）。物理地址空间就是由硬件（内存条）提供的存储空间，物理地址空间被所有进程共享。
+
+Linux采用虚拟内存管理技术，每个进程都有各自独立的进程地址空间(即4G的线性虚拟空间)，无法直接访问物理内存。这样起到保护操作系统，并且让用户程序可使用比实际物理内存更大的地址空间。
+
+4G进程地址空间被划分两部分，内核空间和用户空间。用户空间(包括代码、数据、堆、共享库以及栈)从0到3G，内核空间(包括内核中的代码和数据结构)从3G到4G；
+
+![image](https://raw.githubusercontent.com/CharonChui/Pictures/master/vm_linux.png?raw=true)  
+
+用户进程通常情况只能访问用户空间的虚拟地址，不能访问内核空间虚拟地址。只有用户进程进行系统调用(代表用户进程在内核态执行)等情况可访问到内核空间；
+用户空间对应进程，所以当进程切换，用户空间也会跟着变化；
+内核空间是由内核负责映射，不会跟着进程变化；内核空间地址有自己对应的页表，用户进程各自有不同额页表。
+
+从程序角度看，我们谈到的地址空间一般是虚拟地址空间，通过malloc或new分配的内存都虚拟地址空间的内存。虚拟地址空间与物理地址空间的都是以page为最小管理单元，page的大小因系统而异，一般都是4KB。虚拟地址空间有到物理地址空间的映射，如果要访问的虚拟地址空间没有映射到物理地址空间，操作系统会产生缺页中断，将虚拟地址空间映射到物理地址空间。
+
+因此，程度的虚拟地址空间比物理的地址空间要大的多。在较多进程同时运行时，物理地址空间有可能不够，操作系统会将一部物理地址空间的内容交换到磁盘，从而腾挪出一部分物理地址空间来。磁盘上的交换区，在linux上叫swap area，windows时叫page file。
+
+android底层基于linux，不过android是没有交换区的（为什么没有？），所以android系统的内存资源就更加宝贵。为更合理、充分利用有限内存资源，android引入一个low-memory-killer机制，在内存不足，根据规则回收一部分低优先级的进程，从而释放他们占有的内存。
+
+进程的内存空间只是虚拟内存，而程序运行需要的是物理内存(ram)，在必要时，操作系统会将程序运行中申请的虚拟内存映射到ram，让进程能够使用物理内存。进程所操作的空间都是虚拟地址空间，无法直接操作ram。java程序发生OOM并不表示ram不足，如果ram真的不足，android的memory killer就会发挥作用，它会杀死一些优先级比较低的进程来释放物理内存，让高优先级程序得到更多的内存。
+
+
 Android系统给每个进程分配了一定的虚拟地址空间大小，进程使用的虚拟空间如果超过阈值，就会触发OOM。所以只可能是线程太多，消耗了大部分虚拟内存地址空间，从而引发了当前进程空间不足。
 
-[Virtual Memory and Linux](https://events.linuxfoundation.org/sites/events/files/slides/elc_2016_mem.pdf)
-[Android进程的内存管理分析](https://blog.csdn.net/gemmem/article/details/8920039)
+`adb shell dumpsys meminfo packagename` 可以查看占用的内存信息
+```
+PD1806:/system/bin $ dumpsys meminfo com.example.oom                                                   
+Applications Memory Usage (in Kilobytes):
+Uptime: 31807223 Realtime: 31807223
+
+** MEMINFO in pid 11380 [com.example.oom] **
+                   Pss  Private  Private  SwapPss     Heap     Heap     Heap
+                 Total    Dirty    Clean    Dirty     Size    Alloc     Free
+                ------   ------   ------   ------   ------   ------   ------
+  Native Heap    64227    64176        0       28    77824    72483     5340
+  Dalvik Heap     2158     2124        0       24     3590     2693      897
+ Dalvik Other    20804    20804        0        0                           
+        Stack       92       92        0        0                           
+       Ashmem        2        0        0        0                           
+      Gfx dev      892      892        0        0                           
+    Other dev       12        0       12        0                           
+     .so mmap     8595      212     6180       16                           
+    .apk mmap     2388     1964       60        0                           
+    .ttf mmap      105        0        0        0                           
+    .dex mmap     2375      176      552        0                           
+    .oat mmap      176        0      112        0                           
+    .art mmap     6796     6356      120        0                           
+   Other mmap       60        4        4        0                           
+   EGL mtrack    29808    29808        0        0                           
+    GL mtrack     3000     3000        0        0                           
+      Unknown    44350    44332        0        1                           
+        TOTAL   185909   173940     7040       69    81414    75176     6237
+ 
+ App Summary
+                       Pss(KB)
+                        ------
+           Java Heap:     8600
+         Native Heap:    64176
+                Code:     9256
+               Stack:       92
+            Graphics:    33700
+       Private Other:    65156
+              System:     4929
+ 
+               TOTAL:   185909       TOTAL SWAP PSS:       69
+ 
+ Objects
+               Views:       27         ViewRootImpl:        1
+         AppContexts:        5           Activities:        1
+              Assets:        7        AssetManagers:        0
+       Local Binders:       14        Proxy Binders:       31
+       Parcel memory:        4         Parcel count:       20
+    Death Recipients:        1      OpenSSL Sockets:        0
+            WebViews:        0
+ 
+ SQL
+         MEMORY_USED:        0
+  PAGECACHE_OVERFLOW:        0          MALLOC_SIZE:        0
+```
+
+
+- [Virtual Memory and Linux](https://events.linuxfoundation.org/sites/events/files/slides/elc_2016_mem.pdf)
+- [Android进程的内存管理分析](https://blog.csdn.net/gemmem/article/details/8920039)
+- [Android系统匿名共享内存（Anonymous Shared Memory）C++调用接口分析](https://blog.csdn.net/luoshengyang/article/details/6939890)
+- [Android系统匿名共享内存Ashmem（Anonymous Shared Memory）驱动程序源代码分析](https://blog.csdn.net/luoshengyang/article/details/6664554)
+- [Android系统匿名共享内存Ashmem（Anonymous Shared Memory）简要介绍和学习计划](https://blog.csdn.net/luoshengyang/article/details/6651971)
+- [虚拟内存那点事](https://sylvanassun.github.io/2017/10/29/2017-10-29-virtual_memory/ )
 
 ---
 
