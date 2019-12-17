@@ -60,6 +60,10 @@ Android学习笔记
         - [3. ExoPlayer源码分析之prepare方法][219]
         - [4. ExoPlayer源码分析之prepare序列图][220]
         - [5. ExoPlayer源码分析之PlayerView][221]
+    - [MP4格式详解][225]
+    - [SurfaceView与TextureView][226]
+    - [关键帧][227]
+    
 -  [图片加载][45]
     - [Glide简介(上)][25]
     - [Glide简介(下)][26]
@@ -479,6 +483,9 @@ Android学习笔记
 [222]: https://github.com/CharonChui/AndroidNote/blob/master/BasicKnowledge/%E5%8F%8D%E7%BC%96%E8%AF%91.md "反编译"
 [223]: https://github.com/CharonChui/AndroidNote/blob/master/Tools%26Library/Icon%E5%88%B6%E4%BD%9C.md "Icon制作"
 [224]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/%E6%B5%81%E5%AA%92%E4%BD%93%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE.md "流媒体通信协议"
+[225]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/MP4%E6%A0%BC%E5%BC%8F%E8%AF%A6%E8%A7%A3.md "MP4格式详解"
+[226]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/SurfaceView%E4%B8%8ETextureView.md "SurfaceView与TextureView"
+[227]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/%E5%85%B3%E9%94%AE%E5%B8%A7.md "关键帧"
 
 
 Developed By
