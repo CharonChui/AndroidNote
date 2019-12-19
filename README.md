@@ -50,7 +50,7 @@ Android学习笔记
     - [视频解码之软解与硬解][20]
     - [音视频基础知识][21]
     - [Android WebRTC简介][22]
-    - [Android音视频开发知识(未完)][23]
+    - [DNS及HTTPDNS][23]
     - [DLNA简介][24]
     - [AudioTrack简介][214]
     - [流媒体通信协议][224]
@@ -63,6 +63,9 @@ Android学习笔记
     - [MP4格式详解][225]
     - [SurfaceView与TextureView][226]
     - [关键帧][227]
+    - [CDN及PCDN][228]
+    - [P2P][229]
+    - [播放器性能优化][230]
     
 -  [图片加载][45]
     - [Glide简介(上)][25]
@@ -278,7 +281,7 @@ Android学习笔记
 [20]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/%E8%A7%86%E9%A2%91%E8%A7%A3%E7%A0%81%E4%B9%8B%E8%BD%AF%E8%A7%A3%E4%B8%8E%E7%A1%AC%E8%A7%A3.md   "视频解码之软解与硬解"
 [21]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.md   "音视频基础知识"
 [22]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/Android%20WebRTC%E7%AE%80%E4%BB%8B.md   "Android WebRTC简介"
-[23]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/Android%E9%9F%B3%E8%A7%86%E9%A2%91%E5%BC%80%E5%8F%91.md   "Android音视频开发知识"
+[23]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/DNS%E5%8F%8AHTTPDNS.md   "DNS及HTTPDNS"
 [24]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/DLNA%E7%AE%80%E4%BB%8B.md   "DLNA简介"
 [25]: https://github.com/CharonChui/AndroidNote/blob/master/ImageLoaderLibrary/Glide%E7%AE%80%E4%BB%8B(%E4%B8%8A).md   "Glide简介(上)"
 [26]: https://github.com/CharonChui/AndroidNote/blob/master/ImageLoaderLibrary/Glide%E7%AE%80%E4%BB%8B(%E4%B8%8B).md   "Glide简介(下)"
@@ -486,6 +489,11 @@ Android学习笔记
 [225]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/MP4%E6%A0%BC%E5%BC%8F%E8%AF%A6%E8%A7%A3.md "MP4格式详解"
 [226]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/SurfaceView%E4%B8%8ETextureView.md "SurfaceView与TextureView"
 [227]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/%E5%85%B3%E9%94%AE%E5%B8%A7.md "关键帧"
+[228]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/CDN%E5%8F%8APCDN.md "CDN及PCDN"
+[229]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/P2P.md "P2P"
+[230]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/%E6%92%AD%E6%94%BE%E5%99%A8%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96.md "播放器性能优化"
+
+
 
 
 Developed By
