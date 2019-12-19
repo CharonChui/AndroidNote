@@ -22,30 +22,33 @@ SurfaceView与TextureView
 ### `SurfaceView`简介      
 
 - 简单的说`SurfaceView`就是一个有`Surface`的`View`里面内嵌了一个专门用于绘制的`Surface`,`SurfaceView`控制这个`Surface`的格式和尺寸以及绘制位置。
-    ```java
-    if (mWindow == null) {  ß
-        mWindow = new MyWindow(this);  
-        mLayout.type = mWindowType;  
-        mLayout.gravity = Gravity.LEFT|Gravity.TOP;  
-        mSession.addWithoutInputChannel(mWindow, mWindow.mSeq, mLayout,  
-        mVisible ? VISIBLE : GONE, mContentInsets);  
-    }  
-    ```
-    很明显，每个`SurfaceView`创建的时候都会创建一个`MyWindow`，`new MyWindow(this)`中的`this`正是`SurfaceView`自身，因此将`SurfaceView`和`window`绑定在一起，而前面提到过每个`window`对应一个`Surface`，
-    所以`SurfaceView`也就内嵌了一个自己的`Surface`，可以认为`SurfaceView`是来控制`Surface`的位置和尺寸。传统`View`及其派生类的更新只能在`UI`线程，然而`UI`线程还同时处理其他交互逻辑，
-    这就无法保证`view`更新的速度和帧率了，而`SurfaceView`可以用独立的线程来进行绘制，因此可以提供更高的帧率，例如游戏，摄像头取景等场景就比较适合用`SurfaceView`来实现。
+
+SurfaceView就是在Window上挖一个洞，它就是显示在这个洞里，其他的View是显示在Window上，所以View可以显式在 SurfaceView之上，你也可以添加一些层在SurfaceView之上。
+
+```java
+if (mWindow == null) {  ß
+    mWindow = new MyWindow(this);  
+    mLayout.type = mWindowType;  
+    mLayout.gravity = Gravity.LEFT|Gravity.TOP;  
+    mSession.addWithoutInputChannel(mWindow, mWindow.mSeq, mLayout,  
+    mVisible ? VISIBLE : GONE, mContentInsets);  
+}  
+```
+很明显，每个`SurfaceView`创建的时候都会创建一个`MyWindow`，`new MyWindow(this)`中的`this`正是`SurfaceView`自身，因此将`SurfaceView`和`window`绑定在一起，而前面提到过每个`window`对应一个`Surface`，
+所以`SurfaceView`也就内嵌了一个自己的`Surface`，可以认为`SurfaceView`是来控制`Surface`的位置和尺寸。传统`View`及其派生类的更新只能在`UI`线程，然而`UI`线程还同时处理其他交互逻辑，
+这就无法保证`view`更新的速度和帧率了，而`SurfaceView`可以用独立的线程来进行绘制，因此可以提供更高的帧率，例如游戏，摄像头取景等场景就比较适合用`SurfaceView`来实现。
 
 - `Surface`是纵深排序`(Z-ordered)`的，这表明它总在自己所在窗口的后面。
 - `Surfaceview`提供了一个可见区域，只有在这个可见区域内的`Surface`部分内容才可见，可见区域外的部分不可见，所以可以认为**`SurfaceView`就是展示`Surface`中数据的地方**,`Surface`就是管理数据的地方，
     `SurfaceView`就是展示数据的地方，只有通过`SurfaceView`才能展现`Surface`中的数据。           
-    
     ![image](https://github.com/CharonChui/Pictures/blob/master/SurfaceView.png?raw=true)   
 
 
 - `Surface`的排版显示受到视图层级关系的影响，它的兄弟视图结点会在顶端显示。这意味者`Surface`的内容会被它的兄弟视图遮挡，这一特性可以用来放置遮盖物`(overlays)`(例如，文本和按钮等控件)。
     注意，如果`Surface`上面有透明控件，那么它的每次变化都会引起框架重新计算它和顶层控件的透明效果，这会影响性能。`surfaceview`变得可见时，`surface`被创建；`surfaceview`隐藏前，`surface`被销毁。
     这样能节省资源。如果你要查看`surface`被创建和销毁的时机，可以重载`surfaceCreated(SurfaceHolder)`和`surfaceDestroyed(SurfaceHolder)`。
-    **`SurfaceView`的核心在于提供了两个线程：`UI`线程和渲染线程**,两个线程通过“双缓冲”机制来达到高效的界面适时更新。而这个双缓冲可以理解为，SurfaceView在更新视图时用到了两张Canvas，一张frontCanvas和一张backCanvas。每次实际显示的是frontCanvas，backCanvas存储的是上一次更改前的视图，当使用lockCanvas（）获取画布时，得到的实际上是backCanvas而不是正在显示的frontCanvas，之后你在获取到的backCanvas上绘制新视图，再unlockCanvasAndPost（canvas）此视图，那么上传的这张canvas将替换原来的frontCanvas作为新的frontCanvas，原来的frontCanvas将切换到后台作为backCanvas。例如，如果你已经先后两次绘制了视图A和B，那么你再调用lockCanvas（）获取视图，获得的将是A而不是正在显示的B，之后你将重绘的C视图上传，那么C将取代B作为新的frontCanvas显示在SurfaceView上，原来的B则转换为backCanvas。
+    **`SurfaceView`的核心在于提供了两个线程：`UI`线程和渲染线程**,两个线程通过“双缓冲”机制来达到高效的界面适时更新。而这个双缓冲可以理解为，SurfaceView在更新视图时用到了两张Canvas，一张frontCanvas和一张backCanvas。每次实际显示的是frontCanvas，backCanvas存储的是上一次更改前的视图，当使用lockCanvas（）获取画布时，得到的实际上是backCanvas而不是正在显示的frontCanvas，之后你在获取到的backCanvas上绘制新视图，再unlockCanvasAndPost（canvas）此视图，那么上传的这张canvas将替换原来的frontCanvas作为新的frontCanvas，原来的frontCanvas将切换到后台作为backCanvas。例如，如果你已经先后两次绘制了视图A和B，那么你再调用lockCanvas（）获取视图，获得的将是A而不是正在显示的B，之后你将重绘的C视图上传，那么C将取代B作为新的frontCanvas显示在SurfaceView上，原来的B则转换为backCanvas。()
+    不用画布，直接在窗口上进行绘图叫做无缓冲绘图。用了一个画布，将所有内容都先画到画布上，在整体绘制到窗口上，就该叫做单缓冲绘图，那个画布就是一个缓冲区。用了两个画布，一个进行临时的绘图，一个进行最终的绘图，这样就叫做双缓冲。)
 
 
 SurfaceView的优缺点:     
