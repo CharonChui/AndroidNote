@@ -112,7 +112,7 @@ CDN的工作原理就是将您源站的资源缓存到位于全国各地的CDN�
 下面分别是不用CDN以及使用CDN时的访问流程:    
 ![image](https://github.com/CharonChui/Pictures/blob/master/dns_no_cdn.png?raw=true)
 
-![image](https://github.com/CharonChui/Pictures/blob/master/dns_cdn.png.png?raw=true)
+![image](https://github.com/CharonChui/Pictures/blob/master/dns_cdn.png?raw=true)
 
 上面图中在使用CDN时，server-isp-DNS服务器不是直接把域名做A记录映射到源站，而是CNAME记录到调度中心，
 调度中心根据用户请求的来源，选择一个最近的CDN节点，主要的流程如下:     
