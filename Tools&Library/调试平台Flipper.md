@@ -1,4 +1,4 @@
-调试平台Flippe
+调试平台Flipper
 
 ===
 
