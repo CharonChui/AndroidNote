@@ -68,8 +68,8 @@ Android学习笔记
     - [播放器性能优化][230]
     - [OpenGL][231]
         - [1.OpenGL简介][232]
-        - [][]
-        - [][]
+        - [2.GLSurfaceView简介][233]
+        - [3.GLSurfaceView源码解析][234]
         - [][]
         - [][]
         - [][]
@@ -506,7 +506,9 @@ Android学习笔记
 [229]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/P2P.md "P2P"
 [230]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/%E6%92%AD%E6%94%BE%E5%99%A8%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96.md "播放器性能优化"
 [231]: hhttps://github.com/CharonChui/AndroidNote/tree/master/VideoDevelopment/OpenGL  "OpenGL"
-[232]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/OpenGL/1.OpenGL%E7%AE%80%E4%BB%8B.md "1.OpenGL简介.md"
+[232]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/OpenGL/1.OpenGL%E7%AE%80%E4%BB%8B.md "1.OpenGL简介"
+[233]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/OpenGL/2.GLSurfaceView%E7%AE%80%E4%BB%8B.md "2.GLSurfaceView简介""
+[234]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/OpenGL/3.GLSurfaceView%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90.md "3.GLSurfaceView源码解析"
 
 
 
