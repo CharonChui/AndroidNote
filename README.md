@@ -66,7 +66,20 @@ Android学习笔记
     - [CDN及PCDN][228]
     - [P2P][229]
     - [播放器性能优化][230]
-    
+    - [OpenGL][231]
+        - [1.OpenGL简介][232]
+        - [][]
+        - [][]
+        - [][]
+        - [][]
+        - [][]
+        - [][]
+        - [][]
+        - [][]
+        - [][]
+        - [][]
+    - [弹幕][]
+        - [][]
 -  [图片加载][45]
     - [Glide简介(上)][25]
     - [Glide简介(下)][26]
@@ -492,6 +505,8 @@ Android学习笔记
 [228]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/CDN%E5%8F%8APCDN.md "CDN及PCDN"
 [229]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/P2P.md "P2P"
 [230]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/%E6%92%AD%E6%94%BE%E5%99%A8%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96.md "播放器性能优化"
+[231]: hhttps://github.com/CharonChui/AndroidNote/tree/master/VideoDevelopment/OpenGL  "OpenGL"
+[232]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/OpenGL/1.OpenGL%E7%AE%80%E4%BB%8B.md "1.OpenGL简介.md"
 
 
 
