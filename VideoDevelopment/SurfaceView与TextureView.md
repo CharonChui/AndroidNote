@@ -8,7 +8,7 @@ SurfaceView与TextureView
 
 ### `Surface`简介
 
-- `Surface`就是“表面”的意思。在`SDK`的文档中，对`Surface`的描述是这样的：“`Handle onto a raw buffer that is being managed by the screen compositor`”，
+- `Surface`就是“表面”的意思，可以简单理解为内存中的一段绘图缓冲区。在`SDK`的文档中，对`Surface`的描述是这样的：“`Handle onto a raw buffer that is being managed by the screen compositor`”，
     翻译成中文就是“由屏幕显示内容合成器`(screen compositor)`所管理的原生缓冲器的句柄”，   这句话包括下面两个意思:     
 
     - 通过`Surface`（因为`Surface`是句柄）就可以获得原生缓冲器以及其中的内容。就像在`C`语言中，可以通过一个文件的句柄，就可以获得文件的内容一样；
