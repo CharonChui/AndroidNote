@@ -515,7 +515,7 @@ Android学习笔记
 [237]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/OpenGL/6.OpenGL%20ES%E7%BB%98%E5%88%B6%E7%9F%A9%E5%BD%A2%E5%8F%8A%E5%9C%86%E5%BD%A2.md "6.OpenGL ES绘制矩形及圆形"
 [238]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/OpenGL/7.OpenGL%20ES%E7%9D%80%E8%89%B2%E5%99%A8%E8%AF%AD%E8%A8%80GLSL.md "7.OpenGL ES着色器语言GLSL"
 [239]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/OpenGL/8.GLES%E7%B1%BB%E5%8F%8AMatrix%E7%B1%BB.md "8.GLES类及Matrix类"
-[240]:  "https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/OpenGL/9.OpenGL%20ES%E7%BA%B9%E7%90%86.md" "9.OpenGL ES纹理"
+[240]:  "https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/OpenGL/9.OpenGL%20ES%E7%BA%B9%E7%90%86.md "9.OpenGL ES纹理"
 [241]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/OpenGL/10.GLSurfaceView%2BMediaPlayer%E6%92%AD%E6%94%BE%E8%A7%86%E9%A2%91.md " 10.GLSurfaceView+MediaPlayer播放视频"
 [242]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/OpenGL/11.OpenGL%20ES%E6%BB%A4%E9%95%9C.md "11.OpenGL ES滤镜"
 [243]: https://github.com/CharonChui/AndroidNote/tree/master/VideoDevelopment/Danmaku "弹幕"
