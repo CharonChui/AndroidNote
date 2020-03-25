@@ -259,6 +259,14 @@ git push  // 把所有文件从本地仓库推送进远程仓库
     执行`git reset --hard origin/master`还是`git reset --hard`命令，只不过这次多了一个参数`origin/master`，这代表远程仓库，既然本地仓库已经有了
     你提交的脏代码，那么就从远程仓库中把代码恢复把。   
 
+    但是上面这样会导致你之前修改的代码都没有了，如果我只是想撤回提交，还想要我之前修改的东西重新回到本地仓库呢？ 
+    `git reset --soft HEAD^`，这样就成功的撤销了你的commit。注意，仅仅是撤回commit操作，您写的代码仍然保留。
+
+    至于这几个参数：
+    1. --mixed：不删除工作空间改动代码，撤销commit，并且撤销git add . 操作这个为默认参数,git reset --mixed HEAD^ 和 git reset HEAD^ 效果是一样的。
+    2. --soft：不删除工作空间改动代码，撤销commit，不撤销git add . 
+    3. --hard：删除工作空间改动代码，撤销commit，撤销git add . 注意完成这个操作后，就恢复到了上一次的commit状态。
+
 - 已推送到远程仓库  
     如果你执行`git add .`后又`commit`又执行了`git push`操作了，这时候你的代码已经进入到了远程仓库中，如果你发现你提交的代码又问题想恢复的话，那你只能先把本地仓库的
     代码恢复，然后再强制执行`git push`仓做，`push`到远程仓库就可以了。    
