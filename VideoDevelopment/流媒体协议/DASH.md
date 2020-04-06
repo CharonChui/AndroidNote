@@ -60,12 +60,6 @@ Segments可以包含任何媒体数据，关于容器，官方提供了两种建
 
   SAP：Stream Acess Point，可以简单理解为I帧，每个Segment的第一个帧都是SAP，因此Seek时可直接Seek到某一个Segment的起始位置，利用Init Segment+Seek到的某个Segment的数据，在解封装后可实现完美解码。一般来说，同一个Adaptation set中的多个Representation是Segment Align的（当Adaptation set的属性@segmentAlignment不为false时），因此，当从Representation A切换到Representation B时，如果当前Representation A的第N个Segment已经下载完成，切换时直接下载Representation B的第N+1个Segment即可。
 
-
-    
-    
-
-![dash_compare2.png](https://raw.githubusercontent.com/CharonChui/Pictures/master/dash_compare2.png)
-
 码率自适应切换算法
 
 - 基于带宽的码率自适应切换算法

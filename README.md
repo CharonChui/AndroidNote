@@ -53,7 +53,10 @@ Android学习笔记
     - [DNS及HTTPDNS][23]
     - [DLNA简介][24]
     - [AudioTrack简介][214]
-    - [流媒体通信协议][224]
+    - [流媒体协议][224]
+        - [流媒体通信协议][246]
+        - [HLS][247]
+        - [DASH][248]
     - [ExoPlayer][216]
         - [1. ExoPlayer简介.md][217]
         - [2. ExoPlayer MediaSource简介][218]
@@ -499,7 +502,7 @@ Android学习笔记
 [221]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/ExoPlayer/5.%20ExoPlayer%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E4%B9%8BPlayerView.md "5. ExoPlayer源码分析之PlayerView"
 [222]: https://github.com/CharonChui/AndroidNote/blob/master/BasicKnowledge/%E5%8F%8D%E7%BC%96%E8%AF%91.md "反编译"
 [223]: https://github.com/CharonChui/AndroidNote/blob/master/Tools%26Library/Icon%E5%88%B6%E4%BD%9C.md "Icon制作"
-[224]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/%E6%B5%81%E5%AA%92%E4%BD%93%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE.md "流媒体通信协议"
+[224]: https://github.com/CharonChui/AndroidNote/tree/master/VideoDevelopment/%E6%B5%81%E5%AA%92%E4%BD%93%E5%8D%8F%E8%AE%AE "流媒体协议"
 [225]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/MP4%E6%A0%BC%E5%BC%8F%E8%AF%A6%E8%A7%A3.md "MP4格式详解"
 [226]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/SurfaceView%E4%B8%8ETextureView.md "SurfaceView与TextureView"
 [227]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/%E5%85%B3%E9%94%AE%E5%B8%A7.md "关键帧"
@@ -521,6 +524,9 @@ Android学习笔记
 [243]: https://github.com/CharonChui/AndroidNote/tree/master/VideoDevelopment/Danmaku "弹幕"
 [244]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/Danmaku/Android%E5%BC%B9%E5%B9%95%E5%AE%9E%E7%8E%B0.md "Android弹幕实现"
 [245]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/MediaExtractor%E3%80%81MediaCodec%E3%80%81MediaMuxer.md "MediaExtractor、MediaCodec、MediaMuxer"
+[246]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/%E6%B5%81%E5%AA%92%E4%BD%93%E5%8D%8F%E8%AE%AE/%E6%B5%81%E5%AA%92%E4%BD%93%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE.md "流媒体通信协议"
+[247]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/%E6%B5%81%E5%AA%92%E4%BD%93%E5%8D%8F%E8%AE%AE/HLS.md "HLS"
+[248]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/%E6%B5%81%E5%AA%92%E4%BD%93%E5%8D%8F%E8%AE%AE/DASH.md "DASH"
 
 
 
