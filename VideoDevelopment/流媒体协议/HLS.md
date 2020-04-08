@@ -4,8 +4,8 @@
 
 HLS协议规定:  
 
-- 视频的封装格式是TS
-- 视频的编码格式为H264，音频编码格式为MP3、AAC或者AC-3
+- 视频的封装格式是ts(16年发布也支持了fMP4)
+- 视频的编码格式为H264、H265、VP9(17年支持H265、VP9)，音频编码格式为MP3、AAC或者AC-3
 - 除了TS视频文件本身，还定义了用来控制播放的m3u8文件(文本文件)
 
 HLS协议由三部分组成:  
@@ -41,7 +41,7 @@ TS(Transport Stream)，全程为MPEG2-TS。它的特点就是要求从视频流�
 
 ### 多码率适配流(Master Playlist)
 
-<img src="https://raw.githubusercontent.com/CharonChui/Pictures/master/indexing_2x.png" style="zoom:70%;" />
+<img src="https://raw.githubusercontent.com/CharonChui/Pictures/master/adaptive_bitratestreaming_HLS.jpg" style="zoom:70%;" />
 
 客户端播放HLS视频流的逻辑其实非常简单，先下载一级Index file，它里面记录了二级索引文件（Alternate-A、Alternate-B、Alternate-C）的地址，然后客户端再去下载二级索引文件，二级索引文件中又记录了TS文件的下载地址，这样客户端就可以按顺序下载TS视频文件并连续播放。
 

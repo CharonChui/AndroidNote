@@ -24,6 +24,32 @@ DASH的整个流程:
 
 ![image-20200406164238038](https://raw.githubusercontent.com/CharonChui/Pictures/master/mpd_hierarchical_data.png)
 
+
+
+```xml
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<MPD id="0564e940-122b-42bb-9d56-98f3def67247" profiles="urn:mpeg:dash:profile:isoff-main:2011" type="static" availabilityStartTime="2016-01-14T09:30:35.000Z" publishTime="2016-01-14T09:31:33.000Z" mediaPresentationDuration="P0Y0M0DT0H2M17.000S" minBufferTime="P0Y0M0DT0H0M1.000S" bitmovin:version="1.6.0" xmlns:ns2="http://www.w3.org/1999/xlink" xmlns="urn:mpeg:dash:schema:mpd:2011" xmlns:bitmovin="http://www.bitmovin.net/mpd/2015">
+    <Period>
+        <AdaptationSet mimeType="video/mp4" codecs="avc1.42c00d">
+            <SegmentTemplate media="../video/$RepresentationID$/dash/segment_$Number$.m4s" initialization="../video/$RepresentationID$/dash/init.mp4" duration="120119" startNumber="0" timescale="30000"/>
+            <Representation id="1920_9000000" bandwidth="9000000" width="3840" height="1920" frameRate="30"/>
+            <Representation id="1080_5000000" bandwidth="5000000" width="2160" height="1080" frameRate="30"/>
+            <Representation id="720_3000000" bandwidth="3000000" width="1440" height="720" frameRate="30"/>
+            <Representation id="540_1500000" bandwidth="1500000" width="1080" height="540" frameRate="30"/>
+            <Representation id="360_1000000" bandwidth="1000000" width="720" height="360" frameRate="30"/>
+        </AdaptationSet>
+        <AdaptationSet lang="en" mimeType="audio/mp4" codecs="mp4a.40.2" bitmovin:label="english stereo">
+            <AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
+            <SegmentTemplate media="../audio/$RepresentationID$/dash/segment_$Number$.m4s" initialization="../audio/$RepresentationID$/dash/init.mp4" duration="191472" startNumber="0" timescale="48000"/>
+            <Representation id="1_stereo_128000" bandwidth="128000" audioSamplingRate="48000"/>
+        </AdaptationSet>
+    </Period>
+</MPD>
+
+```
+
+
+
 ### MPD
 
 DASH采用3GPP AHS中定义的MPD(Media Presentation Description)作为媒体文件的描述文件（manifest），作用类似HLS的m3u8文件。MPD文件以XML格式组织，用于描述segment的信息，比如时间、url、视频分辨率、码率等。   
@@ -76,14 +102,6 @@ Segments可以包含任何媒体数据，关于容器，官方提供了两种建
 - HDS不能保证流程的播放
 
 - DASH有足够的竞争力，也具有巨大的提升空间。
-
-
-
-## DASH地址
-
-http://ftp.itec.aau.at/datasets/mmsys12/BigBuckBunny/MPDs/BigBuckBunnyNonSeg_2s_isoffmain_DIS_23009_1_v_2_1c2_2011_08_30.mpd
-
-http://www-itec.uni-klu.ac.at/ftp/datasets/mmsys12/BigBuckBunny/bunny_2s/bunny_2s_50kbit/bunny_50kbit_dashNonSeg.mp4
 
 
 
@@ -145,6 +163,53 @@ fMP4（fragmented MP4），可以简单理解为分片化的MP4，是DASH采用�
 
 DASH和HLS之间的另一个关键区别是它支持DRM。可是，在DASH中不存在一个单一通用的DRM解决方案。例如，Google的Chrome支持Widevine，而Microsoft的Internet  Explorer支持PlayReady。然而，通过使用MPEG-CENC（MPEG通用加密）结合加密媒体扩展（EME），视频流内容可以仅被加密一次。HLS支持AES-128加密，以及苹果自己的DRM，Fairplay。
 
+
+
+### 测试流
+
+- HEVC HLS with fMP4: [http://bitmovin-a.akamaihd.net/content/dataset/multi-codec/hevc/stream_fmp4.m3u8](https://bitmovin-a.akamaihd.net/content/dataset/multi-codec/hevc/stream_fmp4.m3u8)
+
+    
+
+- HEVC HLS with TS (not supported by Apple): [http://bitmovin-a.akamaihd.net/content/dataset/multi-codec/hevc/stream_ts.m3u8](https://bitmovin-a.akamaihd.net/content/dataset/multi-codec/hevc/stream_ts.m3u8)
+
+    [https://bitmovin-a.akamaihd.net/content/playhouse-vr/m3u8s/105560.m3u8](https://bitmovin-a.akamaihd.net/content/playhouse-vr/m3u8s/105560.m3u8)
+
+- HEVC MPEG-DASH: [http://bitmovin-a.akamaihd.net/content/dataset/multi-codec/hevc/stream.mpd](https://bitmovin-a.akamaihd.net/content/dataset/multi-codec/hevc/stream.mpd)
+
+- Multi-Codec MPEG-DASH (AVC/H.264, HEVC/H.265, VP9): http://bitmovin-a.akamaihd.net/content/dataset/multi-codec/stream.mpd
+
+    https://bitmovin-a.akamaihd.net/content/playhouse-vr/mpds/105560.mpd
+
+- VP9 MPEG-DASH: http://bitmovin-a.akamaihd.net/content/dataset/multi-codec/stream_vp9.mpd
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+在线测试播放器: 
+
+http://demo.theoplayer.com/test-your-stream-with-statistics
 
 
 
