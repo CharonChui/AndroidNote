@@ -1,6 +1,6 @@
 # 简介
 
-除了前面将的Apple的HLS，还有Adobe HTTP Dynamic Streaming (HDS)、Microsoft Smooth Streaming (MSS)。他们各家的协议原理大致相同，但是格式又不一样，也无法兼容，所以Moving Picture Expert Group (MPEG) 就把大家叫到了一起，呼吁大家一起来制定一个标准的，然后就有了[MPEG-DASH](https://www.encoding.com/mpeg-dash/),它的主要目标是形成IP网络承载单一格式的流媒体并提供高效与高质量服务的统一方案，解决多制式传输方案(HTTP Live  Streaming, Microsoft Smooth Streaming, HTTP Dynamic  Streaming)并存格局下的存储与服务能力浪费、运营高成本与复杂度、系统间互操作弱等问题。
+除了前面讲的Apple的HLS，还有Adobe HTTP Dynamic Streaming (HDS)、Microsoft Smooth Streaming (MSS)。他们各家的协议原理大致相同，但是格式又不一样，也无法兼容，所以Moving Picture Expert Group (MPEG) 就把大家叫到了一起，呼吁大家一起来制定一个标准的，然后就有了[MPEG-DASH](https://www.encoding.com/mpeg-dash/),它的主要目标是形成IP网络承载单一格式的流媒体并提供高效与高质量服务的统一方案，解决多制式传输方案(HTTP Live  Streaming, Microsoft Smooth Streaming, HTTP Dynamic  Streaming)并存格局下的存储与服务能力浪费、运营高成本与复杂度、系统间互操作弱等问题。
 
 [DASH(MPEG-DASH)](https://mpeg.chiariglione.org/standards/mpeg-dash/)全称为Dynamic Adaptive Streaming over HTTP.是由MPEG和ISO批准的独立于供应商的国际标准，它是一种基于HTTP的使用TCP传输协议的流媒体传输技术。MPEG-DASH是一种自适应比特率流技术，可根据实时网络状况实现动态自适应下载。和HLS, HDS技术类似， 都是把视频分割成一小段一小段，  通过HTTP协议进行传输，客户端得到之后进行播放；不同的是MPEG-DASH支持MPEG-2 TS、MP4(最新的HLS也支持了MP4)等多种格式,  可以将视频按照多种编码切割, 下载下来的媒体格式既可以是ts文件也可以是mp4文件，MPEG—DASH技术与编解码器无关，可使用H.265，H.264，VP9等任何编解码器进行编码。
 
@@ -105,7 +105,29 @@ Segments可以包含任何媒体数据，关于容器，官方提供了两种建
 
 
 
+## 为什么使用DASH
+
+- DASH支持多种编码，支持H.265、H.264、VP9等。
+
+- DASH支持MultiDRM，支持PlayReady、Widewine，采用通用加密技术，支持终端自带DRM，可以大幅度降低DRM投资成本。
+
+- DASH支持多种文件封装，支持MPEG-4、MPEG-2 TS。
+
+- DASH支持多种CDN对接，采用相同的封装描述对接多厂家CDN。
+
+- DASH支持直播、点播、录制等丰富的视频特性。
+
+- DASH支持动态码率适配Adaptive Bitrate (ABR) ，支持多码率平滑切换。
+
+- DASH支持缩略型描述以支持快速启动。
+
+    
+
 ## fMP4
+
+[MP4和fMP4的详细介绍](https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/MP4%E6%A0%BC%E5%BC%8F%E8%AF%A6%E8%A7%A3.md)
+
+
 
 fMP4（fragmented MP4），可以简单理解为分片化的MP4，是DASH采用的媒体文件格式，文件扩展名通常为（.m4s或直接用.mp4）。     
 
@@ -114,6 +136,10 @@ fMP4（fragmented MP4），可以简单理解为分片化的MP4，是DASH采用�
 
 
 ### fMP4与ts的区别
+
+最主要的就是.ts文件不提供关于时长等信息，你无法在ts文件中去实现音视频的seek操作。fmp4不同于ts，它是提供了时长等信息，可以执行seek到指定位置。
+
+
 
 ### 媒体数据与元数据的分离
 
@@ -185,9 +211,11 @@ DASH和HLS之间的另一个关键区别是它支持DRM。可是，在DASH中不
 
 
 
+参考:  
 
+[HLS，MPEG-DASH - What is ABR?](http://telestreamblog.telestream.net/2017/05/what-is-abr/)
 
-
+[B站我们为什么使用DASH](https://www.bilibili.com/read/cv855111)
 
 
 

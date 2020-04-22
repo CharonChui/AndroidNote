@@ -276,8 +276,8 @@ Android学习笔记
     - [反编译][222]
     
 
-[1]: https://github.com/CharonChui/AndroidNote/blob/master/SourceAnalysis/%E8%87%AA%E5%AE%9A%E4%B9%89View%E8%AF%A6%E8%A7%A3.md        "自定义View详解" 
-[2]: https://github.com/CharonChui/AndroidNote/blob/master/SourceAnalysis/Activity%E7%95%8C%E9%9D%A2%E7%BB%98%E5%88%B6%E8%BF%87%E7%A8%8B%E8%AF%A6%E8%A7%A3.md  "Activity界面绘制过程详解" 
+[1]: https://github.com/CharonChui/AndroidNote/blob/master/SourceAnalysis/%E8%87%AA%E5%AE%9A%E4%B9%89View%E8%AF%A6%E8%A7%A3.md        "自定义View详解"
+[2]: https://github.com/CharonChui/AndroidNote/blob/master/SourceAnalysis/Activity%E7%95%8C%E9%9D%A2%E7%BB%98%E5%88%B6%E8%BF%87%E7%A8%8B%E8%AF%A6%E8%A7%A3.md  "Activity界面绘制过程详解"
 [3]: https://github.com/CharonChui/AndroidNote/blob/master/SourceAnalysis/Activity%E5%90%AF%E5%8A%A8%E8%BF%87%E7%A8%8B.md    "Activity启动过程"
 [4]: https://github.com/CharonChui/AndroidNote/blob/master/SourceAnalysis/Android%20Touch%E4%BA%8B%E4%BB%B6%E5%88%86%E5%8F%91%E8%AF%A6%E8%A7%A3.md    "Android Touch事件分发详解"
 [5]: https://github.com/CharonChui/AndroidNote/blob/master/SourceAnalysis/AsyncTask%E8%AF%A6%E8%A7%A3.md   "AsyncTask详解"
@@ -518,7 +518,8 @@ Android学习笔记
 [237]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/OpenGL/6.OpenGL%20ES%E7%BB%98%E5%88%B6%E7%9F%A9%E5%BD%A2%E5%8F%8A%E5%9C%86%E5%BD%A2.md "6.OpenGL ES绘制矩形及圆形"
 [238]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/OpenGL/7.OpenGL%20ES%E7%9D%80%E8%89%B2%E5%99%A8%E8%AF%AD%E8%A8%80GLSL.md "7.OpenGL ES着色器语言GLSL"
 [239]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/OpenGL/8.GLES%E7%B1%BB%E5%8F%8AMatrix%E7%B1%BB.md "8.GLES类及Matrix类"
-[240]:  "https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/OpenGL/9.OpenGL%20ES%E7%BA%B9%E7%90%86.md "9.OpenGL ES纹理"
+
+[240]:  https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/OpenGL/9.OpenGL%20ES%E7%BA%B9%E7%90%86.md "9.OpenGL ES纹理"
 [241]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/OpenGL/10.GLSurfaceView%2BMediaPlayer%E6%92%AD%E6%94%BE%E8%A7%86%E9%A2%91.md " 10.GLSurfaceView+MediaPlayer播放视频"
 [242]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/OpenGL/11.OpenGL%20ES%E6%BB%A4%E9%95%9C.md "11.OpenGL ES滤镜"
 [243]: https://github.com/CharonChui/AndroidNote/tree/master/VideoDevelopment/Danmaku "弹幕"
@@ -541,13 +542,13 @@ License
 ===
 
     Copyright (C) 2013 Charon Chui <charon.chui@gmail.com>
-
+    
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
     You may obtain a copy of the License at
-
+    
        http://www.apache.org/licenses/LICENSE-2.0
-
+    
     Unless required by applicable law or agreed to in writing, software
     distributed under the License is distributed on an "AS IS" BASIS,
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.

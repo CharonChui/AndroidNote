@@ -82,14 +82,20 @@ SurfaceTexture.OnFrameAvailableListener用于通知TextureView内容流有新图
 SurfaceTexture可以用作非直接输出的内容流，这样就提供二次处理的机会。与SurfaceView直接输出相比，这样会有若干帧的延迟。同时，由于它本身管理BufferQueue，因此内存消耗也会稍微大一些。
 TextureView是一个可以把内容流作为外部纹理输出在上面的View, 它本身需要是一个硬件加速层。
 
-
 ### SurfaceTexture
 
-SurfaceTexture是Surface和OpenGL ES(GLES)纹理的组合。SurfaceTexture用于提供输出到GLES 纹理的Surface。
+SurfaceTexture是Surface和OpenGL ES(GLES)纹理的组合。SurfaceTexture用于提供输出到GLES 纹理的Surface。SurfaceTexture是从Android 3.0开始加入，与SurfaceView不同的是，它对图像流的处理并不直接显示，而是转为GL外部纹理，因此用于图像流数据的二次处理。比如Camera的预览数据，变成纹理后可以交给GLSurfaceView直接显示，也可以通过SurfaceTexture交给TextureView作为View heirachy中的一个硬件加速层来显示。首先，SurfaceTexture从图像流(来自Camera预览、视频解码、GL绘制场景等)中获得帧数据，当调用updateTexImage()时，根据内容流中最近的图像更新SurfaceTexture对应的GL纹理对象。
+
+
 
 SurfaceTexture 包含一个应用是其使用方的BufferQueue。当生产方将新的缓冲区排入队列时，onFrameAvailable() 回调会通知应用。然后，应用调用updateTexImage()，这会释放先前占有的缓冲区，从队列中获取新缓冲区并执行EGL调用，从而使GLES可将此缓冲区作为外部纹理使用。
 
 ## SurfaceView vs TextureView
+
+
+
+简单地说，SurfaceView是一个有自己Surface的View。它的渲染可以放在单独线程而不是主线程中。其缺点是不能做变形和动画。SurfaceTexture可以用作非直接输出的内容流，这样就提供二次处理的机会。与SurfaceView直接输出相比，这样会有若干帧的延迟。同时，由于它本身管理BufferQueue，因此内存消耗也会稍微大一些。TextureView是一个可以把内容流作为外部纹理输出在上面的View。它本身需要是一个硬件加速层。事实上TextureView本身也包含了SurfaceTexture。它与SurfaceView+SurfaceTexture组合相比可以完成类似的功能（即把内容流上的图像转成纹理，然后输出）。区别在于TextureView是在View hierachy中做绘制，因此一般它是在主线程上做的（在Android 5.0引入渲染线程后，它是在渲染线程中做的）。而SurfaceView+SurfaceTexture在单独的Surface上做绘制，可以是用户提供的线程，而不是系统的主线程或是渲染线程。
+
 
 与 SurfaceView 相比，TextureView 具有更出色的 Alpha 版和旋转处理能力，但在视频上以分层方式合成界面元素时，SurfaceView 具有性能方面的优势。当客户端使用 SurfaceView 呈现内容时，SurfaceView 会为客户端提供单独的合成层。如果设备支持，SurfaceFlinger 会将单独的层合成为硬件叠加层。当客户端使用 TextureView 呈现内容时，界面工具包会使用 GPU 将 TextureView 的内容合成到 View 层次结构中。对内容进行的更新可能会导致其他 View 元素重绘，例如，如果其他 View 位于 TextureView 上方。View 呈现完成后，SurfaceFlinger 会合成应用界面层和所有其他层，以便每个可见像素合成两次。
 
@@ -113,7 +119,7 @@ SurfaceTexture 包含一个应用是其使用方的BufferQueue。当生产方将
 
 
 
-    
+​    
 ---
 
 - 邮箱 ：charon.chui@gmail.com  
