@@ -17,7 +17,7 @@ DLNA
 `DLNA`的骨干成员包括以Intel为首的芯片制造商；以HP为首的PC制造商，以Sony，Panasonic，Sharp，Samsung，LG 为首的家电、消费电子制造商；以CISCO，HUWEI，MOTOROLA，ERICSSON为首的电信设备/移动终端/标准商；一家独大的Microsoft软件/操作系统商等等。
 
 值得注意的有几点：  
-  
+
 1. DLNA这个东西基本Intel，Microsoft两个领域巨头在推，一个搞芯片，一个搞系统。AMD没出现在2011的promoter名单中；Google来年会不会掺一脚不好说。还有QUALCOMM也参加进来了，这几年的智能手机芯片处理器他家的也比较多，而且他家还有很多专利可以吃。
 
 2. 2011就剩HP一个大PC商了，其他大PC商如Acer,Asus都还不是promoter，他们肯定要抢着加入的。lenovo不仅从promotor名单中消失了，自然也不会是contributor了，和AMD一样。最开始时lenovo是很积极的，在DHWG的时候也是骨干成员，回来中国搞了一个“IGRS闪联”，退出的原因不知道和这个有没有关系。IGRS在很大程度上和DLNA是比较类似的，框架协议和UPnP也是比较像的。
@@ -122,11 +122,12 @@ DLNA架构分为如下图7个层次：
    - 从DMS/M-DMS至DMP/M-DMP，即使不立即播放。
    - 从一个DMS到另一个DMS，这时接收方DMS播放接收媒体内容，表现为一个DMP；也可以不立即播放，可能只是存储或者处理。    
           
+   
    传输 模式有三种：
    - 流传输。当DMR/DMP需要实时渲染接收媒体，媒体具时序性。
    - 交互传输。不包含时序的媒体，如图片传输。
-   - 后台传输。非实时的媒体传输，比如上传下载等。
-
+- 后台传输。非实时的媒体传输，比如上传下载等。
+	
 6. Media Formats媒体格式。格式Formats在这里等同于编码格式Codec，平时我们说的编码格式比如Mpeg-2，AVC，x264就是视频编码格式；PCM，mp3(MPEG-2 Layer 3)，aac，flac就是音频编码格式。而avi，rmvb，mkv这些是媒体封装格式，包含视频音频可能还有字幕流。比如一个常见的后缀为mkv的文件，它的视频Codec是x264，音频是aac，它的视音频编码属于Mpeg-4 Codec Family。
 
 7. Remote UI 远程用户接口。
@@ -170,7 +171,7 @@ http://upnp.org/
 	填"M-SEARCH * HTTP/1.1/r/n"就是要搜索了；respone别人的搜索就填"HTTP/1.1 200 OK/r/n"。
 
     SSDP第二个要填充的字段是目的地址HOST。比如填上"HOST: 239.255.255.250:1900"，就是组播(multicast)搜索，这里239.255.255.250是组播地址，就是说这条消息会给网络里面该组地址的设备发，1900是SSDP协议的端口号。如果HOST地址是特定地址，那这就是单播(unicast)。Respone不填这个字段，他会在ST字段里面填respone address，就是发来搜索信息的设备的地址，Respone消息的话还会发送一个包含自己地址URL的字段，Respone的意思就是跟Searcher说：我好像是你要找的人，我的电话是XXX，详细情况请CALL我。Respone也是UDP单播。
- 
+
 3. 描述(Description)
 
 	前面我们说了CP想要一个device更详细的信息，就打给它的URL跟它要。返回来的东西一般是个XML（Extensible Markup Language，是种结构化的数据。和HTML比较像，有tag和data，具体不说了自己去查），描述分为两部分：一个是device description，是device的物理描述，就是说这个device是什么；还有一个是service descriptions，就是device的服务描述了，就是device能干些什么。这些device和device service的描述的格式也是有要求的，开发商也可以自定义，只要符合UPnP Forum的规范。
