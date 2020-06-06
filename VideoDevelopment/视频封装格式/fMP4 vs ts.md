@@ -1,0 +1,98 @@
+# fMP4 vs ts
+
+MP4，全称MPEG-4 Part  14，是一种使用MPEG-4的多媒体电脑档案格式，副档名为.mp4，以储存数码音讯及数码视讯为主。另外，MP4又可理解为MP4播放器，MP4播放器是一种集音频、视频、图片浏览、电子书、收音机等于一体的多功能播放器。TS是日本高清摄像机拍摄下进行的封装格式，先来简要介绍一下什么是MPEG2-TS吧。MPEG2格式大家都通过对DVD的接触而多多少少了解了一些，DVD节目中的MPEG2格式，确切地说是MPEG2-PS，全称是Program Stream，而TS的全称则是Transport  Stream。MPEG2-PS主要应用于存储的具有固定时长的节目，如DVD电影，而MPEG-TS则主要应用于实时传送的节目，比如实时广播的电视节目。这两种格式的主要区别是什么呢？简单地打个比喻说，你将DVD上的VOB文件的前面一截cut掉（或者干脆就是数据损坏），那么就会导致整个文件无法解码了，而电视节目是你任何时候打开电视机都能解码（收看）的，所以，MPEG2-TS格式的特点就是要求从视频流的任一片段开始都是可以独立解码的。
+
+
+
+## fMP4与ts的区别
+
+最主要的就是.ts文件不提供关于时长等信息，你无法在ts文件中去实现音视频的seek操作。fmp4不同于ts，它是提供了时长等信息，可以执行seek到指定位置。
+
+
+
+### 媒体数据与元数据的分离
+
+在mp4格式中，元数据可以和媒体数据很好地分开存储，后者都在mdat box中，而在ts中，诸多es流和header/metadata信息是复用在一起的。（TODO:介绍ts中的metadata信息怎么存储）。 
+元数据的分离允许我们在streaming中先读取各个流的元数据，知道他们的媒体内容的属性（比如不同的视频质量、不同的语言等），从而可以更好地在不同的media data之间做自适应切换。 
+当然，在更实际的应用场景中，比如在dash协议中会直接把这些元数据信息写在mpd中，player可以只读一个mpd就知道各个媒体数据的属性
+
+### 各个Track独立存储
+
+在fmp4中，不仅媒体数据和metadata相互独立的存储，音视频track的数据也可以分开存储，这里的“分开”已经不仅仅局限于box层面的分开，而是真的可以分开存储于不同的目录。在这种情况下，player只需要读一个记录了它们各自存储位置的manifest，即可去对应的位置download它们的分片，只要做好音视频分片之间的同步工作，就可以正常的播放。 
+举个例子，下面是一个dash中常见的mpd： 
+![这里写图片描述](https://www.itdaan.com/imgs/5/4/8/5/76/090fc502224c3e083760a2300d06e866.jpe)
+在这个mpd中我们看到视频的分片都是存储在video/1/这个目录下，而音频分片都存储在audio/und/mp4a/1这个目录下，而player还是可以将它们拼接到一起完成播放。 
+相对地，在streaming TS流时，音视频往往是复用在一起的，以HLS这个应用场景为例的话，server端一定还需要提前将TS切片做好，这样就会带来几个问题： 
+**1. 媒体文件存储成本和媒资管理成本增加** 
+假设server端将video track编码为三个质量级别V1, V2, V3，audio track也被编码为三个质量级别A1, A2,  A3，那么如果利用fmp4格式的特性，我们只需要存储这6份媒体文件，player在播放时再自主组合不同质量级别的音视频track即可。而对于TS，则不得不提前将3x3=9种不同的音视频复用情况对应的媒体文件都存储到server端，平白无故多出三份文件的存储成本。实际中，因为要考虑到大屏端、小屏端、移动端、桌面端、不同语言、不同字幕等各种情况，使用TS而造成的冗余成本将更加可观。同时，存储文件的增加也意味着媒资管理成本的增加。这也是包括Netflix在内的一些公司选择使用fmp4做streaming格式的原因。 
+**2. manifest文件更加复杂** 
+fmp4格式的特性可以确保每一个单独的媒体分片都是可解密可解码的（当然player需要先从moov box中读到它们的编解码等信息），这意味着server端甚至根本不需要真的存储一大堆分片，player可以直接利用byte range  request技术从一个大文件中准确地读出一个分片对应的media data，这也使得对应manifest(mpd)文件可以更加简洁，如下： 
+![这里写图片描述](https://www.itdaan.com/imgs/2/0/5/0/35/0e7a66325da9f454b13b32692004c33d.jpe)
+针对不同语言的音频，都只需要存一个大文件就够了。 
+相对地，在streaming TS流时，不得不在manifest（m3u8）文件中把成百上千个ts分片文件全都老老实实地记录下来。 
+**3.服务器的cache效率会降低** 
+实际的streaming应用场景中，往往需要cdn的支持，经常会被client请求的媒体分片就会存在距离client最近的edge server上。对于fmp4 streaming的情况，因为需要的文件更少，cache命中率也就更高，举个例子：可能某一个audio  track会和其他各种video track组合，那么就可以将这个audio track放在edge server上，而不用每次都跟origin server去请求。 
+相对地，在streaming TS流时，因为每一个音视频组合的都需要以复用文件的形式存储，组合数又非常多，相当于分母大了，edge server就会有很大的几率没有缓存需要的组合而要去向orgin server请求。
+
+### 对Trick-play的支持
+
+所谓Trick-play，就是快进、快退、直接跳到章节起点、慢动作播放这些“花式”播放功能。支持这些功能往往意味着要快速找到播放流中的关键帧，以快进播放为例，如果利用fmp4格式的特点，可以通过只读取每个媒体分片的moof加上mdat的起始（包含了关键帧图像）部分即可，说白了就是通过只显示关键帧的方法达到“快进”的视觉效果。因为fmp4格式中可以保证每一个分片一定是以IDR帧开始的，这就使得上述的方案实现起来非常方便。 
+相对地，在streaming TS流时，没有办法保证关键帧一定在什么位置，所以你可能需要解析一大堆TS packets才能找到关键帧的位置。
+
+### 无缝码流切换
+
+无缝码流切换实现的关键在于：当第一个码流播放结束时，也就是发生切换的时间，第二个码流一定要以关键帧开始播放。在streaming TS流时，因为不能保证每一个TS  chunk一定以关键帧开始，做码流切换时就意味着要同时download两个码流的相应分片，同时解析两个码流，然后找到关键帧对应的位置，才能切换。同时下载、解析两个码流的媒体内容对网络带宽以及设备性能都形成了挑战。而且有意思的是，如果当前网络环境不佳，player想要切换到低码率码流，结果还要在本来就不好的网络环境下同时进行两个码流的下载，可谓是雪上加霜。 
+而在fmp4中，除了保证各个分片一定以IDR帧开始外，还能保证不同码流的分片之间在时间线上是对齐的。而且streaming fmp4流时因为不要求音视频复用存储，也就意味着视频和音频的同步点可以不一样，视频可以全都以GOP边界作为同步点，音频可以都以sync frame作为同步点，这都使得无缝码流切换更简单。 
+TODO:介绍在分片中间进行切换的情况
+
+### 与DRM的集成
+
+所谓DRM即数字版权管理，说白了就是对流进行加密，这东西在国内用的不多，但是在国外可是每一个内容提供商必须要有的东西。和编码标准一样，业界也存在很多DRM方案，为了避免每采用一个新的加密方案就要重新编一个码流，MPEG推出了通用加密（CENC）标准（23001-7 - Common Encryption）。使用这一标准的码流，就可以将一个码流应用于各种不同的DRM方案。在DASH  spec中，也定义了Content Protection字段来对应这种加密方案。 
+
+CENC使用的就是fMP4格式，这是利用了fMP4中音视频可以不复用同时还能提供独立于media data存储的metadata的特点。TS流就享受不了这样的好处了。TODO:介绍TS应用DRM的方法。
+
+
+
+
+
+
+
+MPEG-TS is designed for live streaming of events over DVB, UDP multicast, but also over HTTP.  It divides the stream in elementary streams, which are segmented in small chunks. System information is sent at regular intervals, so the receiver can start playing the stream any time.
+
+MPEG-TS isn't good for streaming files, because it doesn't provide info about the  duration of the movie or song, as well as the points you can seek to.
+
+
+
+## 主要说了以下几点:
+
+- .ts文件不提供关于时长等信息，你无法在ts文件里去实现音视频的seek操作
+- .mp4不同于ts，是提供了时长等信息，可以执行seek到指定位置
+- .ts文件一般用于m3u8中, 或者提供了流媒体基础信息的前提下使用
+- .mp4文件可以在不下载完全媒体文件的前提下进行seek操作;因为其头部记录moov信息(`moov box 中包含编码、分辨率、码率、帧率、时长、音频采样率等等媒体信息`)
+
+
+
+
+
+https://www.itdaan.com/blog/2018/06/09/8e4ec0afb362459fc6abe8112e82a789.html
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+
+- 邮箱 ：charon.chui@gmail.com  
+- Good Luck! 
