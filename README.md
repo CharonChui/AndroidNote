@@ -54,20 +54,34 @@ Android学习笔记
     - [DLNA简介][24]
     - [AudioTrack简介][214]
     - [流媒体协议][224]
-        - [流媒体通信协议][246]
+        - [流媒体协议][246]
         - [HLS][247]
         - [DASH][248]
+        - [HTTP FLV][249]
+        - [RTMP][250]
     - [ExoPlayer][216]
         - [1. ExoPlayer简介.md][217]
         - [2. ExoPlayer MediaSource简介][218]
         - [3. ExoPlayer源码分析之prepare方法][219]
         - [4. ExoPlayer源码分析之prepare序列图][220]
         - [5. ExoPlayer源码分析之PlayerView][221]
-    - [MP4格式详解][225]
+    - [视频封装格式][225]
+        - [MP4格式详解][251]
+        - [FLV][252]
+        - [TS][253]
+        - [fMP4 vs ts][254]
+        - [fMP4格式详解][255]
+        - [视频封装格式][256]
+    - [视频编码][257]
+        - [AV1][258]
+        - [H264][259]
+        - [H265][260]
     - [SurfaceView与TextureView][226]
     - [关键帧][227]
     - [CDN及PCDN][228]
-    - [P2P][229]
+    - [P2P技术][229]
+        - [P2P][261]
+        - [P2P原理_NAT穿透][262]
     - [播放器性能优化][230]
     - [MediaExtractor、MediaCodec、MediaMuxer][245]
     - [OpenGL][231]
@@ -503,11 +517,11 @@ Android学习笔记
 [222]: https://github.com/CharonChui/AndroidNote/blob/master/BasicKnowledge/%E5%8F%8D%E7%BC%96%E8%AF%91.md "反编译"
 [223]: https://github.com/CharonChui/AndroidNote/blob/master/Tools%26Library/Icon%E5%88%B6%E4%BD%9C.md "Icon制作"
 [224]: https://github.com/CharonChui/AndroidNote/tree/master/VideoDevelopment/%E6%B5%81%E5%AA%92%E4%BD%93%E5%8D%8F%E8%AE%AE "流媒体协议"
-[225]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/MP4%E6%A0%BC%E5%BC%8F%E8%AF%A6%E8%A7%A3.md "MP4格式详解"
+[225]: https://github.com/CharonChui/AndroidNote/tree/master/VideoDevelopment/%E8%A7%86%E9%A2%91%E5%B0%81%E8%A3%85%E6%A0%BC%E5%BC%8F "视频封装格式"
 [226]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/SurfaceView%E4%B8%8ETextureView.md "SurfaceView与TextureView"
 [227]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/%E5%85%B3%E9%94%AE%E5%B8%A7.md "关键帧"
 [228]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/CDN%E5%8F%8APCDN.md "CDN及PCDN"
-[229]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/P2P.md "P2P"
+[229]: https://github.com/CharonChui/AndroidNote/tree/master/VideoDevelopment/P2P%E6%8A%80%E6%9C%AF "P2P"
 [230]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/%E6%92%AD%E6%94%BE%E5%99%A8%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96.md "播放器性能优化"
 [231]: https://github.com/CharonChui/AndroidNote/tree/master/VideoDevelopment/OpenGL  "OpenGL"
 [232]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/OpenGL/1.OpenGL%E7%AE%80%E4%BB%8B.md  "1.OpenGL简介"
@@ -525,9 +539,23 @@ Android学习笔记
 [243]: https://github.com/CharonChui/AndroidNote/tree/master/VideoDevelopment/Danmaku "弹幕"
 [244]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/Danmaku/Android%E5%BC%B9%E5%B9%95%E5%AE%9E%E7%8E%B0.md "Android弹幕实现"
 [245]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/MediaExtractor%E3%80%81MediaCodec%E3%80%81MediaMuxer.md "MediaExtractor、MediaCodec、MediaMuxer"
-[246]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/%E6%B5%81%E5%AA%92%E4%BD%93%E5%8D%8F%E8%AE%AE/%E6%B5%81%E5%AA%92%E4%BD%93%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE.md "流媒体通信协议"
+[246]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/%E6%B5%81%E5%AA%92%E4%BD%93%E5%8D%8F%E8%AE%AE/%E6%B5%81%E5%AA%92%E4%BD%93%E5%8D%8F%E8%AE%AE.md  "流媒体协议"
 [247]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/%E6%B5%81%E5%AA%92%E4%BD%93%E5%8D%8F%E8%AE%AE/HLS.md "HLS"
 [248]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/%E6%B5%81%E5%AA%92%E4%BD%93%E5%8D%8F%E8%AE%AE/DASH.md "DASH"
+[249]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/%E6%B5%81%E5%AA%92%E4%BD%93%E5%8D%8F%E8%AE%AE/HTTP%20FLV.md "HTTP FLV"
+[250]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/%E6%B5%81%E5%AA%92%E4%BD%93%E5%8D%8F%E8%AE%AE/DASH.md "RTMP"
+[251]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/%E8%A7%86%E9%A2%91%E5%B0%81%E8%A3%85%E6%A0%BC%E5%BC%8F/MP4%E6%A0%BC%E5%BC%8F%E8%AF%A6%E8%A7%A3.md "MP4格式详解"
+[252]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/%E8%A7%86%E9%A2%91%E5%B0%81%E8%A3%85%E6%A0%BC%E5%BC%8F/FLV.md "FLV"
+[253]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/%E8%A7%86%E9%A2%91%E5%B0%81%E8%A3%85%E6%A0%BC%E5%BC%8F/TS.md "TS"
+[254]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/%E8%A7%86%E9%A2%91%E5%B0%81%E8%A3%85%E6%A0%BC%E5%BC%8F/fMP4%20vs%20ts.md "fMP4 vs ts"
+[255]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/%E8%A7%86%E9%A2%91%E5%B0%81%E8%A3%85%E6%A0%BC%E5%BC%8F/fMP4%E6%A0%BC%E5%BC%8F%E8%AF%A6%E8%A7%A3.md "fMP4格式详解"
+[256]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/%E8%A7%86%E9%A2%91%E5%B0%81%E8%A3%85%E6%A0%BC%E5%BC%8F/%E8%A7%86%E9%A2%91%E5%B0%81%E8%A3%85%E6%A0%BC%E5%BC%8F.md "视频封装格式"
+[257]: https://github.com/CharonChui/AndroidNote/tree/master/VideoDevelopment/%E8%A7%86%E9%A2%91%E7%BC%96%E7%A0%81  "视频编码"
+[258]:https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/%E8%A7%86%E9%A2%91%E7%BC%96%E7%A0%81/AV1.md   "AV1"
+[259]:https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/%E8%A7%86%E9%A2%91%E7%BC%96%E7%A0%81/H264.md  "H264"
+[260]:https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/%E8%A7%86%E9%A2%91%E7%BC%96%E7%A0%81/H265.md  "H265"
+[261]:  https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/P2P%E6%8A%80%E6%9C%AF/P2P.md "P2P"
+[262]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/P2P%E6%8A%80%E6%9C%AF/P2P%E5%8E%9F%E7%90%86_NAT%E7%A9%BF%E9%80%8F.md "P2P原理_NAT穿透"
 
 
 
