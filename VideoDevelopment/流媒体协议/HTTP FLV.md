@@ -1,6 +1,14 @@
 HTTP FLV
 ===
 
+在说HTTP-FLV之前，我们有必要对FLV adobe 官方标准有个认识，因为HTTP-FLV协议中封装格式使用的是FLV。FLV文件格式标准是写F4V/FLV fileformat spec v10.1的附录E里面的FLVFile Format。
+
+
+
+FLV（Flash  Video）是Adobe公司设计开发的一种流行的流媒体格式，其格式相对简单轻量，不需要很大的媒体头部信息。整个FLV由Header和Body以及其他Tag组成。因此加载速度极快。它是基于HTTP/80传输，可以避免被防火墙拦截的问题，除此之外，它可以通过 HTTP 302 跳转灵活调度/负载均衡，支持使用 HTTPS 加密传输，也能够兼容支持 Android，iOS 的移动端。但是由于它的传输特性，会让流媒体资源缓存在本地客户端，在保密性方面不够好，因为网络流量较大，它也不适合做拉流协议。此外，FLV可以使用Flash Player进行播放，而Flash  Player插件已经安装在绝大部分浏览器上，这使得通过网页播放FLV视频十分容易。FLV封装格式的文件后缀通常为“.flv”。
+
+
+
 先看看HTTP-FLV长成什么样子：http://ip:port/live/livestream.flv，协议头是http,另外”.flv”这个尾巴是它最明显的特征。
 
 HttpFlv 就是 http+flv ，将音视频数据封装成FLV格式，然后通过 HTTP 协议传输给客户端。
@@ -8,22 +16,6 @@ HttpFlv 就是 http+flv ，将音视频数据封装成FLV格式，然后通过 H
 
 
 下的直播平台中大部分的主线路使用的都是HTTP-FLV协议，备线路多为RTMP。小编随便在Safari中打开几个直播平台房间，一抓包就不难发现使用HTTP-FLV协议的身影：熊猫、斗鱼、虎牙、B站。
-
-
-
-
-
-FLV（Flash  Video）是Adobe公司设计开发的一种流行的流媒体格式，由于其视频文件体积轻巧、封装简单等特点，使其很适合在互联网上进行应用。此外，FLV可以使用Flash Player进行播放，而Flash  Player插件已经安装在绝大部分浏览器上，这使得通过网页播放FLV视频十分容易。FLV封装格式的文件后缀通常为“.flv”。
-
-在说HTTP-FLV之前，我们有必要对FLV adobe 官方标准有个认识，因为HTTP-FLV协议中封装格式使用的是FLV。
-
-FLV文件格式标准是写F4V/FLV fileformat spec v10.1的附录E里面的FLVFile Format。
-
-
-
-Flash Video`:是Adobe公司推出的另一种视频格式，是一种在网络上传输的流媒体数据存储容器格式。其格式相对简单轻量，不需要很大的媒体头部信息。整个FLV由Header和Body以及其他Tag组成。因此加载速度极快。它是基于HTTP/80传输，可以避免被防火墙拦截的问题，除此之外，它可以通过 HTTP 302 跳转灵活调度/负载均衡，支持使用 HTTPS 加密传输，也能够兼容支持 Android，iOS 的移动端。但是由于它的传输特性，会让流媒体资源缓存在本地客户端，在保密性方面不够好，因为网络流量较大，它也不适合做拉流协议。
-
-
 
 
 
@@ -37,7 +29,14 @@ HTTP FLV伪流：支持SEEK，可从未下载的部分开始播放。
 
 HTTP-FLV流：拥有和流式协议RTMP一样的特征，长连接，流式数据。
 
+#### 4 优点：
 
+- 服务器兼容性好：基于 HTTP 协议。
+- 低延迟：直接传输 FLV 流，而且基于 HTTP 长链接。
+
+#### 5 缺点：
+
+- 播放端兼容性不好：需要 Flash 支持，不支持多音视频流，不便于 Seek。
 
 ▣  HTTP-FLV技术实现
 

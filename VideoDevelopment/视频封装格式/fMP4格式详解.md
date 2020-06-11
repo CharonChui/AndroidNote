@@ -14,41 +14,43 @@ fmp4 是基于 MPEG-4 Part 12 的**流媒体格式**。与普通MP4相比：
 
 
 
-![img](https://bitmovin.com/wp-content/uploads/2019/07/image7.png)
-
-https://bitmovin.com/wp-content/uploads/2019/07/image7.png
 
 
+![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/mp4_container_format.webp?raw=true)
 
-
+![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/fmp4_format.png?raw=true)
 
 
 
-![](https://upload-images.jianshu.io/upload_images/9570401-03569f6101ecfeea.png?imageMogr2/auto-orient/strip|imageView2/2/w/520)
+Fragmented MP4 以 Fragment 的方式存储视频信息。每个 Fragment 由一个 moof box 和一个 mdat box 组成: 
+
+- ‘mdat’（media data box）
+
+    和普通MP4文件的‘mdat’一样，用于存放媒体数据，不同的是普通MP4文件只有一个‘mdat’box，而Fragmented MP4文件中，每个fragment都会有一个‘mdat’类型的box。
+
+- ‘moof’（movie fragment box）
+
+    该类型的box存放的是fragment-level的metadata信息，用于描述所在的fragment。该类型的box在普通的MP4文件中是不存在的，而在Fragmented MP4文件中，每个fragment都会有一个‘moof’类型的box。moof和moov非常像，它包含了当前片段中mp4的相关元信息。
+
+一个‘moof’和一个‘mdat’组成Fragmented MP4文件的一个fragment，这个fragment包含一个video track或audio track，并且包含足够的metadata以保证这部分数据可以单独解码。Fragmented MP4 中的 moov box 只存储文件级别的媒体信息，因此 moov box 的体积比传统的 MP4 中的 moov box 体积要小很多。
 
 
 
-Fragmented MP4 以 Fragment 的方式存储视频信息。每个 Fragment 由一个 moof box 和一个 mdat box 组成。
-
-（2）‘mdat’（media data box）
-
-和普通MP4文件的‘mdat’一样，用于存放媒体数据，不同的是普通MP4文件只有一个‘mdat’box，而Fragmented MP4文件中，每个fragment都会有一个‘mdat’类型的box。
-
-（3）‘moof’（movie fragment box）
-
-该类型的box存放的是fragment-level的metadata信息，用于描述所在的fragment。该类型的box在普通的MP4文件中是不存在的，而在Fragmented MP4文件中，每个fragment都会有一个‘moof’类型的box。
-
-一个‘moof’和一个‘mdat’组成Fragmented MP4文件的一个fragment，这个fragment包含一个video track或audio track，并且包含足够的metadata以保证这部分数据可以单独解码。
-
-A fragment consists of a Movie Fragment  Box (moof), which is very similar to a Movie Box (moov). It contains the information about the media streams contained in one single fragment.  E.g. it contains the timestamp information for the 10 seconds of video,  which are stored in the fragment. Each fragment has its own Media Data  (mdat) box. 
+![fmp4_parser](https://raw.githubusercontent.com/CharonChui/Pictures/master/fmp4_parser.png?raw=true)
 
 
 
+### FMP4与普通MP4 BOX的区别
+
+#### Movie Extends Box (mvex)(fMP4专有)
+
+**mvex 是 fMP4 的标准盒子。它的作用是告诉解码器这是一个fMP4的文件，具体的 samples 信息内容不再放到 trak 里面，而是在每一个 moof 中**。基本格式为：
 
 
-Fragmented MP4 中的 moov box 只存储文件级别的媒体信息，因此 moov box 的体积比传统的 MP4 中的 moov box 体积要小很多。
 
+### moof
 
+moof 主要是用来存放 FMP4 的相关内容。它本身没啥太多的内容。
 
 
 

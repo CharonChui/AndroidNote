@@ -55,40 +55,12 @@ CENC使用的就是fMP4格式，这是利用了fMP4中音视频可以不复用�
 
 
 
-
-
-MPEG-TS is designed for live streaming of events over DVB, UDP multicast, but also over HTTP.  It divides the stream in elementary streams, which are segmented in small chunks. System information is sent at regular intervals, so the receiver can start playing the stream any time.
-
-MPEG-TS isn't good for streaming files, because it doesn't provide info about the  duration of the movie or song, as well as the points you can seek to.
-
-
-
 ## 主要说了以下几点:
 
 - .ts文件不提供关于时长等信息，你无法在ts文件里去实现音视频的seek操作
 - .mp4不同于ts，是提供了时长等信息，可以执行seek到指定位置
 - .ts文件一般用于m3u8中, 或者提供了流媒体基础信息的前提下使用
-- .mp4文件可以在不下载完全媒体文件的前提下进行seek操作;因为其头部记录moov信息(`moov box 中包含编码、分辨率、码率、帧率、时长、音频采样率等等媒体信息`)
-
-
-
-
-
-https://www.itdaan.com/blog/2018/06/09/8e4ec0afb362459fc6abe8112e82a789.html
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+- .mp4文件可以在不下载完全媒体文件的前提下进行seek操作;因为其头部记录moov信息(moov box 中包含编码、分辨率、码率、帧率、时长、音频采样率等等媒体信息)
 
 
 
