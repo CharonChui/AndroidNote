@@ -543,7 +543,7 @@ Android学习笔记
 [247]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/%E6%B5%81%E5%AA%92%E4%BD%93%E5%8D%8F%E8%AE%AE/HLS.md "HLS"
 [248]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/%E6%B5%81%E5%AA%92%E4%BD%93%E5%8D%8F%E8%AE%AE/DASH.md "DASH"
 [249]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/%E6%B5%81%E5%AA%92%E4%BD%93%E5%8D%8F%E8%AE%AE/HTTP%20FLV.md "HTTP FLV"
-[250]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/%E6%B5%81%E5%AA%92%E4%BD%93%E5%8D%8F%E8%AE%AE/DASH.md "RTMP"
+[250]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/%E6%B5%81%E5%AA%92%E4%BD%93%E5%8D%8F%E8%AE%AE/RTMP.md "RTMP"
 [251]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/%E8%A7%86%E9%A2%91%E5%B0%81%E8%A3%85%E6%A0%BC%E5%BC%8F/MP4%E6%A0%BC%E5%BC%8F%E8%AF%A6%E8%A7%A3.md "MP4格式详解"
 [252]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/%E8%A7%86%E9%A2%91%E5%B0%81%E8%A3%85%E6%A0%BC%E5%BC%8F/FLV.md "FLV"
 [253]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/%E8%A7%86%E9%A2%91%E5%B0%81%E8%A3%85%E6%A0%BC%E5%BC%8F/TS.md "TS"
