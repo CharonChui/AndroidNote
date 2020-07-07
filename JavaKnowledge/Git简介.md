@@ -160,7 +160,7 @@ git push  // 把所有文件从本地仓库推送进远程仓库
     用`git reflog`查看命令历史，以便确定要回到未来的哪个版本。     
     ```
     git log -p -2 // -p 是仅显示最近的x次提交   
-    git log --stat // stat简略的显示每次提交的内容梗概，如哪些文件变更，多少删除，多少天剑
+    git log --stat // stat简略的显示每次提交的内容梗概，如哪些文件变更，多少删除，多少添加
     git log --oneline --graph
     ```
     下面是常用的参数:   
@@ -187,9 +187,9 @@ git push  // 把所有文件从本地仓库推送进远程仓库
     # new file:   test.py
     ```
     `git reset [--hard|soft|mixed|merge|keep] [<commit>或HEAD]`:将当前的分支重设`(reset)`到指定的`<commit>`或者`HEAD`(默认，如果不显示指定`<commit>`，默认是`HEAD`，即最新的一次提交)，并且根据`[mode]`有可能更新索引和工作目录。`mode`的取值可以是`hard、soft、mixed、merged、keep`。下面来详细说明每种模式的意义和效果:    
-    - `--hard`:重设`(reset)`索引和工作目录，自从`<commit>`以来在工作目录中的任何改变都被丢弃，并把`HEAD`指向`<commit>`。会将其之后的修改全部撤回，并且会影响到工作区
-    - `--mixed`改变分支和暂存区，不影响工作区
-    - `soft`只改变分支的提交        
+    - `--hard`:彻底回退到某一个版本，本地的源码也会变为上一个版本的内容。重删除工作空间改动代码，撤销commit，撤销git add .。所有变更集都会被丢弃。
+    - `--mixed`:默认方式，它回退到某个版本，只保留源码，不删除工作空间改动代码，撤销commit，并且撤销git add . 。所有变更集都放在工作区。
+    - `--soft`: 回退到某个版本，不删除工作空间改动代码，撤销commit，不撤销git add . ，所有变更集都放在暂存区，如果还要提交直接重新commit即可。     
 
     下面是具体一个例子，假设有三个`commit`，执行`git status`结果如下:     
     ```
@@ -261,11 +261,6 @@ git push  // 把所有文件从本地仓库推送进远程仓库
 
     但是上面这样会导致你之前修改的代码都没有了，如果我只是想撤回提交，还想要我之前修改的东西重新回到本地仓库呢？ 
     `git reset --soft HEAD^`，这样就成功的撤销了你的commit。注意，仅仅是撤回commit操作，您写的代码仍然保留。
-
-    至于这几个参数：
-    1. --mixed：不删除工作空间改动代码，撤销commit，并且撤销git add . 操作这个为默认参数,git reset --mixed HEAD^ 和 git reset HEAD^ 效果是一样的。
-    2. --soft：不删除工作空间改动代码，撤销commit，不撤销git add . 
-    3. --hard：删除工作空间改动代码，撤销commit，撤销git add . 注意完成这个操作后，就恢复到了上一次的commit状态。
 
 - 已推送到远程仓库  
     如果你执行`git add .`后又`commit`又执行了`git push`操作了，这时候你的代码已经进入到了远程仓库中，如果你发现你提交的代码又问题想恢复的话，那你只能先把本地仓库的
@@ -367,7 +362,7 @@ git push  // 把所有文件从本地仓库推送进远程仓库
     在用`linux`的时候会自动生成一些以`~`结尾的备份文件，如果ignore掉呢？[https://github.com/github/gitignore/blob/master/Global/Linux.gitignore](https://github.com/github/gitignore/blob/master/Global/Linux.gitignore)
 
 - 撤销最后一次提交
-    有时候我们提交完了才发现漏掉了几个文件没有加或者提交信息写错了，想要撤销刚才的的提交操作。可以使用`--amend`选项重新提交:`git commit --amend`，然后再执行`git push`操作。
+    有时候我们提交完了才发现漏掉了几个文件没有加或者提交信息写错了，想要撤销刚才的的提交操作。可以修改后重新git add 然后使用`--amend`选项重新提交:`git commit --amend`，然后再执行`git push`操作。
 
 
 
