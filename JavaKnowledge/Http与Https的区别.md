@@ -1,8 +1,21 @@
-Http与Https的区别
+HTTP与HTTPS的区别
 ===
 
-`http`(超文本传输协议)
----
+## HTTP(超文本传输协议)
+
+超文本传输协议，是一个基于请求与响应，无状态的，应用层的协议，常基于TCP/IP协议传输数据，互联网上应用最为广泛的一种网络协议,所有的WWW文件都必须遵守这个标准。设计HTTP的初衷是为了提供一种发布和接收HTML页面的方法。
+
+
+
+- 1997年发布HTTP/1.1: 持久连接(长连接)、节约带宽、HOST域、管道机制、分块传输编码。
+
+- 2015年发布HTTP/2:多路复用、服务器推送、头信息压缩、二进制协议等。
+
+![](https://raw.githubusercontent.com/CharonChui/Pictures/master/http1.1vs2.jpg)
+
+多路复用：通过单一的HTTP/2连接请求发起多重的请求-响应消息，多个请求stream共享一个TCP连接，实现多留并行而不是依赖建立多个TCP连接。
+
+
 
 缺点:    
 
@@ -14,11 +27,9 @@ Http与Https的区别
 
 - 传输速度快
 
+## HTTPS
 
-`https`
----
-
-`Https`并非是应用层的一种新协议。只是`http`通信接口部分用`SSL`(安全套接字层)和`TLS`(安全传输层协议)代替而已。即添加了加密及认证机制的`HTTP`称为`HTTPS(HTTP Secure)`.    
+Https并非是应用层的一种新协议。只是http通信接口部分用SSL(安全套接字层)和TLS(安全传输层协议)代替而已。即添加了加密及认证机制的HTTP称为HTTPS(HTTP Secure).    
 
 ```
 HTTP + 加密 + 认证 + 完整性保护 = HTTPS
@@ -136,7 +147,6 @@ HTTP + 加密 + 认证 + 完整性保护 = HTTPS
 
 
 
-	
 ----
 - 邮箱 ：charon.chui@gmail.com  
 - Good Luck! 
