@@ -202,7 +202,7 @@ Android学习笔记
     - [常见算法][95]
     - [网络请求相关内容总结][96]
     - [线程池的原理][97]
-    - [原子性、可见性以及有序性][98]
+    - [Java并发编程之原子性、可见性以及有序性][98]
     - [Base64加密][99]
     - [Git简介][100]
     - [hashCode与equals][101]
@@ -387,7 +387,7 @@ Android学习笔记
 [95]: https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledge/%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95.md   "算法"
 [96]: https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledge/%E7%BD%91%E7%BB%9C%E8%AF%B7%E6%B1%82%E7%9B%B8%E5%85%B3%E5%86%85%E5%AE%B9%E6%80%BB%E7%BB%93.md   "网络请求相关内容总结"
 [97]: https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledge/%E7%BA%BF%E7%A8%8B%E6%B1%A0%E7%9A%84%E5%8E%9F%E7%90%86.md   "线程池的原理"
-[98]: https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledge/%E5%8E%9F%E5%AD%90%E6%80%A7%E3%80%81%E5%8F%AF%E8%A7%81%E6%80%A7%E4%BB%A5%E5%8F%8A%E6%9C%89%E5%BA%8F%E6%80%A7.md   "原子性、可见性以及有序性"
+[98]: https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledge/Java并发编程之原子性、可见性以及有序性.md  "Java并发编程之原子性、可见性以及有序性"
 [99]: https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledge/Base64%E5%8A%A0%E5%AF%86.md   "Base64加密"
 [100]: https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledge/Git%E7%AE%80%E4%BB%8B.md   "Git简介"
 [101]: https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledge/hashCode%E4%B8%8Eequals.md   "hashCode与equals"
