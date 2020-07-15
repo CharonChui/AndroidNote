@@ -64,6 +64,14 @@ MVVM
 
 MVVM是Model-View-ViewModel的简写。
 
+![](https://raw.githubusercontent.com/CharonChui/Pictures/master/MVVM.png)
+
+MVVM模式将Presener改名为View Model，基本上与MVP模式完全一致，同样是以VM为核心，但是不同于MVP，MVVM采用了数据双向绑定的方案，替代了繁琐复杂的DOM操作。该模型中，View与VM保持同步，View绑定到VM的属性上，如果VM数据发生变化，通过数据绑定的方式，View会自动更新视图；VM同样也暴露出Model中的数据。
+
+看起来MVVM很好的解决了MVC和MVP的不足，但是由于数据和视图的双向绑定，导致出现问题时不太好定位来源，有可能数据问题导致，也有可能业务逻辑中对视图属性的修改导致。如果项目中打算用MVVM的话可以考虑使用官方的架构组件ViewModel、LiveData、DataBinding去实现MVVM
+
+
+
 - 优点
     `MVVM`模式和`MVC`模式一样，主要目的是分离视图`View`和模型`Model`
 - 低耦合。
