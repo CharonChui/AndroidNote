@@ -13,7 +13,6 @@ Android学习笔记
 
 - [史上最适合Android开发者学习的Go语言教程](https://github.com/CharonChui/GolangStudyNote)
 - [史上最适合Android开发者学习的iOS开发教程](https://github.com/CharonChui/iOSStudyNote)
-
 - [源码解析][43] 
     - [自定义View详解][1]
     - [Activity界面绘制过程详解][2]
@@ -32,7 +31,6 @@ Android学习笔记
         - [Volley源码分析][15]
         - [Retrofit详解(上)][16]
         - [Retrofit详解(下)][17]
-
 - [Dagger2][199]        
     - [1.Dagger2简介(一).md][200]
     - [2.Dagger2入门demo(二).md][201]    
@@ -43,7 +41,6 @@ Android学习笔记
     - [7.Dagger2之dagger-android(七).md][206]            
     - [8.Dagger2与MVP(八).md][207]    
     - [9.Dagger2原理分析(九).md][212]
-
 - [音视频开发][44]
     - [搭建nginx+rtmp服务器][18]
     - [视频播放相关内容总结][19]
@@ -98,6 +95,18 @@ Android学习笔记
         - [11.OpenGL ES滤镜][242]
     - [弹幕][243]
         - [Android弹幕实现][244]
+- [操作系统][263]
+    - [1.操作系统简介][264]
+    - [2.进程与线程][265]
+    - [3.内存管理][266]
+    - [4.调度][267]
+    - [5.I/O][268]
+    - [6.文件管理][269]
+    - [7.嵌入式系统][270]
+    - [8.虚拟机][271]
+- [架构设计][272]
+    - [1.架构简介][273]
+
 -  [图片加载][45]
     - [Glide简介(上)][25]
     - [Glide简介(下)][26]
@@ -556,8 +565,17 @@ Android学习笔记
 [260]:https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/%E8%A7%86%E9%A2%91%E7%BC%96%E7%A0%81/H265.md  "H265"
 [261]:  https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/P2P%E6%8A%80%E6%9C%AF/P2P.md "P2P"
 [262]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/P2P%E6%8A%80%E6%9C%AF/P2P%E5%8E%9F%E7%90%86_NAT%E7%A9%BF%E9%80%8F.md "P2P原理_NAT穿透"
-
-
+[263]: https://github.com/CharonChui/AndroidNote/tree/master/OperatingSystem "操作系统"
+[264]: https://github.com/CharonChui/AndroidNote/blob/master/OperatingSystem/1.%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F.md "1.操作系统简介"
+[265]: https://github.com/CharonChui/AndroidNote/blob/master/OperatingSystem/2.%E8%BF%9B%E7%A8%8B.md "2.进程和线程"
+[266]: https://github.com/CharonChui/AndroidNote/blob/master/OperatingSystem/3.%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86.md "3.内存管理"
+[267]: https://github.com/CharonChui/AndroidNote/blob/master/OperatingSystem/4.%E8%B0%83%E5%BA%A6.md "4.调度"
+[268]: https://github.com/CharonChui/AndroidNote/blob/master/OperatingSystem/5.IO.md "5.I/O"
+[269]: https://github.com/CharonChui/AndroidNote/blob/master/OperatingSystem/6.%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86.md "6.文件管理"
+[270]: https://github.com/CharonChui/AndroidNote/blob/master/OperatingSystem/7.%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F.md "7.嵌入式系统"
+[271]: https://github.com/CharonChui/AndroidNote/blob/master/OperatingSystem/8.%E8%99%9A%E6%8B%9F%E6%9C%BA.md "8.虚拟机"
+[272]: https://github.com/CharonChui/AndroidNote/tree/master/Architect "架构设计"
+[273]: https://github.com/CharonChui/AndroidNote/blob/master/Architect/1.%E6%9E%B6%E6%9E%84%E7%AE%80%E4%BB%8B.md "1.架构简介"
 
 
 Developed By
