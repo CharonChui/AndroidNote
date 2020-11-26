@@ -566,11 +566,13 @@ Android学习笔记
 [261]:  https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/P2P%E6%8A%80%E6%9C%AF/P2P.md "P2P"
 [262]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/P2P%E6%8A%80%E6%9C%AF/P2P%E5%8E%9F%E7%90%86_NAT%E7%A9%BF%E9%80%8F.md "P2P原理_NAT穿透"
 [263]: https://github.com/CharonChui/AndroidNote/tree/master/OperatingSystem "操作系统"
-[264]: https://github.com/CharonChui/AndroidNote/blob/master/OperatingSystem/1.%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F.md "1.操作系统简介"
-[265]: https://github.com/CharonChui/AndroidNote/blob/master/OperatingSystem/2.%E8%BF%9B%E7%A8%8B.md "2.进程和线程"
+[264]: https://github.com/CharonChui/AndroidNote/blob/master/OperatingSystem/1.%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%AE%80%E4%BB%8B.md "1.操作系统简介"
+[265]: https://github.com/CharonChui/AndroidNote/blob/master/OperatingSystem/2.%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B.md "2.进程和线程"
 [266]: https://github.com/CharonChui/AndroidNote/blob/master/OperatingSystem/3.%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86.md "3.内存管理"
 [267]: https://github.com/CharonChui/AndroidNote/blob/master/OperatingSystem/4.%E8%B0%83%E5%BA%A6.md "4.调度"
-[268]: https://github.com/CharonChui/AndroidNote/blob/master/OperatingSystem/5.IO.md "5.I/O"
+
+[268]: https://github.com/CharonChui/AndroidNote/blob/master/OperatingSystem/5.I:O.md "5.I/O"
+
 [269]: https://github.com/CharonChui/AndroidNote/blob/master/OperatingSystem/6.%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86.md "6.文件管理"
 [270]: https://github.com/CharonChui/AndroidNote/blob/master/OperatingSystem/7.%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F.md "7.嵌入式系统"
 [271]: https://github.com/CharonChui/AndroidNote/blob/master/OperatingSystem/8.%E8%99%9A%E6%8B%9F%E6%9C%BA.md "8.虚拟机"
