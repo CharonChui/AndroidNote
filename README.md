@@ -388,7 +388,8 @@ Android学习笔记
 [77]: https://github.com/CharonChui/AndroidNote/blob/master/AdavancedPart/ApplicationId%20vs%20PackageName.md   "ApplicationId vs PackageName"
 [78]: https://github.com/CharonChui/AndroidNote/blob/master/AdavancedPart/ART%E4%B8%8EDalvik.md   "ART与Dalvik"
 [79]: https://github.com/CharonChui/AndroidNote/blob/master/AdavancedPart/BroadcastReceiver%E5%AE%89%E5%85%A8%E9%97%AE%E9%A2%98.md   "BroadcastReceiver安全问题"
-[80]: https://github.com/CharonChui/AndroidNote/blob/master/AdavancedPart/Handler%E5%AF%BC%E8%87%B4%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E5%88%86%E6%9E%90.md   "Crash及ANR分析"
+[80]: https://github.com/CharonChui/AndroidNote/blob/master/AdavancedPart/Crash%E5%8F%8AANR%E5%88%86%E6%9E%90.md  "Crash及ANR分析"
+
 [81]: https://github.com/CharonChui/AndroidNote/blob/master/AdavancedPart/Library%E9%A1%B9%E7%9B%AE%E4%B8%AD%E8%B5%84%E6%BA%90id%E4%BD%BF%E7%94%A8case%E6%97%B6%E6%8A%A5%E9%94%99.md   "Library项目中资源id使用case时报错"
 [82]: https://github.com/CharonChui/AndroidNote/blob/master/AdavancedPart/Mac%E4%B8%8B%E9%85%8D%E7%BD%AEadb%E5%8F%8AAndroid%E5%91%BD%E4%BB%A4.md   "Mac下配置adb及Android命令"
 [83]: https://github.com/CharonChui/AndroidNote/blob/master/AdavancedPart/MaterialDesign%E4%BD%BF%E7%94%A8.md   "MaterialDesign使用"
