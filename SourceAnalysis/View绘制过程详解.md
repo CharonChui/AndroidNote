@@ -3,6 +3,7 @@ View绘制过程详解
 
 界面窗口的根布局是`DecorView`，该类继承自`FrameLayout`.说到`View`绘制，想到的就是从这里入手，而`FrameLayout`继承自`ViewGroup`。感觉绘制肯定会在`ViewGroup`或者`View`中，
 但是木有找到。发现`ViewGroup`实现`ViewParent`接口，而`ViewParent`有一个实现类是`ViewRootImpl`， `ViewGruop`中会使用`ViewRootImpl`...
+
 ```java
 /**
  * The top of a view hierarchy, implementing the needed protocol between View
@@ -18,13 +19,23 @@ public final class ViewRootImpl implements ViewParent,
 		}
 ```
 
-`View`的绘制过程从`ViewRootImpl.performTraversals()`方法开始。
+`View`的绘制过程从`ViewRootImpl.performTraversals()`方法开始，你看这个名字起的多好，叫执行遍历，看到名字就能知道内部的实现:   
+
+![](https://raw.githubusercontent.com/CharonChui/Pictures/master/view_performTraversals.png)
+
 首先先说明一下，这部分代码比较多，逻辑也比较麻烦，很容易弄晕，如果感觉看起来费劲，就跳过这一块，直接到下面的Measure、Layout、Draw部分开始看。
 我也没有全部弄清楚，我只是把里面的步骤标注了下。
+
 ```java
 private void performTraversals() {
 	// ... 此处省略源代码N行
-
+    if (mFirst || windowShouldResize || insetsChanged ||
+                viewVisibilityChanged || params != null || mForceNextWindowRelayout) {
+        // 第一或者resize等都会调用relayoutWindow，而该函数内部会调用sWindowSession.relayout()
+        // 方法来请求WmS按照指定的大小重新分配窗口大小，并会为客户窗口创建的mSurface对象分配真正的现存
+        // 等该函数返回后，应用程序就可以在该Surface中绘制了。
+		relayoutResult = relayoutWindow(params, viewVisibility, insetsPending);
+    }
 	// 是否需要Measure
 	if (!mStopped) {
 		boolean focusChangedDueToTouchMode = ensureTouchModeLocally(
@@ -35,6 +46,7 @@ private void performTraversals() {
 			// getRootMeasureSpec方法内部会使用MeasureSpec.makeMeasureSpec()方法来组装一个MeasureSpec，
 			// 当lp.width参数等于MATCH_PARENT的时候，MeasureSpec的specMode就等于EXACTLY，当lp.width等于WRAP_CONTENT的时候，MeasureSpec的specMode就等于AT_MOST。
 			// 并且MATCH_PARENT和WRAP_CONTENT时的specSize都是等于windowSize的，也就意味着根视图总是会充满全屏的。
+            // 这里lp代表的是根视图的LayoutParams、lp.width和lp.height直接来源于用户的定义比如WRAP_CONTENT、MATCH_PARENT等
 			int childWidthMeasureSpec = getRootMeasureSpec(mWidth, lp.width);
 			int childHeightMeasureSpec = getRootMeasureSpec(mHeight, lp.height);
 
@@ -159,7 +171,14 @@ private void performTraversals() {
 `Measure`
 ===
 
+
+
+![](https://raw.githubusercontent.com/CharonChui/Pictures/master/view_measure.png)
+
+
+
 `performMeasure`方法如下：
+
 ```java
 private void performMeasure(int childWidthMeasureSpec, int childHeightMeasureSpec) {
 	Trace.traceBegin(Trace.TRACE_TAG_VIEW, "measure");
@@ -199,6 +218,7 @@ public final void measure(int widthMeasureSpec, int heightMeasureSpec) {
 		Insets insets = getOpticalInsets();
 		int oWidth  = insets.left + insets.right;
 		int oHeight = insets.top  + insets.bottom;
+        // adjust是微调某个MeasureSpec的大小
 		widthMeasureSpec  = MeasureSpec.adjust(widthMeasureSpec,  optical ? -oWidth  : oWidth);
 		heightMeasureSpec = MeasureSpec.adjust(heightMeasureSpec, optical ? -oHeight : oHeight);
 	}
@@ -556,7 +576,14 @@ ps:譬如我们设置了`setMeasuredDimension(10, 10)`,那么不管布局中怎�
 
 `Layout`
 ===
+
+
+![](https://raw.githubusercontent.com/CharonChui/Pictures/master/view_layout.png)
+
+
+
 `performLayout`方法源码如下：
+
 ```java
 private void performLayout(WindowManager.LayoutParams lp, int desiredWindowWidth,
 		int desiredWindowHeight) {
@@ -598,6 +625,7 @@ private void performLayout(WindowManager.LayoutParams lp, int desiredWindowWidth
 							" during layout: running second layout pass");
 					view.requestLayout();
 				}
+                // desiredWindowWidth和desiredWindowHeight是屏幕的尺寸
 				measureHierarchy(host, lp, mView.getContext().getResources(),
 						desiredWindowWidth, desiredWindowHeight);
 				mInLayout = true;
@@ -825,7 +853,12 @@ private void performLayout(WindowManager.LayoutParams lp, int desiredWindowWidth
 `Draw`
 ===
 
+
+
+![](https://raw.githubusercontent.com/CharonChui/Pictures/master/view_draw.png)
+
 绘制阶段是从`ViewRootImpl`中的`performDraw`方法开始的：
+
 ```java
 private void performDraw() {
 	if (mAttachInfo.mDisplayState == Display.STATE_OFF && !mReportNextDraw) {
@@ -887,6 +920,7 @@ private void performDraw() {
 ```java
 private void draw(boolean fullRedrawNeeded) {
 	Surface surface = mSurface;
+    // 首先检查surface是否有效，正常情况下都是有效的，除非WmS发生异常不能为该客户端分配有效的Surface
 	if (!surface.isValid()) {
 		return;
 	}
@@ -941,6 +975,8 @@ private void draw(boolean fullRedrawNeeded) {
 	}
 
 	final Rect dirty = mDirty;
+    // 判断该Surface是否有SurfaceHolder对象，如果有则意味着该Surface是应用程序创建的，因为所有的绘制操作应该由应用程序
+    // 自身去负责，于是View系统推出绘制，如果不是，才开始View绘制的内部流程。
 	if (mSurfaceHolder != null) {
 		// The app owns the surface, we won't draw.
 		dirty.setEmpty();
@@ -982,7 +1018,10 @@ private void draw(boolean fullRedrawNeeded) {
 	}
 
 	if (!dirty.isEmpty() || mIsAnimating) {
+        // Surface的底层驱动模式分为两种，一种是使用图形加速支持的Surface，俗称显卡，另一种是使用CPU及内存模拟的Surface。
+        // 因此这里需要根据不同的模式，进行不同的操作
 		if (mAttachInfo.mHardwareRenderer != null && mAttachInfo.mHardwareRenderer.isEnabled()) {
+            // 硬件绘制
 			// Draw with hardware renderer.
 			mIsAnimating = false;
 			boolean invalidateRoot = false;
@@ -1023,7 +1062,7 @@ private void draw(boolean fullRedrawNeeded) {
 				return;
 			}
 			
-			// draw的部分在这里。。。内部会用canvas去画
+			// 软件绘制
 			if (!drawSoftware(surface, mAttachInfo, xOffset, yOffset, scalingRequired, dirty)) {
 				return;
 			}
@@ -1032,6 +1071,7 @@ private void draw(boolean fullRedrawNeeded) {
 
 	if (animating) {
 		mFullRedrawNeeded = true;
+        // 动画就是让画面动起来，如果正在动画过程中，则需要再次发起一个重绘命令，以便接着绘制，直到滚动结束。
 		scheduleTraversals();
 	}
 }
@@ -1039,6 +1079,7 @@ private void draw(boolean fullRedrawNeeded) {
 我们看一下`drawSoftware`方法： 
 ```java
 /**
+ * 使用CPU的软件绘制方式
  * @return true if drawing was successful, false if an error occurred
  */
 private boolean drawSoftware(Surface surface, AttachInfo attachInfo, int xoff, int yoff,
@@ -1569,6 +1610,10 @@ private void performDraw() {
 一般情况下这两个的值是相同的，`getMeasureWidth()`方法在`measure()`过程结束后就可以获取到了，而`getWidth()`方法要在`layout()`过程结束后才能获取到。
 而且`getMeasureWidth()`的值是通过`setMeasuredDimension()`设置的，但是`getWidth()`的值是通过视图右边的坐标减去左边的坐标计算出来的。如果我们在`layout`的时候将宽高
 不传`getMeasureWidth`的值，那么这时候`getWidth()`与`getMeasuredWidth`的值就不会再相同了，当然一般也不会这么干...
+
+# MeasureSpec
+
+MeasureSpec是View类的一个静态内部类，用来说明如何测量这个类。MeasureSpec表示的是一个32位的整型值，它的高2位表示测量模式SpecMode，低30位表示某种测量模式下的规格大小SpecSize。MeasureSpec通过将SpecMode和SpecSize打包成一个int值来避免过多的内存分配。
 
 ---
 

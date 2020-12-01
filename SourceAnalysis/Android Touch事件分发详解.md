@@ -3,27 +3,35 @@ Android Touch事件分发详解
 
 先说一些基本的知识，方便后面分析源码时能更好理解。
 - 所有`Touch`事件都被封装成`MotionEvent`对象，包括`Touch`的位置、历史记录、第几个手指等.
-
 - 事件类型分为`ACTION_DOWN`,`ACTION_UP`,`ACTION_MOVE`,`ACTION_POINTER_DOWN`,`ACTION_POINTER_UP`,`ACTION_CANCEL`, 每个
 一个完整的事件以`ACTION_DOWN`开始`ACTION_UP`结束，并且`ACTION_CANCEL`只能由代码引起.一般对于`CANCEL`的处理和`UP`的相同。
 `CANCEL`的一个简单例子：手指在移动的过程中突然移动到了边界外，那么这时`ACTION_UP`事件了，所以这是的`CANCEL`和`UP`的处理是一致的。
-
-- 事件的处理分别为`dispatchTouchEveent()`分发事件(`TextView`等这种最小的`View`中不会有该方式)、`onInterceptTouchEvent()`拦截事件(`ViewGroup`中拦截事件)、`onTouchEvent()`消费事件.
-
+- 事件的处理分别为`dispatchTouchEveent()`分发事件(`TextView`等这种最小的`View`中不会有该方式)、`onInterceptTouchEvent()`拦截事件(`ViewGroup`中拦截事件)、`onTouchEvent()`消费事件.这些方法的返回值如果是true表示事件被当前视图消费掉。
 - 事件从`Activity.dispatchTouchEveent()`开始传递，只要没有停止拦截，就会从最上层(`ViewGroup`)开始一直往下传递，子`View`通过`onTouchEvent()`消费事件。(隧道式向下分发).
-
-- 如果时间从上往下一直传递到最底层的子`View`，但是该`View`没有消费该事件，那么该事件会反序网上传递(从该`View`传递给自己的`ViewGroup`，然后再传给更上层的`ViewGroup`直至传递给`Activity.onTouchEvent()`).
+- 如果时间从上往下一直传递到最底层的子`View`，但是该`View`没有消费该事件(不是clickable或longclickable)，那么该事件会反序网上传递(从该`View`传递给自己的`ViewGroup`，然后再传给更上层的`ViewGroup`直至传递给`Activity.onTouchEvent()`).
 (冒泡式向上处理).
-
 - 如果`View`没有消费`ACTION_DOWN`事件，之后其他的`MOVE`、`UP`等事件都不会传递过来.
-
 - 事件由父`View(ViewGroup)`传递给子`View`,`ViewGroup`可以通过`onInterceptTouchEvent()`方法对事件进行拦截，停止其往下传递，如果拦截(返回`true`)后该事件
 会直接走到该`ViewGroup`中的`onTouchEvent()`中，不会再往下传递给子`View`.如果从`DOWN`开始，之后的`MOVE`、`UP`都会直接在该`ViewGroup.onTouchEvent()`中进行处理。
 如果子`View`之前在处理某个事件，但是后续被`ViewGroup`拦截，那么子`View`会接收到`ACTION_CANCEL`.
-
-- `OnTouchListener`优先于`onTouchEvent()`对事件进行消费。
-
+- `OnTouchListener`优先于`onTouchEvent()`对事件进行消费，而`onTouchEvent()`又优先于`onCickListener.onClick()`。
 - `TouchTarget`是保存手指点击区域属性的一个类，手指的所有移动过程都会被它记录下来, 包含被`touch`的`View`。  
+- ViewGroup默认不拦截任何事件，返回false。
+- View的onTouchEvent默认都会消费事件，返回true，除非它是不可点击的(clickable和longclickable都为false)，View的longClickable默认都是false，clickable对于Button等为true，而TextView等为false。
+- View的enable属性不影响onTouchEvent的默认返回值。
+- 通过requestDisallowInterceptTouchEvent方法可以在子元素中干预父元素的事件分发过程，但是ACTION_DOWN事件除外。
+
+在Android系统中，拥有事件传递处理能力的类有以下三种: 
+
+- Activity：拥有分发和消费两个方法。
+- ViewGroup：拥有分发、拦截和消费三个方法。
+- View：拥有分发、消费两个方法。
+
+
+
+对触摸屏进行操作时，Linux就会收到相应的硬件中断，然后将中断加工成原始的输入事件并写入相应的设备节点中。而Android输入系统所做的事情概括起来说就是监控这些设备节点，当某个设备节点有数据可读时，将数据读出并进行一系列的翻译加工，然后在所有的窗口中找到合适的事件接收者，并派发给它。当点击事件产生后，事件会传递给当前的Activity，由Activity中的PhoneWindow处理，PhoneWindow再把事件处理工作交给DecorView，之后再由DecorView将事件处理工作交给ViewGroup。
+
+
 
 废话不多说，直接上源码，源码妥妥的是最新版5.0：
 我们先从`Activity.dispatchTouchEveent()`说起：
@@ -43,9 +51,11 @@ public boolean dispatchTouchEvent(MotionEvent ev) {
 	if (ev.getAction() == MotionEvent.ACTION_DOWN) {
 		onUserInteraction();
 	}
+    // 首先交给本Activity对应的Window来进行分发，如果分发了，就返回true，事件循环结束
 	if (getWindow().superDispatchTouchEvent(ev)) {
 		return true;
 	}
+    // 如果window返回了false，就意味着所有view的ontouchevent都返回了false，那么只能是Activity来决定消费不消费
 	return onTouchEvent(ev);
 }
 ```
@@ -97,8 +107,9 @@ private final class DecorView extends FrameLayout implements RootViewSurfaceTake
 	...
 }
 ```
-它集成子`FrameLayout`所有很多时候我们在用布局工具查看的时候发现`Activity`的布局`FrameLayout`的。就是这个原因。       
+它继承自`FrameLayout`所有很多时候我们在用布局工具查看的时候发现`Activity`的布局`FrameLayout`的。就是这个原因。       
 好了，我们接着看`DecorView`中的`superDispatchTouchEvent()`方法。 
+
 ```java
 public boolean superDispatchTouchEvent(MotionEvent event) {
 	return super.dispatchTouchEvent(event);
@@ -134,6 +145,7 @@ public boolean dispatchTouchEvent(MotionEvent ev) {
 			// The framework may have dropped the up or cancel event for the previous gesture
 			// due to an app switch, ANR, or some other state change.
 			cancelAndClearTouchTargets(ev);
+            // 重置FLAG_DISALLOW_INTERCEPT
 			resetTouchState();
 			// 如果是`Down`，那么`mFirstTouchTarget`到这里肯定是`null`.因为是新一系列手势的开始。
 			// `mFirstTouchTarget`是处理第一个事件的目标。
@@ -142,10 +154,12 @@ public boolean dispatchTouchEvent(MotionEvent ev) {
 		// 检查是否拦截该事件(如果`onInterceptTouchEvent()`返回true就拦截该事件)
 		// Check for interception.
 		final boolean intercepted;
+        // 当事件由ViewGroup的子元素成功处理时，mFirstTouchTarget会被赋值并指向子元素，反之被ViewGroup拦截时，mFirstTouchTarget则为null
 		if (actionMasked == MotionEvent.ACTION_DOWN
 				|| mFirstTouchTarget != null) {
 			// 标记事件不允许被拦截， 默认是`false`， 该值可以通过`requestDisallowInterceptTouchEvent(true)`方法来设置，
-			// 通知父`View`不要拦截该`View`上的事件。
+			// 通知父`View`不要拦截该`View`上的事件。FLG_DISALLOW_INTERCEPT是在View中通过
+            // reqeustDisallowInterceptTouchEvent来设置
 			final boolean disallowIntercept = (mGroupFlags & FLAG_DISALLOW_INTERCEPT) != 0;
 			if (!disallowIntercept) {
 				// 判断该`ViewGroup`是否要拦截该事件。`onInterceptTouchEvent()`方法默认返回`false`即不拦截。
@@ -339,7 +353,7 @@ public boolean dispatchTouchEvent(MotionEvent ev) {
 	}
 	return handled;
 }
-```   
+```
 
 接下来还要说说`dispatchTransformedTouchEvent()`方法，虽然上面也说了大体功能，但是看一下源码能说明另一个问题：   
 ```java
@@ -511,8 +525,7 @@ public boolean onTouchEvent(MotionEvent event) {
 		if (event.getAction() == MotionEvent.ACTION_UP && (mPrivateFlags & PFLAG_PRESSED) != 0) {
 			setPressed(false);
 		}
-		// A disabled view that is clickable still consumes the touch
-		// events, it just doesn't respond to them.
+		// 只要view的clickable和long_clickable有一个是true，onTouchEvent就会返回true消耗这个事件。
 		return (((viewFlags & CLICKABLE) == CLICKABLE ||
 				(viewFlags & LONG_CLICKABLE) == LONG_CLICKABLE));
 	}
@@ -708,7 +721,7 @@ public boolean performClick() {
 讲到这里就明白了。`onTouchEvent()`中的`ACTION_UP`中会调用`performClick()`方法。
 
 
-到这里，就全部分析完了，这一块还是比较麻烦的，中间查了很多资料，有些地方自己可能也理解的不太对，如果有哪里理解的不对的地方，还请大家指出来。谢谢。
+到这里，就全部分析完了。
 
 ---
 
