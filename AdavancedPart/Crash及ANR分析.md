@@ -48,10 +48,23 @@ Native Crash
 
 
 
-## ANR
+# ANR分析
+
+Application Not Responding，字面意思就是应用无响应，稍加解释就是用户的一些操作无法从应用中获取反馈
+
+
+Android系统中的应用被Activity Manager及Window Manager两个系统服务监控着，Android系统会在如下情况展示出ANR的对话框: 
+- Service Timeout:比如前台服务在20s内未执行完成；后台服务超过200没有执行
+- BroadcastQueue Timeout：比如前台广播在10s内未执行完成，后台60s
+- ContentProvider Timeout：内容提供者,在publish过超时10s
+- InputDispatching Timeout: 输入事件分发超时5s，包括按键和触摸事件。
 
 
 
+ANR信息输出到traces.txt文件中
+
+traces.txt文件是一个ANR记录文件，用于开发人员调试，目录位于/data/anr中，无需root权限即可通过pull命令获取，下面的命令可以将traces.txt文件拷贝到当前目录下
+adb pull /data/anr .
 
 ANR排查流程
 1、Log获取
@@ -111,10 +124,7 @@ sCount：该线程被挂起的次数
 dsCount：该线程被调试器挂起的次数
 self：线程本身的地址
 
-作者：jsonchao
-链接：https://juejin.cn/post/6844903972587716621
-来源：掘金
-著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+
 
 
 

@@ -104,6 +104,16 @@ Android学习笔记
     - [6.文件管理][269]
     - [7.嵌入式系统][270]
     - [8.虚拟机][271]
+        - [Android内核][274]
+            - [1.Android进程间通信][275]
+            - [2.Android线程间通信之Handler消息机制][276]
+            - [3.Android Framework框架][277]
+            - [4.ActivityManagerService简介][278]
+            - [5.Android消息获取][279]
+            - [6.屏幕绘制基础][280]
+            - [7.View绘制原理][281]
+            - [8.WindowManagerService简介][282]
+            - [9.PackageManagerService简介][283]
 - [架构设计][272]
     - [1.架构简介][273]
 
@@ -183,7 +193,7 @@ Android学习笔记
     - [ApplicationId vs PackageName][77]
     - [ART与Dalvik][78]
     - [BroadcastReceiver安全问题][79]
-    - [Handler导致内存泄露分析][80]
+    - [Crash及ANR分析][80]
     - [Library项目中资源id使用case时报错][81]
     - [Mac下配置adb及Android命令][82]
     - [MaterialDesign使用][83]
@@ -378,7 +388,7 @@ Android学习笔记
 [77]: https://github.com/CharonChui/AndroidNote/blob/master/AdavancedPart/ApplicationId%20vs%20PackageName.md   "ApplicationId vs PackageName"
 [78]: https://github.com/CharonChui/AndroidNote/blob/master/AdavancedPart/ART%E4%B8%8EDalvik.md   "ART与Dalvik"
 [79]: https://github.com/CharonChui/AndroidNote/blob/master/AdavancedPart/BroadcastReceiver%E5%AE%89%E5%85%A8%E9%97%AE%E9%A2%98.md   "BroadcastReceiver安全问题"
-[80]: https://github.com/CharonChui/AndroidNote/blob/master/AdavancedPart/Handler%E5%AF%BC%E8%87%B4%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E5%88%86%E6%9E%90.md   "Handler导致内存泄露分析"
+[80]: https://github.com/CharonChui/AndroidNote/blob/master/AdavancedPart/Handler%E5%AF%BC%E8%87%B4%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E5%88%86%E6%9E%90.md   "Crash及ANR分析"
 [81]: https://github.com/CharonChui/AndroidNote/blob/master/AdavancedPart/Library%E9%A1%B9%E7%9B%AE%E4%B8%AD%E8%B5%84%E6%BA%90id%E4%BD%BF%E7%94%A8case%E6%97%B6%E6%8A%A5%E9%94%99.md   "Library项目中资源id使用case时报错"
 [82]: https://github.com/CharonChui/AndroidNote/blob/master/AdavancedPart/Mac%E4%B8%8B%E9%85%8D%E7%BD%AEadb%E5%8F%8AAndroid%E5%91%BD%E4%BB%A4.md   "Mac下配置adb及Android命令"
 [83]: https://github.com/CharonChui/AndroidNote/blob/master/AdavancedPart/MaterialDesign%E4%BD%BF%E7%94%A8.md   "MaterialDesign使用"
@@ -578,6 +588,19 @@ Android学习笔记
 [271]: https://github.com/CharonChui/AndroidNote/blob/master/OperatingSystem/8.%E8%99%9A%E6%8B%9F%E6%9C%BA.md "8.虚拟机"
 [272]: https://github.com/CharonChui/AndroidNote/tree/master/Architect "架构设计"
 [273]: https://github.com/CharonChui/AndroidNote/blob/master/Architect/1.%E6%9E%B6%E6%9E%84%E7%AE%80%E4%BB%8B.md "1.架构简介"
+[274]: https://github.com/CharonChui/AndroidNote/tree/master/OperatingSystem/AndroidKernal  "Android内核"
+[275]: https://github.com/CharonChui/AndroidNote/blob/master/OperatingSystem/AndroidKernal/1.Android%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1.md "1.Android进程间通信"
+[276]:  https://github.com/CharonChui/AndroidNote/blob/master/OperatingSystem/AndroidKernal/2.Android%E7%BA%BF%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1%E4%B9%8BHandler%E6%B6%88%E6%81%AF%E6%9C%BA%E5%88%B6.md "2.Android线程间通信之Handler消息机制"
+[277]: https://github.com/CharonChui/AndroidNote/blob/master/OperatingSystem/AndroidKernal/3.Android%20Framework%E6%A1%86%E6%9E%B6.md "3.Android Framework框架"
+[278]: https://github.com/CharonChui/AndroidNote/blob/master/OperatingSystem/AndroidKernal/4.ActivityManagerService%E7%AE%80%E4%BB%8B.md "4.ActivityManagerService简介"
+[279]: https://github.com/CharonChui/AndroidNote/blob/master/OperatingSystem/AndroidKernal/5.Android%E6%B6%88%E6%81%AF%E8%8E%B7%E5%8F%96.md "5.Android消息获取"
+[280]: https://github.com/CharonChui/AndroidNote/blob/master/OperatingSystem/AndroidKernal/6.%E5%B1%8F%E5%B9%95%E7%BB%98%E5%88%B6%E5%9F%BA%E7%A1%80.md "6.屏幕绘制基础"
+[281]: https://github.com/CharonChui/AndroidNote/blob/master/OperatingSystem/AndroidKernal/7.View%E7%BB%98%E5%88%B6%E5%8E%9F%E7%90%86.md "7.View绘制原理"
+[282]: https://github.com/CharonChui/AndroidNote/blob/master/OperatingSystem/AndroidKernal/8.WindowManagerService%E7%AE%80%E4%BB%8B.md "8.WindowManagerService简介"
+
+[283]: https://github.com/CharonChui/AndroidNote/blob/master/OperatingSystem/AndroidKernal/9.PackageManagerService%E7%AE%80%E4%BB%8B.md "9.PackageManagerService简介"
+
+
 
 
 Developed By
