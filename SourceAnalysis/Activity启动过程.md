@@ -1496,9 +1496,15 @@ final void startActivityLocked(ActivityRecord r, boolean newTask,
 
  在Android应用程序框架层中，是由ActivityManagerService组件负责为Android应用程序创建新的进程的，它本来也是运行在一个独立的进程之中，不过这个进程是在系统启动的过程中创建的。
  ActivityManagerService组件一般会在什么情况下会为应用程序创建一个新的进程呢？当系统决定要在一个新的进程中启动一个Activity或者Service时，它就会创建一个新的进程了，
- 然后在这个新的进程中启动这个Activity或者Service
+ 然后在这个新的进程中启动这个Activity或者Service。
 
-    
+![](https://raw.githubusercontent.com/CharonChui/Pictures/master/ams_start_activity.png)
+
+无论以什么方式发起一个Activity的启动流程，最终都会调用到AMS的startActivity的函数。而在AMS真正启动一个Activity之前，需要经过众多烦琐的判断和准备工作，这些工作在AMS内部都是由一些列以startActivity开头的函数来进行逐步处理的。
+
+![](https://raw.githubusercontent.com/CharonChui/Pictures/master/activity_start_binder.png)
+
+
 ---
 
 - 邮箱 ：charon.chui@gmail.com  
