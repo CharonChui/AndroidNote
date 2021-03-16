@@ -24,6 +24,7 @@ Android学习笔记
     - [ListView源码分析][8]
     - [VideoView源码分析][9]
     - [View绘制过程详解][10]
+    - [LeakCanary源码分析][284]
     - [网络部分][11]
         - [HttpURLConnection详解][12]
         - [HttpURLConnection与HttpClient][13]
@@ -601,7 +602,7 @@ Android学习笔记
 
 [283]: https://github.com/CharonChui/AndroidNote/blob/master/OperatingSystem/AndroidKernal/9.PackageManagerService%E7%AE%80%E4%BB%8B.md "9.PackageManagerService简介"
 
-
+[ 284 ]: https://github.com/CharonChui/AndroidNote/blob/master/SourceAnalysis/LeakCanary%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90.md. "LeakCanary源码分析"
 
 
 Developed By
