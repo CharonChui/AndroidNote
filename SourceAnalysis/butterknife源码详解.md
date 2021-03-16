@@ -261,7 +261,7 @@ private Map<TypeElement, BindingClass> findAndParseTargets(RoundEnvironment env)
     return targetClassMap;
   }
 ```
- 
+
 继续看一下`parseBindView()`方法:   
 ```java
 private void parseBindView(Element element, Map<TypeElement, BindingClass> targetClassMap,
@@ -484,7 +484,7 @@ static final Map<Class<?>, ViewBinder<Object>> BINDERS = new LinkedHashMap<>();
 
 那`$_ViewBinder`类里面都是什么内容呢？ 我们去看一下该类的代码，但是它生成的代码在哪里呢？
 ![image](https://github.com/CharonChui/Pictures/blob/master/butterknife_apt_genierate_code.png?raw=true)
-   
+
 
 开始看一下`SimpleActivity_ViewBinder.bind()`方法:      
 ```java
@@ -565,7 +565,7 @@ public class SimpleActivity_ViewBinding<T extends SimpleActivity> implements Unb
 }
 ```
 可以看到他内部会通过`findViewByid()`等来找到对应的`View`，然后将其赋值给`target.xxxx`，所以这样就相当于把所有的控件以及事件都给初始化了，以后就可以直接使用了，通过这里也可以看到我们在使用注解的时候不要把控件或者方法声明为`private`的。   
- 
+
 
 
 总结一下:      
