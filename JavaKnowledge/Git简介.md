@@ -91,7 +91,7 @@ git push  // 把所有文件从本地仓库推送进远程仓库
 ```
 
 先上一张图             
-![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/git.jpg)                  
+![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/git.png)                  
 图中的`index`部分就是暂存区           
 
 - 安装好git后我们要先配置一下。以便`git`跟踪。           
@@ -99,7 +99,7 @@ git push  // 把所有文件从本地仓库推送进远程仓库
     ```
     git config --global user.name "xxx"            
     git config --global user.email "xxx@xxx.com"
-    ```          
+    ```
     上面修改后可以使用`cat ~/.gitconfig`查看                      
     如果指向修改仓库中的用户名时可以不加`--global`，这样可以用`cat .git/config`来查看             
     `git config --list`来查看所有的配置。   
@@ -135,7 +135,6 @@ git push  // 把所有文件从本地仓库推送进远程仓库
     简单用法:    
     `git cherry-pick <commit id>`
 
-    
 - `git status`查看当前仓库的状态和信息，会提示哪些内容做了改变已经当前所在的分支。              
 
 - `git diff`                 
@@ -172,7 +171,7 @@ git push  // 把所有文件从本地仓库推送进远程仓库
     - `–after` ——显示某个日期之后发生的提交
     - `–before` ——显示发生某个日期之前的提交
 
-   
+
 - `git reflog`                
     可以查看所有操作记录包括`commit`和`reset`操作以及删除的`commit`记录
 
@@ -249,7 +248,7 @@ git push  // 把所有文件从本地仓库推送进远程仓库
     ```
     git reset   // git reset 只是把修改退回到了git add .之前的状态，也就是让文件还处于已修改未暂存的状态
     git checkout .   // 上面让文件处于已修改未暂存的状态，还要执行git checkout .来撤销工作区的状态
-    ```    
+    ```
     或`git reset --hard`
 
     上面两个例子中都使用了`git reset --hard`这个命令也可以完成，这个命令可以一步到位的把你的修改完全恢复到本地仓库的未修改的状态。     
@@ -473,5 +472,5 @@ $ git log --graph --pretty=oneline --abbrev-commit
 
 
 
-    
+​    
 

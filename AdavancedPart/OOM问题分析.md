@@ -5,6 +5,19 @@ OOM问题分析
 
 OOM(OutOfMemoryError)，最近线上版本出现了大量线程OOM的crash，尤其是华为Android 9.0系统的手机，占总OOM量的85%左右。
 
+
+
+## 内存指标概念
+
+
+
+- USS(Unique Set Size): 物理内存，进程独占的内存
+- PSS(Proportional Set Size): 物理内存，PSS = USS + 按比例包含共享库
+- RSS(Resident Set Size): 物理内存，RSS = USS + 包含共享库
+- VSS(Virtual Set Size): 虚拟内存，VSS = RSS + 未分配实际物理内存
+
+
+
 ### OOM分类
 
 #### [XXXClassName] of length XXX would overflow“是系统限制String/Array的长度所致，这种情况比较少。
@@ -761,7 +774,7 @@ nonvoluntary_ctxt_switches:     328
 ```
 当线程数（可以在/proc/pid/status 中的threads项实时查看）超过/proc/sys/kernel/threads-max 中规定的上限时产生 OOM 崩溃。
 ```
-   
+
 ## 定位验证方法:  
 
 Thread.UncaughtExceptionHandler捕获到OutOfMemoryError时记录/proc/pid目录下的如下信息:  
