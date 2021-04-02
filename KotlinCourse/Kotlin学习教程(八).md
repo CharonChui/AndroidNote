@@ -4,6 +4,8 @@ Kotlin学习教程(八)
 `Kotlin`协程
 ---
 
+Kotlin引入了协程（Coroutine）来支持更好的异步操作，利用它我们可以避免在异步编程中使用大量的回调，同时相比传统多线程技术，它
+
 一些`API`启动长时间运行的操作(例如网络`IO`、文件`IO`、`CPU`或`GPU`密集型任务等)，并要求调用者阻塞直到它们完成。协程提供了一种避免阻塞线程
 并用更廉价、更可控的操作替代线程阻塞的方法:协程挂起。     
 协程通过将复杂性放入库来简化异步编程。程序的逻辑可以在协程中顺序地表达，而底层库会为我们解决其异步性。该库可以将用户代码的相关部分包装为回调、
@@ -421,130 +423,31 @@ class Group<T>(val name: String) {
 
 
 
-常用操作符及函数
----
+### Any
 
-#### `let`操作符  
+我们都知道，Java并不能在真正意义上被称为一门“ 纯面向对象”语言，因为它的原始类型(如int)的值与函数等并不能被视作对象。
 
-如果对象的值不为空，则允许执行这个方法。返回值是函数里面最后一行，或者指定`return`
-```kotlin
-private var test: String? = null
+但是Kotlin不同，在Kotlin的类型系统中，并不区分原始类型（基本数据类型）和包装类型，我们使用的始终是同一个类型。虽然从严格意义上，我们不能说Kotlin是一门纯面向对象的语言，但它显然比Java有更纯的设计。
 
-private fun switchFragment(position: Int) {
-    test?.let {
-        LogUtil.e("@@@", "test is not null")
-    }
-}    
-```
 
-说到可能有人会觉得没什么用，用`if`判断下是不是空不就完了.
-```kotlin
-private var test: String? = null
 
-private fun switchFragment(position: Int) {
-//        test?.let {
-//            LogUtil.e("@@@", "test is null")
-//        }
+#### Any：非空类型的跟类型
 
-    if (test == null) {
-        LogUtil.e("@@@", "test is null")
-    } else {
-        LogUtil.e("@@@", "test is not null ${test}")
-        check(test) // 报错
-    }
-}    
-```
-但是会报错:`Smart cast to 'String' is impossible, beacuase 'test' is a mutable property that could have been changed by this time`
+与Object作为Java类层级结构的顶层类似，Any类型是Kotlin中所有非空类型（如String、Int）的超类，如:  
 
-#### `sNullOrEmpty | isNullOrBlank`
+![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/kotlin_any.png?raw=true)
+
+与Java不同的是，Kotlin不区分“原始类型”(primitive type)和其他的类型，他们都是同一类型层级结构的一部分。 如果定义了一个没有指定父类型的类型，则该类型将是Any的直接子类型。如:  
 
 ```kotlin
-public inline fun CharSequence?.isNullOrEmpty(): Boolean = this == null || this.length == 0
-
-public inline fun CharSequence?.isNullOrBlank(): Boolean = this == null || this.isBlank()
-
-// If we do not care about the possibility of only spaces...
-if (number.isNullOrEmpty()) {
-    // alert the user to fill in their number!
-}
-
-// when we need to block the user from inputting only spaces
-if (name.isNullOrBlank()) {
-    // alert the user to fill in their name!
-}
+class Animal(val weight: Double)
 ```
 
-#### `with`函数
+#### Any?：所有类型的根类型
 
-`with`是一个非常有用的函数，它包含在`Kotlin`的标准库中。它接收一个对象和一个扩展函数作为它的参数，然后使这个对象扩展这个函数。
-这表示所有我们在括号中编写的代码都是作为对象（第一个参数）的一个扩展函数，我们可以就像作为`this`一样使用所有它的`public`方法和属性。
-当我们针对同一个对象做很多操作的时候这个非常有利于简化代码。
+如果说Any是所有非空类型的根类型，那么Any?才是所有类型（可空和非空类型）的根类型。这也就是说?Any?是?Any的父类型。 
 
-```kotlin
-fun testWith() {
-    with(ArrayList<String>()) {
-        add("testWith")
-        add("testWith")
-        add("testWith")
-        println("this = " + this)
-    }
-}
-// 运行结果
-// this = [testWith, testWith, testWith]
-```
 
-#### `repeat`函数
-
-`repeat`函数是一个单独的函数，定义如下:     
-```kotlin
-/**
- * Executes the given function [action] specified number of [times].
- *
- * A zero-based index of current iteration is passed as a parameter to [action].
- */
-@kotlin.internal.InlineOnly
-public inline fun repeat(times: Int, action: (Int) -> Unit) {
-    contract { callsInPlace(action) }
-
-    for (index in 0..times - 1) {
-        action(index)
-    }
-}
-```
-通过代码很容易理解，就是循环执行多少次`block`中内容。
-```kotlin
-fun main(args: Array<String>) {
-    repeat(3) {
-        println("Hello world")
-    }
-}
-```
-运行结果是:    
-```kotlin
-Hello world
-Hello world
-Hello world
-```
-
-#### `apply`函数
-
-`apply`函数是这样的，调用某对象的`apply`函数，在函数范围内，可以任意调用该对象的任意方法，并返回该对象
-```kotlin
-fun testApply() {
-    ArrayList<String>().apply {
-        add("testApply")
-        add("testApply")
-        add("testApply")
-        println("this = " + this)
-    }.let { println(it) }
-}
-
-// 运行结果
-// this = [testApply, testApply, testApply]
-// [testApply, testApply, testApply]
-```
-
-`run`函数和`apply`函数很像，只不过run函数是使用最后一行的返回，apply返回当前自己的对象。
 
 
 [上一篇:Kotlin学习教程(七)](https://github.com/CharonChui/AndroidNote/blob/master/KotlinCourse/Kotlin%E5%AD%A6%E4%B9%A0%E6%95%99%E7%A8%8B(%E4%B8%83).md)         

@@ -170,6 +170,14 @@ class MyActivity : Activity() {
 ```
 `textView`是对`Activity`的一项扩展属性，与在`activity_main.xml`中的声明具有同样类型。
 
+这里，你肯定会想，虽然省略了R.id.几个字符，但是引入是否会造成性能问题？ 值得引入、使用 kotlin-android-extensions吗？如果我们对其反编译，就可以看到对应Java代码的实现，在第一次使用空间的时候，会在缓存集合中进行查找，有就直接使用，没有就通过findViewById进行查找，并添加到缓存的集合中。其还提供了$clearFindViewByIdCache()方法用于清除缓存，在我们想要彻底替换界面控件时可以使用。
+
+在Fragment的onDestroyView()方法中默认调用了$clearFindViewByIdCache()清除缓存，而Activity没有。
+
+所以我们并没有完全离开findViewById，只是Kotlin的扩展插件利用缓存的方式让我们开发更方便、更快捷。
+
+
+
 
 ### 网络请求   
 
