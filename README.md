@@ -144,16 +144,16 @@ Android学习笔记
     - [Icon制作][223]
 
 - [Kotlin学习][48]
-    - [Kotlin学习教程(一)][180]
-    - [Kotlin学习教程(二)][181]
-    - [Kotlin学习教程(三)][182]
-    - [Kotlin学习教程(四)][183]
-    - [Kotlin学习教程(五)][184]
-    - [Kotlin学习教程(六)][185]
-    - [Kotlin学习教程(七)][186]
-    - [Kotlin学习教程(八)][187]
-    - [Kotlin学习教程(九)][188]
-    - [Kotlin学习教程(十)][197]
+    - [1.Kotlin_简介&变量&类&接口][180]
+    - [2.Kotlin_高阶函数&Lambda&内联函数][181]
+    - [3.Kotlin_数字&字符串&数组&集合][182]
+    - [4.Kotlin_表达式&关键字][183]
+    - [5.Kotlin_内部类&密封类&枚举&委托][184]
+    - [6.Kotlin_多继承问题][185]
+    - [7.Kotlin_注解&反射&扩展][186]
+    - [8.Kotlin_协程][187]
+    - [9.Kotlin_androidktx][188]
+    - [10.Kotlin_设计模式][197]
 
 
 
@@ -492,15 +492,15 @@ Android学习笔记
 [179]: https://github.com/CharonChui/AndroidNote/blob/master/BasicKnowledge/XmlPullParser.md   "XmlPullParser"
 
 
-[180]: https://github.com/CharonChui/AndroidNote/blob/master/KotlinCourse/Kotlin%E5%AD%A6%E4%B9%A0%E6%95%99%E7%A8%8B(%E4%B8%80).md "Kotlin学习教程(一)"
-[181]: https://github.com/CharonChui/AndroidNote/blob/master/KotlinCourse/Kotlin%E5%AD%A6%E4%B9%A0%E6%95%99%E7%A8%8B(%E4%BA%8C).md "Kotlin学习教程(二)"
-[182]: https://github.com/CharonChui/AndroidNote/blob/master/KotlinCourse/Kotlin%E5%AD%A6%E4%B9%A0%E6%95%99%E7%A8%8B(%E4%B8%89).md "Kotlin学习教程(三)"
-[183]: https://github.com/CharonChui/AndroidNote/blob/master/KotlinCourse/Kotlin%E5%AD%A6%E4%B9%A0%E6%95%99%E7%A8%8B(%E5%9B%9B).md "Kotlin学习教程(四)"
-[184]: https://github.com/CharonChui/AndroidNote/blob/master/KotlinCourse/Kotlin%E5%AD%A6%E4%B9%A0%E6%95%99%E7%A8%8B(%E4%BA%94).md "Kotlin学习教程(五)"
-[185]: https://github.com/CharonChui/AndroidNote/blob/master/KotlinCourse/Kotlin%E5%AD%A6%E4%B9%A0%E6%95%99%E7%A8%8B(%E5%85%AD).md "Kotlin学习教程(六)"
-[186]: https://github.com/CharonChui/AndroidNote/blob/master/KotlinCourse/Kotlin%E5%AD%A6%E4%B9%A0%E6%95%99%E7%A8%8B(%E4%B8%83).md "Kotlin学习教程(七)"
-[187]: https://github.com/CharonChui/AndroidNote/blob/master/KotlinCourse/Kotlin%E5%AD%A6%E4%B9%A0%E6%95%99%E7%A8%8B(%E5%85%AB).md "Kotlin学习教程(八)"
-[188]: https://github.com/CharonChui/AndroidNote/blob/master/KotlinCourse/Kotlin%E5%AD%A6%E4%B9%A0%E6%95%99%E7%A8%8B(%E4%B9%9D).md "Kotlin学习教程(九)"
+[180]: https://github.com/CharonChui/AndroidNote/blob/master/KotlinCourse/1.Kotlin_%E7%AE%80%E4%BB%8B%26%E5%8F%98%E9%87%8F%26%E7%B1%BB%26%E6%8E%A5%E5%8F%A3.md "1.Kotlin_简介&变量&类&接口"
+[181]: https://github.com/CharonChui/AndroidNote/blob/master/KotlinCourse/2.Kotlin_%E9%AB%98%E9%98%B6%E5%87%BD%E6%95%B0%26Lambda%26%E5%86%85%E8%81%94%E5%87%BD%E6%95%B0.md "2.Kotlin_高阶函数&Lambda&内联函数.md"
+[182]: https://github.com/CharonChui/AndroidNote/blob/master/KotlinCourse/3.Kotlin_%E6%95%B0%E5%AD%97%26%E5%AD%97%E7%AC%A6%E4%B8%B2%26%E6%95%B0%E7%BB%84%26%E9%9B%86%E5%90%88.md "3.Kotlin_数字&字符串&数组&集合"
+[183]: https://github.com/CharonChui/AndroidNote/blob/master/KotlinCourse/4.Kotlin_%E8%A1%A8%E8%BE%BE%E5%BC%8F%26%E5%85%B3%E9%94%AE%E5%AD%97.md "4.Kotlin_表达式&关键字"
+[184]: https://github.com/CharonChui/AndroidNote/blob/master/KotlinCourse/5.Kotlin_%E5%86%85%E9%83%A8%E7%B1%BB%26%E5%AF%86%E5%B0%81%E7%B1%BB%26%E6%9E%9A%E4%B8%BE%26%E5%A7%94%E6%89%98.md "5.Kotlin_内部类&密封类&枚举&委托"
+[185]: https://github.com/CharonChui/AndroidNote/blob/master/KotlinCourse/6.Kotlin_%E5%A4%9A%E7%BB%A7%E6%89%BF%E9%97%AE%E9%A2%98.md "6.Kotlin_多继承问题"
+[186]: https://github.com/CharonChui/AndroidNote/blob/master/KotlinCourse/7.Kotlin_%E6%B3%A8%E8%A7%A3%26%E5%8F%8D%E5%B0%84%26%E6%89%A9%E5%B1%95.md "7.Kotlin_注解&反射&扩展"
+[187]: https://github.com/CharonChui/AndroidNote/blob/master/KotlinCourse/8.Kotlin_%E5%8D%8F%E7%A8%8B.md "8.Kotlin_协程"
+[188]: https://github.com/CharonChui/AndroidNote/blob/master/KotlinCourse/9.Kotlin_androidktx.md "9.Kotlin_androidktx"
 [189]: https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledge/%E5%85%AB%E7%A7%8D%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.md "八种排序算法"
 [190]: https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledge/%E7%BA%BF%E7%A8%8B%E6%B1%A0%E7%AE%80%E4%BB%8B.md "线程池简介"
 [191]: https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledge/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F.md "设计模式"
@@ -509,7 +509,7 @@ Android学习笔记
 [194]: https://github.com/CharonChui/AndroidNote/blob/master/AdavancedPart/ConstraintLaayout%E7%AE%80%E4%BB%8B.md "ConstraintLaayout简介"
 [195]: https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledge/Http%E4%B8%8EHttps%E7%9A%84%E5%8C%BA%E5%88%AB.md "Http与Https的区别"
 [196]: https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledge/Top-K%E9%97%AE%E9%A2%98.md "Top-K问题"
-[197]: https://github.com/CharonChui/AndroidNote/blob/master/KotlinCourse/Kotlin%E5%AD%A6%E4%B9%A0%E6%95%99%E7%A8%8B(%E5%8D%81).md "Kotlin学习教程(十)"
+[197]: https://github.com/CharonChui/AndroidNote/blob/master/KotlinCourse/10.Kotlin_%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F.md "10.Kotlin_设计模式"
 [198]: https://github.com/CharonChui/AndroidNote/blob/master/AppPublish/%E4%BD%BF%E7%94%A8Jenkins%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E5%8C%96%E6%89%93%E5%8C%85.md "使用Jenkins实现自动化打包"
 [199]: https://github.com/CharonChui/AndroidNote/tree/master/Dagger2 "Dagger2"
 [200]: https://github.com/CharonChui/AndroidNote/blob/master/Dagger2/1.Dagger2%E7%AE%80%E4%BB%8B(%E4%B8%80).md  "1.Dagger2简介(一).md"
