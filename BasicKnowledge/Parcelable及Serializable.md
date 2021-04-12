@@ -9,6 +9,8 @@ Parcelable及Serializable
 如`activity`间传输数据，而`Serializable`可将数据持久化方便保存，所以在需要保存或网络传输数据时选择
 `Serializable`，因为`android`不同版本`Parcelable`可能不同，所以不推荐使用`Parcelable`进行数据持久化。
 
+Parcelable不同于将对象进行序列化，Parcelable方式的实现原理是将一个完整的对象进行分解，而分解后的每一部分都是Intent所支持的数据类型，这样也就实现传递对象的功能了。
+
 区别:    
 - Parcelable is faster than serializable interface
 - Parcelable interface takes more time for implemetation compared to serializable interface
