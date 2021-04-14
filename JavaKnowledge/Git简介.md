@@ -48,11 +48,7 @@ Git简介
 - 已提交`(committed)`
 - 已推送`(pushed)`
 
-
 已提交表示数据已经安全的保存在本地数据库中。 已修改表示修改了文件，但还没保存到数据库中。 已暂存表示对一个已修改文件的当前版本做了标记，使之包含在下次提交的快照中。
-
-![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/git_list.png)                
-
 
 `Git`仓库目录是`Git`用来保存项目的元数据和对象数据库的地方。这是`Git`中最重要的部分，从其它计算机克隆仓库时，拷贝的就是这里的数据。
 工作目录是对项目的某个版本独立提取出来的内容。这些从`Git`仓库的压缩数据库中提取出来的文件，放在磁盘上供你使用或修改。
@@ -94,6 +90,40 @@ git push  // 把所有文件从本地仓库推送进远程仓库
 ![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/git.png)                  
 图中的`index`部分就是暂存区           
 
+## 三棵树
+
+
+
+Git 作为一个系统，是以它的一般操作来管理并操纵这三棵树的：
+
+| 树                | 用途                                 |
+| :---------------- | :----------------------------------- |
+| HEAD              | 上一次提交的快照，下一次提交的父结点 |
+| Index             | 预期的下一次提交的快照               |
+| Working Directory | 沙盒                                 |
+
+#### HEAD
+
+HEAD 是当前分支引用的指针，它总是指向该分支上的最后一次提交。 这表示 HEAD 将是下一次提交的父结点。 通常，理解 HEAD 的最简方式，就是将它看做 **该分支上的最后一次提交** 的快照。
+
+#### 索引
+
+索引是你的 **预期的下一次提交**。 我们也会将这个概念引用为 Git 的“暂存区”，这就是当你运行 `git commit` 时 Git 看起来的样子。
+
+#### 工作目录
+
+最后，你就有了自己的 **工作目录**（通常也叫 **工作区**）。 另外两棵树以一种高效但并不直观的方式，将它们的内容存储在 `.git` 文件夹中。 工作目录会将它们解包为实际的文件以便编辑。 你可以把工作目录当做 **沙盒**。在你将修改提交到暂存区并记录到历史之前，可以随意更改。
+
+
+
+
+
+![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/git_list.png)                
+
+
+
+## 常用命令
+
 - 安装好git后我们要先配置一下。以便`git`跟踪。           
 
     ```
@@ -103,6 +133,7 @@ git push  // 把所有文件从本地仓库推送进远程仓库
     上面修改后可以使用`cat ~/.gitconfig`查看                      
     如果指向修改仓库中的用户名时可以不加`--global`，这样可以用`cat .git/config`来查看             
     `git config --list`来查看所有的配置。   
+    如果需要查看当前的user.name和user.email的值可以通过。`git config user.name`
     
 - 新建仓库     
     ```        
@@ -137,17 +168,20 @@ git push  // 把所有文件从本地仓库推送进远程仓库
 
 - `git status`查看当前仓库的状态和信息，会提示哪些内容做了改变已经当前所在的分支。              
 
-- `git diff`                 
-    `git diff`直接查看所有的区别                 
+- `git diff`
+    
+    ![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/git_diff.webp?raw=true)        
+    `git diff`直接查看当前修改未add(暂存staged)的差别
+    `git diff --staged`查看已add(到暂存区)的差别                  
     `git diff HEAD -- xx.txt`查看工作区与版本库最新版的差别。            
     
     - 首先如果我们只是本地修改了一个文件，但是还没有执行`git add .`之前，该如何查看有那些修改。这种情况下直接执行`git diff`就可以了。   
     - 那如果我们执行了`git add .`操作，然后你再执行`git diff`这时就会发现没有任何结果，这时因为`git diff`这个命令只是检查工作区和暂存区之间的差异。    
     如果我们要查看暂存区和本地仓库之间的差异就需要加一个参数使用`--staged`参数或者`--cached`，`git diff --cached`。这样再执行就可以看到暂存区和本地仓库之间的差异。     
     - 现在如果我们把修改使用`git commit`从暂存区提交到本地仓库，再看一下差异。这时候再执行`git diff --cached`就会发现没有任何差异。
-    如果我们行查看本地仓库和远程仓库的差异，就要换另一个参数，执行`git diff master origin/master`这样就可以看到差异了。 这里面`master`是本地的仓库，而`origin/master`是
+如果我们行查看本地仓库和远程仓库的差异，就要换另一个参数，执行`git diff master origin/master`这样就可以看到差异了。 这里面`master`是本地的仓库，而`origin/master`是
     远程仓库，因为默认都是在主分支上工作，所以两边都是`master`而`origin`代表远程。    
-
+    
 - `git push` 提交到远程仓库                        
     可以直接调用`git push`推送到当前分支         
     或者`git push origin master`推送到远程`master`分支         
@@ -163,14 +197,14 @@ git push  // 把所有文件从本地仓库推送进远程仓库
     git log --oneline --graph
     ```
     下面是常用的参数:   
-    - `–author=“Alex Kras”` ——只显示某个用户的提交任务
-    - `–name-only` ——只显示变更文件的名称
-    - `–oneline`——将提交信息压缩到一行显示
-    - `–graph` ——显示所有提交的依赖树
-    - `–reverse` ——按照逆序显示提交记录（最先提交的在最前面）
-    - `–after` ——显示某个日期之后发生的提交
-    - `–before` ——显示发生某个日期之前的提交
-
+    - `–-author=“Alex Kras”` ——只显示某个用户的提交任务
+    - `–-name-only` ——只显示变更文件的名称
+    - `–-oneline`——将提交信息压缩到一行显示
+    - `–-graph` ——显示所有提交的依赖树
+    - `–-reverse` ——按照逆序显示提交记录（最先提交的在最前面）
+    - `–-after` ——显示某个日期之后发生的提交
+    - `–-before` ——显示发生某个日期之前的提交
+    - `--grep` ——过滤内容
 
 - `git reflog`                
     可以查看所有操作记录包括`commit`和`reset`操作以及删除的`commit`记录
@@ -218,6 +252,51 @@ git push  // 把所有文件从本地仓库推送进远程仓库
     `git reset HEAD fileName`可以把用`git add`之后但是还没有`commit`之前暂存区中的修改撤销。          
     说到这里就说一个问题，如果你reset到某一个版本之后，发现弄错了，还想返回去，这时候用`git log`已经找不到之前的`commit id`了。那怎么办？这时候可以使用下面的命令来找。
 
+    先执行git log命令，将此时的Git仓库可视化
+    
+    ![img](https:////upload-images.jianshu.io/upload_images/14329037-fd317598a0b3efdd.png?imageMogr2/auto-orient/strip|imageView2/2/w/666/format/webp)
+    
+    三棵树的情况：
+    
+    ![img](https:////upload-images.jianshu.io/upload_images/14329037-8c56a66a32504a13.png?imageMogr2/auto-orient/strip|imageView2/2/w/655/format/webp)
+    
+    ### 回滚快照
+    
+    *注：快照即提交的版本，每个版本我们称之为一个快照。*
+    
+    现在我们利用 reset 命令回滚快照，并看看 Git 仓库和三棵树分别发生了什么。
+    
+    执行 git reset HEAD~ 命令：
+    
+    *注：HEAD 表示最新提交的快照，而 HEAD~ 表示 HEAD 的上一个快照，HEAD~~表示上上个快照，如果表示上10个快照，则可以用HEAD ~10*
+    
+    此时我们的快找回滚到了第二棵数（暂存区域）
+    
+    
+    
+    ![img](https:////upload-images.jianshu.io/upload_images/14329037-bf301ab8d5c02cf8.png?imageMogr2/auto-orient/strip|imageView2/2/w/665/format/webp)
+    
+    第一次执行reset后Git仓库
+    
+    ![img](https:////upload-images.jianshu.io/upload_images/14329037-f1a6a0b23de0ea39.png?imageMogr2/auto-orient/strip|imageView2/2/w/655/format/webp)
+    
+    第一次执行reset后三棵树
+    
+    git reset HEAD~ 命令其实是 git reset --mixed HEAD~ 的缩写， --mixed 选项是默认的。
+    
+    > **默认**
+    >  git reset HEAD~ 命令其实影响了两棵树：首先是移动 HEAD 的指向，将其指向上一个快照（HEAD~）；然后再将该位置的快照回滚到暂存区域。
+    >  **--soft选项**
+    >  git reset --soft HEAD~ 命令就相当于只移动 HEAD 的指向，但并不会将快照回滚到暂存区域。相当于撤消了上一次的提交（commit）。一不小心提交了，后悔了，那么你就执行 git reset --soft HEAD~ 命令即可（此时执行 git log 命令，也不会再看到已经撤消了的那个提交）。
+    >  **--hard选项**
+    >  reset 不仅移动 HEAD 的指向，将快照回滚动到暂存区域，它还将暂存区域的文件还原到工作目录。
+    
+    
+
+
+
+
+
 - `git checkout`撤销修改或者切换分支           
     `git checkout -- xx.txt`意思就是将`xx.txt`文件在工作区的修改全部撤销。可能会有两种情况:      
     
@@ -233,8 +312,9 @@ git push  // 把所有文件从本地仓库推送进远程仓库
     为什么分支的地方也是用`git checkout`这里撤销还是用它呢？他们的区别在于`--`，如果没有`--`那就是检出分支了。
     `git checkout origin/developer`  // 切换到orgin/developer分支   
 
+上面介绍了两个回退操作`git reset`和`git checkout`，这里就总结一下如何来对修改进行撤销操作:     
 
-上面介绍了`git reset`和`git checkout`，这里就总结一下如何来对修改进行撤销操作:     
+![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/git_reset_checkout.png?raw=true)        
 
 - 已经修改，但是并未执行`git add .`进行暂存        
     如果只是修改了本地文件，但是还没有执行`git add .`这时候我们的修改还是再工作区，并未进入暂存区，我们可以使用:`git checkouot .`或者`git reset --hard`来进行
@@ -332,8 +412,8 @@ git push  // 把所有文件从本地仓库推送进远程仓库
 
     // 重命名分支    
     `git branch -m new_branch wchar_support`
-
-
+    // 查看每一个分支的最后一次提交
+    `git branch -v`
 - `git merge`合并指定分支到当前分支                         
    `git merge devBranch`将`devBranch`分支合并到`master`。          
 
@@ -374,22 +454,24 @@ git push  // 把所有文件从本地仓库推送进远程仓库
 从这个图中能看到缓存区的存在，这就是为什么我们新加或者修改之后都要调用`git add`方法后再调用`git commit`。              
 其实我一直有点分不开`reset`和`checkout`的区别，从这个图里能明显看出来了：
 
-- 当执行`git reset HEAD`命令时，暂存区的目录树会被重写，会被`master`分支指向的目录树所替换，但是工作区不受影响。
-- 当执行`git checkout .`或`git checkout -- file`命令是，会用暂存区全部的文件或指定的文件替换工作区的文件。这个操作很危险，会清楚工作区中未添加到暂存区的改动。
-命令时，会用`HEAD`指向的`master`分支中的全部或部分文件替换暂存区和工作区中的文件。这个命令也是极度危险的。因为不但会清楚工作区中未提交的改动，也会清楚暂存区中未提交的改动。
-- `git reset HEAD <file>` 是在添加到暂存区后，撤出暂存区使用，他只会把文件撤出暂存区，但是你的修改还在，仍然在工作区。当然如果使用`git reset --hard HEAD`这样就完了，工作区所有的内容都会被远程仓库最新代码覆盖。
-- `git checkout -- xxx.txt`是用于修改后未添加到暂存区时使用(如果修改后添加到暂存区后就没效果了，必须要先`reset`撤销暂存区后再使用`checkout`)，这时候会把之前的修改覆盖掉。所以是危险的。
+- **取消暂存** 当执行`git reset HEAD`命令时，暂存区的目录树会被重写，会被`master`分支指向的目录树所替换，但是工作区不受影响。所以如果我们修改了一个问题，执行了add之后，还没有commit这时候想要取消add，可以执行git reset HEAD XXX
 
+- **撤销对文件的修改，将它还原成上次提交时的样子或者刚克隆完的样** 当执行`git checkout .`或`git checkout -- file`命令是，会用暂存区全部的文件或指定的文件替换工作区的文件。这个操作很危险，会清除工作区中未添加到暂存区的改动。
+  命令时，会用`HEAD`指向的`master`分支中的全部或部分文件替换暂存区和工作区中的文件。这个命令也是极度危险的。因为不但会清楚工作区中未提交的改动，也会清楚暂存区中未提交的改动。
+
+- `git reset HEAD <file>` 是在添加到暂存区后，撤出暂存区使用，他只会把文件撤出暂存区，但是你的修改还在，仍然在工作区。当然如果使用`git reset --hard HEAD`这样就完了，工作区所有的内容都会被远程仓库最新代码覆盖。
+
+- `git checkout -- xxx.txt`是用于修改后未添加到暂存区时使用(如果修改后添加到暂存区后就没效果了，必须要先`reset`撤销暂存区后再使用`checkout`)，这时候会把之前的修改覆盖掉。所以是危险的。 你对那个文件在本地的任何修改都会消失——Git 会用最近提交的版本覆盖掉它。 除非你确实清楚不想要对那个文件的本地修改了，否则请不要使用这个命令
 
 - 隐藏操作     
 
-    假设您正在为产品新的功能编写/实现代码，当正在编写代码时，突然出现软件客户端升级。这时，您必须将新编写的功能代码保留几个小时然后去处理升级的问题。在这段时间内不能提交代码，也不能丢弃您的代码更改。 所以需要一些临时等待一段时间，您可以存储部分更改，然后再提交它。
-    
+    假设您正在为产品新的功能编写/实现代码，当正在编写代码时，突i然出现软件客户端升级。这时，您必须将新编写的功能代码保留几个小时然后去处理升级的问题。在这段时间内不能提交代码，也不能丢弃您的代码更改。 所以需要一些临时等待一段时间，您可以存储部分更改，然后再提交它。
+
     在`Git`中，隐藏操作将使您能够修改跟踪文件，阶段更改，并将其保存在一系列未完成的更改中，并可以随时重新应用。
-    
+
     假设你现在在`a`分支上开发新版本内容，已经开发了一部分，但是还没有达到可以提交的程度。你需要切换到`b`分支进行另一个升级的开发。那么可以
     把当前工作的改变隐藏起来，要将一个新的存根推到堆栈上，运行`git stash`命令。   
-    
+
     ```shell
     $ git stash
     Saved working directory and index state WIP on master: ef07ab5 synchronized with the remote repository
@@ -403,17 +485,23 @@ git push  // 把所有文件从本地仓库推送进远程仓库
     
     nothing to commit, working directory clean
     ```
-    
+
     现在，可以安全地切换分支并在其他地方工作。通过使用`git stash list`命令来查看已存在更改的列表。
     ```shell
     $ git stash list
     stash@{0}: WIP on master: ef07ab5 synchronized with the remote repository
     ```
-    
+
     假设您已经解决了客户升级问题，想要重新开始新的功能的代码编写，查找上次没有写完成的代码，
     只需执行`git stash pop`命令即可从堆栈中删除更改并将其放置在当前工作目录中。
-    
+
     这样你之前隐藏的内容就会重新出现了，你可以继续开发了。    
+
+    当要记录工作目录和索引的当前状态，但想要返回到干净的工作目录时，则使用`git stash`。 该命令保存本地修改，并恢复工作目录以匹配`HEAD`提交。
+
+    这个命令所储藏的修改可以使用`git stash list`列出，使用`git stash show`进行检查，并使用`git stash apply`或`git stash apply stash@{2}`恢复(可能在不同的提交之上)。调用没有任何参数的`git stash`相当于`git stash save`
+
+    
 
 - Rebase操作
 
@@ -464,6 +552,18 @@ $ git log --graph --pretty=oneline --abbrev-commit
     git pull --rebase = git fetch + git rebase
     ```
     `git rebase`的过程中，有时会有`conflit`这时`Git`会停止`rebase`并让用户去解决冲突，解决完冲突后，用`git add`命令去更新这些内容，然后不用执行`git commit`，直接执行`git rebase --continue`这样`git`会继续`apply`余下的补丁。   
+
+
+
+
+
+
+
+## 参考
+
+[Git使用教程](https://www.jianshu.com/p/e57a4a2cf077)
+
+[Git官方文档](https://git-scm.com/book/zh/v2)
 
 ---
 
