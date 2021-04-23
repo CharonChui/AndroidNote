@@ -236,6 +236,8 @@ Android学习笔记
     - [volatile和Synchronized区别][109]
     - [Http与Https的区别][195]
     - [Top-K问题][196]
+    - [Java内存模型][285]
+    - [JVM架构][286]
 - [基础部分][54] 
     - [安全退出应用程序][110]
     - [病毒][111]
@@ -603,6 +605,8 @@ Android学习笔记
 [283]: https://github.com/CharonChui/AndroidNote/blob/master/OperatingSystem/AndroidKernal/9.PackageManagerService%E7%AE%80%E4%BB%8B.md "9.PackageManagerService简介"
 
 [ 284 ]: https://github.com/CharonChui/AndroidNote/blob/master/SourceAnalysis/LeakCanary%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90.md. "LeakCanary源码分析"
+[285]: https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledge/Java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B.md "Java内存模型"
+[286]: https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledge/JVM%E6%9E%B6%E6%9E%84.md "JVM架构"
 
 
 Developed By

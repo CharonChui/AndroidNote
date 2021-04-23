@@ -10,7 +10,7 @@ Java源代码会被JDK内置的Java编译器(javac)编译成称为字节码(即.
 
 我们大多数人都知道Java的上述故事，这里的问题是该过程中最重要的组成部分-JVM被当作一个黑匣子教给我们，它可以神奇地解释字节码并执行许多运行时活动，例如JIT（程序执行期间进行实时）编译和GC（垃圾收集）。
 
-![](https://raw.githubusercontent.com/CharonChui/Pictures/master/JVM_Archite    cture.png)
+![](https://raw.githubusercontent.com/CharonChui/Pictures/master/JVM_Architecture.png)
 
 ## Class Loader子系统
 
@@ -23,27 +23,7 @@ JVM驻留在内存(RAM)上。在执行过程中，会使用Class Loader子系统
     - 当字节码静态引用一个类时
     - 当字节码创建一个类对象时(例如: Person person = new Person("John"))
 
-    有3种类型的类加载器（与继承属性连接），它们遵循4个主要原则： 
-
-    - 可见性原则
-
-        该原则指出子类加载器可以看到父类加载器加载的类，但是父类加载器找不到子类加载器加载的类。
-
-    - 唯一性原则
-
-        该原则指出，父类加载的类不应再由子类加载器加载，并确保不会发生重复的类加载。
-
-    - 委托层次结构原则
-
-        为了满足上述2个原则，JVM遵循一个委托层次结构来为每个请求装入的类选择类加载器。首先从最低的子级别开始，Application Class Loader将接收到的类加载请求委托给Extension Class Loader，然后Extension Class Loader将该请求委托给Bootstrap Class Loader。如果在Bootstrap路径中找到了所请求的类，则将加载该类。否则，该请求将再次被转移回Extension Class Loader加载器中从该Loader的扩展路径或自定义指定的路径中查找类。如果它也失败，则请求将返回到Application Class Loader中从该Loader的System类路径中查找该类，并且如果Application Class Loader也未能加载所请求的类，则将获得运行时异常— java.lang.ClassNotFoundException。
-
-    - 无卸载原则
-
-        即使类加载器可以加载类，但是无法卸载已加载的类。替代卸载功能的是可以删除当前的类加载器，并创建一个新的类加载器。
-
-    ![](https://raw.githubusercontent.com/CharonChui/Pictures/master/java_class_loaders.png)
-
-    #### 类加载器类型
+    有3种类型的类加载器： 
 
     - Bootstrap Class Loader
 
@@ -61,9 +41,29 @@ JVM驻留在内存(RAM)上。在执行过程中，会使用Class Loader子系统
 
     每个类加载器都有自己的名称空间来保存已加载的类。当类加载器加载类时，它将基于存储在名称空间中的完全合格的类名称（FQCN：Fully Qualified Class Name）搜索该类，以检查该类是否已被加载。即使该类具有相同的FQCN但具有不同的名称空间，也将其视为不同的类。不同的名称空间意味着该类已由另一个类加载器加载。
 
+    它们遵循4个主要原则： 
+
+    - 可见性原则
+
+        该原则指出子类加载器可以看到父类加载器加载的类，但是父类加载器找不到子类加载器加载的类。
+
+    - 唯一性原则
+
+        该原则指出，父类加载的类不应再由子类加载器加载，并确保不会发生重复的类加载。
+
+    - 委托层次结构原则
+
+        为了满足上述2个原则，JVM遵循一个委托层次结构来为每个请求装入的类选择类加载器。首先从最低的子级别开始，Application Class Loader将接收到的类加载请求委托给Extension Class Loader，然后Extension Class Loader将该请求委托给Bootstrap Class Loader。如果在Bootstrap路径中找到了所请求的类，则将加载该类。否则，该请求将再次被转移回Extension Class Loader加载器中从该Loader的扩展路径或自定义指定的路径中查找类。如果它也失败，则请求将返回到Application Class Loader中从该Loader的System类路径中查找该类，并且如果Application Class Loader也未能加载所请求的类，则将获得运行时异常— java.lang.ClassNotFoundException。
+
+    - 无法卸载原则
+
+        即使类加载器可以加载类，但是无法卸载已加载的类。替代卸载功能的是可以删除当前的类加载器，并创建一个新的类加载器。
+
+    ![](https://raw.githubusercontent.com/CharonChui/Pictures/master/java_class_loaders.png)
+
 - 链接
 
-    在遵循以下属性的同时，链接涉及验证和准备已加载的类或接口，其直接超类和超接口以及其元素类型。
+    在遵循以下属性的同时，链接涉及验证和准备已加载的类或接口，其直接父类和实现的接口以及其元素类型。
 
     - 在链接一个类或接口之前，必须将其完全加载。
     - 在初始化类或接口之前，必须对其进行完全验证和准备（在下一步中）。
@@ -148,9 +148,7 @@ Hotspot虚拟机的对象头包括两部分信息，第一部分用于存储对�
 
 然后，对于每个已加载的.class文件，它都会按照java.lang包中的定义，恰好创建一个Class对象来表示堆内存中的文件。稍后，在我们的代码中，可以使用此Class对象读取类级别的信息（类名称，父名称，方法，变量信息，静态变量等）。
 
-
-
-TODO ... 具体可参考
+[具体可参考Java内存模型](https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledge/Java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B.md)
 
 
 
@@ -197,9 +195,7 @@ TODO ... 具体可参考
 
 ### Garbage Collector (GC)
 
-只要引用了一个对象，JVM就会认为它是活动的。一旦不再引用对象，因此应用程序代码无法访问该对象，则垃圾收集器将其删除并回收未使用的内存。通常，垃圾回收是在后台进行的，但是我们可以通过调用System.gc（）方法来触发垃圾回收（同样，无法保证执行。因此，请调用Thread.sleep（1000）并等待GC完成）。
-
-
+只要引用了一个对象，JVM就会认为它是活动的。一旦不再引用对象，因此应用程序代码无法访问该对象，则垃圾收集器将其删除并回收未使用的内存。通常，垃圾回收是在后台进行的，但是我们可以通过调用System.gc()方法来触发垃圾回收（同样，无法保证执行。因此，请调用Thread.sleep（1000）并等待GC完成）。[具体内存回收部分请看JVM垃圾回收机制](https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledge/JVM%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6.md)
 
 
 
@@ -209,13 +205,27 @@ TODO ... 具体可参考
 
 主应用程序线程是作为调用公共静态void main（String []）的一部分而创建的主线程，而所有其他应用程序线程都是由该主线程创建的。应用程序线程执行诸如执行以main（）方法开头的指令，在Heap区域中创建对象（如果它在任何方法逻辑中找到新关键字）之类的任务等。
 
-The major system threads are as follows.
+主要的系统线程有： 
 
-- **Compiler threads**: At runtime, compilation of bytecode to native code is undertaken by these threads.
-- **GC threads**: All the GC related activities are carried out by these threads.
-- **Periodic task thread**: The timer events (i.e. interrupts) to schedule execution of periodic operations are performed by this thread.
-- **Signal dispatcher thread**: This thread receives signals sent to the JVM process and handle them inside the JVM by calling the appropriate JVM methods.
-- **VM thread**: As a pre-condition, some operations need the JVM to arrive at a safe  point where modifications to the Heap area does no longer happen.  Examples for such scenarios are “stop-the-world” garbage collections,  thread stack dumps, thread suspension and biased locking revocation.  These operations can be performed on a special thread called VM thread.
+- Compiler threads
+
+    在运行时，这些线程将字节码编译为本地代码。
+
+- GC threads
+
+    所有与GC相关的活动均由这些线程执行。
+
+- Periodic task thread
+
+    计划周期性操作执行的计时器事件（即中断）由该线程执行。
+
+- Signal dispatcher thread
+
+    该线程接收发送到JVM进程的信号，并通过调用适当的JVM方法在JVM内部对其进行处理。
+
+- VM thread
+
+    前提条件是，某些操作需要JVM到达安全点才能执行，在该点不再进行对Heap区域的修改。这种情况的示例是“世界停止”垃圾回收，线程堆栈转储，线程挂起和有偏向的锁吊销。这些操作可以在称为VM线程的特殊线程上执行。
 
 
 
