@@ -192,7 +192,7 @@ Android学习笔记
     - [Android启动模式详解][75]
     - [Android卸载反馈][76]
     - [ApplicationId vs PackageName][77]
-    - [ART与Dalvik][78]
+    - [AndroidRuntime_ART与Dalvik][78]
     - [BroadcastReceiver安全问题][79]
     - [Crash及ANR分析][80]
     - [Library项目中资源id使用case时报错][81]
@@ -389,7 +389,7 @@ Android学习笔记
 [75]: https://github.com/CharonChui/AndroidNote/blob/master/AdavancedPart/Android%E5%90%AF%E5%8A%A8%E6%A8%A1%E5%BC%8F%E8%AF%A6%E8%A7%A3.md   "Android启动模式详解"
 [76]: https://github.com/CharonChui/AndroidNote/blob/master/AdavancedPart/Android%E5%8D%B8%E8%BD%BD%E5%8F%8D%E9%A6%88.md   "Android卸载反馈"
 [77]: https://github.com/CharonChui/AndroidNote/blob/master/AdavancedPart/ApplicationId%20vs%20PackageName.md   "ApplicationId vs PackageName"
-[78]: https://github.com/CharonChui/AndroidNote/blob/master/AdavancedPart/ART%E4%B8%8EDalvik.md   "ART与Dalvik"
+[78]: https://github.com/CharonChui/AndroidNote/blob/master/AdavancedPart/AndroidRuntime_ART%E4%B8%8EDalvik.md   "AndroidRuntime_ART与Dalvik"
 [79]: https://github.com/CharonChui/AndroidNote/blob/master/AdavancedPart/BroadcastReceiver%E5%AE%89%E5%85%A8%E9%97%AE%E9%A2%98.md   "BroadcastReceiver安全问题"
 [80]: https://github.com/CharonChui/AndroidNote/blob/master/AdavancedPart/Crash%E5%8F%8AANR%E5%88%86%E6%9E%90.md  "Crash及ANR分析"
 
