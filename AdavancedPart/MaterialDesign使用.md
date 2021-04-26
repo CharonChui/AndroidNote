@@ -1,13 +1,14 @@
 MaterialDesign使用
 ===
 
-- `Material Design`是`Google`在`2014`年的`I/O`大会上推出的全新设计语言。                        
+- [Material Design](https://material.io/components?platform=android)是`Google`在`2014`年的`I/O`大会上推出的全新设计语言。                        
 - `Material Design`是基于`Android 5.0``(API level 21)`的，兼容5.0以下的设备时需要使用版本号`v21.0.0`以上的                           
 `support v7`包中的`appcpmpat`，不过遗憾的是`support`包只支持`Material Design`的部分特性。                       
-使用`eclipse`或`Android Studio`进行开发时，直接在`Android SDK Manager`中将`Extras->Android Support Library`
-升级至最新版即可。
+为了更好的去使用，需要继承support.design包: 
+```
+implementation 'com.android.support:design:<version>'
+```
 
-下面我就简单讲解一下如何通过`support v7`包来使用`Material Design`进行开发。
 
 Material Design Theme
 ---
@@ -690,10 +691,11 @@ final NavigationView navigationView = (NavigationView) findViewById(R.id.navigat
 从名字可以看出，这个ViewGroup是用来协调它的子View的，CoordinatorLayout 作为一个 **“super-powered FrameLayout”**，主要有以下两个作用：
 
 1. 作为顶层布局；
-2. 作为协调子 View 之间交互的容器。
+2. 作为协调子View之间交互的容器。
 
 CoordinatorLayout也是在`com.android.support.design`包中的组件。 
 
+通过为 CoordinatorLayout 的子View指定 Behaviors，你可以在单一父View下提供许多不同的交互，同时也可以让子View间各自进行交互。
 #### CoordinatorLayout与FloadingActionButton
 
 ```xml
@@ -855,6 +857,8 @@ compile 'com.android.support:recyclerview-v7:21.+'
 通过对`View`设置`backgroud`后再添加`android:elevation="2dp"`来实现背景大小。
 
 
+
+[更多实例请看MaterialSample](https://github.com/CharonChui/MaterialSample.git)
 
 ---
 
