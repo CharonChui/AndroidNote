@@ -2,13 +2,22 @@ MaterialDesign使用
 ===
 
 - [Material Design](https://material.io/components?platform=android)是`Google`在`2014`年的`I/O`大会上推出的全新设计语言。                        
-- `Material Design`是基于`Android 5.0``(API level 21)`的，兼容5.0以下的设备时需要使用版本号`v21.0.0`以上的                           
-`support v7`包中的`appcpmpat`，不过遗憾的是`support`包只支持`Material Design`的部分特性。                       
-为了更好的去使用，需要继承support.design包: 
+为了使用Materia功能，首先需要集成相应的依赖: 
 ```
-implementation 'com.android.support:design:<version>'
+implementation 'com.google.android.material:material:<version>'
 ```
-
+并保证Activity都使用AppCompatActivity，这样可以确保所有组件都能正常使用。
+把主题改成集成自Material组件的主题: 
+```
+    Theme.MaterialComponents
+    Theme.MaterialComponents.NoActionBar
+    Theme.MaterialComponents.Light
+    Theme.MaterialComponents.Light.NoActionBar
+    Theme.MaterialComponents.Light.DarkActionBar
+    Theme.MaterialComponents.DayNight
+    Theme.MaterialComponents.DayNight.NoActionBar
+    Theme.MaterialComponents.DayNight.DarkActionBar
+```
 
 Material Design Theme
 ---
