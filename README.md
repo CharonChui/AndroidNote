@@ -197,7 +197,6 @@ Android学习笔记
     - [Crash及ANR分析][80]
     - [Library项目中资源id使用case时报错][81]
     - [Mac下配置adb及Android命令][82]
-    - [MaterialDesign使用][83]
     - [RecyclerView专题][84]
     - [ConstraintLaayout简介][194]
     - [Android WorkManager][208]
@@ -395,7 +394,6 @@ Android学习笔记
 
 [81]: https://github.com/CharonChui/AndroidNote/blob/master/AdavancedPart/Library%E9%A1%B9%E7%9B%AE%E4%B8%AD%E8%B5%84%E6%BA%90id%E4%BD%BF%E7%94%A8case%E6%97%B6%E6%8A%A5%E9%94%99.md   "Library项目中资源id使用case时报错"
 [82]: https://github.com/CharonChui/AndroidNote/blob/master/AdavancedPart/Mac%E4%B8%8B%E9%85%8D%E7%BD%AEadb%E5%8F%8AAndroid%E5%91%BD%E4%BB%A4.md   "Mac下配置adb及Android命令"
-[83]: https://github.com/CharonChui/AndroidNote/blob/master/AdavancedPart/MaterialDesign%E4%BD%BF%E7%94%A8.md   "MaterialDesign使用"
 [84]: https://github.com/CharonChui/AndroidNote/blob/master/AdavancedPart/RecyclerView%E4%B8%93%E9%A2%98.md   "RecyclerView专题"
 [85]: https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledge/%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%A4%A7%E5%85%A8.md   "常用命令行大全"
 [86]: https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledge/%E5%8D%95%E4%BE%8B%E7%9A%84%E6%9C%80%E4%BD%B3%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F.md   "单例的最佳实现方式"
