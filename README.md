@@ -118,6 +118,39 @@ Android学习笔记
 - [架构设计][272]
     - [1.架构简介][273]
 
+- [Jetpack][287]
+    - [Jetpack简介][288]
+    - [architecture][289]
+        - [1.简介][293]
+        - [2.ViewBinding简介][294]
+        - [3.Lifecycle简介][295]
+        - [4.ViewModel简介][296]
+        - [5.LiveData简介][297]
+        - [6.DataBinding简介][298]
+        - [7.Room简介][299]
+        - [8.PagingLibrary简介][300]
+        - [9.App Startup简介][301]
+        - [10.DataStore简介][302]
+        - [11.Hilt简介][303]
+        - [12.Navigation简介][304]
+        - [13.Jetpack MVVM简介][305]
+        - [14.findViewById的过去及未来][306]
+    - [ui][290]
+        - [Jetpack Compose简介][307]
+        - [material][308]
+            - [1.MaterialToolbar简介][309]
+            - [2.NavigationView简介][310]
+            - [3.NestedScrollView简介][311]
+            - [4.CoordinatorLayout简介][312]
+            - [5.AppBarLayout简介][313]
+            - [6.CollapsingToolbarLayout简介][314]
+            - [7.Snackbar简介][315]
+            - [8.TabLayout简介][316]
+    - [foundation][291]
+        - [1.简介][317]
+    - [behavior][292]
+        - [1.简介][318]
+
 -  [图片加载][45]
     - [Glide简介(上)][25]
     - [Glide简介(下)][26]
@@ -605,6 +638,38 @@ Android学习笔记
 [ 284 ]: https://github.com/CharonChui/AndroidNote/blob/master/SourceAnalysis/LeakCanary%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90.md. "LeakCanary源码分析"
 [285]: https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledge/Java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B.md "Java内存模型"
 [286]: https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledge/JVM%E6%9E%B6%E6%9E%84.md "JVM架构"
+[287]: https://github.com/CharonChui/AndroidNote/tree/master/Jetpack "Jetpack"
+[288]: https://github.com/CharonChui/AndroidNote/blob/master/Jetpack/Jetpack%E7%AE%80%E4%BB%8B.md  "Jetpack简介"
+[289]: https://github.com/CharonChui/AndroidNote/tree/master/Jetpack/architecture "architecture"
+[290]: https://github.com/CharonChui/AndroidNote/tree/master/Jetpack/ui  "ui"
+[291]: https://github.com/CharonChui/AndroidNote/tree/master/Jetpack/foundation  "foundation"
+[292]: https://github.com/CharonChui/AndroidNote/tree/master/Jetpack/behavior "behavior"
+[293]: https://github.com/CharonChui/AndroidNote/blob/master/Jetpack/architecture/1.%E7%AE%80%E4%BB%8B.md "1.简介"
+[294]: https://github.com/CharonChui/AndroidNote/blob/master/Jetpack/architecture/2.ViewBinding%E7%AE%80%E4%BB%8B.md "2.ViewBinding简介"
+[295]: https://github.com/CharonChui/AndroidNote/blob/master/Jetpack/architecture/3.Lifecycle%E7%AE%80%E4%BB%8B.md "3.Lifecycle简介"
+[296]: https://github.com/CharonChui/AndroidNote/blob/master/Jetpack/architecture/4.ViewModel%E7%AE%80%E4%BB%8B.md "4.ViewModel简介"
+[297]: https://github.com/CharonChui/AndroidNote/blob/master/Jetpack/architecture/5.LiveData%E7%AE%80%E4%BB%8B.md "5.LiveData简介"
+[298]: https://github.com/CharonChui/AndroidNote/blob/master/Jetpack/architecture/6.DataBinding%E7%AE%80%E4%BB%8B.md "6.DataBinding简介"
+[299]: https://github.com/CharonChui/AndroidNote/blob/master/Jetpack/architecture/7.Room%E7%AE%80%E4%BB%8B.md "7.Room简介"
+[300]: https://github.com/CharonChui/AndroidNote/blob/master/Jetpack/architecture/8.PagingLibrary%E7%AE%80%E4%BB%8B.md "8.PagingLibrary简介"
+[301]: https://github.com/CharonChui/AndroidNote/blob/master/Jetpack/architecture/9.App%20Startup%E7%AE%80%E4%BB%8B.md "9.App Startup简介"
+[302]: https://github.com/CharonChui/AndroidNote/blob/master/Jetpack/architecture/10.DataStore%E7%AE%80%E4%BB%8B.md "10.DataStore简介"
+[303]: https://github.com/CharonChui/AndroidNote/blob/master/Jetpack/architecture/11.Hilt%E7%AE%80%E4%BB%8B.md "11.Hilt简介"
+[304]: https://github.com/CharonChui/AndroidNote/blob/master/Jetpack/architecture/12.Navigation%E7%AE%80%E4%BB%8B.md "12.Navigation简介"
+[305]: https://github.com/CharonChui/AndroidNote/blob/master/Jetpack/architecture/13.Jetpack%20MVVM%E7%AE%80%E4%BB%8B.md "13.Jetpack MVVM简介"
+[306]: https://github.com/CharonChui/AndroidNote/blob/master/Jetpack/architecture/14.findViewById%E7%9A%84%E8%BF%87%E5%8E%BB%E5%8F%8A%E6%9C%AA%E6%9D%A5.md "14.findViewById的过去及未来"
+[307]: https://github.com/CharonChui/AndroidNote/blob/master/Jetpack/ui/Jetpack%20Compose%E7%AE%80%E4%BB%8B.md "Jetpack Compose简介"
+[308]: https://github.com/CharonChui/AndroidNote/tree/master/Jetpack/ui/material "material"
+[309]: https://github.com/CharonChui/AndroidNote/blob/master/Jetpack/ui/material/1.MaterialToolbar%E7%AE%80%E4%BB%8B.md "1.MaterialToolbar简介"
+[310]: https://github.com/CharonChui/AndroidNote/blob/master/Jetpack/ui/material/2.NavigationView%E7%AE%80%E4%BB%8B.md "2.NavigationView简介"
+[311]: https://github.com/CharonChui/AndroidNote/blob/master/Jetpack/ui/material/3.NestedScrollView%E7%AE%80%E4%BB%8B.md "3.NestedScrollView简介"
+[312]: https://github.com/CharonChui/AndroidNote/blob/master/Jetpack/ui/material/4.CoordinatorLayout%E7%AE%80%E4%BB%8B.md "4.CoordinatorLayout简介"
+[313]: https://github.com/CharonChui/AndroidNote/blob/master/Jetpack/ui/material/5.AppBarLayout%E7%AE%80%E4%BB%8B.md "5.AppBarLayout简介"
+[314]: https://github.com/CharonChui/AndroidNote/blob/master/Jetpack/ui/material/6.CollapsingToolbarLayout%E7%AE%80%E4%BB%8B.md "6.CollapsingToolbarLayout简介"
+[315]: https://github.com/CharonChui/AndroidNote/blob/master/Jetpack/ui/material/7.Snackbar%E7%AE%80%E4%BB%8B.md "7.Snackbar简介"
+[316]: https://github.com/CharonChui/AndroidNote/blob/master/Jetpack/ui/material/8.TabLayout%E7%AE%80%E4%BB%8B.md "8.TabLayout简介"
+[317]: https://github.com/CharonChui/AndroidNote/blob/master/Jetpack/foundation/1.%E7%AE%80%E4%BB%8B.md "1.简介"
+[318]: https://github.com/CharonChui/AndroidNote/blob/master/Jetpack/behavior/1.%E7%AE%80%E4%BB%8B.md "1.简介"
 
 
 Developed By
