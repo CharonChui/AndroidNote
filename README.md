@@ -155,6 +155,7 @@ Android学习笔记
     - [Glide简介(上)][25]
     - [Glide简介(下)][26]
     - [图片加载库比较][27]
+    - [Coil简介][320]
 
 
 - [RxJava][46]
@@ -193,6 +194,7 @@ Android学习笔记
 - [Gradle&Maven][49]
     - [Gradle专题][39]
     - [发布library到Maven仓库][40]
+    - [Composing builds简介][319]
 
 - [应用发布][50]
     - [使用Jenkins实现自动化打包][198]
@@ -670,6 +672,10 @@ Android学习笔记
 [316]: https://github.com/CharonChui/AndroidNote/blob/master/Jetpack/ui/material/8.TabLayout%E7%AE%80%E4%BB%8B.md "8.TabLayout简介"
 [317]: https://github.com/CharonChui/AndroidNote/blob/master/Jetpack/foundation/1.%E7%AE%80%E4%BB%8B.md "1.简介"
 [318]: https://github.com/CharonChui/AndroidNote/blob/master/Jetpack/behavior/1.%E7%AE%80%E4%BB%8B.md "1.简介"
+[319]: https://github.com/CharonChui/AndroidNote/blob/master/Gradle%26Maven/Composing%20builds%E7%AE%80%E4%BB%8B.md  "Composing builds简介"
+[320]: https://github.com/CharonChui/AndroidNote/blob/master/ImageLoaderLibrary/Coil%E7%AE%80%E4%BB%8B.md "Coil简介"
+
+
 
 
 Developed By
