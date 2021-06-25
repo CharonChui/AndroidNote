@@ -245,17 +245,19 @@ Composing builds：A composite build is simply a build that includes other build
 ![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/buildsrc_composingbuild.png?raw=true)
 
 **使用方式**
- 1.新建module，名为versionPlugin（自起）
- 2.在该module下的build.gradle文件中，添加如下代码：
+
+1. 新建module，名为versionPlugin（自起）
+2. 在该module下的build.gradle文件中，添加如下代码：
 
 ```groovy
 buildscript {
+    ext.kotlin_version = "1.5.10"
     repositories {
-        jcenter()
+        mavenCentral()
     }
     dependencies {
-        // 因为使用的 Kotlin 需要需要添加 Kotlin 插件
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.10"
+        // 因为使用的Kotlin需要需要添加Kotlin插件
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
 
@@ -263,11 +265,8 @@ apply plugin: 'kotlin'
 apply plugin: 'java-gradle-plugin'
 
 repositories {
-    // 需要添加 jcenter 否则会提示找不到 gradlePlugin
-    jcenter()
-    google()
+    mavenCentral()
 }
-
 
 compileKotlin {
     kotlinOptions {
@@ -284,18 +283,18 @@ gradlePlugin {
     plugins {
         version {
             // 在app模块需要通过id引用这个插件
-            id = 'com.hi.dhl.plugin'
+            id = 'com.xx.xx.plugin'
             // 实现这个插件的类的路径
-            implementationClass = 'com.hi.dhl.plugin.Deps'
+            implementationClass = 'com.xx.xx.versionplugin.Deps'
         }
     }
 }
 ```
 
-3.在versionPlugin/src/main/java/包名/目录下新建Deps.kt文件，添加你的依赖配置，如：
+3. 在versionPlugin/src/main/java/包名/目录下新建Deps.kt文件，添加你的依赖配置，如：
 
 ```groovy
-package com.hi.dhl.plugin
+package com.xx.xx.versionplugin
 
 class Deps : Plugin<Project> {
     override fun apply(project: Project) {
@@ -308,24 +307,48 @@ class Deps : Plugin<Project> {
 }
 ```
 
-5.在settings.gradle文件内添加includeBuild(“versionPlugin”)，注意是includeBuild哦~，Rebuild项目
-6.后面就可以在需要使用的gradle文件中使用了，如app下的build.gradle，在首行添加以下内容：
+或者也可以按依赖类型用不同的类配置，例如
 
-```groovy
-plugins {
-    // 这个id就是在versionPlugin文件夹下build.gradle文件内定义的id
-    id "com.hi.dhl.plugin"
+```kotlin
+object CustomLibs {
+    ...
+        object Glide {
+        private const val glideVersion = "4.11.0"
+        const val glide = "com.github.bumptech.glide:glide:$glideVersion"
+        const val glideCompiler = "com.github.bumptech.glide:compiler:$glideVersion"
+    }
+
+    object Retrofit {
+        private const val retrofitVersion = "2.9.0"
+        const val retrofit = "com.squareup.retrofit2:retrofit:$retrofitVersion"
+        const val converter_gson = "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+    }
 }
 ```
 
-注意: plugins{}需要放在app模块build.gradle文件内的首行位置
+
+
+4. 在settings.gradle文件内添加`includeBuild 'versionPlugin'`，注意是includeBuild哦~，Rebuild项目    
+
+5. 后面就可以在需要使用的gradle文件中使用了，在app或其他module下的build.gradle，在首行添加以下内容：
+
+```groovy
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    // 通过id来使用该plugin，这个id就是在versionPlugin文件夹下build.gradle文件内定义的id
+    id 'com.xx.xx.plugin'
+}
+```
 
 使用如下:  
 
 ```groovy
-android {
-    implementation Deps.appcompat
-}
+dependencies {
+    implementation CustomLibs.Glide.glide
+    kapt CustomLibs.Glide.glideCompiler
+}    
 ```
 
 

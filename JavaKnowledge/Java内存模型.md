@@ -217,6 +217,25 @@ Class Reordering {
 在Java内存模型中，描述了在多线程代码中，哪些行为是正确的、合法的，以及多线程之间如何进行通信，代码中变量的读写行为如何反应到内存、CPU缓存的底层细节。
 
 
+## 问题: 匿名内部类访问局部变量时，为什么这个局部变量必须用final修饰? 
+这个问题并不是很严谨，严格来说应该是Java 1.8之前，匿名内部类访问局部变量时，才需要用final修饰。 
+我们平时经常会用匿名内部类访问局部变量的情况，编译器都会提示我们要对这个局部变量加final修饰，但是我们却并没有去仔细考虑过这是为什么？
+
+上面说到类和成员变量保存到堆内存中。而局部变量则保存在栈内存中。
+假设在main()方法中有一个局部变量a，然后main()方法里面又去创建了一个匿名内部类使用该局部变量a。 
+a是在栈内存中的，当main()方法执行结束，a就被清理了。但是你创建的内部类中的方法却可能在main()方法执行完成后再去执行，但是这时候局部变量已经不存在了，那怎么解决这个问题呢？ 
+因此实际上是在访问它的副本，而不是访问原始的局部变量。
+
+在Java的参数传递中，当基本类型作为参数传递时，传递的是值的拷贝，无论你怎么改变这个拷贝，原值是不会改变的；当对象作为参数传递时，传递的是对象的引用的拷贝，无论你怎么改变这个新的引用的指向，原来的引用是不会改变的（当然如果你通过这个引用改变了对象的内容，那么改变实实在在发生了）。知识点三，当final修饰基本类型变量时，不可更改其值，当final修饰引用变量时，不可更改其指向，只能更改其对象的内容。
+
+在Java中内部类会持有外部类的引用和方法中参数的引用，当反编译class文件后，内部类的class文件的构造函数参数中会传入外部类的对象以及方法内局部变量，不管是基本数据类型还是引用变量，如果重新赋值了，会导致内外指向的对象不一致，所以java就暴力的规定使用final，不能重新赋值。
+所以用final修饰实际上就是为了变量值(数据)的一致性。 这里所说的数据一致性，对引用变量来说是引用地址的一致性，对基本类型来说就是值的一致性。
+
+
+当然在JDK 1.8及以后，看起来似乎编译器取消了这种限制，没有被声明为final的变量或参数也可以在匿名内部类内部被访问了。但实际上是因为Java 8引入了effectively final的概念（A variable or parameter whose value is never changed after it is initialized is effectively final）。对于effectively final（事实上的final），可以省略final关键字，本质不变,所以，实际上是诸如effectively final的变量或参数被Java默认为final类型，所以才不会报错，而上述的根本原因没有任何变化。
+
+
+ It's about the scope of variables , Because anonymous inner classes appear inside a method , If it wants to access the parameters of the method or the variables defined in the method , Then these parameters and variables must be modified to final. Because although anonymous inner classes are inside methods , But when it's actually compiled , Inner classes are compiled into Outer.Inner, This means that the inner class is at the same level as the method in the outer class , A variable or parameter in a method in an external class is just a local variable of the method , The scope of these variables or parameters is only valid inside this method . Because internal classes and methods are at the same level when compiling , So the variables or parameters in the method are only final, Internal classes can be referenced .
 
 ---
 
