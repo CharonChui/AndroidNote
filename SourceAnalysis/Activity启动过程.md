@@ -3,7 +3,7 @@ Activity启动过程
 
 前两天面试了天猫的开发，被问到了`Activity`启动过程，不懂啊....
 
-![](https://raw.githubusercontent.com/CharonChui/Pictures/master/app launch summary.jpg)
+![](https://raw.githubusercontent.com/CharonChui/Pictures/master/app%20launch%20summary.jpg)
 
 
 今天就来分析一下，我们开启`Activity`主要有两种方式:    
