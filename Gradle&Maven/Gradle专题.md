@@ -6,6 +6,12 @@ Gradle专题
 
 接下来我们就系统的学习一下`Gradle`。    
 
+作用
+---
+
+首先我们要知道它有什么用？ Gradle是一个工具，同时它也是一个编程框架。使用这个工具可以完成app的编译打包等工作。
+
+
 简介
 ---
 
@@ -21,6 +27,18 @@ Gradle专题
 
 
 ![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/android_build_process.png?raw=true)
+
+Gradle与Android Studio的关系
+---
+
+Gradle跟Android Studio其实没有关系，但是Gradle官方还是很看重Android开发的，Google在推出AS的时候选中了Gradle作为构建工具，为了支持Gradle
+能在AS上使用，Google做了个AS的插件叫Android Gradle Plugin，所以我们能在AS上使用Gradle完全是因为这个插件的原因。在项目的根目录有个build.gradle文件，里面有这么一句代码:  
+```
+classpath 'com.android.tools.build:gradle:2.1.2'
+```
+这个就是依赖gradle插件的代码，后面的版本号代表的是android gradle plugin的版本，而不是Gradle的版本，这个是Google定的，跟Gradle官方没关系。
+
+
 
 
 
