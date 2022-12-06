@@ -45,7 +45,14 @@ Fragmented MP4 以 Fragment 的方式存储视频信息。每个 Fragment 由一
 #### Movie Extends Box (mvex)(fMP4专有)
 
 **mvex 是 fMP4 的标准盒子。它的作用是告诉解码器这是一个fMP4的文件，具体的 samples 信息内容不再放到 trak 里面，而是在每一个 moof 中**。基本格式为：
-
+```
+aligned(8) class MovieExtendsHeaderBox extends FullBox(‘mehd’, version, 0) { if (version==1) {
+      unsigned int(64)  fragment_duration;
+   } else { // version==0
+      unsigned int(32)  fragment_duration;
+   }
+}
+```
 
 
 ### moof

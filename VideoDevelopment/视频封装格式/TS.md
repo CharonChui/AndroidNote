@@ -1,8 +1,6 @@
 TS
 ===
 
-
-
 TS的全称为MPEG2-TS，TS即Transport Stream的缩写。它是分包发送的，每一个包长188字节（还有192和204字节的包）。包的结构为，包头4字节（第一个字节为0x47），负载为184字节。
 
 VD的音视频格式为MPEG2-PS，全称是Program Stream。而TS的全称则是Transport Stream。MPEG2-PS主要应用于存储的具有固定时长的节目，如DVD电影，而MPEG-TS则主要应用于实时传送的节目，比如实时广播的电视节目。这两种格式的主要区别是什么呢？简单地打个比喻说，你将DVD上的VOB文件的前面一截cut掉（或者干脆就是数据损坏），那么就会导致整个文件无法解码了，而电视节目是你任何时候打开电视机都能解码（收看）的。在TS流里可以填入很多类型的数据，如视频、音频、自定义信息等。所以，MPEG2-TS格式的特点就是要求从视频流的任一片段开始都是可以独立解码的。
@@ -17,10 +15,7 @@ TS文件（流）可以分为三层：TS层（Transport Stream）、PES层（Pac
 
 ES层就是音视频数据，PES层是在音视频数据上加了时间戳等对数据帧的说明信息，TS层是在PES层上加入了数据流识别和传输的必要信息。TS文件（码流）由多个TS Packet组成的。
 
-
-
 ![image-20210309114928103](https://raw.githubusercontent.com/CharonChui/Pictures/master/ts_archi.png?raw=true)
-
 
 
 ### TS层
@@ -97,9 +92,6 @@ PES结构如图：
 ES层指的就是音视频数据。
 
 一般的，视频为H.264视频，音频为AAC音频。
-
-
-
 
 
 ## TS流生成及解析流程
