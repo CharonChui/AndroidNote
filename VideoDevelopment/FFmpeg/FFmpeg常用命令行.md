@@ -2,149 +2,146 @@ FFmpeg常用命令行
 ===
 ### ffmpeg
 
-1.分离视频音频流
-
+1. 分离视频音频流
+```
 ffmpeg -i input_file -vcodec copy -an output_file_video　　//分离视频流
 ffmpeg -i input_file -acodec copy -vn output_file_audio　　//分离音频流
+```
 
-2.视频解复用
-
+2. 视频解复用
+```
 ffmpeg –i test.mp4 –vcodec copy –an –f m4v test.264
 ffmpeg –i test.avi –vcodec copy –an –f m4v test.264
+```
 
-3.视频转码
-
+3. 视频转码
+```
 ffmpeg –i test.mp4 –vcodec h264 –s 352*278 –an –f m4v test.264              //转码为码流原始文件
 ffmpeg –i test.mp4 –vcodec h264 –bf 0 –g 25 –s 352*278 –an –f m4v test.264  //转码为码流原始文件
 ffmpeg –i test.avi -vcodec mpeg4 –vtag xvid –qsame test_xvid.avi            //转码为封装文件
 //-bf B帧数目控制，-g 关键帧间隔控制，-s 分辨率控制
-
-4.视频封装
-
+```
+4. 视频封装
+```
 ffmpeg –i video_file –i audio_file –vcodec copy –acodec copy output_file
-
-5.视频剪切
-
+```
+5. 视频剪切
+```
 ffmpeg –i test.avi –r 1 –f image2 image-%3d.jpeg        //提取图片
 ffmpeg -ss 0:1:30 -t 0:0:20 -i input.avi -vcodec copy -acodec copy output.avi    //剪切视频
 //-r 提取图像的频率，-ss 开始时间，-t 持续时间
-
-6.视频录制
-
+```
+6. 视频录制
+```
 ffmpeg –i rtsp://192.168.3.205:5555/test –vcodec copy out.avi
-
-7.YUV序列播放
-
+```
+7. YUV序列播放
+```
 ffplay -f rawvideo -video_size 1920x1080 input.yuv
-
-8.YUV序列转AVI
-
+```
+8. YUV序列转AVI
+```
 ffmpeg –s w*h –pix_fmt yuv420p –i input.yuv –vcodec mpeg4 output.avi
-
+```
 常用参数说明：
 
-主要参数： -i 设定输入流 -f 设定输出格式 -ss 开始时间 视频参数： -b 设定视频流量，默认为200Kbit/s -r 设定帧速率，默认为25 -s 设定画面的宽与高 -aspect 设定画面的比例 -vn 不处理视频 -vcodec 设定视频编解码器，未设定时则使用与输入流相同的编解码器 音频参数： -ar 设定采样率 -ac 设定声音的Channel数 -acodec 设定声音编解码器，未设定时则使用与输入流相同的编解码器 -an 不处理音频
+主要参数：-i 设定输入流 -f 设定输出格式 -ss 开始时间
+视频参数：-b 设定视频流量，默认为200Kbit/s -r 设定帧速率，默认为25 -s 设定画面的宽与高 -aspect 设定画面的比例 -vn 不处理视频 -vcodec 设定视频编解码器，未设定时则使用与输入流相同的编解码器
+音频参数：-ar 设定采样率 -ac 设定声音的Channel数 -acodec 设定声音编解码器，未设定时则使用与输入流相同的编解码器 -an 不处理音频
 
-------------------------------------------------------------------------
 
-----------------------------------------------------------------------------------------------------------
-
-------------------------------------------------------------------------
-
-0.压缩转码mp4文件
-
+9. 压缩转码mp4文件
+```
 ffmpeg -i input.avi -s 640x480 output.avi
 
 ffmpeg -i input.avi -s vga output.avi
-
- 
-
-1、将文件当做直播送至live
-
+```
+10. 将文件当做直播送至live
+```
 ffmpeg -re -i localFile.mp4 -c copy -f flv rtmp://server/live/streamName
-
-2、将直播媒体保存至本地文件
-
- 
-
+```
+11. 将直播媒体保存至本地文件
+```
 ffmpeg -i rtmp://server/live/streamName -c copy dump.flv
+```
+12. 将其中一个直播流，视频改用h264压缩，音频不变，送至另外一个直播服务流
 
-3、将其中一个直播流，视频改用h264压缩，音频不变，送至另外一个直播服务流
-
- 
-
+```
 ffmpeg -i rtmp://server/live/originalStream -c:a copy -c:v libx264 -vpre slow -f flv rtmp://server/live/h264Stream
-
- 
-
-4、将其中一个直播流，视频改用h264压缩，音频改用faac压缩，送至另外一个直播服务流
-
+```
+13. 将其中一个直播流，视频改用h264压缩，音频改用faac压缩，送至另外一个直播服务流
+```
 ffmpeg -i rtmp://server/live/originalStream -c:a libfaac -ar 44100 -ab 48k -c:v libx264 -vpre slow -vpre baseline -f flv rtmp://server/live/h264Stream
-
-5、将其中一个直播流，视频不变，音频改用faac压缩，送至另外一个直播服务流
-
+```
+14. 将其中一个直播流，视频不变，音频改用faac压缩，送至另外一个直播服务流
+```
 ffmpeg -i rtmp://server/live/originalStream -acodec libfaac -ar 44100 -ab 48k -vcodec copy -f flv rtmp://server/live/h264_AAC_Stream
-
-6、将一个高清流，复制为几个不同视频清晰度的流重新发布，其中音频不变
-
+```
+15. 将一个高清流，复制为几个不同视频清晰度的流重新发布，其中音频不变
+```
 ffmpeg -re -i rtmp://server/live/high_FMLE_stream -acodec copy -vcodec x264lib -s 640×360 -b 500k -vpre medium -vpre baseline rtmp://server/live/baseline_500k -acodec copy -vcodec x264lib -s 480×272 -b 300k -vpre medium -vpre baseline rtmp://server/live/baseline_300k -acodec copy -vcodec x264lib -s 320×200 -b 150k -vpre medium -vpre baseline rtmp://server/live/baseline_150k -acodec libfaac -vn -ab 48k rtmp://server/live/audio_only_AAC_48k
+```
 
-7、功能一样，只是采用-x264opts选项
-
-ffmpeg -re -i rtmp://server/live/high_FMLE_stream -c:a copy -c:v x264lib -s 640×360 -x264opts bitrate=500:profile=baseline:preset=slow rtmp://server/live/baseline_500k -c:a copy -c:v x264lib -s 480×272 -x264opts bitrate=300:profile=baseline:preset=slow rtmp://server/live/baseline_300k -c:a copy -c:v x264lib -s 320×200 -x264opts bitrate=150:profile=baseline:preset=slow rtmp://server/live/baseline_150k -c:a libfaac -vn -b:a 48k rtmp://server/live/audio_only_AAC_48k
-
-8、将当前摄像头及音频通过DSSHOW采集，视频h264、音频faac压缩后发布
-
-ffmpeg -r 25 -f dshow -s 640×480 -i video=”video source name”:audio=”audio source name” -vcodec libx264 -b 600k -vpre slow -acodec libfaac -ab 128k -f flv rtmp://server/application/stream_name
-
-9、将一个JPG图片经过h264压缩循环输出为mp4视频
-
+16. 将一个JPG图片经过h264压缩循环输出为mp4视频
+```
 ffmpeg.exe -i INPUT.jpg -an -vcodec libx264 -coder 1 -flags +loop -cmp +chroma -subq 10 -qcomp 0.6 -qmin 10 -qmax 51 -qdiff 4 -flags2 +dct8x8 -trellis 2 -partitions +parti8x8+parti4x4 -crf 24 -threads 0 -r 25 -g 25 -y OUTPUT.mp4
-
-10、将普通流视频改用h264压缩，音频不变，送至高清流服务(新版本FMS live=1)
-
+```
+17. 将普通流视频改用h264压缩，音频不变，送至高清流服务(新版本FMS live=1)
+```
 ffmpeg -i rtmp://server/live/originalStream -c:a copy -c:v libx264 -vpre slow -f flv “rtmp://server/live/h264Stream live=1〃
+```
 
-
-------------------------------------------------------------------------
-
-----------------------------------------------------------------------------------------------------------
-
-------------------------------------------------------------------------
-
- 
-
-1.采集usb摄像头视频命令：
-
+18. 采集usb摄像头视频命令：
+```
 ffmpeg -t 20 -f vfwcap -i 0 -r 8 -f mp4 cap1111.mp4
-
- 
-
 ./ffmpeg -t 10 -f vfwcap -i 0 -r 8 -f mp4 cap.mp4
+```
+具体说明如下：
+我们采集10秒，采集设备为vfwcap类型设备，第0个vfwcap采集设备（如果系统有多个vfw的视频采集设备，可以通过-i num来选择），每秒8帧，输出方式为文件，格式为mp4。
 
-具体说明如下：我们采集10秒，采集设备为vfwcap类型设备，第0个vfwcap采集设备（如果系统有多个vfw的视频采集设备，可以通过-i num来选择），每秒8帧，输出方式为文件，格式为mp4。
+19. 最简单的抓屏：
+```
+ffmpeg -f gdigrab -i desktop out.mpg
+```
 
- 
+20. 从屏幕的（10,20）点处开始，抓取640x480的屏幕，设定帧率为5 ：
+```
+ffmpeg -f gdigrab -framerate 5 -offset_x 10 -offset_y 20 -video_size 640x480 -i desktop out.mpg
+```
 
-2.最简单的抓屏：
-
-ffmpeg -f gdigrab -i desktop out.mpg 
-
- 
-
-3.从屏幕的（10,20）点处开始，抓取640x480的屏幕，设定帧率为5 ：
-
-ffmpeg -f gdigrab -framerate 5 -offset_x 10 -offset_y 20 -video_size 640x480 -i desktop out.mpg 
-
- 
-
-4.ffmpeg从视频中生成gif图片：
-
+21. ffmpeg从视频中生成gif图片：
+```
 ffmpeg -i capx.mp4 -t 10 -s 320x240 -pix_fmt rgb24 jidu1.gif
+```
+
+22. 视频文件切片
+```
+// 将一个MP4文件切割为MP4切片，切出来的切片文件的时间戳与上一个MP4的结束时间戳是连续的
+ffmpeg -re -i input.mp4 -c copy -f segment -segment_format mp4 test_output-%d.mp4
+```
+
+23. moov前置
+当使用ffmpeg的默认参数输出为MP4格式时，moov会在所有数据转封装完成后生成，然后添加在文件的末尾。由于获取moov相对较为复杂，因此MP4格式对流媒体播放等场景并不友好。为了解决该问题，在使用ffmpeg进行转封装操作时，可以在选项-movflags中加入参数faststart。
+```
+ffmpeg -i input.avi -c copy -movflags faststart output.mp4
+```
+在加入参数faststart后，ffmpeg在完成转封装操作后会进行一次附加操作——将moov置于文件头部。
+
+24. 设置视频帧率
+滤镜fps可以设置输入视频的帧率。当输入视频的帧率与设置帧率不一致时，ffmpeg将通过丢帧或复制当前帧的方式确保输出视频帧率的稳定性。滤镜fps支持的参数如下。◎ fps：指定输出视频的帧率，默认为25。◎ start_time：指定起始时间戳。◎ round：时间戳近似方法。◎ eof_action：末尾帧的处理方法。通过以下命令可以将输入视频的帧率设置为30。
+```
+ffmpeg -i input.mp4 -vf fps=fps=30 -y output.mp4
+```
+
+
 
 
 ### ffplay
-ffplay是以FFmpeg框架未基础，外加渲染音视频的库libSDL构建的媒体文件播放器。
+
+ffplay是以FFmpeg框架为基础，外加渲染音视频的库libSDL构建的媒体文件播放器。ffplay不仅仅是播放器，同时也是测试ffmpeg的codec引擎、format引擎以及filter引擎的工具。并且还可以进行媒体参数分析，可以通过ffplay --help进行查看。 
+![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/ffmpeg_ffplay.png?raw=true)
+
+![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/ffmpeg_ffplay1.png?raw=true)
 
 ffplay [选项] [输入文件]
 
@@ -186,6 +183,11 @@ ffplay http://219.151.31.38/liveplay-kk.rtxapp.com/live/program/live/hnwshd/4000
 如果希望从视频的第30秒开始播放，播放10秒钟的文件，则可以使用如下命令 
 `ffplay -ss 30 -t 10 /Users/xxx/Desktop/111.mp4`
 
+
+使用ffplay除了可以播放视频流媒体文件之外，还可以作为可视化的视频流媒体分析工具，例如播放音频文件时，如果不确定文件的声音是否正常，则可以直接使用ffplay播放音频文件，播放的时候其将会把解码后的音频数据以音频波形的形式显示出来，命令行执行后的效果如图2-8所示，命令如下：
+`ffplay -showmode 1 output.mp3`
+
+
 ##### 音画同步
 
 ffplay也是一个视频播放器，所以不得不提出来的一个问题是：音画同步。
@@ -210,7 +212,7 @@ ffplay的音画同步的实现方式其实有三种，分别是：
 
 
 ### ffprobe
-ffprobe是ffmpeg命令行中用来查看媒体文件格式的工具。 
+ffprobe是ffmpeg命令行中用来查看媒体文件格式的工具。 ffprobe常用的参数比较多，可以通过ffprobe --help来查看详细的帮助信息。
 
 命令格式: 
 `ffprobe [文件名]`
@@ -250,8 +252,8 @@ Input #0, mov,mp4,m4a,3gp,3g2,mj2, from '/Users/xuchuanren/Desktop/111.mp4':
       vendor_id       : [0][0][0][0]
 ```
 
-查看流的格式信息
-ffprobe -show_format -i /Users/xxx/Desktop/111.mp4 
+查看流的多媒体封装格式
+ffprobe -show_format /Users/xxx/Desktop/111.mp4 
 
 ```
 [FORMAT]
@@ -272,11 +274,224 @@ TAG:encoder=Multimedia Cloud Transcode (cloud.baidu.com)
 TAG:comment=Content Adaptive Encoding 3.0
 [/FORMAT]
 ```
+这个文件的格式有可能是MOV、MP4、M4A、3GP、3G2或者MJ2，之所以ffprobe会这么输出，是因为这几种封装格式在ffmpeg中所识别的标签基本相同，所以才会有这么多种显示方式
+format字段说明
+![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/ffmpeg_format.png?raw=true)
+
 查看每一帧信息
-ffprobe -show_frames -i /Users/xxx/Desktop/111.mp4 
+`ffprobe -show_frames /Users/xxx/Desktop/111.mp4` 
+```
+[FRAME]
+media_type=video
+stream_index=0
+key_frame=0
+pkt_pts=530432
+pkt_pts_time=41.440000
+pkt_dts=N/A
+pkt_dts_time=N/A
+best_effort_timestamp=530432
+best_effort_timestamp_time=41.440000
+pkt_duration=512
+pkt_duration_time=0.040000
+pkt_pos=846850
+pkt_size=41
+width=1280
+height=720
+pix_fmt=yuv420p
+sample_aspect_ratio=1:1
+pict_type=P
+coded_picture_number=1033
+display_picture_number=0
+interlaced_frame=0
+top_field_first=0
+repeat_pict=0
+color_range=unknown
+color_space=unknown
+color_primaries=unknown
+color_transfer=unknown
+chroma_location=left
+[/FRAME]
+```
+frame字段说明
+![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/ffmpeg_frame.png?raw=true)
 
 查看包信息
-ffprobe -show_packets -i /Users/xxx/Desktop/111.mp4 
+`ffprobe -show_packets /Users/xxx/Desktop/111.mp4`
+```
+[PACKET]
+codec_type=audio
+stream_index=1
+pts=1827840
+pts_time=41.447619
+dts=1827840
+dts_time=41.447619
+duration=1024
+duration_time=0.023220
+size=176
+pos=848485
+flags=K_
+[/PACKET]
+[PACKET]
+codec_type=audio
+stream_index=1
+pts=1828864
+pts_time=41.470839
+dts=1828864
+dts_time=41.470839
+duration=1021
+duration_time=0.023152
+size=234
+pos=848661
+flags=K_
+[/PACKET]
+```
+
+packet字段说明
+![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/ffmpeg_packet.png?raw=true)
+
+
+
+查看流信息
+`ffprobe -show_streams /Users/xxx/Desktop/111.mp4`
+```
+ffprobe version 4.4 Copyright (c) 2007-2021 the FFmpeg developers
+  built with Apple clang version 12.0.5 (clang-1205.0.22.9)
+  configuration: --prefix=/usr/local/Cellar/ffmpeg/4.4_2 --enable-shared --enable-pthreads --enable-version3 --cc=clang --host-cflags= --host-ldflags= --enable-ffplay --enable-gnutls --enable-gpl --enable-libaom --enable-libbluray --enable-libdav1d --enable-libmp3lame --enable-libopus --enable-librav1e --enable-librubberband --enable-libsnappy --enable-libsrt --enable-libtesseract --enable-libtheora --enable-libvidstab --enable-libvorbis --enable-libvpx --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxml2 --enable-libxvid --enable-lzma --enable-libfontconfig --enable-libfreetype --enable-frei0r --enable-libass --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libopenjpeg --enable-libspeex --enable-libsoxr --enable-libzmq --enable-libzimg --disable-libjack --disable-indev=jack --enable-avresample --enable-videotoolbox
+  libavutil      56. 70.100 / 56. 70.100
+  libavcodec     58.134.100 / 58.134.100
+  libavformat    58. 76.100 / 58. 76.100
+  libavdevice    58. 13.100 / 58. 13.100
+  libavfilter     7.110.100 /  7.110.100
+  libavresample   4.  0.  0 /  4.  0.  0
+  libswscale      5.  9.100 /  5.  9.100
+  libswresample   3.  9.100 /  3.  9.100
+  libpostproc    55.  9.100 / 55.  9.100
+Input #0, mov,mp4,m4a,3gp,3g2,mj2, from '/Users/xuchuanren/Desktop/111.mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Multimedia Cloud Transcode (cloud.baidu.com)
+    comment         : Content Adaptive Encoding 3.0
+  Duration: 00:00:41.52, start: 0.000000, bitrate: 163 kb/s
+  Stream #0:0(und): Video: h264 (High) (avc1 / 0x31637661), yuv420p, 1280x720 [SAR 1:1 DAR 16:9], 91 kb/s, 25 fps, 25 tbr, 12800 tbn, 50 tbc (default)
+    Metadata:
+      handler_name    : VideoHandler
+      vendor_id       : [0][0][0][0]
+  Stream #0:1(und): Audio: aac (LC) (mp4a / 0x6134706D), 44100 Hz, stereo, fltp, 65 kb/s (default)
+    Metadata:
+      handler_name    : SoundHandler
+      vendor_id       : [0][0][0][0]
+[STREAM]
+index=0
+codec_name=h264
+codec_long_name=H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10
+profile=High
+codec_type=video
+codec_tag_string=avc1
+codec_tag=0x31637661
+width=1280
+height=720
+coded_width=1280
+coded_height=720
+closed_captions=0
+has_b_frames=2
+sample_aspect_ratio=1:1
+display_aspect_ratio=16:9
+pix_fmt=yuv420p
+level=31
+color_range=unknown
+color_space=unknown
+color_transfer=unknown
+color_primaries=unknown
+chroma_location=left
+field_order=unknown
+refs=1
+is_avc=true
+nal_length_size=4
+id=N/A
+r_frame_rate=25/1
+avg_frame_rate=25/1
+time_base=1/12800
+start_pts=0
+start_time=0.000000
+duration_ts=530944
+duration=41.480000
+bit_rate=91747
+max_bit_rate=N/A
+bits_per_raw_sample=8
+nb_frames=1037
+nb_read_frames=N/A
+nb_read_packets=N/A
+DISPOSITION:default=1
+DISPOSITION:dub=0
+DISPOSITION:original=0
+DISPOSITION:comment=0
+DISPOSITION:lyrics=0
+DISPOSITION:karaoke=0
+DISPOSITION:forced=0
+DISPOSITION:hearing_impaired=0
+DISPOSITION:visual_impaired=0
+DISPOSITION:clean_effects=0
+DISPOSITION:attached_pic=0
+DISPOSITION:timed_thumbnails=0
+TAG:language=und
+TAG:handler_name=VideoHandler
+TAG:vendor_id=[0][0][0][0]
+[/STREAM]
+[STREAM]
+index=1
+codec_name=aac
+codec_long_name=AAC (Advanced Audio Coding)
+profile=LC
+codec_type=audio
+codec_tag_string=mp4a
+codec_tag=0x6134706d
+sample_fmt=fltp
+sample_rate=44100
+channels=2
+channel_layout=stereo
+bits_per_sample=0
+id=N/A
+r_frame_rate=0/0
+avg_frame_rate=0/0
+time_base=1/44100
+start_pts=0
+start_time=0.000000
+duration_ts=1829885
+duration=41.493991
+bit_rate=65031
+max_bit_rate=N/A
+bits_per_raw_sample=N/A
+nb_frames=1788
+nb_read_frames=N/A
+nb_read_packets=N/A
+DISPOSITION:default=1
+DISPOSITION:dub=0
+DISPOSITION:original=0
+DISPOSITION:comment=0
+DISPOSITION:lyrics=0
+DISPOSITION:karaoke=0
+DISPOSITION:forced=0
+DISPOSITION:hearing_impaired=0
+DISPOSITION:visual_impaired=0
+DISPOSITION:clean_effects=0
+DISPOSITION:attached_pic=0
+DISPOSITION:timed_thumbnails=0
+TAG:language=und
+TAG:handler_name=SoundHandler
+TAG:vendor_id=[0][0][0][0]
+[/STREAM]
+```
+
+stream字段说明： 
+
+![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/ffmpeg_stream.png?raw=true)
+
+
+
+
+
 
 
 

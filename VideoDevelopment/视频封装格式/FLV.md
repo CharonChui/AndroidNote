@@ -1,6 +1,7 @@
 FLV
 ===
 
+在网络的直播与点播场景中，FLV也是一种常见的格式，FLV是Adobe发布的一种可以作为直播也可以作为点播的封装格式，其封装格式非常简单，均以FLVTAG的形式存在，并且每一个TAG都是独立存在的.
 
 FLV封装格式是由一个文件头（FLV header）和很多tag组成的（FLV body）二进制文件。
 Tag中包含了音频数据以及视频数据，每个Tag又有一个preTagSize字段，标记着前面一个Tag的大小，FLV的结构如下图所示。
@@ -40,60 +41,55 @@ tag结构图：
 ![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/flv_body_tag.png?raw=true)   
 
 tag header：
+- 第1个byte为记录着tag的类型，音频（0x8），视频（0x9），脚本（0x12）；
+- 第2到4bytes是数据区的长度，也就是tag data的长度；
+- 再后面3个bytes是时间戳，单位是毫秒，类型为0x12则时间戳为0，时间戳控制着文件播放的速度，可以根据音视频的帧率类设置；
+- 时间戳后面一个byte是扩展时间戳，时间戳不够长的时候用；
+- 最后3bytes是streamID，但是总为0，再后面就是数据区了（tag data），也即是h264的裸流；
+- tag header 长度为1+3+3+1+3=11。
 
-１）第1个byte为记录着tag的类型，音频（0x8），视频（0x9），脚本（0x12）；
-
-２）第2到4bytes是数据区的长度，也就是tag data的长度；
-
-３）再后面3个bytes是时间戳，单位是毫秒，类型为0x12则时间戳为0，时间戳控制着文件播放的速度，可以根据音视频的帧率类设置；
-
-４）时间戳后面一个byte是扩展时间戳，时间戳不够长的时候用；
-
-５）最后3bytes是streamID，但是总为0，再后面就是数据区了（tag data），也即是h264的裸流；
-
-６）tag header 长度为1+3+3+1+3=11。
-
-音频TagData结构分析：
+##### 音频TagData结构分析：
 
 ![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/flv_audio_tag.png?raw=true)   
 
 音频参数中各字段的值及其意义如下表所示：
 
-
 ![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/flv_audio_tag2.png?raw=true)   
 
-音频参数对照表
+![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/flv_audio_tag3.png?raw=true)   
 
-视频TagData结构：
+
+##### 视频TagData结构：
 
 ![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/flv_video_tag.png?raw=true)   
 
-Script TagData结构
+![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/flv_video_tag2.png?raw=true)   
+
+
+##### Script TagData结构
 
 Script Tag通常被称为Metadata Tag，会放一些关于FLV视频和音频的元数据信息如：duration、width、height等。通常此类型Tag会跟在File Header后面作为第一个Tag出现，而且只有一个。
 
 ![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/flv_script_tag.png?raw=true)   
 
+- 第一个AMF包：
+    第1个字节表示AMF包类型，一般总是0x02，表示字符串。第2-3个字节为UI16类型值，标识字符串的长度，一般总是 0x000A（“onMetaData”长度）。后面字节为具体的字符串，一般  为“onMetaData”（6F,6E,4D,65,74,61,44,61,74,61）。
+    所以第一个AMF包总共占13字节。
+
+- 第二个AMF包结构图：
+    ![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/flv_awf_tag.png?raw=true)   
+
+     第二个AMF包结构图
+
+    第1个字节表示AMF包类型，一般总是0x08，表示数组。第2-5个字节为UI32类型值，表示数组元素的个数，后面即为各数组元素的封装。数组元素为元素名称和值组成的对。“数组元素结构”部分是推测，已经确认适用于duration、width、height等常见元素，但并不确认适用于所有元素。常见的数组元素如下表所示。
+
+    ![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/flv_amf_tag.jpg?raw=true)   
 
 
-第一个AMF包：
+![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/flv_script_tag_2.png?raw=true)   
 
-第1个字节表示AMF包类型，一般总是0x02，表示字符串。第2-3个字节为UI16类型值，标识字符串的长度，一般总是 0x000A（“onMetaData”长度）。后面字节为具体的字符串，一般  为“onMetaData”（6F,6E,4D,65,74,61,44,61,74,61）。
-
-所以第一个AMF包总共占13字节。
-
-第二个AMF包结构图：
-
-![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/flv_awf_tag.png?raw=true)   
-
- 第二个AMF包结构图
-
-第1个字节表示AMF包类型，一般总是0x08，表示数组。第2-5个字节为UI32类型值，表示数组元素的个数，后面即为各数组元素的封装。数组元素为元素名称和值组成的对。“数组元素结构”部分是推测，已经确认适用于duration、width、height等常见元素，但并不确认适用于所有元素。常见的数组元素如下表所示。
-
-![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/flv_amf_tag.jpg?raw=true)   
-
-
-
+可以使用FFmpeg中的ffprobe来解析FLV文件，并且其还能够将关键帧索引的相关信息打印出来： 
+`ffprobe -v trace -i output.flv`
 
 
 参考: 
