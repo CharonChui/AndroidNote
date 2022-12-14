@@ -45,12 +45,20 @@ Android学习笔记
 - [音视频开发][44]
     - [搭建nginx+rtmp服务器][18]
     - [视频播放相关内容总结][19]
-    - [视频解码之软解与硬解][20]
     - [Android音视频开发][21]
-    - [Android WebRTC简介][22]
+        - [Android WebRTC简介][22]    
+        - [DLNA简介][24]
+        - [AudioTrack简介][214]
+        - [播放器性能优化][230]
+        - [MediaExtractor、MediaCodec、MediaMuxer][245]
+        - [SurfaceView与TextureView][226]
+        - [视频解码之软解与硬解][20]
+        - [音视频同步原理][326]
+        - [音视频场景][327]
+        - [1.音视频基础知识][328]
+        - [2.系统播放器MediaPlayer][329]
+        - [11.播放器组件封装][330]
     - [DNS及HTTPDNS][23]
-    - [DLNA简介][24]
-    - [AudioTrack简介][214]
     - [流媒体协议][224]
         - [流媒体协议][246]
         - [HLS][247]
@@ -75,14 +83,11 @@ Android学习笔记
         - [AV1][258]
         - [H264][259]
         - [H265][260]
-    - [SurfaceView与TextureView][226]
     - [关键帧][227]
     - [CDN及PCDN][228]
     - [P2P技术][229]
         - [P2P][261]
         - [P2P原理_NAT穿透][262]
-    - [播放器性能优化][230]
-    - [MediaExtractor、MediaCodec、MediaMuxer][245]
     - [OpenGL][231]
         - [1.OpenGL简介][232]
         - [2.GLSurfaceView简介][233]
@@ -370,11 +375,11 @@ Android学习笔记
 [17]: https://github.com/CharonChui/AndroidNote/blob/master/SourceAnalysis/Netowork/Retrofit%E8%AF%A6%E8%A7%A3(%E4%B8%8B).md   "Retrofit详解(下)"
 [18]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/%E6%90%AD%E5%BB%BAnginx%2Brtmp%E6%9C%8D%E5%8A%A1%E5%99%A8.md   "搭建nginx+rtmp服务器"
 [19]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/%E8%A7%86%E9%A2%91%E6%92%AD%E6%94%BE%E7%9B%B8%E5%85%B3%E5%86%85%E5%AE%B9%E6%80%BB%E7%BB%93.md   "视频播放相关内容总结"
-[20]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/%E8%A7%86%E9%A2%91%E8%A7%A3%E7%A0%81%E4%B9%8B%E8%BD%AF%E8%A7%A3%E4%B8%8E%E7%A1%AC%E8%A7%A3.md   "视频解码之软解与硬解"
+[20]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/Android%E9%9F%B3%E8%A7%86%E9%A2%91%E5%BC%80%E5%8F%91/%E8%A7%86%E9%A2%91%E8%A7%A3%E7%A0%81%E4%B9%8B%E8%BD%AF%E8%A7%A3%E4%B8%8E%E7%A1%AC%E8%A7%A3.md   "视频解码之软解与硬解"
 [21]: https://github.com/CharonChui/AndroidNote/tree/master/VideoDevelopment/Android%E9%9F%B3%E8%A7%86%E9%A2%91%E5%BC%80%E5%8F%91   "Android音视频开发"
-[22]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/Android%20WebRTC%E7%AE%80%E4%BB%8B.md   "Android WebRTC简介"
+[22]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/Android%E9%9F%B3%E8%A7%86%E9%A2%91%E5%BC%80%E5%8F%91/Android%20WebRTC%E7%AE%80%E4%BB%8B.md   "Android WebRTC简介"
 [23]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/DNS%E5%8F%8AHTTPDNS.md   "DNS及HTTPDNS"
-[24]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/DLNA%E7%AE%80%E4%BB%8B.md   "DLNA简介"
+[24]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/Android%E9%9F%B3%E8%A7%86%E9%A2%91%E5%BC%80%E5%8F%91/DLNA%E7%AE%80%E4%BB%8B.md   "DLNA简介"
 [25]: https://github.com/CharonChui/AndroidNote/blob/master/ImageLoaderLibrary/Glide%E7%AE%80%E4%BB%8B(%E4%B8%8A).md   "Glide简介(上)"
 [26]: https://github.com/CharonChui/AndroidNote/blob/master/ImageLoaderLibrary/Glide%E7%AE%80%E4%BB%8B(%E4%B8%8B).md   "Glide简介(下)"
 [27]: https://github.com/CharonChui/AndroidNote/blob/master/ImageLoaderLibrary/%E5%9B%BE%E7%89%87%E5%8A%A0%E8%BD%BD%E5%BA%93%E6%AF%94%E8%BE%83.md   "图片加载库比较"
@@ -567,7 +572,7 @@ Android学习笔记
 [211]: https://github.com/CharonChui/AndroidNote/blob/master/RxJavaPart/6.RxJava%E8%AF%A6%E8%A7%A3%E4%B9%8B%E7%BA%BF%E7%A8%8B%E8%B0%83%E5%BA%A6%E5%8E%9F%E7%90%86(%E5%85%AD).md  "6.RxJava详解之线程调度原理(六)"
 [212]: https://github.com/CharonChui/AndroidNote/blob/master/Dagger2/9.Dagger2%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90(%E4%B9%9D).md "9.Dagger2原理分析(九)"
 [213]: https://github.com/CharonChui/AndroidNote/blob/master/Tools%26Library/%E8%B0%83%E8%AF%95%E5%B9%B3%E5%8F%B0Sonar.md "调试平台Sonar"
-[214]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/AudioTrack%E7%AE%80%E4%BB%8B.md   "AudioTrack简介"
+[214]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/Android%E9%9F%B3%E8%A7%86%E9%A2%91%E5%BC%80%E5%8F%91/AudioTrack%E7%AE%80%E4%BB%8B.md   "AudioTrack简介"
 [215]: https://github.com/CharonChui/AndroidNote/blob/master/AdavancedPart/OOM%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90.md  "OOM问题分析"
 [216]: https://github.com/CharonChui/AndroidNote/tree/master/VideoDevelopment/ExoPlayer  "ExoPlayer"
 [217]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/ExoPlayer/1.%20ExoPlayer%E7%AE%80%E4%BB%8B.md  "1. ExoPlayer简介"
@@ -579,11 +584,11 @@ Android学习笔记
 [223]: https://github.com/CharonChui/AndroidNote/blob/master/Tools%26Library/Icon%E5%88%B6%E4%BD%9C.md "Icon制作"
 [224]: https://github.com/CharonChui/AndroidNote/tree/master/VideoDevelopment/%E6%B5%81%E5%AA%92%E4%BD%93%E5%8D%8F%E8%AE%AE "流媒体协议"
 [225]: https://github.com/CharonChui/AndroidNote/tree/master/VideoDevelopment/%E8%A7%86%E9%A2%91%E5%B0%81%E8%A3%85%E6%A0%BC%E5%BC%8F "视频封装格式"
-[226]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/SurfaceView%E4%B8%8ETextureView.md "SurfaceView与TextureView"
+[226]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/Android%E9%9F%B3%E8%A7%86%E9%A2%91%E5%BC%80%E5%8F%91/SurfaceView%E4%B8%8ETextureView.md "SurfaceView与TextureView"
 [227]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/%E5%85%B3%E9%94%AE%E5%B8%A7.md "关键帧"
 [228]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/CDN%E5%8F%8APCDN.md "CDN及PCDN"
 [229]: https://github.com/CharonChui/AndroidNote/tree/master/VideoDevelopment/P2P%E6%8A%80%E6%9C%AF "P2P"
-[230]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/%E6%92%AD%E6%94%BE%E5%99%A8%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96.md "播放器性能优化"
+[230]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/Android%E9%9F%B3%E8%A7%86%E9%A2%91%E5%BC%80%E5%8F%91/%E6%92%AD%E6%94%BE%E5%99%A8%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96.md "播放器性能优化"
 [231]: https://github.com/CharonChui/AndroidNote/tree/master/VideoDevelopment/OpenGL  "OpenGL"
 [232]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/OpenGL/1.OpenGL%E7%AE%80%E4%BB%8B.md  "1.OpenGL简介"
 [233]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/OpenGL/2.GLSurfaceView%E7%AE%80%E4%BB%8B.md "2.GLSurfaceView简介"
@@ -599,7 +604,7 @@ Android学习笔记
 [242]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/OpenGL/11.OpenGL%20ES%E6%BB%A4%E9%95%9C.md "11.OpenGL ES滤镜"
 [243]: https://github.com/CharonChui/AndroidNote/tree/master/VideoDevelopment/Danmaku "弹幕"
 [244]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/Danmaku/Android%E5%BC%B9%E5%B9%95%E5%AE%9E%E7%8E%B0.md "Android弹幕实现"
-[245]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/MediaExtractor%E3%80%81MediaCodec%E3%80%81MediaMuxer.md "MediaExtractor、MediaCodec、MediaMuxer"
+[245]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/Android%E9%9F%B3%E8%A7%86%E9%A2%91%E5%BC%80%E5%8F%91/MediaExtractor%E3%80%81MediaCodec%E3%80%81MediaMuxer.md "MediaExtractor、MediaCodec、MediaMuxer"
 [246]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/%E6%B5%81%E5%AA%92%E4%BD%93%E5%8D%8F%E8%AE%AE/%E6%B5%81%E5%AA%92%E4%BD%93%E5%8D%8F%E8%AE%AE.md  "流媒体协议"
 [247]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/%E6%B5%81%E5%AA%92%E4%BD%93%E5%8D%8F%E8%AE%AE/HLS.md "HLS"
 [248]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/%E6%B5%81%E5%AA%92%E4%BD%93%E5%8D%8F%E8%AE%AE/DASH.md "DASH"
@@ -680,9 +685,16 @@ Android学习笔记
 [319]: https://github.com/CharonChui/AndroidNote/blob/master/Gradle%26Maven/Composing%20builds%E7%AE%80%E4%BB%8B.md  "Composing builds简介"
 [320]: https://github.com/CharonChui/AndroidNote/blob/master/ImageLoaderLibrary/Coil%E7%AE%80%E4%BB%8B.md "Coil简介"
 [321]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/%E8%A7%86%E9%A2%91%E5%B0%81%E8%A3%85%E6%A0%BC%E5%BC%8F/M3U8.md "M3U8"
-
-
-
+[322]: https://github.com/CharonChui/AndroidNote/tree/master/VideoDevelopment/FFmpeg "FFmpeg"
+[323]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/FFmpeg/1.FFmpeg%E7%AE%80%E4%BB%8B.md "1.FFmpeg简介"
+[324]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/FFmpeg/2.FFmpeg%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E8%A1%8C.md "2.FFmpeg常用命令行"
+[325]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/FFmpeg/3.FFmpeg%E5%88%87%E7%89%87.md "3.FFmpeg切片"
+[326]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/Android%E9%9F%B3%E8%A7%86%E9%A2%91%E5%BC%80%E5%8F%91/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%90%8C%E6%AD%A5%E5%8E%9F%E7%90%86.md "音视频同步原理"
+[327]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/Android%E9%9F%B3%E8%A7%86%E9%A2%91%E5%BC%80%E5%8F%91/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%9C%BA%E6%99%AF.md "音视频场景"
+[328]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/Android%E9%9F%B3%E8%A7%86%E9%A2%91%E5%BC%80%E5%8F%91/1.%E9%9F%B3%E8%A7%86%E9%A2%91%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.md "1.音视频基础知识"
+[329]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/Android%E9%9F%B3%E8%A7%86%E9%A2%91%E5%BC%80%E5%8F%91/2.%E7%B3%BB%E7%BB%9F%E6%92%AD%E6%94%BE%E5%99%A8MediaPlayer.md "2.系统播放器MediaPlayer"
+[330]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/Android%E9%9F%B3%E8%A7%86%E9%A2%91%E5%BC%80%E5%8F%91/11.%E6%92%AD%E6%94%BE%E7%BB%84%E4%BB%B6%E5%B0%81%E8%A3%85.md "11.播放器组件封装"
+      
 
 
 Developed By
