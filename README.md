@@ -46,7 +46,7 @@ Android学习笔记
     - [搭建nginx+rtmp服务器][18]
     - [视频播放相关内容总结][19]
     - [视频解码之软解与硬解][20]
-    - [音视频基础知识][21]
+    - [Android音视频开发][21]
     - [Android WebRTC简介][22]
     - [DNS及HTTPDNS][23]
     - [DLNA简介][24]
@@ -70,6 +70,7 @@ Android学习笔记
         - [fMP4 vs ts][254]
         - [fMP4格式详解][255]
         - [视频封装格式][256]
+        - [M3U8][321]
     - [视频编码][257]
         - [AV1][258]
         - [H264][259]
@@ -96,6 +97,10 @@ Android学习笔记
         - [11.OpenGL ES滤镜][242]
     - [弹幕][243]
         - [Android弹幕实现][244]
+    - [FFmpeg][322]    
+        - [1.FFmpeg简介][323]
+        - [2.FFmpeg常用命令行][324]
+        - [1.FFmpeg切片][325]
 - [操作系统][263]
     - [1.操作系统简介][264]
     - [2.进程与线程][265]
@@ -366,7 +371,7 @@ Android学习笔记
 [18]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/%E6%90%AD%E5%BB%BAnginx%2Brtmp%E6%9C%8D%E5%8A%A1%E5%99%A8.md   "搭建nginx+rtmp服务器"
 [19]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/%E8%A7%86%E9%A2%91%E6%92%AD%E6%94%BE%E7%9B%B8%E5%85%B3%E5%86%85%E5%AE%B9%E6%80%BB%E7%BB%93.md   "视频播放相关内容总结"
 [20]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/%E8%A7%86%E9%A2%91%E8%A7%A3%E7%A0%81%E4%B9%8B%E8%BD%AF%E8%A7%A3%E4%B8%8E%E7%A1%AC%E8%A7%A3.md   "视频解码之软解与硬解"
-[21]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.md   "音视频基础知识"
+[21]: https://github.com/CharonChui/AndroidNote/tree/master/VideoDevelopment/Android%E9%9F%B3%E8%A7%86%E9%A2%91%E5%BC%80%E5%8F%91   "Android音视频开发"
 [22]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/Android%20WebRTC%E7%AE%80%E4%BB%8B.md   "Android WebRTC简介"
 [23]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/DNS%E5%8F%8AHTTPDNS.md   "DNS及HTTPDNS"
 [24]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/DLNA%E7%AE%80%E4%BB%8B.md   "DLNA简介"
@@ -432,7 +437,7 @@ Android学习笔记
 [84]: https://github.com/CharonChui/AndroidNote/blob/master/AdavancedPart/RecyclerView%E4%B8%93%E9%A2%98.md   "RecyclerView专题"
 [85]: https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledge/%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%A4%A7%E5%85%A8.md   "常用命令行大全"
 [86]: https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledge/%E5%8D%95%E4%BE%8B%E7%9A%84%E6%9C%80%E4%BD%B3%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F.md   "单例的最佳实现方式"
-[87]: https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledge/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84.md   "数据结构"
+[87]: https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledge/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84.md   "数据结构"
 [88]: https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledge/%E8%8E%B7%E5%8F%96%E4%BB%8A%E5%90%8E%E5%A4%9A%E5%B0%91%E5%A4%A9%E5%90%8E%E7%9A%84%E6%97%A5%E6%9C%9F.md   "获取今后多少天后的日期"
 [89]: https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledge/%E5%89%91%E6%8C%87Offer(%E4%B8%8A).md   "剑指Offer(上)"
 [90]: https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledge/剑指Offer(下).md   "剑指Offer(下)"
@@ -440,7 +445,7 @@ Android学习笔记
 [92]: https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledge/%E7%94%9F%E4%BA%A7%E8%80%85%E6%B6%88%E8%B4%B9%E8%80%85.md   "生产者消费者"
 [93]: https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledge/%E6%95%B0%E6%8D%AE%E5%8A%A0%E5%AF%86%E5%8F%8A%E8%A7%A3%E5%AF%86.md   "数据加密及解密"
 [94]: https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledge/%E6%AD%BB%E9%94%81.md   "死锁"
-[95]: https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledge/%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95.md   "算法"
+[95]: https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledge/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95/%E7%AE%97%E6%B3%95.md   "算法"
 [96]: https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledge/%E7%BD%91%E7%BB%9C%E8%AF%B7%E6%B1%82%E7%9B%B8%E5%85%B3%E5%86%85%E5%AE%B9%E6%80%BB%E7%BB%93.md   "网络请求相关内容总结"
 [97]: https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledge/%E7%BA%BF%E7%A8%8B%E6%B1%A0%E7%9A%84%E5%8E%9F%E7%90%86.md   "线程池的原理"
 [98]: https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledge/Java并发编程之原子性、可见性以及有序性.md  "Java并发编程之原子性、可见性以及有序性"
@@ -539,7 +544,7 @@ Android学习笔记
 [189]: https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledge/%E5%85%AB%E7%A7%8D%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95.md "八种排序算法"
 [190]: https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledge/%E7%BA%BF%E7%A8%8B%E6%B1%A0%E7%AE%80%E4%BB%8B.md "线程池简介"
 [191]: https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledge/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F.md "设计模式"
-[192]: https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledge/%E7%AE%97%E6%B3%95%E7%9A%84%E5%A4%8D%E6%9D%82%E5%BA%A6.md "算法复杂度"
+[192]: https://github.com/CharonChui/AndroidNote/tree/master/JavaKnowledge/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95 "数据结构和算法"
 [193]: https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledge/%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86.md "动态代理"
 [194]: https://github.com/CharonChui/AndroidNote/blob/master/AdavancedPart/ConstraintLaayout%E7%AE%80%E4%BB%8B.md "ConstraintLaayout简介"
 [195]: https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledge/Http%E4%B8%8EHttps%E7%9A%84%E5%8C%BA%E5%88%AB.md "Http与Https的区别"
@@ -674,6 +679,8 @@ Android学习笔记
 [318]: https://github.com/CharonChui/AndroidNote/blob/master/Jetpack/behavior/1.%E7%AE%80%E4%BB%8B.md "1.简介"
 [319]: https://github.com/CharonChui/AndroidNote/blob/master/Gradle%26Maven/Composing%20builds%E7%AE%80%E4%BB%8B.md  "Composing builds简介"
 [320]: https://github.com/CharonChui/AndroidNote/blob/master/ImageLoaderLibrary/Coil%E7%AE%80%E4%BB%8B.md "Coil简介"
+[321]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/%E8%A7%86%E9%A2%91%E5%B0%81%E8%A3%85%E6%A0%BC%E5%BC%8F/M3U8.md "M3U8"
+
 
 
 
