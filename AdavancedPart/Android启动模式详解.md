@@ -29,6 +29,7 @@ Android启动模式详解
     - 如果设置了`singleTask`启动模式的`Activity`不是在新的任务中启动时，它会在已有的任务中查看是否已经存在相应的`Activity`实例，如果存在，就会把位于这个`Activity`实例上面的`Activity`全部结束掉，
 	即最终这个Activity实例会位于任务的堆栈顶端中。以`A`启动`B`来说,当`A`和`B`的`taskAffinity`不同时：第一次创建`B`的实例时，会启动新的`task`，然后将`B`添加到新建的`task`中；否则，将`B`所在`task`中位于`B`之上的全部`Activity`都删除，然后跳转到`B`中。
 - `singleInstance`
+
 顾名思义，是单一实例的意思，即任意时刻只允许存在唯一的`Activity`实例，而且该`Activity`所在的`task`不能容纳除该`Activity`之外的其他`Activity`实例！               
 它与`singleTask`有相同之处，也有不同之处。          
 相同之处：任意时刻，最多只允许存在一个实例。            
@@ -37,6 +38,22 @@ Android启动模式详解
     - `singleTask`所在的`task`中能有其它的`Activity`，而`singleInstance`的`task`中不能有其他`Activity`。     
     - 当跳转到`singleTask`类型的`Activity`，并且该`Activity`实例已经存在时，会删除该`Activity`所在`task`中位于该`Activity`之上的全部`Activity`实例；而跳转到`singleInstance`类型的`Activity`，并且该`Activity`已经存在时，
 	不需要删除其他`Activity`，因为它所在的`task`只有该`Activity`唯一一个`Activity`实例。
+
+
+假设我们的程序中有一个Activity是允许其他程序调用的，如果想实现其他程序和我们的程序可以共享这个Activity的实例，应该如何实现呢？使用前面3种启动模式肯定是做不到的，因为每个应用程序都会有自己的返回栈，同一个Activity在不同的返回栈中入栈时必然创建了新的实例。而使用singleInstance模式就可以解决这个问题，在这种模式下，会有一个单独的返回栈来管理这个Activity，不管是哪个应用程序来访问这个Activity，都共用同一个返回栈，也就解决了共享Activity实例的问题。
+
+假设现在有FirstActivity、SecondActivity、ThirdActivity三个Activity， SecondActivity的启动模式是SingleInstance。 
+现在FirstActivity 启动SecondActivity，SecondActivity再启动ThirdActivity。 
+
+然后我们按下Back键进行返回，你会发现ThirdActivity竟然直接返回到了FirstActivity，再按下Back键又会返回到SecondActivity，再按下Back键才会退出程序，这是为什么呢？其实原理很简单，由于FirstActivity和ThirdActivity是存放在同一个返回栈里的，当在ThirdActivity的界面按下Back键时，ThirdActivity会从返回栈中出栈，那么FirstActivity就成为了栈顶Activity显示在界面上，因此也就出现了从ThirdActivity直接返回到FirstActivity的情况。然后在FirstActivity界面再次按下Back键，这时当前的返回栈已经空了，于是就显示了另一个返回栈的栈顶Activity，即SecondActivity。最后再次按下Back键，这时所有返回栈都已经空了，也就自然退出了程序。
+
+
+![image](https://raw.githubusercontent.com/CharonChui/Pictures/master/activity_launch_mode_singleinstance.png?raw=true)     
+
+
+
+
+
 
     
 ---
