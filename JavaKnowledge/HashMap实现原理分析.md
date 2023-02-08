@@ -9,17 +9,31 @@ HashMap基于Map接口实现，元素以键值对的方式存储，并且允许�
 
 其底层数据结构是数组称之为哈希桶，每个桶(bucket)里面放的是链表，链表中的每个节点，就是哈希表中的每个元素。
 
-通过hash的方法，通过put和get存储和获取对象。存储对象时，我们将K / V传给put方法时，它调用hashCode计算hash从而得到bucket位置，进一步存储，HashMap会根据当前bucket的占用情况自动调整容量 (超过 Load  Facotr则resize为原来的2倍)。获取对象时，我们 K传给get，它调用hashCodeO()计算hash从而得到bucket位置，并进一步调用equals()方法确定键值对。如果发生碰撞的时候，Hashmap通过链表将产生碰撞冲突的元素组织起来，在JDK8中，如果一个bucket中碰撞冲突的元素超过8哥，则使用红黑树来替换链表，从而提高速度。
+通过hash的方法，通过put和get存储和获取对象。存储对象时，我们将K / V传给put方法时，它调用hashCode计算hash
+从而得到bucket位置，进一步存储，HashMap会根据当前bucket的占用情况自动调整容量 (超过Load Facotr则resize为原来的2倍)。
+获取对象时，我们将K传给get()方法，它调用hashCodeO()计算hash从而得到bucket位置，并进一步调用equals()方法确定键值对。
+如果发生碰撞的时候，HashMap通过链表将产生碰撞冲突的元素组织起来，在JDK8中，如果一个bucket中碰撞冲突的元素超过8个，
+则使用红黑树来替换链表，从而提高速度。
 
-因其底层哈希桶的数据结构是数组，所以也会涉及到扩容的问题。当HashMap的容量达到threshold域值时，就会触发扩容。扩容前后，哈希桶的长度一定会是2的次方。这样在根据key的hash值寻找对应的哈希桶时，可以用位运算替代取余操作，更加高效。而key的hash值，并不仅仅只是key对象的hashCode()方法的返回值，还会经过扰动函数的扰动，以使hash值更加均衡。因为hashCode()是int类型，取值范围是40多亿，只要哈希函数映射的比较均匀松散，碰撞几率是很小的。 但就算原本的hashCode()取得很好，每个key的hashCode()不同，但是由于HashMap的哈希桶的长度远比hash取值范围小，默认是16，所以当对hash值以桶的长度取余，以找到存放该key的桶的下标时，由于取余是通过与操作完成的，会忽略hash值的高位。因此只有hashCode()的低位参加运算，发生不同的hash值，但是得到的index相同的情况的几率会大大增加，这种情况称之为hash碰撞。 即，碰撞率会增大。扰动函数就是为了解决hash碰撞的。它会综合hash值高位和低位的特征，并存放在低位，因此在与运算时，相当于高低位一起参与了运算，以减少hash碰撞的概率。（在JDK8之前，扰动函数会扰动四次，JDK8简化了这个操作）扩容操作时，会new一个新的Node数组作为哈希桶，然后将原哈希表中的所有数据(Node节点)移动到新的哈希桶中，相当于对原哈希表中所有的数据重新做了一个put操作。所以性能消耗很大，可想而知，在哈希表的容量越大时，性能消耗越明显。扩容时，如果发生过哈希碰撞，节点数小于8个。则要根据链表上每个节点的哈希值，依次放入新哈希桶对应下标位置。因为扩容是容量翻倍，所以原链表上的每个节点，现在可能存放在原来的下标，即low位， 或者扩容后的下标，即high位。 high位= low位+原哈希桶容量如果追加节点后，链表数量》=8，则转化为红黑树由迭代器的实现可以看出，遍历HashMap时，顺序是按照哈希桶从低到高，链表从前往后，依次遍历的。
-
-
-
-
+因其底层哈希桶的数据结构是数组，所以也会涉及到扩容的问题。当HashMap的容量达到threshold域值时，就会触发扩容。
+扩容前后，哈希桶的长度一定会是2的次方。这样在根据key的hash值寻找对应的哈希桶时，可以用位运算替代取余操作，更加高效。
+而key的hash值，并不仅仅只是key对象的hashCode()方法的返回值，还会经过扰动函数的扰动，以使hash值更加均衡。
+因为hashCode()是int类型，取值范围是40多亿，只要哈希函数映射的比较均匀松散，碰撞几率是很小的。 但就算原本的hashCode()取的很好，
+每个key的hashCode()不同，但是由于HashMap的哈希桶的长度远比hash取值范围小，默认是16，所以当对hash值以桶的长度取余，
+以找到存放该key的桶的下标时，由于取余是通过与操作完成的，会忽略hash值的高位。因此只有hashCode()的低位参加运算，
+发生不同的hash值，但是得到的index相同的情况的几率会大大增加，这种情况称之为hash碰撞。即碰撞率会增大。
+扰动函数就是为了解决hash碰撞的。它会综合hash值高位和低位的特征，并存放在低位，因此在与运算时，相当于高低位一起参与了运算，
+以减少hash碰撞的概率。（在JDK8之前，扰动函数会扰动四次，JDK8简化了这个操作）扩容操作时，会new一个新的Node数组作为哈希桶，
+然后将原哈希表中的所有数据(Node节点)移动到新的哈希桶中，相当于对原哈希表中所有的数据重新做了一个put操作。所以性能消耗很大，
+可想而知，在哈希表的容量越大时，性能消耗越明显。扩容时，如果发生过哈希碰撞，节点数小于8个。则要根据链表上每个节点的哈希值，
+依次放入新哈希桶对应下标位置。因为扩容是容量翻倍，所以原链表上的每个节点，现在可能存放在原来的下标，即low位， 或者扩容后的下标，
+即high位。 high位= low位+原哈希桶容量如果追加节点后，链表数量》=8，则转化为红黑树由迭代器的实现可以看出，遍历HashMap时，
+顺序是按照哈希桶从低到高，链表从前往后，依次遍历的。
 
 ## JDK1.7
 
-HashMap在JDK1.8中发生了改变，下面的部分是基于JDK1.7的分析。HashMap主要是用数组来存储数据的，我们都知道它会对key进行哈希运算，哈希运算会有重复的哈希值，对于哈希值的冲突，HashMap采用链表来解决的。
+HashMap在JDK1.8中发生了改变，下面的部分是基于JDK1.7的分析。HashMap主要是用数组来存储数据的，我们都知道它会对key进行哈希运算，
+哈希运算会有重复的哈希值，对于哈希值的冲突，HashMap采用链表来解决的。
 在HashMap里有这样的一句属性声明:   
 
 ```java
@@ -28,28 +42,25 @@ transient Entry[] table;
 可以看到Map是通过数组的方式来储存Entry那Entry是神马呢？就是HashMap存储数据所用的类，它拥有的属性如下:   
 ```java
 static class Entry implements Map.Entry {
-	final K key;
-	V value;
-	Entry next;
-	final int hash;
-	...//More code goes here
+    final K key;
+    V value;
+    Entry next;
+    final int hash;
+    ...//More code goes here
 }  
 ```
-看到next了吗？next就是为了哈希冲突而存在的。比如通过哈希运算，一个新元素应该在数组的第10个位置，但是第10个位置已经有Entry，那么好吧，将新加的元素也放到第10个位置，将第10个位置的原有Entry赋值给当前新加的Entry的next属性。数组存储的是链表，链表是为了解决哈希冲突的，这一点要注意。
+看到next了吗？next就是为了哈希冲突而存在的。比如通过哈希运算，一个新元素应该在数组的第10个位置，但是第10个位置已经有Entry，
+那么好吧，将新加的元素也放到第10个位置，将第10个位置的原有Entry赋值给当前新加的Entry的next属性。
+数组存储的是链表，链表是为了解决哈希冲突的，这一点要注意。
 
 好了，总结一下:       
 
 - HashMap中有一个叫table的Entry数组。这个数组存储了Entry类的对象。Entry类包含了key-value作为实例变量。
-
 - table的索引在逻辑上叫做“桶”(bucket)，它存储了链表的第一个元素。
-
-- 每当往Hashmap里面存放key-value对的时候，都会为它们实例化一个Entry对象，这个Entry对象就会存储在前面提到的Entry数组table中。根据key的hashcode()方法计算出来的hash值来决定在Entry数组的索引(所在的桶)。
-
+- 每当往Hashmap里面存放key-value对的时候，都会为它们实例化一个Entry对象，这个Entry对象就会存储在前面提到的Entry数组table中。 根据key的hashcode()方法计算出来的hash值来决定在Entry数组的索引(所在的桶)。
 - 如果两个key有相同的hash值，他们会被放在table数组的同一个桶里面。
-
 - key的equals()方法用来确保key的唯一性。
 
-    
 
 接下来看一下put方法:      
 
@@ -70,33 +81,33 @@ static class Entry implements Map.Entry {
 */
 public V put(K key, V value) {
     // 对key做null检查。如果key是null，会被存储到table[0]，因为null的hash值总是0。
-	if (key == null)
-		return putForNullKey(value);
-	// 计算key的hash值,hash值用来找到存储Entry对象的数组的索引。有时候hash函数可能写的很不好，所以JDK的设计者添加了另一个叫做hash()的方法，它接收刚才计算的hash值作为参数	
-	int hash = hash(key.hashCode());
-	// indexFor(hash,table.length)用来计算在table数组中存储Entry对象的精确的索引
-	int i = indexFor(hash, table.length);
-	
-	for (Entry<k , V> e = table[i]; e != null; e = e.next) {
-	    // 如果这个位置已经有了(也就是hash值一样)就用链表来存了。 开始迭代链表
-		Object k;
-		// 直到Entry->next为null，就把当前的Entry对象变成链表的下一个节点。
-		if (e.hash == hash && ((k = e.key) == key || key.equals(k))) {
-		    // 如果我们再次放入同样的key会怎样呢？它会替换老的value。在迭代的过程中，会调用equals()方法来检查key的相等性(key.equals(k))，
-			// 如果这个方法返回true，它就会用当前Entry的value来替换之前的value。
-			V oldValue = e.value;
-			e.value = value;
-			e.recordAccess(this);
-			return oldValue;
-		}
-	}
-	// 如果计算出来的索引位置没有元素，就直接把Entry对象放到那个索引上。
-	modCount++;
-	addEntry(hash, key, value, i);
-	return null;
+    if (key == null)
+        return putForNullKey(value);
+    // 计算key的hash值,hash值用来找到存储Entry对象的数组的索引。有时候hash函数可能写的很不好，所以JDK的设计者添加了另一个叫做hash()的方法，它接收刚才计算的hash值作为参数   
+    int hash = hash(key.hashCode());
+    // indexFor(hash,table.length)用来计算在table数组中存储Entry对象的精确的索引
+    int i = indexFor(hash, table.length);
+    
+    for (Entry<k , V> e = table[i]; e != null; e = e.next) {
+        // 如果这个位置已经有了(也就是hash值一样)就用链表来存了。 开始迭代链表
+        Object k;
+        // 直到Entry->next为null，就把当前的Entry对象变成链表的下一个节点。
+        if (e.hash == hash && ((k = e.key) == key || key.equals(k))) {
+            // 如果我们再次放入同样的key会怎样呢？它会替换老的value。在迭代的过程中，会调用equals()方法来检查key的相等性(key.equals(k))，
+            // 如果这个方法返回true，它就会用当前Entry的value来替换之前的value。
+            V oldValue = e.value;
+            e.value = value;
+            e.recordAccess(this);
+            return oldValue;
+        }
+    }
+    // 如果计算出来的索引位置没有元素，就直接把Entry对象放到那个索引上。
+    modCount++;
+    addEntry(hash, key, value, i);
+    return null;
 }
 ```
-再看一下get方法:　　　　
+再看一下get方法:
 ```java
 /**
   * Returns the value to which the specified key is mapped, or {@code null}
@@ -118,29 +129,31 @@ public V put(K key, V value) {
   */
 public V get(Object key) {
     // 如果key是null，table[0]这个位置的元素将被返回。
-	if (key == null)
-		return getForNullKey();
-	// 计算hash值
-	int hash = hash(key.hashCode());
-	// indexFor(hash,table.length)用来计算要获取的Entry对象在table数组中的精确的位置，使用刚才计算的hash值。
-	for (Entry<k , V> e = table[indexFor(hash, table.length)]; e != null; e = e.next) {
-		Object k;
-		// 在获取了table数组的索引之后，会迭代链表，调用equals()方法检查key的相等性，如果equals()方法返回true，get方法返回Entry对象的value，否则，返回null。
-		if (e.hash == hash && ((k = e.key) == key || key.equals(k)))
-    		return e.value;
-		}
-	return null;
+    if (key == null)
+        return getForNullKey();
+    // 计算hash值
+    int hash = hash(key.hashCode());
+    // indexFor(hash,table.length)用来计算要获取的Entry对象在table数组中的精确的位置，使用刚才计算的hash值。
+    for (Entry<k , V> e = table[indexFor(hash, table.length)]; e != null; e = e.next) {
+        Object k;
+        // 在获取了table数组的索引之后，会迭代链表，调用equals()方法检查key的相等性，如果equals()方法返回true，get方法返回Entry对象的value，否则，返回null。
+        if (e.hash == hash && ((k = e.key) == key || key.equals(k)))
+            return e.value;
+        }
+    return null;
 }
 ```
 
-
-
 ## JDK1.8
 
-在Jdk1.8中HashMap的实现方式做了一些改变，但是基本思想还是没有变得，只是在一些地方做了优化，下面来看一下这些改变的地方,数据结构的存储由数组+链表的方式，变化为数组+链表+红黑树的存储方式，当链表长度超过阈值（8）时，将链表转换为红黑树。利用红黑树快速增删改查的特点来提高HashMap的性能，其中会用到红黑树的插入、删除、查找等算法。HashMap中，如果key经过hash算法得出的数组索引位置全部不相同，即Hash算法非常好，那样的话，getKey方法的时间复杂度就是O(1)，如果Hash算法技术的结果碰撞非常多，假如Hash算极其差，所有的Hash算法结果得出的索引位置一样，那样所有的键值对都集中到一个桶中，或者在一个链表中，或者在一个红黑树中，时间复杂度分别为O(n)和O(lgn)。
+在Jdk1.8中HashMap的实现方式做了一些改变，但是基本思想还是没有变的，只是在一些地方做了优化，下面来看一下这些改变的地方,
+数据结构的存储由数组+链表的方式，变化为数组+链表+红黑树的存储方式，当链表长度超过阈值（8）时，将链表转换为红黑树。
+利用红黑树快速增删改查的特点来提高HashMap的性能，其中会用到红黑树的插入、删除、查找等算法。HashMap中，
+如果key经过hash算法得出的数组索引位置全部不相同，即Hash算法非常好，那样的话，getKey方法的时间复杂度就是O(1)，
+如果Hash算法技术的结果碰撞非常多，假如Hash算法极其差，所有的Hash算法结果得出的索引位置一样，那样所有的键值对都集中到一个桶中，
+或者在一个链表中，或者在一个红黑树中，时间复杂度分别为O(n)和O(lgn)。
 
 ![](https://raw.githubusercontent.com/CharonChui/Pictures/master/hashmap_data_structure.jpg)
-
 
 
 既然发生了变化，那这里就以1.8的源码基础上再做一下分析:  
@@ -167,7 +180,7 @@ public V get(Object key) {
         public final K getKey()        { return key; }
         public final V getValue()      { return value; }
         public final String toString() { return key + "=" + value; }
-    	// 每一个节点的hashcode值，是将key和value的hashCode值异或得到的
+        // 每一个节点的hashcode值，是将key和value的hashCode值异或得到的
         public final int hashCode() {
             return Objects.hashCode(key) ^ Objects.hashCode(value);
         }
@@ -217,7 +230,7 @@ public V get(Object key) {
          * @return root of tree
          */
         final void treeify(Node<K,V>[] tab) {
-       		...
+            ...
         }
     
         /**
@@ -229,7 +242,7 @@ public V get(Object key) {
         }
     
         /**
-    	 * 红黑树的插入
+         * 红黑树的插入
          * Tree version of putVal.
          */
         final TreeNode<K,V> putTreeVal(HashMap<K,V> map, Node<K,V>[] tab,
@@ -285,7 +298,7 @@ public V get(Object key) {
     ```java
     public class HashMap<K,V> extends AbstractMap<K,V>
         implements Map<K,V>, Cloneable, Serializable {
-    	// 默认的初始化容量大小，必须是2的倍数，默认是16，为啥必须是2的倍数，后面会说
+        // 默认的初始化容量大小，必须是2的倍数，默认是16，为啥必须是2的倍数，后面会说
         static final int DEFAULT_INITIAL_CAPACITY = 1 << 4; // aka 16
         // 在构造函数中未指定时使用的负载因子。
         static final float DEFAULT_LOAD_FACTOR = 0.75f;
@@ -329,7 +342,10 @@ public V get(Object key) {
 
 ### 确定哈希桶数组索引位置
 
-不管增加、删除、查找键值对，定位到哈希桶数组的位置都是很关键的第一步。前面说过HashMap的数据结构是数组和链表的结合，所以我们当然希望这个HashMap里面的元素位置尽量分布均匀些，尽量使得每个位置上的元素数量只有一个，那么当我们用hash算法求得这个位置的时候，马上就可以知道对应位置的元素就是我们要的，不用遍历链表，大大优化了查询的效率。HashMap定位数组索引位置，直接决定了hash方法的离散性能。先看看源码的实现：  
+不管增加、删除、查找键值对，定位到哈希桶数组的位置都是很关键的第一步。前面说过HashMap的数据结构是数组和链表的结合，
+所以我们当然希望这个HashMap里面的元素位置尽量分布均匀些，尽量使得每个位置上的元素数量只有一个，那么当我们用hash算法求得这个位置的
+时候，马上就可以知道对应位置的元素就是我们要的，不用遍历链表，大大优化了查询的效率。HashMap定位数组索引位置，直接决定了hash方法的
+离散性能。先看看源码的实现：  
 
 ```java
 static final int hash(Object key) {
@@ -338,18 +354,22 @@ static final int hash(Object key) {
 }
 ```
 
-hash函数是先拿到通过key 的hashcode，是32位的int值，然后让hashcode的高16位和低16位进行异或操作。为什么要这样设计呢？ 主要有两个原因 ：  
+hash函数是先拿到通过key的hashcode，是32位的int值，然后让hashcode的高16位和低16位进行异或操作。为什么要这样设计呢？ 
+主要有两个原因 ：  
 
 1. 一定要尽可能降低hash碰撞，越分散越好。
 2. 算法一定要尽可能高效，因为这是高频操作，因此采用位运算。
 
-因为hashcode是32位的int值int值范围为**-2147483648~2147483647**，前后加起来大概40亿的映射空间。只要哈希函数映射得比较均匀松散，一般应用是很难出现碰撞的。但问题是一个40亿长度的数组，内存是放不下的。你想，如果HashMap数组的初始大小才16，用之前需要对数组的长度取模运算，得到的余数才能用来访问数组下标。源码中模运算就是把散列值和数组长度-1做一个"与"操作，位运算比%运算要快。
+因为hashcode是32位的int值int值范围为**-2147483648~2147483647**，前后加起来大概40亿的映射空间。只要哈希函数映射得比较均匀松散，
+一般应用是很难出现碰撞的。但问题是一个40亿长度的数组，内存是放不下的。你想，如果HashMap数组的初始大小才16，用之前需要对数组的长度取模运算，
+得到的余数才能用来访问数组下标。源码中模运算就是把散列值和数组长度-1做一个"与"操作，位运算比%运算要快。
 
 
-
-
-
-对于任意给定的对象，只要它的hashCode()返回值相同，那么程序调用所计算得到的Hash码值总是相同的。我们首先想到的就是把hash值对数组长度取模运算，这样一来，元素的分布相对来说是比较均匀的。但是，模运算的消耗还是比较大的，在HashMap中是这样做的：调用 (table.length  -1) & hash来计算该对象应该保存在table数组的哪个索引处。这个方法非常巧妙，它通过 (table.length  -1) & hash来得到该对象的保存位，而HashMap底层数组的长度总是2的n次方，当length总是2的n次方时， (table.length  -1) & hash运算等价于对length取模，也就是h%length，但是&比%具有更高的效率。
+对于任意给定的对象，只要它的hashCode()返回值相同，那么程序调用所计算得到的Hash值总是相同的。我们首先想到的就是把hash值对数组长度
+取模运算，这样一来，元素的分布相对来说是比较均匀的。但是，模运算的消耗还是比较大的，
+在HashMap中是这样做的：调用 (table.length  -1) & hash来计算该对象应该保存在table数组的哪个索引处。
+这个方法非常巧妙，它通过 (table.length  -1) & hash来得到该对象的保存位，而HashMap底层数组的长度总是2的n次方，
+当length总是2的n次方时， (table.length  -1) & hash运算等价于对length取模，也就是h%length，但是&比%具有更高的效率。
 
 当length总是2的倍数时，h & (length-1) 将是一个非常巧妙的设计：
 
@@ -359,14 +379,14 @@ hash函数是先拿到通过key 的hashcode，是32位的int值，然后让hashc
 - 但是当h=16时 , length=16 时，那么h & length - 1将得到0了；
 - 当h=17时, length=16时，那么h & length - 1将得到1了。
 
-这样保证计算得到的索引值总是位于 table 数组的索引之内。
+这样保证计算得到的索引值总是位于table数组的索引之内。
 
 
-
-在JDK1.8的实现中，优化了高位运算的算法，通过hashCode()的高16位异或低16位实现的：(h = k.hashCode()) ^ (h >>>  16)，主要是从速度、功效、质量来考虑的，这么做可以在数组table的length比较小的时候，也能保证考虑到高低Bit都参与到Hash的计算中，同时不会有太大的开销。
+在JDK1.8的实现中，优化了高位运算的算法，通过hashCode()的高16位异或低16位实现的：(h = k.hashCode()) ^ (h >>>  16)，
+主要是从速度、功效、质量来考虑的，这么做可以在数组table的length比较小的时候，也能保证考虑到高低Bit都参与到Hash的计算中，
+同时不会有太大的开销。
 
 ![](https://raw.githubusercontent.com/CharonChui/Pictures/master/hashmap_hash.bmp)
-
 
 
 ### put
@@ -389,7 +409,7 @@ hash函数是先拿到通过key 的hashcode，是32位的int值，然后让hashc
             // 3. 如果tab[索引]的值为null，那就说明这个索引没有数组桶，直接新建一个数组桶
             tab[i] = newNode(hash, key, value, null);
         else {
-           	// 4. 否则就是目前已经存在该索引的数组桶了，要继续判断是链表还是红黑树。
+            // 4. 否则就是目前已经存在该索引的数组桶了，要继续判断是链表还是红黑树。
             Node<K,V> e; K k;
             // 5. 判断table[索引]处的收个元素是否和key一样，如果首个就是那就直接覆盖value，不用再找了
             if (p.hash == hash &&
@@ -400,7 +420,7 @@ hash函数是先拿到通过key 的hashcode，是32位的int值，然后让hashc
                 // 7. 数组桶首个元素不是，并且链表是红黑树，红黑树直接插入键值对
                 e = ((TreeNode<K,V>)p).putTreeVal(this, tab, hash, key, value);
             else {
-            	// 8. 目前为链表，开始遍历链表准备插入
+                // 8. 目前为链表，开始遍历链表准备插入
                 for (int binCount = 0; ; ++binCount) {
                     if ((e = p.next) == null) {
                         // 添加到目前的节点的next上
@@ -475,27 +495,19 @@ final void treeifyBin(Node<K,V>[] tab, int hash) {
 resize()方法用于初始化数组或数组扩容，每次扩容后容量为原来的2倍，并进行数据迁移。 
 
 
-
-例如我们从 16 扩展为 32 时，具体的变化如下所示：
-
+例如我们从16扩展为32时，具体的变化如下所示：
 ![](https://raw.githubusercontent.com/CharonChui/Pictures/master/resize1.bmp)
 
-
-
-
-因此元素在重新计算hash之后，因为n变为 2 倍，那 n-1的mask范围在高位多1bit (红色)，因此新的 index就会发生这样的变化：
-
+因此元素在重新计算hash之后，因为n变为2倍，那n-1的mask范围在高位多1bit (红色)，因此新的index就会发生这样的变化：
 ![](https://raw.githubusercontent.com/CharonChui/Pictures/master/resize2.bmp)
 
-
-因此，我们在扩充HashMap的时候，不需要重新计算hash，只需要看看原来的hash值新增的那个bit是1还是0就好了，是0的话索引没变，是1的话索引变成 “原索引 + oldCap”。可以看看下图为16扩充为32的resize示意图：
-
+因此，我们在扩充HashMap的时候，不需要重新计算hash，只需要看看原来的hash值新增的那个bit是1还是0就好了，
+是0的话索引没变，是1的话索引变成 “原索引 + oldCap”。可以看看下图为16扩充为32的resize示意图：
 ![resize](https://raw.githubusercontent.com/CharonChui/Pictures/master/resize3.bmp)
 
 
-
-
-这个设计确实非常的巧妙，既省去了重新计算 hash 值的时间，而且同时，**由于新增的 1bit 是 0 还是 1 可以认为是随机的，因此 resize 的过程，均匀的把之前的冲突的节点分散到新的 bucket 了**。
+这个设计确实非常的巧妙，既省去了重新计算hash值的时间，而且同时，**由于新增的1bit是0还是1可以认为是随机的，因此resize的过程，
+均匀的把之前的冲突的节点分散到新的bucket了**。
 
 ```java
 final Node<K,V>[] resize() {
@@ -602,7 +614,8 @@ final Node<K,V>[] resize() {
 }
 ```
 
-再看一下往哈希表里插入一个节点的putVal函数,如果参数onlyIfAbsent是true，那么不会覆盖相同key的值value。如果evict是false。那么表示是在初始化时调用的
+再看一下往哈希表里插入一个节点的putVal函数,如果参数onlyIfAbsent是true，那么不会覆盖相同key的值value。
+如果evict是false，那么表示是在初始化时调用的。
 
 ```java
 final V putVal(int hash, K key, V value, boolean onlyIfAbsent,
@@ -673,7 +686,7 @@ final V putVal(int hash, K key, V value, boolean onlyIfAbsent,
 
 * 运算尽量都用位运算代替，更高效。
 * 对于扩容导致需要新建数组存放更多元素时，除了要将老数组中的元素迁移过来，也记得将老数组中的引用置null，以便GC
-* 取下标 是用 哈希值 与运算 （桶的长度-1） i = (n - 1) & hash。 由于桶的长度是2的n次方，这么做其实是等于 一个模运算。但是效率更高
+* 取下标 是用哈希值与运算 （桶的长度-1） i = (n - 1) & hash。 由于桶的长度是2的n次方，这么做其实是等于 一个模运算。但是效率更高
 * 扩容时，如果发生过哈希碰撞，节点数小于8个。则要根据链表上每个节点的哈希值，依次放入新哈希桶对应下标位置。
 * 因为扩容是容量翻倍，所以原链表上的每个节点，现在可能存放在原来的下标，即low位， 或者扩容后的下标，即high位。 high位= low位+原哈希桶容量
 * 利用哈希值 与运算 旧的容量 ，if ((e.hash & oldCap) == 0),可以得到哈希值去模后，是大于等于oldCap还是小于oldCap，等于0代表小于oldCap，应该存放在低位，否则存放在高位。这里又是一个利用位运算 代替常规运算的高效点
@@ -716,7 +729,7 @@ final Node<K,V> getNode(int hash, Object key) {
 
 
 
-## JDK 7 与 JDK 8 中关于 HashMap的对比
+## JDK 7与JDK 8中关于HashMap的对比
 
 1. JDK8为红黑树 + 链表 + 数组的形式，当桶内元素大于8时，便会树化。
 2. hash值的计算方式不同 (jdk 8 简化)。
@@ -727,25 +740,33 @@ final Node<K,V> getNode(int hash, Object key) {
 
 
 
-
-
 ## 问题
 
 1. 为什么capcity是2的幂？
-     因为算index时用的是(n-1) & hash，这样就能保证n-1是全为1的二进制数，如果不全为1的话，存在某一位为 0，那么0，1与0与的结果都是0，这样便有可能将两个hash不同的值最终装入同一个桶中，造成冲突。所以必须是2的幂。这是为了服务key映射到index的Hash算法的，公式index=hashcode(key)&(length-1)，初始长度(16-1)，二进制为1111&hashcode结果为hashcode最后四位，能最大程度保持平均，二的幂数保证二进制为1，保持hashcode最后四位。这种算法在保持分布均匀之外，效率也非常高。
+
+    因为算index时用的是(n-1) & hash，这样就能保证n-1是全为1的二进制数，如果不全为1的话，存在某一位为0，那么0，1与0与的结果都是0，
+    这样便有可能将两个hash不同的值最终装入同一个桶中，造成冲突。所以必须是2的幂。这是为了服务key映射到index的Hash算法的，
+    公式index=hashcode(key)&(length-1)，初始长度(16-1)，二进制为1111&hashcode结果为hashcode最后四位，能最大程度保持平均，二的幂数保证二进制为1，保持hashcode最后四位。这种算法在保持分布均匀之外，效率也非常高。
 
 2. 为什么需要使用加载因子，为什么需要扩容呢？
 
-    因为如果填充比很大，说明利用的空间很多，如果一直不进行扩容的话，链表就会越来越长，这样查找的效率很低，因为链表的长度很大（当然最新版本使用了红黑树后会改进很多），扩容之后，将原来链表数组的每一个链表分成奇偶两个子链表分别挂在新链表数组的散列位置，这样就减少了每个链表的长度，增加查找效率。HashMap 本来是以空间换时间，所以填充比没必要太大。但是填充比太小又会导致空间浪费。如果关注内存，填充比可以稍大，如果主要关注查找性能，填充比可以稍小。
+    因为如果填充比很大，说明利用的空间很多，如果一直不进行扩容的话，链表就会越来越长，这样查找的效率很低，因为链表的长度很大（当然最新版本使用了红黑树后会改进很多），
+    扩容之后，将原来链表数组的每一个链表分成奇偶两个子链表分别挂在新链表数组的散列位置，这样就减少了每个链表的长度，增加查找效率。HashMap本来是以空间换时间，所以填充比没必要太大。
+    但是填充比太小又会导致空间浪费。如果关注内存，填充比可以稍大，如果主要关注查找性能，填充比可以稍小。
 
 3. 为什么 HashMap 是线程不安全的，实际会如何体现？
 
-    - 如果多个线程同时使用put方法添加元素，假设正好存在两个put的key发生了碰撞 (hash值一样)，那么根据HashMap的实现，这两个key会添加到数组的同一个位置，这样最终就会发生其中一个线程的put的数据被覆盖。
-- 如果多个线程同时检测到元素个数超过数组大小 * loadFactor。这样会发生多个线程同时对hash数组进行扩容，都在重新计算元素位置以及复制数据，但是最终只有一个线程扩容后的数组会赋给table，也就是说其他线程的都会丢失，并且各自线程put的数据也丢失。且会引起死循环的错误。
+    如果多个线程同时使用put方法添加元素，假设正好存在两个put的key发生了碰撞 (hash值一样)，那么根据HashMap的实现，
+    这两个key会添加到数组的同一个位置，这样最终就会发生其中一个线程的put的数据被覆盖。
+    如果多个线程同时检测到元素个数超过数组大小 * loadFactor。这样会发生多个线程同时对hash数组进行扩容，都在重新计算元素位置
+    以及复制数据，但是最终只有一个线程扩容后的数组会赋给table，也就是说其他线程的都会丢失，并且各自线程put的数据也丢失。
+    且会引起死循环的错误。
     
 4. 与HashTable的区别
 
-    Hashtable是遗留类，很多映射的常用功能与HashMap类似，不同的是它承自Dictionary类，并且是线程安全的，任一时间只有一个线程能写Hashtable，它的并发性不如ConcurrentHashMap，因为ConcurrentHashMap引入了分段锁。Hashtable不建议在新代码中使用，不需要线程安全的场合可以用HashMap替换，需要线程安全的场合可以用ConcurrentHashMap替换。
+    Hashtable是遗留类，很多映射的常用功能与HashMap类似，不同的是它承自Dictionary类，并且是线程安全的，任一时间只有一个线程能写Hashtable，
+    它的并发性不如ConcurrentHashMap，因为ConcurrentHashMap引入了分段锁。Hashtable不建议在新代码中使用，不需要线程安全的场合可以用HashMap替换，
+    需要线程安全的场合可以用ConcurrentHashMap替换。
 
     - 与之相比HashTable是线程安全的，且不允许key、value是null。
     - HashTable默认容量是11。
@@ -754,15 +775,12 @@ final Node<K,V> getNode(int hash, Object key) {
     - 扩容时，新容量是原来的2倍+1。int newCapacity = (oldCapacity << 1) + 1;
     - Hashtable是Dictionary的子类同时也实现了Map接口，HashMap是Map接口的一个实现类
     
-5. 扩容的时候为什么1.8 不用重新hash就可以直接定位原节点在新数据的位置呢?
+5. 扩容的时候为什么1.8不用重新hash就可以直接定位原节点在新数据的位置呢?
 
     这是由于扩容是扩大为原数组大小的2倍，用于计算数组位置的掩码仅仅只是高位多了一个1，举个例子：
-
-      扩容前长度为16，用于计算 (n-1) & hash 的二进制n - 1为0000 1111， 
-
-       扩容后为32后的二进制就高位多了1，============>为0001 1111。因为是& 运算，1和任何数 & 都是它本身，那就分二种情况，如下图：原数据hashcode高位第4位为0和高位为1的情况；第四位高位为0，重新hash数值不变，第四位为1，重新hash数值比原来大16（旧数组的容量）。
-
-    
+        扩容前长度为16，用于计算 (n-1) & hash 的二进制n - 1为0000 1111，
+        扩容后为32后的二进制就高位多了1，============>为0001 1111。因为是&运算，1和任何数&都是它本身，那就分二种情况，
+        原数据hashcode高位第4位为0和高位为1的情况；第四位高位为0，重新hash数值不变，第四位为1，重新hash数值比原来大16（旧数组的容量）。
 
 
 参考:  
@@ -773,11 +791,8 @@ final Node<K,V> getNode(int hash, Object key) {
 
 
 
-
-
-
 ---
 - 邮箱 ：charon.chui@gmail.com  
 - Good Luck! 
 
-	
+    

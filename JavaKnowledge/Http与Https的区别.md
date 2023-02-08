@@ -39,12 +39,12 @@ HTTP与HTTPS的区别
 
 你是不是很好奇，当你在浏览器中输入网址后，到底发生了什么事情？你想要的内容是如何展现出来的？让我们通过一个例子来探讨一下，我们假设访问的 URL 地址为 `http://www.someSchool.edu/someDepartment/home.index`，当我们输入网址并点击回车时，浏览器内部会进行如下操作
 
-- DNS服务器会首先进行域名的映射，找到访问`www.someSchool.edu`所在的地址，然后HTTP 客户端进程在 80 端口发起一个到服务器 `www.someSchool.edu` 的 TCP 连接（80 端口是 HTTP 的默认端口）。在客户和服务器进程中都会有一个`套接字`与其相连。
-- HTTP 客户端通过它的套接字向服务器发送一个 HTTP 请求报文。该报文中包含了路径 `someDepartment/home.index` 的资源，我们后面会详细讨论 HTTP 请求报文。
-- HTTP 服务器通过它的套接字接受该报文，进行请求的解析工作，并从其`存储器(RAM 或磁盘)`中检索出对象 [www.someSchool.edu/someDepartment/home.index，然后把检索出来的对象进行封装，封装到](http://www.someSchool.edu/someDepartment/home.index，然后把检索出来的对象进行封装，封装到) HTTP 响应报文中，并通过套接字向客户进行发送。
-- HTTP 服务器随即通知 TCP 断开 TCP 连接，实际上是需要等到客户接受完响应报文后才会断开 TCP 连接。
-- HTTP 客户端接受完响应报文后，TCP 连接会关闭。HTTP 客户端从响应中提取出报文中是一个 HTML 响应文件，并检查该 HTML 文件，然后循环检查报文中其他内部对象。
-- 检查完成后，HTTP 客户端会把对应的资源通过显示器呈现给用户。
+- DNS服务器会首先进行域名的映射，找到访问`www.someSchool.edu`所在的地址，然后HTTP客户端进程在80端口发起一个到服务器`www.someSchool.edu`的TCP连接（80端口是HTTP的默认端口）。在客户和服务器进程中都会有一个`套接字`与其相连。
+- HTTP客户端通过它的套接字向服务器发送一个HTTP请求报文。该报文中包含了路径`someDepartment/home.index`的资源，我们后面会详细讨论HTTP请求报文。
+- HTTP服务器通过它的套接字接受该报文，进行请求的解析工作，并从其`存储器(RAM 或磁盘)`中检索出对象 [www.someSchool.edu/someDepartment/home.index，然后把检索出来的对象进行封装，封装到](http://www.someSchool.edu/someDepartment/home.index，然后把检索出来的对象进行封装，封装到)HTTP响应报文中，并通过套接字向客户进行发送。
+- HTTP服务器随即通知TCP断开TCP连接，实际上是需要等到客户接受完响应报文后才会断开TCP连接。
+- HTTP客户端接受完响应报文后，TCP连接会关闭。HTTP客户端从响应中提取出报文中是一个HTML响应文件，并检查该HTML文件，然后循环检查报文中其他内部对象。
+- 检查完成后，HTTP客户端会把对应的资源通过显示器呈现给用户。
 
 至此，键入网址再按下回车的全过程就结束了。上述过程描述的是一种简单的`请求-响应`全过程，真实的请求-响应情况可能要比上面描述的过程复杂很多。
 
@@ -190,4 +190,4 @@ HTTP + 加密 + 认证 + 完整性保护 = HTTPS
 - 邮箱 ：charon.chui@gmail.com  
 - Good Luck! 
 
-	
+    
