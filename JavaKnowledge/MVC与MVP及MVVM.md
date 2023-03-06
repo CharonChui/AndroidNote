@@ -15,10 +15,10 @@ MVC 分层同时也简化了分组开发。不同的开发人员可同时开发�
 
 - 优点
     - 耦合性低
-	- 重用性高
-	- 可维护性高
-	- 有利软件工程化管理
-	
+    - 重用性高
+    - 可维护性高
+    - 有利软件工程化管理
+    
 - 缺点
     - 没有明确的定义
     - 视图与控制器间的过于紧密的连接
@@ -34,7 +34,7 @@ MVP
 所有的交互都发生在`Presenter`内部，而在`MVC`中`View`会直接从`Model`中读取数据而不是通过`Controller`。
 在`MVC`里,`View`是可以直接访问`Model`的！从而，`View`里会包含`Model`信息，不可避免的还要包括一些业务逻辑。 
 在`MVC`模型里，更关注的`Model`的不变，而同时有多个对`Model`的不同显示及`View`。所以，在`MVC`模型里，`Model`不依赖于`View`，但是`View`是依赖于`Model`的。
-不仅如此，因为有一些业务逻辑在`View`里实现了，导致要更改`View`也是比较困难的，至少那些业务逻辑是无法重用的。	
+不仅如此，因为有一些业务逻辑在`View`里实现了，导致要更改`View`也是比较困难的，至少那些业务逻辑是无法重用的。    
 
 ![image](https://github.com/CharonChui/Pictures/blob/master/is-activity-god-the-mvp-architecture-10-638.jpg?raw=true)
 
@@ -56,8 +56,8 @@ MVP
 
 - 缺点
     由于对视图的渲染放在了`Presenter`中，所以视图和`Presenter`的交互会过于频繁。还有一点需要明白，如果`Presenter`过多地渲染了视图，
-	往往会使得它与特定的视图的联系过于紧密。一旦视图需要变更，那么`Presenter`也需要变更了。
-	比如说，原本用来呈现`Html`的`Presenter`现在也需要用于呈现Pdf了，那么视图很有可能也需要变更。
+    往往会使得它与特定的视图的联系过于紧密。一旦视图需要变更，那么`Presenter`也需要变更了。
+    比如说，原本用来呈现`Html`的`Presenter`现在也需要用于呈现Pdf了，那么视图很有可能也需要变更。
 
 MVVM
 ---
@@ -66,9 +66,11 @@ MVVM是Model-View-ViewModel的简写。
 
 ![](https://raw.githubusercontent.com/CharonChui/Pictures/master/MVVM.png)
 
-MVVM模式将Presener改名为View Model，基本上与MVP模式完全一致，同样是以VM为核心，但是不同于MVP，MVVM采用了数据双向绑定的方案，替代了繁琐复杂的DOM操作。该模型中，View与VM保持同步，View绑定到VM的属性上，如果VM数据发生变化，通过数据绑定的方式，View会自动更新视图；VM同样也暴露出Model中的数据。
+MVVM模式将Presener改名为View Model，基本上与MVP模式完全一致，同样是以VM为核心，但是不同于MVP，MVVM采用了数据双向绑定的方案，替代了繁琐复杂的DOM操作。
+该模型中，View与VM保持同步，View绑定到VM的属性上，如果VM数据发生变化，通过数据绑定的方式，View会自动更新视图；VM同样也暴露出Model中的数据。
 
-看起来MVVM很好的解决了MVC和MVP的不足，但是由于数据和视图的双向绑定，导致出现问题时不太好定位来源，有可能数据问题导致，也有可能业务逻辑中对视图属性的修改导致。如果项目中打算用MVVM的话可以考虑使用官方的架构组件ViewModel、LiveData、DataBinding去实现MVVM
+看起来MVVM很好的解决了MVC和MVP的不足，但是由于数据和视图的双向绑定，导致出现问题时不太好定位来源，有可能数据问题导致，也有可能业务逻辑中对视图
+属性的修改导致。如果项目中打算用MVVM的话可以考虑使用官方的架构组件ViewModel、LiveData、DataBinding去实现MVVM
 
 
 
@@ -83,4 +85,4 @@ MVVM模式将Presener改名为View Model，基本上与MVP模式完全一致，�
 - 邮箱 ：charon.chui@gmail.com  
 - Good Luck! 
 
-	
+    
