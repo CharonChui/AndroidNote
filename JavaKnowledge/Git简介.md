@@ -39,9 +39,9 @@ Git简介
 所以，创建一个版本库非常简单:
 
 - 创建一个空目录
-- 通过`git init`命令把这个目录变成`Git`可以管理的仓库：
-  瞬间`Git`就把仓库建好了，而且告诉你是一个空的仓库`（empty Git repository）`，细心的读者可以发现当前目录下多了一个`.git`的目录，
-  这个目录是`Git`来跟踪管理版本库的，没事千万不要手动修改这个目录里面的文件，不然改乱了，就把`Git`仓库给破坏了。
+- 通过`git init`命令把这个目录变成`Git`可以管理的仓库
+    瞬间`Git`就把仓库建好了，而且告诉你是一个空的仓库`（empty Git repository）`，细心的读者可以发现当前目录下多了一个`.git`的目录，
+    这个目录是`Git`来跟踪管理版本库的，没事千万不要手动修改这个目录里面的文件，不然改乱了，就把`Git`仓库给破坏了。
 - 使用命令`git add <file>`，注意，可反复多次使用，添加多个文件；
 - 使用命令`git commit`，完成。
 
@@ -123,12 +123,13 @@ HEAD是当前分支引用的指针，它总是指向该分支上的最后一次�
 
 #### Git目录下文件的状态:
 
-![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/git_file_lifecycle.png?raw=true)你工作目录下的每一个文件都不外乎这两种状态:
+![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/git_file_lifecycle.png?raw=true)
+你工作目录下的每一个文件都不外乎这两种状态:
 
-- 已跟踪(Tracked)
+- 已跟踪(Tracked)    
   已跟踪的文件是指那些被纳入了版本控制的文件，在上一次快照中有他们的记录，在工作一段时间后，它们的状态可能是未修改，已修改或
   已放入暂存区。简而言之，已跟踪的文件就是Git已经知道的文件
-- 未跟踪(Untracked)
+- 未跟踪(Untracked)     
   工作目录中除已跟踪文件外的其它所有文件都属于未跟踪文件，它们即不存在与上次快照的记录中，也没有被放入暂存区。
 
 ## 常用命令
@@ -136,7 +137,10 @@ HEAD是当前分支引用的指针，它总是指向该分支上的最后一次�
 ### git config
 
 安装好git后我们要先配置一下。以便`git`跟踪。
-```git config --global user.name "xxx"             git config --global user.email "xxx@xxx.com"```
+```
+    git config --global user.name "xxx"
+    git config --global user.email "xxx@xxx.com"
+```
 上面修改后可以使用`cat ~/.gitconfig`查看
 如果指向修改仓库中的用户名时可以不加`--global`，这样可以用`cat .git/config`来查看
 `git config --list`来查看所有的配置。
@@ -156,7 +160,7 @@ git init
 
 在某一目录下执行.
 `git clone [git path]`
-只是后`Git`会自动把当地仓库的`master`分支和远程仓库的`master`分支对应起来，远程仓库默认的名称是`origin`。
+执行后`Git`会自动把当地仓库的`master`分支和远程仓库的`master`分支对应起来，远程仓库默认的名称是`origin`。
 
 ### git add提交文件更改(修改和新增),把当前的修改添加到暂存区
 
@@ -181,21 +185,22 @@ git init
 就是对已经存在的`commit`进行 再次提交；
 简单用法:
 `git cherry-pick <commit id>`
+
 `git rebase`命令基本是是一个自动化的`cherry-pick`命令。它计算出一系列的提交，然后再以它们在其他地方以同样的顺序一个一个的`cherry-picks`出它们。
 
 ### `git status`查看当前仓库的状态和信息，会提示哪些内容做了改变已经当前所在的分支。
 
 ### `git diff`
 
-![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/git_diff.webp?raw=true)`git diff`直接查看当前修改未add(暂存staged)的差别
+![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/git_diff.webp?raw=true)
+`git diff`直接查看当前修改未add(暂存staged)的差别
 `git diff --staged`查看已add(到暂存区)的差别`git diff HEAD -- xx.txt`查看工作区与版本库最新版的差别。
 
 - 首先如果我们只是本地修改了一个文件，但是还没有执行`git add .`之前，该如何查看有那些修改。这种情况下直接执行`git diff`就可以了。
 - 那如果我们执行了`git add .`操作，然后你再执行`git diff`这时就会发现没有任何结果，这时因为`git diff`这个命令只是检查工作区和暂存区之间的差异。
-  如果我们要查看暂存区和本地仓库之间的差异就需要加一个参数使用`--staged`参数或者`--cached`，`git diff --cached`。这样再执行就可以看到暂存区和本地仓库之间的差异。
+    如果我们要查看暂存区和本地仓库之间的差异就需要加一个参数使用`--staged`参数或者`--cached`，`git diff --cached`。这样再执行就可以看到暂存区和本地仓库之间的差异。
 - 现在如果我们把修改使用`git commit`从暂存区提交到本地仓库，再看一下差异。这时候再执行`git diff --cached`就会发现没有任何差异。
-  如果我们行查看本地仓库和远程仓库的差异，就要换另一个参数，执行`git diff master origin/master`这样就可以看到差异了。 这里面`master`是本地的仓库，而`origin/master`是
-  远程仓库，因为默认都是在主分支上工作，所以两边都是`master`而`origin`代表远程。
+    如果我们行查看本地仓库和远程仓库的差异，就要换另一个参数，执行`git diff master origin/master`这样就可以看到差异了。 这里面`master`是本地的仓库，而`origin/master`是远程仓库，因为默认都是在主分支上工作，所以两边都是`master`而`origin`代表远程。
 
 ### `git push` 提交到远程仓库
 
@@ -205,8 +210,7 @@ git init
 ### `git log`查看当前分支下的提交记录
 
 用`git log`可以查看提交历史，以便确定要回退到哪个版本。
-如果已经使用`git log`查出版本`commit id`后`reset`到某一次提交后，又要重返回来，
-用`git reflog`查看命令历史，以便确定要回到未来的哪个版本。
+如果已经使用`git log`查出版本`commit id`后`reset`到某一次提交后，又要重返回来，用`git reflog`查看命令历史，以便确定要回到未来的哪个版本。
 
 ```
 git log -p -2 // -p 是仅显示最近的x次提交   
@@ -314,8 +318,7 @@ reset 要做的的第三件事情就是让工作目录看起来像索引。 如�
 
 必须注意，--hard 标记是 reset 命令唯一的危险用法，它也是 Git 会真正地销毁数据的仅有的几个操作之一。 其他任何形式的 reset 调用都可以轻松撤消，但是 --hard 选项不能，因为它强制覆盖了工作目录中的文件。 在这种特殊情况下，我们的 Git 数据库中的一个提交内还留有该文件的 v3 版本， 我们可以通过 reflog 来找回它。但是若该文件还未提交，Git 仍会覆盖它从而导致无法恢复。
 
-回顾
-reset 命令会以特定的顺序重写这三棵树，在你指定以下选项时停止：
+回顾reset 命令会以特定的顺序重写这三棵树，在你指定以下选项时停止：
 
 - 移动 HEAD 分支的指向 （若指定了 --soft，则到此停止）
 - 使索引看起来像 HEAD （若未指定 --hard，则到此停止）
@@ -362,30 +365,28 @@ reset 命令会以特定的顺序重写这三棵树，在你指定以下选项�
 ![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/git_reset_checkout.png?raw=true)
 
 - 已经修改，但是并未执行`git add .`进行暂存
-  如果只是修改了本地文件，但是还没有执行`git add .`这时候我们的修改还是再工作区，并未进入暂存区，我们可以使用:`git checkouot .`或者`git reset --hard`来进行
-  撤销操作。
+    如果只是修改了本地文件，但是还没有执行`git add .`这时候我们的修改还是在工作区，并未进入暂存区，我们可以使用:`git checkouot .`或者`git reset --hard`来进行撤销操作。
 
-  `git add .`的反义词是`git checkout .`做完修改后，如果想要向前一步，让修改进入暂存区执行`git add .`如果想退后一步，撤销修改就执行`git checkout .`。
+    `git add .`的反义词是`git checkout .`做完修改后，如果想要向前一步，让修改进入暂存区执行`git add .`如果想退后一步，撤销修改就执行`git checkout .`。
 - 已暂存，未提交
-  如果已经执行了`git add .`但是还没有执行`git commit -m "comment"`这时候你意识到了错误，想要撤销，可以执行:
+    如果已经执行了`git add .`但是还没有执行`git commit -m "comment"`这时候你意识到了错误，想要撤销，可以执行:
 
   ```
   git reset   // git reset 只是把修改退回到了git add .之前的状态，也就是让文件还处于已修改未暂存的状态
   git checkout .   // 上面让文件处于已修改未暂存的状态，还要执行git checkout .来撤销工作区的状态
   ```
-  或`git reset --hard`
+    或`git reset --hard`
 
-  上面两个例子中都使用了`git reset --hard`这个命令也可以完成，这个命令可以一步到位的把你的修改完全恢复到本地仓库的未修改的状态。
+    上面两个例子中都使用了`git reset --hard`这个命令也可以完成，这个命令可以一步到位的把你的修改完全恢复到本地仓库的未修改的状态。
 - 已提交，未推送
-  如果执行了`git add .`又执行了`git commit -m "comment"`提交了代码，这时候代码已经进入到了本地仓库，然而你发现问题了，想要撤销，怎么办？
-  执行`git reset --hard origin/master`还是`git reset --hard`命令，只不过这次多了一个参数`origin/master`，这代表远程仓库，既然本地仓库已经有了
-  你提交的脏代码，那么就从远程仓库中把代码恢复把。
+    如果执行了`git add .`又执行了`git commit -m "comment"`提交了代码，这时候代码已经进入到了本地仓库，然而你发现问题了，想要撤销，怎么办？
+    执行`git reset --hard origin/master`还是`git reset --hard`命令，只不过这次多了一个参数`origin/master`，这代表远程仓库，既然本地仓库已经有了
+    你提交的脏代码，那么就从远程仓库中把代码恢复把。
 
-  但是上面这样会导致你之前修改的代码都没有了，如果我只是想撤回提交，还想要我之前修改的东西重新回到本地仓库呢？
-  `git reset --soft HEAD^`，这样就成功的撤销了你的commit。注意，仅仅是撤回commit操作，您写的代码仍然保留。
+    但是上面这样会导致你之前修改的代码都没有了，如果我只是想撤回提交，还想要我之前修改的东西重新回到本地仓库呢？
+    `git reset --soft HEAD^`，这样就成功的撤销了你的commit。注意，仅仅是撤回commit操作，您写的代码仍然保留。
 - 已推送到远程仓库
-  如果你执行`git add .`后又`commit`又执行了`git push`操作了，这时候你的代码已经进入到了远程仓库中，如果你发现你提交的代码又问题想恢复的话，那你只能先把本地仓库的
-  代码恢复，然后再强制执行`git push`仓做，`push`到远程仓库就可以了。
+    如果你执行`git add .`后又`commit`又执行了`git push`操作了，这时候你的代码已经进入到了远程仓库中，如果你发现你提交的代码又问题想恢复的话，那你只能先把本地仓库的代码恢复，然后再强制执行`git push`仓做，`push`到远程仓库就可以了。
 
   ```
   git reset --hard HEAD^  // HEAD^代表最新提交的前一次  
@@ -396,11 +397,10 @@ reset 命令会以特定的顺序重写这三棵树，在你指定以下选项�
 
 你大概还想知道 checkout 和 reset 之间的区别。 和 reset 一样，checkout 也操纵三棵树，不过它有一点不同，这取决于你是否传给该命令一个文件路径。
 
-不带路径
-运行 git checkout [branch] 与运行 git reset --hard [branch] 非常相似，它会更新所有三棵树使其看起来像 [branch]，不过有两点重要的区别。
+不带路径运行 git checkout [branch] 与运行 git reset --hard [branch] 非常相似，它会更新所有三棵树使其看起来像 [branch]，不过有两点重要的区别。
 
 首先不同于 reset --hard，checkout 对工作目录是安全的，它会通过检查来确保不会将已更改的文件弄丢。 其实它还更聪明一些。它会在工作目录中先试着
-简单合并一下，这样所有 还未修改过的 文件都会被更新。 而 reset --hard 则会不做检查就全面地替换所有东西。
+简单合并一下，这样所有还未修改过的 文件都会被更新。而 reset --hard 则会不做检查就全面地替换所有东西。
 
 第二个重要的区别是 checkout 如何更新 HEAD。 reset 会移动 HEAD 分支的指向，而 checkout 只会移动 HEAD 自身来指向另一个分支。
 
@@ -408,8 +408,7 @@ reset 命令会以特定的顺序重写这三棵树，在你指定以下选项�
 如果我们运行 git reset master，那么 develop 自身现在会和 master 指向同一个提交。 而如果我们运行 git checkout master 的话，
 develop 不会移动，HEAD 自身会移动。 现在 HEAD 将会指向 master。
 
-所以，虽然在这两种情况下我们都移动 HEAD 使其指向了提交 A，但做法是非常不同的。 reset 会移动 HEAD 分支的指向，而checkout则移动
-HEAD自身。
+所以，虽然在这两种情况下我们都移动 HEAD 使其指向了提交 A，但做法是非常不同的。 reset 会移动 HEAD 分支的指向，而checkout则移动HEAD自身。
 ![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/reset-checkout.png?raw=true)
 
 #### 带路径
@@ -425,8 +424,7 @@ HEAD自身。
 - `git revert`是生成一个新的提交来撤销某次提交，此次提交之前的`commit`都会被保留
 - `git reset`是回到某次提交，提交及之前的`commit`都会被保留，但是此次之后的修改都会被退回到暂存区
 
-相比`git reset`它不会改变现在得提交历史。`git reset`是直接删除制定的`commit`
-并把`HEAD`向后移动了一下。而`git revert`是一次新的特殊的`commit`，`HEAD`继续前进，本质和普通`add commit`一样，仅仅是`commit`内容很特殊。内容是与前面普通`commit`变化的反操作。
+相比`git reset`它不会改变现在得提交历史。`git reset`是直接删除指定的`commit`并把`HEAD`向后移动了一下。而`git revert`是一次新的特殊的`commit`，`HEAD`继续前进，本质和普通`add commit`一样，仅仅是`commit`内容很特殊。内容是与前面普通`commit`变化的反操作。
 比如前面普通`commit`是增加一行`a`，那么`revert`内容就是删除一行`a`。
 在 Git 开发中通常会控制主干分支的质量，但有时还是会把错误的代码合入到远程主干。虽然可以直接回滚远程分支，但有时新的代码也已经合入，
 直接回滚后最近的提交都要重新操作。 那么有没有只移除某些Commit的方式呢？可以用一次revert操作来完成。
@@ -469,8 +467,7 @@ git commit -a -m 'This reverts commit 7e345c9 and 551c408'
 ```
 现在的 HEAD（8fef80a）就是我们想要的版本，把它 Push 到远程即可。
 
-git revert 命令本质上就是一个逆向的 git cherry-pick 操作。 它将你提交中的变更的以完全相反的方式的应用到一个新创建的提交中，
-本质上就是撤销或者倒转。
+git revert 命令本质上就是一个逆向的 git cherry-pick 操作。 它将你提交中的变更的以完全相反的方式的应用到一个新创建的提交中，本质上就是撤销或者倒转。
 
 ### `git rm`删除文件
 
@@ -502,8 +499,7 @@ origin/master_sg
 origin/offline
 ```
 `git branch -d devBranch`删除`devBranch`分支。
-当时如果在新建了一个分支后进行修改但是还没有合并到其他分支的时候就去使用`git branch -d xxx`删除的时候系统会手提示说这个分支没有
-被合并，删除失败。
+当时如果在新建了一个分支后进行修改但是还没有合并到其他分支的时候就去使用`git branch -d xxx`删除的时候系统会手提示说这个分支没有被合并，删除失败。
 这时如果你要强行删除的话可以使用命令`git branch -D xxx`.
 如何删除远程分支呢？
 
@@ -546,13 +542,13 @@ git push origin frommaster// 推送到远程仓库所要使用的名字
 `git show tagName`来查看某`tag`的详细信息。
 
 - 打完`tag`后怎么推送到远程仓库
-  `git push origin tagName`
+    `git push origin tagName`
 - 删除`tag`
-  `git tag -d tagName`
+    `git tag -d tagName`
 - 删除完`tag`后怎么推送到远程仓库，这个写法有点复杂
-  `git push origin:refs/tags/tagName`
+    `git push origin:refs/tags/tagName`
 - 忽略文件
-  在`git`根目录下创建一个特殊的`.gitignore`文件，把想要忽略的文件名填进去就可以了,匹配模式最后跟斜杠(/)说明要忽略的是目录,#是注释 。
+    在`git`根目录下创建一个特殊的`.gitignore`文件，把想要忽略的文件名填进去就可以了,匹配模式最后跟斜杠(/)说明要忽略的是目录,#是注释 。
 
 ### amend修改最后一次提交
 
@@ -566,10 +562,7 @@ $ git commit --amend --no-edit
 
 #### 修改多个提交信息
 
-为了修改在提交历史中较远的提交，必须使用更复杂的工具。 Git 没有一个改变历史工具，但是可以使用变基工具来变基一系列提交，
-基于它们原来的 HEAD 而不是将其移动到另一个新的上面。 通过交互式变基工具，可以在任何想要修改的提交后停止，然后修改信息、添加文件或
-做任何想做的事情。 可以通过给 git rebase 增加 -i 选项来交互式地运行变基。 必须指定想要重写多久远的历史，这可以通过告诉命令将要变
-基到的提交来做到。
+为了修改在提交历史中较远的提交，必须使用更复杂的工具。 Git 没有一个改变历史工具，但是可以使用变基工具来变基一系列提交，基于它们原来的 HEAD 而不是将其移动到另一个新的上面。 通过交互式变基工具，可以在任何想要修改的提交后停止，然后修改信息、添加文件或做任何想做的事情。 可以通过给 git rebase 增加 -i 选项来交互式地运行变基。 必须指定想要重写多久远的历史，这可以通过告诉命令将要变基到的提交来做到。
 
 例如，如果想要修改最近三次提交信息，或者那组提交中的任意一个提交信息， 将想要修改的最近一次提交的父提交作为参数传递给 git rebase -i 命令，即 HEAD~2^ 或 HEAD~3。 记住 ~3 可能比较容易，因为你正尝试修改最后三次提交；但是注意实际上指定了以前的四次提交，即想要修改提交的父提交：
 
@@ -632,7 +625,7 @@ git log master..experiment
 ```
 #### 三点
 
-这个语法可以选择出被两个引用 之一 包含但又不被两者同时包含的提交。 再看看之前双点例子中的提交历史。 如果你想看 master 或者 experiment 中包含的但不是两者共有的提交，你可以执行：
+这个语法可以选择出被两个引用之一包含但又不被两者同时包含的提交。 再看看之前双点例子中的提交历史。 如果你想看 master 或者 experiment 中包含的但不是两者共有的提交，你可以执行：
 
 ```shell
 git log master...experiment
@@ -654,8 +647,7 @@ git log master...experiment
 git checkout experiment
 git rebase master
 ```
-它的原理是首先找到这两个分支(即当前分支experiment、变基操作的目标基底分支master)的最近共同祖先C2，然后对比当前分支相对于该祖
-先的历次提交，提取相应的修改并存为临时文件，然后将当前分支指向目标基底C3，最后以此将之前另存为临时文件的修改依序引用。
+它的原理是首先找到这两个分支(即当前分支experiment、变基操作的目标基底分支master)的最近共同祖先C2，然后对比当前分支相对于该祖先的历次提交，提取相应的修改并存为临时文件，然后将当前分支指向目标基底C3，最后以此将之前另存为临时文件的修改依序引用。
 ![将C4中的修改变基到C3上](https://raw.githubusercontent.com/CharonChui/Pictures/master/basic-rebase-3.png?raw=true)
 现在回到master分支，进行一次快进合并。
 
@@ -691,8 +683,7 @@ git checkout master
 git merge client
 ```
 ![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/interesting-rebase-3.png?raw=true)
-接下来你决定将server分支中的修改也整合进来，使用git rebase <basebranch> <topicbranch>命令可以直接将主题分支
-(即这里的server)变基到基分支(即这里的master)上。这样做能省去你先切换到server分支，再对其进行变基命令的多个步骤。
+接下来你决定将server分支中的修改也整合进来，使用git rebase <basebranch> <topicbranch>命令可以直接将主题分支(即这里的server)变基到基分支(即这里的master)上。这样做能省去你先切换到server分支，再对其进行变基命令的多个步骤。
 `git rebase master server`
 如下图，将server中的修改变基到master上所示，server中的代码被“续”到了master后面。
 ![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/interesting-rebase-4.png?raw=true)
@@ -728,7 +719,7 @@ git merge server
 
 ##### 用变基解决变基
 
-如果你 真的 遭遇了类似的处境，Git 还有一些高级魔法可以帮到你。 如果团队中的某人强制推送并覆盖了一些你所基于的提交，你需要做的就是检查你做了哪些修改，以及他们覆盖了哪些修改。
+如果你真的遭遇了类似的处境，Git 还有一些高级魔法可以帮到你。 如果团队中的某人强制推送并覆盖了一些你所基于的提交，你需要做的就是检查你做了哪些修改，以及他们覆盖了哪些修改。
 
 实际上，Git 除了对整个提交计算 SHA-1 校验和以外，也对本次提交所引入的修改计算了校验和——即 “patch-id”。
 
@@ -747,7 +738,7 @@ git merge server
 
 在本例中另一种简单的方法是使用 git pull --rebase 命令而不是直接 git pull。 又或者你可以自己手动完成这个过程，先 git fetch，再 git rebase teamone/master。
 
-如果你只对不会离开你电脑的提交执行变基，那就不会有事。 如果你对已经推送过的提交执行变基，但别人没有基于它的提交，那么也不会有事。 如果你对已经推送至共用仓库的提交上执行变基命令，并因此丢失了一些别人的开发所基于的提交， 那你就有大麻烦了，你的同事也会因此鄙视你。
+如果你只对不会离开你电脑的提交执行变基，那就不会有事。 如果你对已经推送过的提交执行变基，但别人没有基于它的提交，那么也不会有事。 如果你对已经推送至共用仓库的提交上执行变基命令，并因此丢失了一些别人的开发所基于的提交，那你就有大麻烦了，你的同事也会因此鄙视你。
 
 如果你或你的同事在某些情形下决意要这么做，请一定要通知每个人执行 git pull --rebase 命令，这样尽管不能避免伤痛，但能有所缓解。
 
@@ -766,8 +757,7 @@ git merge server
 现在，让我们回到之前的问题上来，到底合并还是变基好？希望你能明白，这并没有一个简单的答案。 Git 是一个非常强大的工具，它允许你对
 提交历史做许多事情，但每个团队、每个项目对此的需求并不相同。 既然你已经分别学习了两者的用法，相信你能够根据实际情况作出明智的选择。
 
-总的原则是，只对尚未推送或分享给别人的本地修改执行变基操作清理历史， 从不对已推送至别处的提交执行变基操作，这样，你才能享受到两
-种方式带来的便利。
+总的原则是，只对尚未推送或分享给别人的本地修改执行变基操作清理历史， 从不对已推送至别处的提交执行变基操作，这样，你才能享受到两种方式带来的便利。
 
 ### git fetch与git pull的区别
 
