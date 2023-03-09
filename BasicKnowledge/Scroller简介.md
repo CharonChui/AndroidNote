@@ -29,8 +29,8 @@ Scroller简介
     public void computeScroll() {
     }
     ```
-    通过注释我们可以看到该方法又父类调用根据滚动的值去更新`View`，在使用`Scroller`的时候通常都要实现该方法。来达到子`View`的滚动效果。      
-	继续往下跟发现在`draw()`方法中回去调用`computeScroll()`，而`draw()`方法会在父布局调用`drawChild()`的时候使用。
+    通过注释我们可以看到该方法由父类调用根据滚动的值去更新`View`，在使用`Scroller`的时候通常都要实现该方法。来达到子`View`的滚动效果。      
+	继续往下跟发现在`draw()`方法中会去调用`computeScroll()`，而`draw()`方法会在父布局调用`drawChild()`的时候使用。
 
 3. 具体关联   
     通过上面两步大体能得到`Scroller`与`View`的移动要通过`computeScroll()`来完成，但是在究竟如何进行代码实现。     

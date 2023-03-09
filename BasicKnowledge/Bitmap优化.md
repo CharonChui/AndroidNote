@@ -3,9 +3,9 @@ Bitmap优化
 
 1. 一个进程的内存可以由2个部分组成：`native和dalvik`
     `dalvik`就是我们平常说的`java`堆，我们创建的对象是在这里面分配的，而`bitmap`是直接在`native`上分配的。   
-    一旦内存分配给`Java`后，以后这块内存即使释放后，也只能给`Java`的使用，所以如果`Java`突然占用了一个大块内存，
+    一旦内存分配给`Java`后，以后这块内存即使释放后，也只能给`Java`使用，所以如果`Java`突然占用了一个大块内存，
 	即使很快释放了,`C`能用的内存也是16M减去`Java`最大占用的内存数。
-    而`Bitmap`的生成是通过`malloc`进行内存分配的，占用的是`C`的内存，这个也就说明了，上述的`4MBitmap`无法生成的原因，
+    而`Bitmap`的生成是通过`malloc`进行内存分配的，占用的是`C`的内存，这个也就说明了，有时候`4MBitmap`无法生成的原因，
 	因为在`13M`被`Java`用过后，剩下`C`能用的只有`3M`了。    
 
 2. 在`Android`应用里，最耗费内存的就是图片资源。    
@@ -58,7 +58,7 @@ Bitmap优化
     // 打印出图片的宽和高
     Log.d("example", opts.outWidth + "," + opts.outHeight);
     ```
-    在实际项目中，可以利用上面的代码，先获取图片真实的宽度和高度，然后判断是否需要跑缩小。如果不需要缩小，设置inSampleSize的值为1。如果需要缩小，则动态计算并设置inSampleSize的值，对图片进行缩小。需要注意的是，在下次使用BitmapFactory的decodeFile()等方法实例化Bitmap对象前，别忘记将opts.inJustDecodeBound设置回false。否则获取的bitmap对象还是null。
+    在实际项目中，可以利用上面的代码，先获取图片真实的宽度和高度，然后判断是否需要缩小。如果不需要缩小，设置inSampleSize的值为1。如果需要缩小，则动态计算并设置inSampleSize的值，对图片进行缩小。需要注意的是，在下次使用BitmapFactory的decodeFile()等方法实例化Bitmap对象前，别忘记将opts.inJustDecodeBound设置回false。否则获取的bitmap对象还是null。
 
     以从Gallery获取一个图片为例讲解缩放:   
     ```java

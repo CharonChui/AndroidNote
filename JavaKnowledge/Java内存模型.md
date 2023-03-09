@@ -28,11 +28,9 @@ Stack Memory、Method Area、PC、Native Stack Memory)，这些区域都有各�
 - 堆内存在JVM启动的时候被加载(初始大小: -Xms)
 - 堆内存在程序运行时会增加或减少
 - 最小值: -Xmx
-- 从结构上来分，可以分为新生代和老年代。而新生代又可以分为Eden空间、From Survivor空间（s0）、To Survivor空间（s1）。 所有新生成的对象首先
-    都是放在新生代的。需要注意，Survivor的两个区是对称的，没先后关系，所以同一个区中可能同时存在从Eden复制过来的对象，和从前一个Survivor复制
-    过来的对象，而复制到老年代的只有从第一个Survivor区过来的对象。而且，Survivor区总有一个是空的。
+- 从结构上来分，可以分为新生代和老年代。而新生代又可以分为Eden空间、From Survivor空间（s0）、To Survivor空间（s1）。 所有新生成的对象首先都是放在新生代的。需要注意，Survivor的两个区是对称的，没先后关系，所以同一个区中可能同时存在从Eden复制过来的对象，和从前一个Survivor复制过来的对象，而复制到老年代的只有从第一个Survivor区过来的对象。而且，Survivor区总有一个是空的。
 
-  ![](https://raw.githubusercontent.com/CharonChui/Pictures/master/jvm_heap_memory.png)
+![](https://raw.githubusercontent.com/CharonChui/Pictures/master/jvm_heap_memory.png)
 
 在并发编程中，多个线程之间采取什么机制进行通信（信息交换），什么机制进行数据的同步？在Java语言中，采用的是共享内存模型来实现多线程之间的信息交换和数据同步的。
 
@@ -44,10 +42,9 @@ Stack Memory、Method Area、PC、Native Stack Memory)，这些区域都有各�
 
 每当一个方法执行完成时，该栈帧就会弹出栈帧的元素作为这个方法的返回值，并且清除这个栈帧，Java栈的栈顶的栈帧就是当前正在执行的活动栈，也就是当前正在执行的方法，PC寄存器也会指向该地址。只有这个活动的栈帧的本地变量可以被操作栈使用，当在这个栈帧中调用另外一个方法时，与之对应的一个新的栈帧被创建，这个新创建的栈帧被放到Java栈的栈顶，变为当前的活动栈。同样现在只有这个栈的本地变量才能被使用，当这个栈帧中所有指令都完成时，这个栈帧被移除Java栈，刚才的那个栈帧变为活动栈帧，前面栈帧的返回值变为这个栈帧的操作栈的一个操作数。
 
-
-
 线程stack中同样会包含该线程调用栈中所有方法执行所需要的本地变量，一个线程只能获取到它自己对应的线程stack。一个线程创建的本地变量对于其他任何线程都是不可见的。即使两个线程执行完全相同的代码，这两个线程仍然会在各自自己对应的线程stack中创建自己的本地变量。
 所有基础类型的局部变量(boolean,byte,short,char,int,long,float,double)都被保存在自己的线程stack中。一个线程可以将一个基础变量的副本传递给另一个线程，但是它不能共享原始局部变量本身。    
+
 堆内存包含在Java应用程序中创建的所有对象，而不管创建该对象的线程是什么。这包括基本类型的对象版本（例如Byte，Integer，Long等）。创建对象并将其分配给局部变量，或者将其创建为另一个对象的成员变量都没有关系，该对象仍存储在堆中。
 ![](https://raw.githubusercontent.com/CharonChui/Pictures/master/java-memory-model-1.png)
 
@@ -60,12 +57,10 @@ Stack Memory、Method Area、PC、Native Stack Memory)，这些区域都有各�
 - 静态类变量也与类定义一起存储在堆中。    
 - 引用对象的所有线程都可以访问堆上的对象。当线程可以访问对象时，它也可以访问该对象的成员变量。如果两个线程同时在同一个对象上调用一个方法，则它们都将有权访问该对象的成员变量，但是每个线程将拥有自己的局部变量副本。
 
-
-
 Java 虚拟机栈会出现两种异常：StackOverFlowError 和 OutOfMemoryError： 
 
 - StackOverFlowError： 若Java虚拟机栈的内存大小不允许动态扩展，那么当线程请求栈的深度超过当前Java虚拟机栈的最大深度的时候，就抛出StackOverFlowError异常。
-- OutOfMemoryError： 若 Java 虚拟机栈的内存大小允许动态扩展，且当线程请求栈时内存用完了，无法再动态扩展了，此时抛出OutOfMemoryError异常。
+- OutOfMemoryError： 若Java虚拟机栈的内存大小允许动态扩展，且当线程请求栈时内存用完了，无法再动态扩展了，此时抛出OutOfMemoryError异常。
 
 ## Method Area
 
@@ -90,8 +85,6 @@ Java 虚拟机栈会出现两种异常：StackOverFlowError 和 OutOfMemoryError
 常量池本身是方法区中的一个数据结构。既然运行时常量池时方法区的一部分，自然受到方法区内存的限制，当常量池无法再申请到内存时会抛出 OutOfMemoryError 异常。
 
 常量池中存储了如字符串、final变量值、类名和方法名常量。常量池在编译期间就被确定，并保存在已编译的.class文件中。一般分为两类：字面量和应用量。字面量就是字符串、final变量等。类名和方法名属于引用量。引用量最常见的是在调用方法的时候，根据方法名找到方法的引用，并以此定为到函数体进行函数代码的执行。引用量包含：类和接口的权限定名、字段的名称和描述符，方法的名称和描述符。
-
-
 
 JVM会加载、链接、初始化class文件。一个class文件会把其所有所有符号引用都保留在一个位置，即常量池中。 
 
@@ -136,13 +129,9 @@ Double i4 = 1.2;
 System.out.println(i3 == i4);// 输出false
 ```
 
-
-
 ### Method Area & Constant Pool改动
 
 很多人愿意把方法区称为“永久代”（Permanent Generation），本质上两者并不等价，仅仅是因为HotSpot虚拟机的设计团队选择把GC 分代收集扩展至方法区，或者说使用永久代来实现方法区而已。对于其他虚拟机（如BEA JRockit、IBM J9 等）来说是不存在永久代的概念的。
-
-
 
 在JDK1.7中，将字符串常量池和静态变量从方法区域中移到堆中，其余的运行时常量池仍在方法区域中，即hotspot中的永久生成。 所有的被intern的String被存储在PermGen区.PermGen区使用-XX:MaxPermSize=N来设置最大大小，但是由于应用程序string.intern通常是不可预测和不可控的，因此不好设置这个大小。设置不好的话，常常会引起java.lang.OutOfMemoryError: PermGen space。
 
@@ -150,7 +139,7 @@ System.out.println(i3 == i4);// 输出false
 
 在 JDK 1.8中移除整个永久代，取而代之的是一个叫元空间（Metaspace）的区域（永久代使用的是JVM的堆内存空间，而元空间使用的是物理内存，直接受到本机的物理内存限制）。string constant pool仍然还是在Heap内存中。runtime constant pool也仍然在方法区。但是方法区的实现已经改成使用Metaspace。 ![](https://raw.githubusercontent.com/CharonChui/Pictures/master/java8_memory_method.jpg)
 
-为什么要移除永久代，改为元空间嗯？ 
+为什么要移除永久代，改为元空间呢？ 
 
 > Metaspace与PermGen之间最大的区别在于：Metaspace并不在虚拟机中，而是使用本机内存。如果没有使用-XX:MaxMetaspaceSize来设置类的元数据的大小，其最大可利用空间是整个系统内存的可用空间。JVM也可以增加本地内存空间来满足类元数据信息的存储。
 > 但是如果没有设置最大值，则可能存在bug导致Metaspace的空间在不停的扩展，会导致机器的内存不足；进而可能出现swap内存被耗尽；最终导致进程直接被系统直接kill掉。
@@ -160,10 +149,6 @@ System.out.println(i3 == i4);// 输出false
 从用户角度来看，主要的区别是，默认情况下，Metaspace自动增加其大小（达到基础操作系统所提供的大小），而PermGen始终具有固定的最大大小。您可以使用JVM参数为Metaspace设置固定的最大值，但不能使PermGen自动增加。
 
 在很大程度上，这只是名称的更改。早在引入PermGen时，就没有Java EE或动态类的加载（取消加载），因此，一旦加载了一个类，该类便一直停留在内存中，直到JVM关闭为止，从而实现了永久生成。如今，可以在JVM的生命周期内加载和卸载类，因此对于保留元数据的区域，Metaspace更有意义。
-
-
-
-
 
 ## Native Method Stack
 
@@ -190,7 +175,6 @@ Java线程之间的通信由Java内存模型(JMM)控制，JMM决定一个线程�
 
 ## 重排
 
-
 在执行程序时为了提高性能，编译器和处理器常常会对指令做重排序。
 
 这里说的重排序可以发生在好几个地方：编译器、运行时、JIT等，比如编译器会觉得把一个变量的写操作放在最后会更有效率，编译后，这个指令就在最后了（前提是只要不改变程序的语义，编译器、执行器就可以这样自由的随意优化），一旦编译器对某个变量的写操作进行优化（放到最后），那么在执行之前，另一个线程将不会看到这个执行结果。
@@ -212,8 +196,6 @@ Class Reordering {
 }
 ```
 假设这段代码有2个线程并发执行，线程A执行writer方法，线程B执行reader方法，线程B看到y的值为2，因为把y设置成2发生在变量x的写入之后（代码层面），所以能断定线程B这时看到的x就是1吗？
-
-
 
 当然不行！因为在writer方法中，可能发生了重排序，y的写入动作可能发在x写入之前，这种情况下，线程B就有可能看到x的值还是0。
 
@@ -250,7 +232,6 @@ a是在栈内存中的，当main()方法执行结束，a就被清理了。但是
 - [Where Has the Java PermGen Gone?](https://www.infoq.com/articles/Java-PERMGEN-Removed/)
 
 
-​   
 ---
 - 邮箱 ：charon.chui@gmail.com  
 - Good Luck! 
