@@ -224,11 +224,6 @@ implementation 'com.android.support.constraint:constraint-layout:1.1.0'
 它有点类似于`RelativeLayout`，但远比`RelativeLayout`要更强大。
 `ConstraintLayout`在测量/布局阶段的性能比 `RelativeLayout`大约高`40%`。      
 
-
-
-		
-
-
 - [Build a Responsive UI with ConstraintLayout](https://developer.android.com/training/constraint-layout/index.html)
 - [ConstraintLayout文档](https://developer.android.com/reference/android/support/constraint/package-summary.html)
 

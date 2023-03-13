@@ -293,7 +293,7 @@ gradlePlugin {
 
 3. 在versionPlugin/src/main/java/包名/目录下新建Deps.kt文件，添加你的依赖配置，如：
 
-```groovy
+```kotlin
 package com.xx.xx.versionplugin
 
 class Deps : Plugin<Project> {

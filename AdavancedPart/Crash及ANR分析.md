@@ -15,7 +15,7 @@
 6、再执行handleAppCrashLocked方法：
 
 当1分钟内同一进程连续crash两次时，且非persistent进程，则直接结束该应用所有activity，并杀死该进程以及同一个进程组下的所有进程。然后再恢复栈顶第一个非finishing状态的activity;
-当1分钟内同一进程连续crash两次时，且persistent进程，，则只执行恢复栈顶第一个非finishing状态的activity;
+当1分钟内同一进程连续crash两次时，且persistent进程，则只执行恢复栈顶第一个非finishing状态的activity;
 当1分钟内同一进程未发生连续crash两次时，则执行结束栈顶正在运行activity的流程。
 
 7、通过mUiHandler发送消息SHOW_ERROR_MSG，弹出crash对话框；
@@ -32,10 +32,6 @@
 如果应用堆内存和设备内存比较充足，但还出现内存分配失败，则可能跟资源泄露有关。
 - 获取fd的限制数量:/proc/self/limits。一般单个进程允许打开的最大句柄个数为1024，如果超过800需将所有fd和文件名输出日志进行排查。
 - 获取线程数大小：/proc/self/status一个线程一般占2MB的虚拟内存，线程数超过400个比较危险，需要将所有tid和线程名输出到日志进行排查。
-
-
-
-
 
 
 
@@ -70,10 +66,8 @@ ANR排查流程
 1、Log获取
 1、抓取bugreport
 adb shell bugreport > bugreport.txt
-复制代码
 2、直接导出/data/anr/traces.txt文件
 adb pull /data/anr/traces.txt trace.txt
-复制代码
 2、搜索“ANR in”处log关键点解读
 
 
@@ -102,7 +96,6 @@ CPU usage from 18101ms to 0ms ago
 如果CPU使用量很少，说明主线程可能阻塞。
 3、在bugreport.txt中根据pid和发生时间搜索到阻塞的log处
 ----- pid 10494 at 2019-11-18 15:28:29 -----
-复制代码
 4、往下翻找到“main”线程则可看到对应的阻塞log
 "main" prio=5 tid=1 Sleeping
 | group="main" sCount=1 dsCount=0 flags=1 obj=0x746bf7f0 self=0xe7c8f000
@@ -110,7 +103,6 @@ CPU usage from 18101ms to 0ms ago
 | state=S schedstat=( 5119636327 325064933 4204 ) utm=460 stm=51 core=4 HZ=100
 | stack=0xff575000-0xff577000 stackSize=8MB
 | held mutexes=
-复制代码
 上述关键字段的含义如下所示：
 
 tid：线程号
@@ -123,14 +115,3 @@ stm：该线程在内核态的执行时间(jiffies)
 sCount：该线程被挂起的次数
 dsCount：该线程被调试器挂起的次数
 self：线程本身的地址
-
-
-
-
-
-
-
-
-
-
-

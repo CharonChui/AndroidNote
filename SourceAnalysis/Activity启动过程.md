@@ -8,7 +8,7 @@ Activity启动过程
 
 今天就来分析一下，我们开启`Activity`主要有两种方式:    
 
-- 通过桌面图标启动，桌面就是`Launcher`其实他也是一个应用程序，他也是继承`Activity`。
+- 通过桌面图标启动，桌面就是`Launcher`,其实他也是一个应用程序，他也是继承`Activity`。
 - 在程序内部调用`startActivity()`开启。
 
 而`Launcher`点击图标其实也是调用了`Activity`的`startActivity()`方法，所以我们就从`startActivity()`方法入手了。     
@@ -141,9 +141,7 @@ public class Instrumentation {
 	...
 }
 ```
-放狗查了下`Instrumentation`的意思是仪器、工具、装置的意思。我就大体翻一下(英语不好- -~，可能不准确)该类是实现应用程序代码的基类，当该类在
-启动的状态下运行时，该类会在其他任何应用程序运行前进行初始化，允许你件事所有应用程序与系统的交互。一个`Instrumentation`实例会通过`Manifest`文件
-中的`<instrumenttation`标签描述给系统。        
+放狗查了下`Instrumentation`的意思是仪器、工具、装置的意思。我就大体翻一下:该类是实现应用程序代码的基类，当该在启动的状态下运行时，该类会在其他任何应用程序运行前进行初始化，允许你监视所有应用程序与系统的交互。一个`Instrumentation`实例会通过`Manifest`文件中的`<instrumenttation`标签描述给系统。        
 所以继续看一下`mInstrumentation.execStartActivity()`:       
 ```java
 /**

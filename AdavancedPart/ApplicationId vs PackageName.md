@@ -7,7 +7,7 @@ ApplicationId vs PackageName
 
 在`Android`官方文档中有一句是这样描述`applicationId`的:`applicationId : the effective packageName`，真是言简意赅，那既然`applicationId`是有效的包明了，`packageName`算啥？     
 
-所有`Android`应用都有一个包名。包名在设备上能唯一的标示一个应用，它在`Google Play`应用商店中也是唯一的。这就意味着一旦你使用一个包名发布应用后，你就永 远不能改变它的包名；如果你改了包名就会导致你的应用被认为是一个新的应用，并且已经使用你之前应用的用户将不会看到作为更新的新应用包。          
+所有`Android`应用都有一个包名。包名在设备上能唯一的标识一个应用，它在`Google Play`应用商店中也是唯一的。这就意味着一旦你使用一个包名发布应用后，你就永 远不能改变它的包名；如果你改了包名就会导致你的应用被认为是一个新的应用，并且已经使用你之前应用的用户将不会看到作为更新的新应用包。          
 
 之前的`Android Gradle`构建系统中，应用的包名是由你的`manifest`文件中的根元素中的`package`属性定义的:       
  
