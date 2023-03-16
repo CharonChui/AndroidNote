@@ -3,7 +3,7 @@ LeakCanary源码分析
 
 [LeakCanary](https://github.com/square/leakcanary)是一个用于检测内存泄漏的工具，可以用于Java和Android，是由著名开源组织Square贡献。
 
-强烈建议使用LeakCanary 2.x版本，更高效、使用更简单，而且没有任何Java代码，它当泄露引用到达5时才会发起heap dump，同时使用了全新的heap parser，减少内存占用，提升速度。只需要在dependencies中加入leakcanary的依赖即可。而且debugimplementation只在debug模式下有效，所以不用担心用户在正式环境下也会出现LeanCanary收集。而且是完全使用kotlin实现了，同时使用了[see Shark](https://square.github.io/leakcanary/shark/)来进行heap内存分析，更节省内存。
+强烈建议使用LeakCanary 2.x版本，更高效、使用更简单，而且没有任何Java代码，它当泄露引用到达5时才会发起heap dump，同时使用了全新的heap parser，减少内存占用，提升速度。只需要在dependencies中加入leakcanary的依赖即可。而且debugimplementation只在debug模式下有效，所以不用担心用户在正式环境下也会出现LeakCanary收集。而且是完全使用kotlin实现了，同时使用了[see Shark](https://square.github.io/leakcanary/shark/)来进行heap内存分析，更节省内存。
 
 
 

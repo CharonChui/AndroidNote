@@ -202,7 +202,7 @@ public class Volley {
 
 ```
 
-接着来看一上上面提到的new BasicNetwork(HttpStack)方法的实现,可以看到他内部的缓存大小是4k
+接着来看一下上面提到的new BasicNetwork(HttpStack)方法的实现,可以看到他内部的缓存大小是4k
 ```java
 private static int DEFAULT_POOL_SIZE = 4096;
 
@@ -269,12 +269,12 @@ public class RequestQueue {
      */
     private final Set<Request<?>> mCurrentRequests = new HashSet<Request<?>>();
 
-	// cache队列
+    // cache队列
     /** The cache triage queue. */
     private final PriorityBlockingQueue<Request<?>> mCacheQueue =
         new PriorityBlockingQueue<Request<?>>();
 
-	// 网络请求队列
+    // 网络请求队列
     /** The queue of requests that are actually going out to the network. */
     private final PriorityBlockingQueue<Request<?>> mNetworkQueue =
         new PriorityBlockingQueue<Request<?>>();

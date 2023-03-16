@@ -1,7 +1,7 @@
 自定义View详解
 ===
 
-虽然之前也分析过[View绘制过程](https://github.com/CharonChui/AndroidNote/blob/master/SourceAnalysis/View%E7%BB%98%E5%88%B6%E8%BF%87%E7%A8%8B%E8%AF%A6%E8%A7%A3.md)，但是如果让我自己集成`ViewGroup`然后自己重新`onMeasure,onLayout,onDraw`方法自定义`View`我还是会头疼。今天索性来系统的学习下。
+虽然之前也分析过[View绘制过程](https://github.com/CharonChui/AndroidNote/blob/master/SourceAnalysis/View%E7%BB%98%E5%88%B6%E8%BF%87%E7%A8%8B%E8%AF%A6%E8%A7%A3.md)，但是如果让我自己继承`ViewGroup`然后自己重新`onMeasure,onLayout,onDraw`方法自定义`View`我还是会头疼。今天索性来系统的学习下。
 
 ### `onMeasure`
 
@@ -118,7 +118,7 @@ public static int getSize(int measureSpec) {
 
 ### `onLayout`
 
-为了能合理的去绘制定义`View`,你需要制定它的大小。复杂的自定义`View`通常需要根据屏幕的样式和大小来进行复杂的布局计算。你不应该假设你的屏幕上的`View`的大小。即使只有一个应用使用你的自定义`View`，也需要处理不同的屏幕尺寸、屏幕密度和横屏以及竖屏下的多种比率等。
+为了能合理的去绘制定义`View`,你需要指定它的大小。复杂的自定义`View`通常需要根据屏幕的样式和大小来进行复杂的布局计算。你不应该假设你的屏幕上的`View`的大小。即使只有一个应用使用你的自定义`View`，也需要处理不同的屏幕尺寸、屏幕密度和横屏以及竖屏下的多种比率等。
 
 虽然`View`有很多处理测量的方法，但他们中的大部分都不需要被重写。如果你的`View`不需要特别的控制它的大小，你只需要重写一个方法:`onSizeChanged()`。
 
@@ -448,7 +448,7 @@ public class VerticalLayout extends ViewGroup {
 }
 ```
 继承`ViewGroup`必须要重写`onLayout`方法。其实这也很好理解，因为每个`ViewGroup`的排列方式不一样，所以让子类来自己实现是最好的。      
-当然畜类重写`onLayout`之外，也要重写`onMeasure`。
+当然子类重写`onLayout`之外，也要重写`onMeasure`。
 代码如下，滑动手势处理的部分就不贴了。     
 ```java
 	@Override
@@ -461,7 +461,7 @@ public class VerticalLayout extends ViewGroup {
 
 	@Override
 	protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        // 就像猴子捞月一样，让他们一个个的从上往下排就好了
+                // 就像猴子捞月一样，让他们一个个的从上往下排就好了
 		if (changed) {
 			int childCount = getChildCount();
 			for (int i = 0; i < childCount; i++) {

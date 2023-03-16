@@ -3,12 +3,12 @@ Android Touch事件分发详解
 
 先说一些基本的知识，方便后面分析源码时能更好理解。
 - 所有`Touch`事件都被封装成`MotionEvent`对象，包括`Touch`的位置、历史记录、第几个手指等.
-- 事件类型分为`ACTION_DOWN`,`ACTION_UP`,`ACTION_MOVE`,`ACTION_POINTER_DOWN`,`ACTION_POINTER_UP`,`ACTION_CANCEL`, 每个
+- 事件类型分为`ACTION_DOWN`,`ACTION_UP`,`ACTION_MOVE`,`ACTION_POINTER_DOWN`,`ACTION_POINTER_UP`,`ACTION_CANCEL`, 每
 一个完整的事件以`ACTION_DOWN`开始`ACTION_UP`结束，并且`ACTION_CANCEL`只能由代码引起.一般对于`CANCEL`的处理和`UP`的相同。
 `CANCEL`的一个简单例子：手指在移动的过程中突然移动到了边界外，那么这时`ACTION_UP`事件了，所以这是的`CANCEL`和`UP`的处理是一致的。
-- 事件的处理分别为`dispatchTouchEveent()`分发事件(`TextView`等这种最小的`View`中不会有该方式)、`onInterceptTouchEvent()`拦截事件(`ViewGroup`中拦截事件)、`onTouchEvent()`消费事件.这些方法的返回值如果是true表示事件被当前视图消费掉。
+- 事件的处理分别为`dispatchTouchEvent()`分发事件(`TextView`等这种最小的`View`中不会有该方式)、`onInterceptTouchEvent()`拦截事件(`ViewGroup`中拦截事件)、`onTouchEvent()`消费事件.这些方法的返回值如果是true表示事件被当前视图消费掉。
 - 事件从`Activity.dispatchTouchEveent()`开始传递，只要没有停止拦截，就会从最上层(`ViewGroup`)开始一直往下传递，子`View`通过`onTouchEvent()`消费事件。(隧道式向下分发).
-- 如果时间从上往下一直传递到最底层的子`View`，但是该`View`没有消费该事件(不是clickable或longclickable)，那么该事件会反序网上传递(从该`View`传递给自己的`ViewGroup`，然后再传给更上层的`ViewGroup`直至传递给`Activity.onTouchEvent()`).
+- 如果时间从上往下一直传递到最底层的子`View`，但是该`View`没有消费该事件(不是clickable或longclickable)，那么该事件会反序往上传递(从该`View`传递给自己的`ViewGroup`，然后再传给更上层的`ViewGroup`直至传递给`Activity.onTouchEvent()`).
 (冒泡式向上处理).
 - 如果`View`没有消费`ACTION_DOWN`事件，之后其他的`MOVE`、`UP`等事件都不会传递过来.
 - 事件由父`View(ViewGroup)`传递给子`View`,`ViewGroup`可以通过`onInterceptTouchEvent()`方法对事件进行拦截，停止其往下传递，如果拦截(返回`true`)后该事件
@@ -51,11 +51,11 @@ public boolean dispatchTouchEvent(MotionEvent ev) {
 	if (ev.getAction() == MotionEvent.ACTION_DOWN) {
 		onUserInteraction();
 	}
-    // 首先交给本Activity对应的Window来进行分发，如果分发了，就返回true，事件循环结束
+        // 首先交给本Activity对应的Window来进行分发，如果分发了，就返回true，事件循环结束
 	if (getWindow().superDispatchTouchEvent(ev)) {
 		return true;
 	}
-    // 如果window返回了false，就意味着所有view的ontouchevent都返回了false，那么只能是Activity来决定消费不消费
+        // 如果window返回了false，就意味着所有view的ontouchevent都返回了false，那么只能是Activity来决定消费不消费
 	return onTouchEvent(ev);
 }
 ```
@@ -115,8 +115,8 @@ public boolean superDispatchTouchEvent(MotionEvent event) {
 	return super.dispatchTouchEvent(event);
 }
 ```
-是调用了`super.dispatchTouchEveent()`，而`DecorView`的父类是`FrameLayout`所以我们找到`FrameLayout.dispatchTouchEveent()`.
-我们看到`FrameLayout`中没有重写`dispatchTouchEveent()`方法，所以我们再找到`FrameLayout`的父类`ViewGroup`.看`ViewGroup.dispatchTouchEveent()`实现。
+是调用了`super.dispatchTouchEvent()`，而`DecorView`的父类是`FrameLayout`所以我们找到`FrameLayout.dispatchTouchEvent()`.
+我们看到`FrameLayout`中没有重写`dispatchTouchEvent()`方法，所以我们再找到`FrameLayout`的父类`ViewGroup`.看`ViewGroup.dispatchTouchEvent()`实现。
 新大陆浮现了...     
 ```java
 /**
@@ -145,21 +145,21 @@ public boolean dispatchTouchEvent(MotionEvent ev) {
 			// The framework may have dropped the up or cancel event for the previous gesture
 			// due to an app switch, ANR, or some other state change.
 			cancelAndClearTouchTargets(ev);
-            // 重置FLAG_DISALLOW_INTERCEPT
+                        // 重置FLAG_DISALLOW_INTERCEPT
 			resetTouchState();
 			// 如果是`Down`，那么`mFirstTouchTarget`到这里肯定是`null`.因为是新一系列手势的开始。
 			// `mFirstTouchTarget`是处理第一个事件的目标。
 		}
 
-		// 检查是否拦截该事件(如果`onInterceptTouchEvent()`返回true就拦截该事件)
+	       	// 检查是否拦截该事件(如果`onInterceptTouchEvent()`返回true就拦截该事件)
 		// Check for interception.
 		final boolean intercepted;
-        // 当事件由ViewGroup的子元素成功处理时，mFirstTouchTarget会被赋值并指向子元素，反之被ViewGroup拦截时，mFirstTouchTarget则为null
+                // 当事件由ViewGroup的子元素成功处理时，mFirstTouchTarget会被赋值并指向子元素，反之被ViewGroup拦截时，mFirstTouchTarget则为null
 		if (actionMasked == MotionEvent.ACTION_DOWN
 				|| mFirstTouchTarget != null) {
 			// 标记事件不允许被拦截， 默认是`false`， 该值可以通过`requestDisallowInterceptTouchEvent(true)`方法来设置，
 			// 通知父`View`不要拦截该`View`上的事件。FLG_DISALLOW_INTERCEPT是在View中通过
-            // reqeustDisallowInterceptTouchEvent来设置
+                        // reqeustDisallowInterceptTouchEvent来设置
 			final boolean disallowIntercept = (mGroupFlags & FLAG_DISALLOW_INTERCEPT) != 0;
 			if (!disallowIntercept) {
 				// 判断该`ViewGroup`是否要拦截该事件。`onInterceptTouchEvent()`方法默认返回`false`即不拦截。
@@ -370,7 +370,7 @@ private boolean dispatchTransformedTouchEvent(MotionEvent event, boolean cancel,
 	// or filtering.  The important part is the action, not the contents.
 	final int oldAction = event.getAction();
 	
-	// 这就是为什么时间被拦截之后，之前处理过该事件的`View`会收到`CANCEL`.
+	// 这就是为什么事件被拦截之后，之前处理过该事件的`View`会收到`CANCEL`.
 	if (cancel || oldAction == MotionEvent.ACTION_CANCEL) {
 		event.setAction(MotionEvent.ACTION_CANCEL);
 		if (child == null) {
@@ -439,7 +439,7 @@ private boolean dispatchTransformedTouchEvent(MotionEvent event, boolean cancel,
 ```
 
 
-上面讲了`ViewGroup`的`dispatchTouchEveent()`有些地方会调用`super.dispatchTouchEveent()`，而`ViewGroup`的父类就是`View`，接下来我们看一下`View.dispatchTouchEveent()`方法：
+上面讲了`ViewGroup`的`dispatchTouchEvent()`有些地方会调用`super.dispatchTouchEvent()`，而`ViewGroup`的父类就是`View`，接下来我们看一下`View.dispatchTouchEvent()`方法：
 ```java
 /**
  * Pass the touch screen motion event down to the target view, or this
@@ -531,7 +531,7 @@ public boolean onTouchEvent(MotionEvent event) {
 	}
 
 	// 关于TouchDelegate,文档中是这样说的The delegate to handle touch events that are physically in this view
-    // but should be handled by another view. 就是说如果两个View, View2在View1中，View1比较大，如果我们想点击
+        // but should be handled by another view. 就是说如果两个View, View2在View1中，View1比较大，如果我们想点击
 	// View1的时候，让View2去响应点击事件，这时候就需要使用TouchDelegate来设置。
 	// 简单的理解就是如果这个View有自己的时间委托处理人，就交给委托人处理。
 	if (mTouchDelegate != null) {
@@ -542,12 +542,12 @@ public boolean onTouchEvent(MotionEvent event) {
 
 	if (((viewFlags & CLICKABLE) == CLICKABLE ||
 			(viewFlags & LONG_CLICKABLE) == LONG_CLICKABLE)) {
-	    // 这个View可点击
+                // 这个View可点击
 		switch (event.getAction()) {
 			case MotionEvent.ACTION_UP:
-			    // 最好先看DOWN后再看MOVE最后看UP。
+	                        // 最好先看DOWN后再看MOVE最后看UP。
 				// PFLAG_PREPRESSED 表示在一个可滚动的容器中,要稍后才能确定是按下还是滚动.
-                // PFLAG_PRESSED 表示不是在一个可滚动的容器中,已经可以确定按下这一操作.
+                                // PFLAG_PRESSED 表示不是在一个可滚动的容器中,已经可以确定按下这一操作.
 				boolean prepressed = (mPrivateFlags & PFLAG_PREPRESSED) != 0;
 				if ((mPrivateFlags & PFLAG_PRESSED) != 0 || prepressed) {
 					// 处理点击或长按事件
@@ -651,7 +651,7 @@ public boolean onTouchEvent(MotionEvent event) {
 				
 				// Be lenient about moving outside of buttons， 检查是否移动到View外面了。
 				if (!pointInView(x, y, mTouchSlop)) {
-				    // 移动到区域外面去了，就要取消点击。
+			                // 移动到区域外面去了，就要取消点击。
 					// Outside button
 					removeTapCallback();
 					if ((mPrivateFlags & PFLAG_PRESSED) != 0) {

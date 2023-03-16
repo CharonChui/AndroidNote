@@ -1,7 +1,7 @@
 AsyncTask详解
 ===
 
-`AsyncTask`简单的说其实就是`Handler`和`Thread`的结合，就想下面自己写的`MyAsyncTask`一样，这就是它的基本远离，当然它并不止这么简单。
+`AsyncTask`简单的说其实就是`Handler`和`Thread`的结合，就像下面自己写的`MyAsyncTask`一样，这就是它的基本原理，当然它并不止这么简单。
 
 - 经典版异步任务                
 
@@ -69,9 +69,9 @@ new AsyncTask<Void, Void, Void>() {
 			super.onPostExecute(result);
 		}
 	}.execute(); 
-类的构造方法中接收三个参数，这里我们不用参数就都给它传Void，new出来AsyncTask类之后然后重写这三个方法，
-最后别忘了执行execute方法，其实它的内部和我们写的经典版的异步任务相同，也是里面写了一个在新的线程中去执行耗时的操作，
-然后用handler发送Message对象，主线程收到这个Message之后去执行onPostExecute中的内容。
+//  类的构造方法中接收三个参数，这里我们不用参数就都给它传Void，new出来AsyncTask类之后然后重写这三个方法，
+// 最后别忘了执行execute方法，其实它的内部和我们写的经典版的异步任务相同，也是里面写了一个在新的线程中去执行耗时的操作，
+// 然后用handler发送Message对象，主线程收到这个Message之后去执行onPostExecute中的内容。
 
 
 //AsyncTask<Params, Progress, Result> ,params 异步任务执行(doBackgroud方法)需要的参数这个参数的实参可以由execute()方法的参数传入,
@@ -120,10 +120,10 @@ new AsyncTask<String, Void, Boolean>() {
 		
 	}.execute("backup.xml"); //这里传入的参数就是doInBackgound中的参数，会传入到doInBackground中
  
-ProgressDialog有个方法
-incrementProgressBy(int num);方法，这个方法能够让进度条自动增加，如果参数为1就是进度条累加1。
+// ProgressDialog有个方法
+// incrementProgressBy(int num);方法，这个方法能够让进度条自动增加，如果参数为1就是进度条累加1。
  
-可以给ProgressDialog添加一个监听dismiss的监听器。pd.setOnDismisListener(DismisListener listener);让其在取消显示后做什么事
+// 可以给ProgressDialog添加一个监听dismiss的监听器。pd.setOnDismisListener(DismisListener listener);让其在取消显示后做什么事
 ```
 
 经过上面两部分，我们会发现`AsyncTask`太好了，他帮我们封装了`Handler`和`Thread`，当然他内部肯定会有线程池的管理，所以以后我们在开发中对于耗时的操作可以都用`AsyncTask`来搞定的。其实这种做法是错误的。今天发现公司项目中的网络请求都是用`AsyncTask`来做的(刚换的工作)。这样会有严重的问题。
@@ -132,7 +132,7 @@ incrementProgressBy(int num);方法，这个方法能够让进度条自动增加
 
 - `AsyncTask`虽然有`cancel`方法，但是一旦执行了`doInBackground`方法，就算调用取消方法，也会执行完`doInBackground`方法中的内容才会停止。
 - 串行还是并行的问题。
-    在`1.6`之前，`AsyncTask`是串行执行任务的。`1.6`的时候开始采用线程池并行处理。但是从`3.0`开始为了解决`AsyncTask`的并发问题，`AsyncTask`又采用一个现成来串行执行任务。(串行啊，每个任务10秒，五个任务，最后一个就要到50秒的时候才执行完)
+    在`1.6`之前，`AsyncTask`是串行执行任务的。`1.6`的时候开始采用线程池并行处理。但是从`3.0`开始为了解决`AsyncTask`的并发问题，`AsyncTask`又采用一个线程来串行执行任务。(串行啊，每个任务10秒，五个任务，最后一个就要到50秒的时候才执行完)
 - 线程池的问题。
 
 
@@ -171,7 +171,7 @@ If you truly want parallel execution, you can invoke executeOnExecutor(java.util
  * Creates a new asynchronous task. This constructor must be invoked on the UI thread.
  */
 public AsyncTask() {
-    // 初始化mWorker
+        // 初始化mWorker
 	mWorker = new WorkerRunnable<Params, Result>() {
 		public Result call() throws Exception {
 			// 修改该变量值
@@ -190,7 +190,7 @@ public AsyncTask() {
 		@Override
 		protected void done() {
 			try {
-			    // 执行完成后的操作
+                                // 执行完成后的操作
 				postResultIfNotInvoked(get());
 			} catch (InterruptedException e) {
 				android.util.Log.w(LOG_TAG, e);
@@ -266,14 +266,14 @@ private static class InternalHandler extends Handler {
 	}
 }
 ```
-我们看到如果判断消息类型为`MESSAGE_POST_RESULT`时，回去执行`finish()`方法，接着看一下`result.mTask.finish()`方法的源码:
+我们看到如果判断消息类型为`MESSAGE_POST_RESULT`时，会去执行`finish()`方法，接着看一下`result.mTask.finish()`方法的源码:
 ```java
 private void finish(Result result) {
 	if (isCancelled()) {
-	    // 如果被取消了就执行onCancelled方法，这就是为什么虽然AsyncTask可以取消，但是doInBackground方法还是会执行完的原因。
+                // 如果被取消了就执行onCancelled方法，这就是为什么虽然AsyncTask可以取消，但是doInBackground方法还是会执行完的原因。
 		onCancelled(result);
 	} else {
-	    // 没被取消就执行oPostExecute方法
+	        // 没被取消就执行oPostExecute方法
 		onPostExecute(result);
 	}
 	mStatus = Status.FINISHED;
@@ -307,7 +307,7 @@ public final AsyncTask<Params, Progress, Result> executeOnExecutor(Executor exec
 	mStatus = Status.RUNNING;
 	// 看到我们熟悉的onPreExecute()方法。
 	onPreExecute();
-    // 将参数设置给mWorker变量
+        // 将参数设置给mWorker变量
 	mWorker.mParams = params;
 	// 执行了Executor的execute方法并用mFuture为参数，这个exec就是上面的sDefaultExecutor
 	exec.execute(mFuture);
@@ -331,16 +331,16 @@ private static volatile Executor sDefaultExecutor = SERIAL_EXECUTOR;
 从上面的部分能够看出`sDefaultExecutor`是一个`SerialExecutor`对象，好了，接下来看一下`SerialExecutor`类:
 ```java
 private static class SerialExecutor implements Executor {
-    // 用一个队列来管理所有的runnable。offer是把要执行的添加进来，在scheduleNext中取出来去执行。
+        // 用一个队列来管理所有的runnable。offer是把要执行的添加进来，在scheduleNext中取出来去执行。
 	final ArrayDeque<Runnable> mTasks = new ArrayDeque<Runnable>();
 	Runnable mActive;
 
 	public synchronized void execute(final Runnable r) {
-	    // 终于找到了sDefaultExecutor.execute()所真正执行的部分。
+                // 终于找到了sDefaultExecutor.execute()所真正执行的部分。
 		mTasks.offer(new Runnable() {
 			public void run() {
 				try {
-				    // 就是mFuture的run方法，他会去调用mWorker.call方法，这样就会执行doInBackground方法，执行完后会把返回值用Handler发送出去
+	                                // 就是mFuture的run方法，他会去调用mWorker.call方法，这样就会执行doInBackground方法，执行完后会把返回值用Handler发送出去
 					r.run();
 				} finally {
 					scheduleNext();
@@ -354,7 +354,7 @@ private static class SerialExecutor implements Executor {
 
 	protected synchronized void scheduleNext() {
 		if ((mActive = mTasks.poll()) != null) {
-		    // 去取队列中的runnable去执行，这个mActive其实就是mFuture对象。
+                        // 去取队列中的runnable去执行，这个mActive其实就是mFuture对象。
 			THREAD_POOL_EXECUTOR.execute(mActive);
 		}
 	}
@@ -388,7 +388,7 @@ public void run() {
 			V result;
 			boolean ran;
 			try {
-			    // 他会去调用 Callable的call()方法，而上面传入的Callable参数是mWorker。所以这里就会调用mWorker的call方法。
+		                // 他会去调用 Callable的call()方法，而上面传入的Callable参数是mWorker。所以这里就会调用mWorker的call方法。
 				// 通过这里就和之前我们讲的doInBackground方法联系上了.
 				result = c.call();
 				ran = true;

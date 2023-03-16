@@ -481,10 +481,10 @@ public final class OkHttpClient implements URLStreamHandlerFactory, Cloneable {
 
   HttpURLConnection open(URL url, Proxy proxy) {
     String protocol = url.getProtocol();
-	// 将该对象clone后设置一些其他的属性返回，里面会设置一个默认的连接池。
+    // 将该对象clone后设置一些其他的属性返回，里面会设置一个默认的连接池。
     OkHttpClient copy = copyWithDefaults();
     copy.proxy = proxy;
-	// 返回了HttpURLConnectionImpl，并且把clone后的OKHttpClient对象传递进去。
+    // 返回了HttpURLConnectionImpl，并且把clone后的OKHttpClient对象传递进去。
     if (protocol.equals("http")) return new HttpURLConnectionImpl(url, copy);
     if (protocol.equals("https")) return new HttpsURLConnectionImpl(url, copy);
     throw new IllegalArgumentException("Unexpected protocol: " + protocol);
@@ -869,7 +869,7 @@ private void connect() throws IOException {
 * @throws NoSuchElementException if there are no more routes to attempt.
 */
 public Connection next(String method) throws IOException {
-    // 使用连接池获取Connection的地方。pool就是OkHttpClient中的连接池。
+        // 使用连接池获取Connection的地方。pool就是OkHttpClient中的连接池。
 	// Always prefer pooled connections over new connections.
 	for (Connection pooled; (pooled = pool.get(address)) != null; ) {
 	  // 匹配get方法，或者判断是否可读，http1.x是通过判断socket是否关闭来判断是否可读的。
@@ -902,7 +902,7 @@ public Connection next(String method) throws IOException {
 	  // tried last.
 	  return next(method);
 	}
-    // 没有的话也会去创建，并把OkHttpClient中的连接池传递进去。
+        // 没有的话也会去创建，并把OkHttpClient中的连接池传递进去。
 	return new Connection(pool, route);
 }
 ```
@@ -946,7 +946,7 @@ public final class Connection implements Closeable {
     out = socket.getOutputStream();
 
     if (route.address.sslSocketFactory != null) {
-	  // 完成TLS握手和验证
+      // 完成TLS握手和验证
       upgradeToTls(tunnelRequest);
     } else {
       initSourceAndSink();
@@ -1214,7 +1214,7 @@ while (true) {
 // 看到了吗？他内部会先去调用connect()方法
 connect();
 
-　  // 这里可能有人会有说，getOutputStream和request body有什么关系，应该是response body才对啊。
+// 这里可能有人会有说，getOutputStream和request body有什么关系，应该是response body才对啊。
 // 不要弄混了啊，getOutputStream是要把post请求的数据输入给请求。
 BufferedSink sink = httpEngine.getBufferedRequestBody();
 if (sink == null) {
@@ -1392,9 +1392,9 @@ public class ConnectionPool {
 
   static {
     String keepAlive = System.getProperty("http.keepAlive");
-	// 存活时间
+    // 存活时间
     String keepAliveDuration = System.getProperty("http.keepAliveDuration");
-	// 最大空闲连接数
+    // 最大空闲连接数
     String maxIdleConnections = System.getProperty("http.maxConnections");
     long keepAliveDurationMs = keepAliveDuration != null ? Long.parseLong(keepAliveDuration)
         : DEFAULT_KEEP_ALIVE_DURATION_MS;
@@ -1527,7 +1527,7 @@ public class ConnectionPool {
       if (!connection.isSpdy()) {
 	    // 不是spdy连接
         try {
-		  // Platforml类对当前Android平台做了适配。
+          // Platforml类对当前Android平台做了适配。
           Platform.get().tagSocket(connection.getSocket());
         } catch (SocketException e) {
           Util.closeQuietly(connection);
@@ -1536,12 +1536,12 @@ public class ConnectionPool {
           continue;
         }
       }
-	  // 找到可复用的Connection
+      // 找到可复用的Connection
       foundConnection = connection;
       break;
     }
 
-	// 针对spdy连接，添加到连接池中
+    // 针对spdy连接，添加到连接池中
     if (foundConnection != null && foundConnection.isSpdy()) {
       connections.addFirst(foundConnection); // Add it back after iteration.
     }

@@ -2,7 +2,7 @@ Retrofit详解(下)
 ===
 
 
-上一篇文件介绍了`Retrofit`的基本使用，接下来我们通过从源码的角度分析一下`Retrofit`的实现。    
+上一篇文章介绍了`Retrofit`的基本使用，接下来我们通过从源码的角度分析一下`Retrofit`的实现。    
 
 首先看一下它的基本使用方法:    
 
@@ -49,7 +49,7 @@ Retrofit retrofit = new Retrofit.Builder()
 
 这是典型的建造者模式、外观模式      
 
-就想平时我们写的下载模块，作为一个公共的模块，我们可以对外提供一个`DownloadManager`供外界使用，而对于里面的实现我们完全可以闭门造车。    
+就像平时我们写的下载模块，作为一个公共的模块，我们可以对外提供一个`DownloadManager`供外界使用，而对于里面的实现我们完全可以闭门造车。    
 
 具体`baseUrl()`、`addConverterFactory()`方法里面的具体实现就不去看了，比较简单。当然这里也用到了工厂设计模式。
 
@@ -85,7 +85,7 @@ public <T> T create(final Class<T> service) {
             }
             // 1，根据动态代理的方法去生成ServiceMethod这里动态代理的方法就是listRepos方法
             ServiceMethod serviceMethod = loadServiceMethod(method);
-            // 2，根绝ServiceMethod和参数去生成OkHttpCall，这里args是CharonChui
+            // 2，根据ServiceMethod和参数去生成OkHttpCall，这里args是CharonChui
             OkHttpCall okHttpCall = new OkHttpCall<>(serviceMethod, args);
             // 3, serviceMethod去进行处理并返回Call对象，拿到这个Call对象才能去执行网络请求。
             return serviceMethod.callAdapter.adapt(okHttpCall);
@@ -96,7 +96,7 @@ public <T> T create(final Class<T> service) {
 
 看到`Proxy.newProxyInstance()`就明白了，这里使用了动态代理。简单的说动态代理是在你要调用某个`Class`的方法前或后，插入你想要执行的代码。那这里要代理的是什么方法？ `Call<List<Repo>> call = gitHubService.listRepos("CharonChui");`，这里就是`listRepos()`方法。   就是说在调用`listRepos()`方法时会被动态代理所拦截，然后执行`Proxy.newProxyInstance()`里面的`InvocationHandler.invoke()`中的部分。   而`invoke()`方法的三个参数分别是啥？ 分别是`Object proxy`: 代理对象，`Method method`：调用的方法，就是`listRepos()`方法，`Object... args`：方法的参数，这里是`CharonChui`。   
 
-有关动态代理介绍可以看[张孝祥老师的java1.5高新技术系列中的动态代理]()
+有关动态代理介绍可以看[张孝祥老师的java1.5高新技术系列中的动态代理](https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledge/%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86.md)
 
 这里就不仔细介绍动态代理了，上面的代码中又分为三部分:    
 
@@ -174,7 +174,7 @@ public <T> T create(final Class<T> service) {
 	          throw parameterError(p, "Parameter type must not include a type variable or wildcard: %s",
 	              parameterType);
 	        }
-			//  解析对应method的注解，这里是listRepos方法的注解。
+         	//  解析对应method的注解，这里是listRepos方法的注解。
 	        Annotation[] parameterAnnotations = parameterAnnotationsArray[p];
 	        if (parameterAnnotations == null) {
 	          throw parameterError(p, "No Retrofit annotation found.");

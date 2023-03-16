@@ -41,7 +41,7 @@ public void setContentView(int layoutResID) {
 	// decor, when theme attributes and the like are crystalized. Do not check the feature
 	// before this happens.
 	if (mContentParent == null) {
-	    // 内部会创建mContentParent, 如果mDecor为null就创建，然后如果mContentParent为null，就根据当前要显示的主题去添加对应的布局，
+                // 内部会创建mContentParent, 如果mDecor为null就创建，然后如果mContentParent为null，就根据当前要显示的主题去添加对应的布局，
 		// 并把该布局中id为content的ViewGroup赋值给mContentParent。
 		installDecor();
 	} else if (!hasFeature(FEATURE_CONTENT_TRANSITIONS)) {
@@ -54,7 +54,7 @@ public void setContentView(int layoutResID) {
 				getContext());
 		transitionTo(newScene);
 	} else {
-	    // 把布局inflate后添加到mContentParent中
+	        // 把布局inflate后添加到mContentParent中
 		mLayoutInflater.inflate(layoutResID, mContentParent);
 	}
 	final Callback cb = getCallback();

@@ -135,7 +135,7 @@ Caused by: java.lang.IllegalArgumentException: Could not locate ResponseBody con
 这是什么鬼?难道官方给的示例代码有问题？ 从`log`上面我们能看出来是返回的数据结构不匹配导致的，返回的是`ResponseBody`的转换器无法转换为`List<Repo>`。    
 
 
-`Retrofit`是一个将`API`接口转换成回调对象的类，默认情况下`Retrofit`会根绝平台提供一些默认的配置，但是它是支持配置的。   
+`Retrofit`是一个将`API`接口转换成回调对象的类，默认情况下`Retrofit`会根据平台提供一些默认的配置，但是它是支持配置的。   
 
 Converters(解析数据)
 ---
@@ -370,6 +370,10 @@ Call<User> getUser(@Header("Authorization") String authorization)
 -keepattributes Exceptions
 ```
 
+------
+- [下一篇：Retrofit详解(下)](https://github.com/CharonChui/AndroidNote/blob/master/SourceAnalysis/Netowork/Retrofit%E8%AF%A6%E8%A7%A3(%E4%B8%8B).md)
+
+
 [1]: https://github.com/CharonChui/AndroidNote/blob/master/SourceAnalysis/Netowork/volley-retrofit-okhttp%E4%B9%8B%E6%88%91%E4%BB%AC%E8%AF%A5%E5%A6%82%E4%BD%95%E9%80%89%E6%8B%A9%E7%BD%91%E8%B7%AF%E6%A1%86%E6%9E%B6.md  "volley-retrofit-okhttp之我们该如何选择网路框架"
 [2]: https://github.com/CharonChui/AndroidNote/blob/master/SourceAnalysis/Netowork/Volley%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90.md "Volley源码分析"
 [3]: https://github.com/CharonChui/AndroidNote/blob/master/AdavancedPart/%E6%B3%A8%E8%A7%A3%E4%BD%BF%E7%94%A8.md "注解使用"
@@ -379,5 +383,4 @@ Call<User> getUser(@Header("Authorization") String authorization)
 ---
 
 - 邮箱 ：charon.chui@gmail.com  
-- Good Luck! 
-
+- Good Luck!

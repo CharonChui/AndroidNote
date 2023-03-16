@@ -625,7 +625,7 @@ private void performLayout(WindowManager.LayoutParams lp, int desiredWindowWidth
 							" during layout: running second layout pass");
 					view.requestLayout();
 				}
-                // desiredWindowWidth和desiredWindowHeight是屏幕的尺寸
+                                // desiredWindowWidth和desiredWindowHeight是屏幕的尺寸
 				measureHierarchy(host, lp, mView.getContext().getResources(),
 						desiredWindowWidth, desiredWindowHeight);
 				mInLayout = true;
@@ -975,8 +975,8 @@ private void draw(boolean fullRedrawNeeded) {
 	}
 
 	final Rect dirty = mDirty;
-    // 判断该Surface是否有SurfaceHolder对象，如果有则意味着该Surface是应用程序创建的，因为所有的绘制操作应该由应用程序
-    // 自身去负责，于是View系统推出绘制，如果不是，才开始View绘制的内部流程。
+        // 判断该Surface是否有SurfaceHolder对象，如果有则意味着该Surface是应用程序创建的，因为所有的绘制操作应该由应用程序
+        // 自身去负责，于是View系统推出绘制，如果不是，才开始View绘制的内部流程。
 	if (mSurfaceHolder != null) {
 		// The app owns the surface, we won't draw.
 		dirty.setEmpty();
@@ -1018,10 +1018,10 @@ private void draw(boolean fullRedrawNeeded) {
 	}
 
 	if (!dirty.isEmpty() || mIsAnimating) {
-        // Surface的底层驱动模式分为两种，一种是使用图形加速支持的Surface，俗称显卡，另一种是使用CPU及内存模拟的Surface。
-        // 因此这里需要根据不同的模式，进行不同的操作
+                // Surface的底层驱动模式分为两种，一种是使用图形加速支持的Surface，俗称显卡，另一种是使用CPU及内存模拟的Surface。
+                // 因此这里需要根据不同的模式，进行不同的操作
 		if (mAttachInfo.mHardwareRenderer != null && mAttachInfo.mHardwareRenderer.isEnabled()) {
-            // 硬件绘制
+                        // 硬件绘制
 			// Draw with hardware renderer.
 			mIsAnimating = false;
 			boolean invalidateRoot = false;
@@ -1071,7 +1071,7 @@ private void draw(boolean fullRedrawNeeded) {
 
 	if (animating) {
 		mFullRedrawNeeded = true;
-        // 动画就是让画面动起来，如果正在动画过程中，则需要再次发起一个重绘命令，以便接着绘制，直到滚动结束。
+                // 动画就是让画面动起来，如果正在动画过程中，则需要再次发起一个重绘命令，以便接着绘制，直到滚动结束。
 		scheduleTraversals();
 	}
 }
