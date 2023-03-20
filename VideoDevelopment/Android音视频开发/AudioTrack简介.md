@@ -4,7 +4,7 @@ AudioTrack简介
 Android系统提供了三种播放音频文件的方式:  
 
 - SoundPoll:适合播放短促且对反应速度要求比较高的情况(如游戏音效、按键声等)
-- AudioTrack:只支持播放解码后的PCM流，如果是文件的话只致辞WAV格式的音频文件，因为WAV格式的音频文件大部分都是PCM流，AudioTrack不创建解码器，所以只能播放不需要解码的WAV文件，但是CPU占用率低，内存消耗也比较小。因此如果是播放比较短时间的WAV音频文件，建议使用AudioTrack。
+- AudioTrack:只支持播放解码后的PCM流，如果是文件的话只支持WAV格式的音频文件，因为WAV格式的音频文件大部分都是PCM流，AudioTrack不创建解码器，所以只能播放不需要解码的WAV文件，但是CPU占用率低，内存消耗也比较小。因此如果是播放比较短时间的WAV音频文件，建议使用AudioTrack。
 - MediaPlayer:适合比较长且时间要求不那么高的情况,支持多种文件格式，如MP3、WAV、AAC等。其实MediaPlayer是基于AudioTrack的封装，内部也是使用AudioTrack，MediaPlayer在framework层也实例化了AudioTrack，MediaPlayer在framework层进行解码后，生成PCM流，然后代理委托给AudioTrack，最后AudioTrack传递给AudioFlinger进行混音，然后才传递给硬件播放。 
 
 
