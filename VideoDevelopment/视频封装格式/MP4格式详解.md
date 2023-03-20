@@ -45,7 +45,7 @@ moov和mdat这两个Atom顺序不固定，一般来说都是moov在前。
 
 #### ftyp(File Type Box)
 
-声明该违建为MP4文件的相关信息，必须在第一个，而且只有一个
+声明该文件为MP4文件的相关信息，必须在第一个，而且只有一个
 
 #### moov(movie box)
 
