@@ -3,7 +3,7 @@ FLV
 
 在网络的直播与点播场景中，FLV也是一种常见的格式，FLV是Adobe发布的一种可以作为直播也可以作为点播的封装格式，其封装格式非常简单，均以FLVTAG的形式存在，并且每一个TAG都是独立存在的.
 
-FLV封装格式是由一个文件头（FLV header）和很多tag组成的（FLV body）二进制文件。
+FLV封装格式是由一个文件头（FLV header， 9字节）和很多tag组成的（FLV body）二进制文件。
 Tag中包含了音频数据以及视频数据，每个Tag又有一个preTagSize字段，标记着前面一个Tag的大小，FLV的结构如下图所示。
 
 ![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/flv_tag.jpg?raw=true)
@@ -91,6 +91,7 @@ Script Tag通常被称为Metadata Tag，会放一些关于FLV视频和音频的�
 可以使用FFmpeg中的ffprobe来解析FLV文件，并且其还能够将关键帧索引的相关信息打印出来： 
 `ffprobe -v trace -i output.flv`
 
+[FLV分析工具: FlV Analyzer](http://flv-viewer.softwar.io/)
 
 参考: 
 
