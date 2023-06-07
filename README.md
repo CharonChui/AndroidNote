@@ -80,9 +80,15 @@ Android学习笔记
         - [视频封装格式][256]
         - [M3U8][321]
     - [视频编码][257]
+        - [视频编码原理][331]
         - [AV1][258]
         - [H264][259]
         - [H265][260]
+    - [音频编码][335]    
+        - [音频编码格式][336]
+        - [AAC][337]
+        - [PCM][338]
+        - [WAV][339]
     - [关键帧][227]
     - [CDN及PCDN][228]
     - [P2P技术][229]
@@ -100,12 +106,15 @@ Android学习笔记
         - [9.OpenGL ES纹理][240]
         - [10.GLSurfaceView+MediaPlayer播放视频][241]
         - [11.OpenGL ES滤镜][242]
+        - [12.FBO][332]
     - [弹幕][243]
         - [Android弹幕实现][244]
     - [FFmpeg][322]    
         - [1.FFmpeg简介][323]
         - [2.FFmpeg常用命令行][324]
-        - [1.FFmpeg切片][325]
+        - [3.FFmpeg切片][325]
+        - [4.开发环境配置][333]
+        - [5. FFmpeg核心功能][334]
 - [操作系统][263]
     - [1.操作系统简介][264]
     - [2.进程与线程][265]
@@ -694,6 +703,15 @@ Android学习笔记
 [328]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/Android%E9%9F%B3%E8%A7%86%E9%A2%91%E5%BC%80%E5%8F%91/1.%E9%9F%B3%E8%A7%86%E9%A2%91%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.md "1.音视频基础知识"
 [329]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/Android%E9%9F%B3%E8%A7%86%E9%A2%91%E5%BC%80%E5%8F%91/2.%E7%B3%BB%E7%BB%9F%E6%92%AD%E6%94%BE%E5%99%A8MediaPlayer.md "2.系统播放器MediaPlayer"
 [330]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/Android%E9%9F%B3%E8%A7%86%E9%A2%91%E5%BC%80%E5%8F%91/11.%E6%92%AD%E6%94%BE%E7%BB%84%E4%BB%B6%E5%B0%81%E8%A3%85.md "11.播放器组件封装"
+[331]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/%E8%A7%86%E9%A2%91%E7%BC%96%E7%A0%81/%E8%A7%86%E9%A2%91%E7%BC%96%E7%A0%81%E5%8E%9F%E7%90%86.md "视频编码原理"
+[332]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/OpenGL/12.FBO.md "12.FBO"
+[333]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/FFmpeg/4.%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE.md "4.开发环境配置"
+[334]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/FFmpeg/5.%20FFmpeg%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD.md "5. FFmpeg核心功能"
+[335]: https://github.com/CharonChui/AndroidNote/tree/master/VideoDevelopment/%E9%9F%B3%E9%A2%91%E7%BC%96%E7%A0%81 "音频编码"
+[336]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/%E9%9F%B3%E9%A2%91%E7%BC%96%E7%A0%81/%E9%9F%B3%E9%A2%91%E7%BC%96%E7%A0%81%E6%A0%BC%E5%BC%8F.md "音频编码格式"
+[337]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/%E9%9F%B3%E9%A2%91%E7%BC%96%E7%A0%81/AAC.md "AAC"
+[338]: https://github.com/CharonChui/AndroidNote/tree/master/VideoDevelopment/%E9%9F%B3%E9%A2%91%E7%BC%96%E7%A0%81 "PCM"
+[339]: https://github.com/CharonChui/AndroidNote/tree/master/VideoDevelopment/%E9%9F%B3%E9%A2%91%E7%BC%96%E7%A0%81 "WAV"
       
 
 
