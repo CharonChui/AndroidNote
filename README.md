@@ -710,8 +710,8 @@ Android学习笔记
 [335]: https://github.com/CharonChui/AndroidNote/tree/master/VideoDevelopment/%E9%9F%B3%E9%A2%91%E7%BC%96%E7%A0%81 "音频编码"
 [336]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/%E9%9F%B3%E9%A2%91%E7%BC%96%E7%A0%81/%E9%9F%B3%E9%A2%91%E7%BC%96%E7%A0%81%E6%A0%BC%E5%BC%8F.md "音频编码格式"
 [337]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/%E9%9F%B3%E9%A2%91%E7%BC%96%E7%A0%81/AAC.md "AAC"
-[338]: https://github.com/CharonChui/AndroidNote/tree/master/VideoDevelopment/%E9%9F%B3%E9%A2%91%E7%BC%96%E7%A0%81 "PCM"
-[339]: https://github.com/CharonChui/AndroidNote/tree/master/VideoDevelopment/%E9%9F%B3%E9%A2%91%E7%BC%96%E7%A0%81 "WAV"
+[338]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/%E9%9F%B3%E9%A2%91%E7%BC%96%E7%A0%81/PCM.md "PCM"
+[339]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/%E9%9F%B3%E9%A2%91%E7%BC%96%E7%A0%81/WAV.md "WAV"
       
 
 
