@@ -79,6 +79,7 @@ Android学习笔记
         - [fMP4格式详解][255]
         - [视频封装格式][256]
         - [M3U8][321]
+        - [AVI][341]
     - [视频编码][257]
         - [视频编码原理][331]
         - [AV1][258]
@@ -115,6 +116,7 @@ Android学习笔记
         - [3.FFmpeg切片][325]
         - [4.开发环境配置][333]
         - [5. FFmpeg核心功能][334]
+        - [6.视频播放简介][340]
 - [操作系统][263]
     - [1.操作系统简介][264]
     - [2.进程与线程][265]
@@ -712,7 +714,8 @@ Android学习笔记
 [337]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/%E9%9F%B3%E9%A2%91%E7%BC%96%E7%A0%81/AAC.md "AAC"
 [338]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/%E9%9F%B3%E9%A2%91%E7%BC%96%E7%A0%81/PCM.md "PCM"
 [339]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/%E9%9F%B3%E9%A2%91%E7%BC%96%E7%A0%81/WAV.md "WAV"
-      
+[340]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/FFmpeg/6.%E8%A7%86%E9%A2%91%E6%92%AD%E6%94%BE%E7%AE%80%E4%BB%8B.md  "6.视频播放简介"
+[341]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/%E8%A7%86%E9%A2%91%E5%B0%81%E8%A3%85%E6%A0%BC%E5%BC%8F/AVI.md "AVI"
 
 
 Developed By
