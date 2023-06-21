@@ -117,6 +117,9 @@ Android学习笔记
         - [4.开发环境配置][333]
         - [5. FFmpeg核心功能][334]
         - [6.视频播放简介][340]
+    - [OpenCV][342]
+        - [1.OpenCV简介][343]
+
 - [操作系统][263]
     - [1.操作系统简介][264]
     - [2.进程与线程][265]
@@ -716,6 +719,8 @@ Android学习笔记
 [339]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/%E9%9F%B3%E9%A2%91%E7%BC%96%E7%A0%81/WAV.md "WAV"
 [340]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/FFmpeg/6.%E8%A7%86%E9%A2%91%E6%92%AD%E6%94%BE%E7%AE%80%E4%BB%8B.md  "6.视频播放简介"
 [341]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/%E8%A7%86%E9%A2%91%E5%B0%81%E8%A3%85%E6%A0%BC%E5%BC%8F/AVI.md "AVI"
+[342]: https://github.com/CharonChui/AndroidNote/tree/master/VideoDevelopment/OpenCV "OpenCV"
+[343]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/OpenCV/1.OpenCV%E7%AE%80%E4%BB%8B.md "1.OpenCV简介"
 
 
 Developed By
