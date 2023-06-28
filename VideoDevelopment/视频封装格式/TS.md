@@ -51,6 +51,10 @@ PCR是节目时钟参考，PCR、DTS、PTS都是对同一个系统时钟的采�
 
 视频流和音频流都需要加adaptation field，通常加在一个帧的第一个ts包和最后一个ts包里，中间的ts包不加。
 
+
+
+
+
 #### 3. TS Payload
 
 TS包中Payload所传输的信息包括两种类型：视频、音频的PES包以及辅助数据；节目专用信息PSI。
