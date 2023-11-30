@@ -11,11 +11,11 @@ Android学习笔记
 目录
 ===  
 
-- [史上最适合Android开发者学习的Go语言教程](https://github.com/CharonChui/GolangStudyNote)
-- [史上最适合Android开发者学习的iOS开发教程](https://github.com/CharonChui/iOSStudyNote)
+- [史上最适合Android开发者学习的Harmony OS Next语言教程](https://github.com/CharonChui/HarmonyOSNextStudyNote)
+
 - [源码解析][43] 
     - [自定义View详解][1]
-    - [Activity界面绘制过程详解][2]
+    - [Activity界面制过程详解][2]
     - [Activity启动过程][3]
     - [Android Touch事件分发详解][4]
     - [AsyncTask详解][5]
