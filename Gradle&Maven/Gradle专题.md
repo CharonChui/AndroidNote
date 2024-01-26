@@ -9,7 +9,13 @@ Gradle专题
 作用
 ---
 
-首先我们要知道它有什么用？ Gradle是一个工具，同时它也是一个编程框架。使用这个工具可以完成app的编译打包等工作。
+Gradle是一个开源的自动化构建工具。现在Android项目构建编译都是通过Gradle进行的，Gradle的版本在`gradle/wrapper/gradle-wrapper.properties`下:   
+```
+
+```
+
+
+使用这个工具可以完成app的编译打包等工作。
 
 
 简介
