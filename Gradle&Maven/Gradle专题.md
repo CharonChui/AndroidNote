@@ -1,31 +1,27 @@
 Gradle专题
 ===
 
-随着`Google`对`Eclipse`的无情抛弃以及`Studio`的不断壮大，`Android`开发者逐渐拜倒在`Studio`的石榴裙下。       
-而作为`Studio`的默认编译方式，`Gradle`已逐渐普及。我最开始是被它的多渠道打包所吸引。关于多渠道打包，请看之前我写的文章[AndroidStudio使用教程(第七弹)][1]
-
-接下来我们就系统的学习一下`Gradle`。    
-
 作用
 ---
 
-Gradle是一个开源的自动化构建工具。现在Android项目构建编译都是通过Gradle进行的，Gradle的版本在`gradle/wrapper/gradle-wrapper.properties`下:   
-```
+[Gradle](https://docs.gradle.org/7.3.3/userguide/what_is_gradle.html)是一个开源的自动化构建工具。现在Android项目构建编译都是通过Gradle进行的，Gradle的版本在`gradle/wrapper/gradle-wrapper.properties`下:   
+![image](https://github.com/CharonChui/Pictures/blob/master/gradle_version.png?raw=true)
 
-```
-
-
-使用这个工具可以完成app的编译打包等工作。
+当前Gradle版本为6.7.1。当我们执行assembleDebug/assembleRelease编译命令的时候，Gradle就会开始进行编译构建流程。
 
 
 简介
 ---
 
-[Gradle](https://gradle.org/releases/)是以`Groovy`语言为基础，面向`Java`应用为主。基于`DSL(Domain Specific Language)`语法的自动化构建工具。
+[Gradle](https://gradle.org/releases/)是以`Groovy`语言为基础，面向`Java`应用为主。       
+基于`DSL(Domain Specific Language)`语法的自动化构建工具。
 
 `Gradle`集合了`Ant`的灵活性和强大功能，同时也集合了`Maven`的依赖管理和约定，从而创造了一个更有效的构建方式。凭借`Groovy`的`DSL`和创新打包方式，`Gradle`提供了一个可声明的方式，并在合理默认值的基础上描述所有类型的构建。 `Gradle`目前已被选作许多开源项目的构建系统。
 
-[Groovy](http://www.groovy-lang.org/api.html)基于Java并拓展了Java。  Java程序员可以无缝切换到使用Groovy开发程序。Groovy说白了就是把写Java程序变得像写脚本一样简单。写完就可以执行，Groovy内部会将其编译成Javaclass然后启动虚拟机来执行。当然，这些底层的渣活不需要你管。*实际上，由于Groovy Code在真正执行的时候已经变成了Java字节码，所以JVM根本不知道自己运行的是Groovy代码*。
+[Groovy](http://www.groovy-lang.org/api.html)基于Java并拓展了Java。       
+Java程序员可以无缝切换到使用Groovy开发程序。Groovy说白了就是把写Java程序变得像写脚本一样简单。写完就可以执行，Groovy内部会将其编译成Javaclass然后启动虚拟机来执行。      
+当然，这些底层的渣活不需要你管。实际上，由于Groovy Code在真正执行的时候已经变成了Java字节码，所以JVM根本不知道自己运行的是Groovy代码。    
+
 
 因为`Gradle`是基于`DSL`语法的，如果想看到`build.gradle`文件中全部可以选项的配置，可以看这里
 [DSL Reference](http://google.github.io/android-gradle-dsl/current/)
@@ -34,15 +30,61 @@ Gradle是一个开源的自动化构建工具。现在Android项目构建编译�
 
 ![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/android_build_process.png?raw=true)
 
+### Gradle的生命周期
+
+1. Initialization：初始化阶段     
+    - 解析整个工程中所有的Project，构建所有Project对应的project对象。     
+    - 初始化阶段执行项目目录下的settings.gradle脚本，用于判断哪些项目需要被构建，并且为对应项目创建Project对象。    
+
+2. Configuration配置阶段       
+    - 解析所有的project对象中的Task，构建所有Task的括扑图     
+    - 配置阶段的任务是执行各module下的build.gradle脚本，从而完成Project的配置，并且构建Task任务依赖关系图以便在执行阶段按照依赖关系执行Task。
+    - 这个阶段Gradle会拉取remote repo的依赖(如果本地之前没有下载过依赖的话)   
+3. Execution执行阶段     
+    执行具体的task以及其依赖的task
+4. Build Finished
+
+
+
+
+
 Gradle与Android Studio的关系
 ---
 
 Gradle跟Android Studio其实没有关系，但是Gradle官方还是很看重Android开发的，Google在推出AS的时候选中了Gradle作为构建工具，为了支持Gradle
-能在AS上使用，Google做了个AS的插件叫Android Gradle Plugin，所以我们能在AS上使用Gradle完全是因为这个插件的原因。在项目的根目录有个build.gradle文件，里面有这么一句代码:  
+能在AS上使用，Google做了个AS的插件叫Android Gradle Plugin，所以我们能在AS上使用Gradle完全是因为这个插件的原因。
+
+### AGP
+AGP即Android Gradle Plugin，主要用于管理Android编译相关的Gradle插件集合，包括javac，kotlinc，aapt打包资源，D8/R8等都在AGP中。   
+
+AGP的版本是在根目录的build.gradle中配置的:   
 ```
-classpath 'com.android.tools.build:gradle:2.1.2'
+dependencies {
+        classpath 'com.android.tools.build:gradle:4.2.1'
+...
+}
 ```
-这个就是依赖gradle插件的代码，后面的版本号代表的是android gradle plugin的版本，而不是Gradle的版本，这个是Google定的，跟Gradle官方没关系。
+
+### AGP与Gradle的区别与联系
+
+Gradle是构建工具，而AGP是管理Android构建的插件。可以理解为AGP是Gradle构建流程中重要的一环。    
+
+虽然AGP和Gradle不是一个纬度的事情，但是两者也在一定程度上有所关联：两者的版本号必须匹配上: https://developer.android.com/build/releases/gradle-plugin?hl=zh-cn#updating-gradle
+
+
+![image](https://github.com/CharonChui/Pictures/blob/master/agp_gradle_version.png?raw=true)
+
+
+既然Android编译是通过AGP实现的，AGP就是Gradle的插件，那么这个插件是什么时候被apply的内？     
+因为一个插件如果没有apply的话，那么压根不会执行的。 
+```
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+}
+```
+这就是AGP被apply的地方，也是区分一个module究竟是被打包成app还是一个library的地址。 
 
 
 
