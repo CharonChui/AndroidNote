@@ -4,11 +4,16 @@ Gradle专题
 作用
 ---
 
-[Gradle](https://docs.gradle.org/7.3.3/userguide/what_is_gradle.html)是一个开源的自动化构建工具。现在Android项目构建编译都是通过Gradle进行的，Gradle的版本在`gradle/wrapper/gradle-wrapper.properties`下:   
+[Gradle](https://docs.gradle.org/7.3.3/userguide/what_is_gradle.html)是一个开源的自动化构建工具。现在Android项目构建编译都是通过Gradle进行的。
+
+Gradle的版本在`gradle/wrapper/gradle-wrapper.properties`下:   
 ![image](https://github.com/CharonChui/Pictures/blob/master/gradle_version.png?raw=true)
 
 当前Gradle版本为6.7.1。当我们执行assembleDebug/assembleRelease编译命令的时候，Gradle就会开始进行编译构建流程。
 
+
+gradle-wrapper是对Gradle的一层包装，便于在团队开发过程中统一Gradle构建的版本号，这样大家都可以使用统一的Gradle版本进行构建。 
+里面的distributionUrl属性是用于配置Gradle发行版压缩包的下载地址。    
 
 简介
 ---

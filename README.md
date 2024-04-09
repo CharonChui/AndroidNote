@@ -58,6 +58,7 @@ Android学习笔记
         - [1.音视频基础知识][328]
         - [2.系统播放器MediaPlayer][329]
         - [11.播放器组件封装][330]
+        - [MediaMetadataRetriever][344]
     - [DNS及HTTPDNS][23]
     - [流媒体协议][224]
         - [流媒体协议][246]
@@ -721,6 +722,8 @@ Android学习笔记
 [341]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/%E8%A7%86%E9%A2%91%E5%B0%81%E8%A3%85%E6%A0%BC%E5%BC%8F/AVI.md "AVI"
 [342]: https://github.com/CharonChui/AndroidNote/tree/master/VideoDevelopment/OpenCV "OpenCV"
 [343]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/OpenCV/1.OpenCV%E7%AE%80%E4%BB%8B.md "1.OpenCV简介"
+[344]:     "MediaMetadataRetriever"
+
 
 
 Developed By
