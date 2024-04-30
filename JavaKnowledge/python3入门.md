@@ -301,4 +301,198 @@ print(alien['points'])
 alien['xPos'] = 10
 alien['yPos'] = 20
 print(alien['xPos'])
+del alien['points']
 ```
+
+### 遍历字典
+
+- keys()方法返回所有的键列表。
+- items()方法返回一个键-值对列表。    
+- values()方法返回一个值列表。  
+
+```ptyhon
+alien = {'color': 'blue', 'points': 5}
+
+for key,value in alien.items(): 
+    print("key: " + key)
+    print("value: " + str(value))
+
+
+for key in alien.keys(): 
+    print("key: " + key)    
+```
+字典总是明确地记录键和值之间的关联关系，但获取字典的元素时，获取顺序是不可预测的。      
+
+这不是问题，因为通常你想要的只是获取与键相关联的正确的值。     
+
+要以特定的顺序返回元素，一种方法是在for循环中对返回的键进行排序。。    
+
+为此，可使用函数sorted()来获得特定顺序排列的键列表的副本:     
+```python
+favorite_languages = {
+    'jen':'python',
+    'sarah':'c',
+    'edward':'ruby',
+    'phil':'python',
+    }
+for name in sorted(favorite_languages.keys()):
+    print(name.title()+",thank you for taking the poll.")
+```
+
+```python
+favorite_languages = {
+    'jen':'python',
+    'sarah':'c',
+    'edward':'ruby',
+    'phil':'python',
+    }
+print("The following languages have been mentioned:")
+for language in favorite_languages.values():
+    print(language.title())
+```
+
+这种做法提取字典中所有的值，而没有考虑是否重复。涉及的值很少时，这也许不是问题，但如果被调查者很多，最终的列表可能包含大量的重复项。为剔除重复项，可使用集合(set)。集合类似于列表，但每个元素都必须是独一无二的：
+```python
+favorite_languages = {
+    'jen':'python',
+    'sarah':'c',
+    'edward':'ruby',
+    'phil':'python',
+    }
+print("The following languages have been mentioned:")
+for language in set(favorite_languages.values()):❶
+    print(language.title())
+```
+通过对包含重复元素的列表调用set()，可让Python找出列表中独一无二的元素，并使用这些元素来创建一个集合。
+
+## 用户输入
+
+函数input()让程序暂停运行，等待用户输入一些文本。     
+
+获取用户输入后，Python将其村村在一个变量中，以方便你使用。   
+```python3
+age = input("How old are you?")
+print(age)
+```
+用户输入的是数字21，但我们请求Python提供age的值时，它返回的是`'21'`(用户输入的数值的字符串表示)。    
+
+为了解决这个问题，可以使用函数int()：将数字的字符串表示转换为数值表示，如:  
+```python
+age = input("Please Input")
+print(age)
+# print(age >= 18)  报错
+age = int(age)
+print(age >= 18)
+```
+
+## while
+
+```python
+current_number = 1
+while current_number <= 5:
+    print(current_number)
+    current_number+= 1
+```
+
+同样while中也可以结合使用break、continue等，和Java基本一样。  
+
+
+## 函数
+
+使用关键字def来定义一个函数，定义以冒号结尾。      
+跟在def xxx:后面的所有缩进行构成了函数体。   
+
+```python
+def greet_user(username): 
+    # 返回值
+    return 'Hello ' + username 
+
+# 调用函数    
+print(greet_user('jack')) 
+print(greet_user(username='lili'))
+```
+同样，在Python中函数也支持参数的默认值。   
+
+### 函数列表参数副本
+
+将列表传递给函数后，函数就可对其进行修改。在函数中对这个列表所做的任何修改都是永久性的，这让你能够高效地处理大量的数据。
+
+但是有些时候我们并不想让函数修改原始的列表。  
+
+为解决这个问题，可向函数传递列表的副本而不是原件；这样函数所做的任何修改都只影响副本，而丝毫不影响原件。
+
+要将列表的副本传递给函数，可以像下面这样做：
+```
+function_name(list_name[:])
+```
+
+切片表示法[:]创建列表的副本。
+
+### 函数不定参数
+
+有时候，你预先不知道函数需要接受多少个实参，Python允许函数从调用语句中收集任意数量的实参。  
+```python
+def make_pizza(*toppings):
+    """打印顾客点的所有配料"""
+    print(toppings)
+make_pizza('pepperoni')
+make_pizza('mushrooms','green peppers','extra cheese')
+```
+形参名`*toppings`中的星号让Python创建一个名为toppings的空元组，并将收到的所有值都封装到这个元组中。
+
+现在，我们可以将这条print语句替换为一个循环，对配料列表进行遍历，并对顾客点的比萨进行描述：
+
+```python
+def make_pizza(*toppings):
+    """概述要制作的比萨"""
+    print("\nMaking a pizza with the following toppings:")
+    for topping in toppings:
+        print("- "+topping)
+make_pizza('pepperoni')
+make_pizza('mushrooms','green peppers','extra cheese')
+```
+
+### 将函数存储在模块中
+
+函数的优点之一是，使用它们可将代码块与主程序分离。通过给函数指定描述性名称，可让主程序容易理解得多。你还可以更进一步，将函数存储在被称为模块的独立文件中，再将模块导入到主程序中。import语句允许在当前运行的程序文件中使用模块中的代码。
+
+
+要让函数是可导入的，得先创建模块。模块是扩展名为.py的文件，包含要导入到程序中的代码。下面来创建一个包含函数make_pizza()的模块。为此，我们将文件pizza.py中除函数make_pizza()之外的其他代码都删除：
+
+```python
+# pizza.py
+
+def make_pizza(size,*toppings):
+    """概述要制作的比萨"""
+    print("\nMaking a "+str(size)+
+          "-inch pizza with the following toppings:")
+    for topping in toppings:
+        print("- "+topping)
+```
+
+接下来，我们在pizza.py所在的目录中创建另一个名为making_pizzas.py的文件，这个文件导入刚创建的模块，再调用make_pizza()两次：
+
+```python
+# making_pizzas.py
+import pizza
+pizza.make_pizza(16,'pepperoni') ❶
+pizza.make_pizza(12,'mushrooms','green peppers','extra cheese')
+
+```
+Python读取这个文件时，代码行import pizza让Python打开文件pizza.py，并将其中的所有函数都复制到这个程序中。你看不到复制的代码，因为这个程序运行时，Python在幕后复制这些代码。你只需知道，在making_pizzas.py中，可以使用pizza.py中定义的所有函数。
+
+你还可以导入模块中的特定函数，这种导入方法的语法如下：
+`from modulname import funcxx`
+
+```python
+from pizza import make_pizza
+make_pizza(16,'pepperoni')
+make_pizza(12,'mushrooms','green peppers','extra cheese')
+```
+若使用这种语法，调用函数时就无需使用句点。由于我们在import语句中显式地导入了函数make_pizza()，因此调用它时只需指定其名称。
+
+
+
+
+
+
