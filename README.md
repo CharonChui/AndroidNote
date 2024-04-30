@@ -728,7 +728,7 @@ Android学习笔记
 [344]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/Android%E9%9F%B3%E8%A7%86%E9%A2%91%E5%BC%80%E5%8F%91/MediaMetadataRetriever.md    "MediaMetadataRetriever"
 [345]: https://github.com/CharonChui/AndroidNote/blob/master/JavaKnowledge/python3%E5%85%A5%E9%97%A8.md    "python3入门"
 [346]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/OpenGL/13.LUT%E6%BB%A4%E9%95%9C.md  "13.LUT滤镜"
-[347]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/OpenGL/13.LUT%E6%BB%A4%E9%95%9C.md  "14.实例化"
+[347]: https://github.com/CharonChui/AndroidNote/blob/master/VideoDevelopment/OpenGL/14.%E5%AE%9E%E4%BE%8B%E5%8C%96.md  "14.实例化"
 
 
 Developed By

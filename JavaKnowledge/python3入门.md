@@ -286,6 +286,19 @@ print('audi' not in cars)
 ```
 
 
-## 字典(Map)
+## 字典(Key-Value)
 
+在Python中，字典是一系列键-值对。字典用放在花括号{}中的一些列键-值对表示。           
+每个键都与一个值相关联，你可以使用键来访问与之相关联的值。      
+与键相关联的值可以是数字、字符串、列表乃至字典。事实上，可将任何Python对象用作字典中的值。     
 
+```python
+alien = {'color': 'blue', 'points': 5}
+# 取值
+print(alien['color'])
+print(alien['points'])
+# 添加值
+alien['xPos'] = 10
+alien['yPos'] = 20
+print(alien['xPos'])
+```
