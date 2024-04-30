@@ -404,6 +404,7 @@ while current_number <= 5:
 
 ```python
 def greet_user(username): 
+    """函数功能的注释"""
     # 返回值
     return 'Hello ' + username 
 
@@ -412,6 +413,8 @@ print(greet_user('jack'))
 print(greet_user(username='lili'))
 ```
 同样，在Python中函数也支持参数的默认值。   
+
+上面三个引号的部分是文档字符串格式，用于简要的阐述其功能的注释。     
 
 ### 函数列表参数副本
 
@@ -491,8 +494,112 @@ make_pizza(12,'mushrooms','green peppers','extra cheese')
 ```
 若使用这种语法，调用函数时就无需使用句点。由于我们在import语句中显式地导入了函数make_pizza()，因此调用它时只需指定其名称。
 
+还可以使用星号(`*`)导入模块中的所有函数:     
+
+```python
+from pizza import *
+make_pizza(16,'pepperoni')
+make_pizza(12,'mushrooms','green peppers','extra cheese')
+```
+`import *`会将模块pizza中的每个函数都复制到这个程序文件中。      
+由于导入了每个函数，可通过名称来调用每个函数，而无需使用句点表示法。      
+然而，使用并非自己编写的大型模块时，最好不要采用这种导入方法： 如果模块中有函数的名称与你的项目中使用的名称相同，可能导致意想不到的结果，因为Python可能遇到多个名称相同的函数或变量，进而覆盖函数，而不是分别导入所有的函数。   
 
 
+### 别名
+
+如果要导入的函数的名称与现有的名称冲突，或者函数的名称太长，可以通过别名的方式进行指定。
+
+```python
+from pizza import make_pizza as mp
+mp(16,'pepperoni')
+mp(12,'mushrooms','green peppers','extra cheese')
+```
+
+同样也可以通过as给模块指定别名:   
+
+```python
+import pizza as p
+
+p.make_pizza(16,'pepperoni')
+p.make_pizza(12,'mushrooms','green peppers','extra cheese')
+```
 
 
+## 类 
 
+在Python中，首字母大写的名称指的是类。  
+根据类来创建对象叫实例化。   
+
+dog.py
+```python
+class Dog:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+    def sit(self):
+        print(self.name + " Sitting")
+
+    def roll(self):
+        print(self.name + " Rolling")
+```
+
+__init__()是一个特殊的方法，每当你根据Dog类创建新实例时，Python都会自动运行它。在这个方法中形参self必不可少，还必须位于其他形参的前面。        
+
+为什么必须在方法定义中包含形参self呢？因为Python调用这个__init__()方法来创建Dog实例时，将自动传入实参self。    
+
+每个与类相关联的方法调用都自动传入实参self，它是一个指向实例本身的引用，让实例能够访问类中的属性和方法。         
+
+```python
+import dog
+
+dog = dog.Dog("xiaohei", 1)
+# 属性
+print(dog.name)
+# 方法
+dog.sit()
+```
+
+
+### 继承
+
+一个类继承另一个类时，它将自动获得另一个类的所有属性和方法。       
+
+创建子类实例时，Python首先需要完成的任务是给父类的所有属性赋值。因此，子类的__init__()方法需要调用父类的方法。   
+
+```python
+class Car:
+    def __init__(self, make, model, year):
+        self.make = make
+        self.model = model
+        self.year = year
+
+    def get_des(self):
+        name = str(self.year) + str(self.make) + str(self.model)
+        return name.title()
+
+
+class ElectricCar(Car):
+    def __init__(self, make, model, year, battery):
+        super().__init__(make, model, year)
+        self.battery = battery
+
+    # 重写父类方法
+    def get_des(self):
+        name = str(self.year) + str(self.make) + str(self.model) + str(self.battery)
+        return name.title()
+    def get_battery(self):
+        print("battery : " + str(self.battery))
+
+
+tesla = ElectricCar('Tesla', 'Model S', 2021, 80)
+print(tesla.get_des())
+tesla.get_battery()
+```
+
+- 创建子类时，父类必须包含在当前文件中，且位于子类前面。        
+- 定义子类时，必须在括号内指定父类的名称
+- 方法__init__()接受创建子类实例所需的信息
+
+super()是一个特殊函数，帮助Python将父类和子类关联起来。这行代码让子类包含父类的所有属性。 
