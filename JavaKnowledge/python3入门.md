@@ -603,3 +603,134 @@ tesla.get_battery()
 - 方法__init__()接受创建子类实例所需的信息
 
 super()是一个特殊函数，帮助Python将父类和子类关联起来。这行代码让子类包含父类的所有属性。 
+
+
+## 标准库
+
+Python标准库是一组模块，安装的Python都包含它。
+类名应采用驼峰命名法，即将类名中的每个单词的首字母都大写，而不使用下划线。实例名和模块名都采用小写格式，并在单词之间加上下划线。
+每个模块也都应包含一个文档字符串，对其中的类可用于做什么进行描述。
+
+
+### 读取文件
+
+一次性读取整个文件:          
+```python
+with open('test.txt') as file_object:
+    contents = file_object.read()
+    print(contents)
+```
+
+要以每次一行的方式检查文件，可对文件对象使用for循环:     
+
+```python
+filename = 'test.txt'
+with open(filename) as file_object:
+    for line in file_object:
+    print(line)
+```    
+这里使用了关键字with，让Python负责妥善地打开和关闭文件。       
+使用关键字with时，open()返回的文件对象只在with代码块内可用。
+
+
+要将文本写入文件，你在调用open()时需要提供另一个实参，告诉Python你要写入打开的文件。
+
+```python
+filename = 'test.txt'
+
+with open(filename, 'w') as fo:
+    fo.write("Hello World")
+```    
+调用open()时提供了两个实参:       
+
+- 第一个实参是要打开的文件的名称
+- 第二个实参('w')告诉Python，我们要以写入模式打开这个文件。
+
+打开文件时，可指定读取模式('r')、写入模式('w')、附加模式('a')或让你能够读取和写入文件的模式('r+')。如果你省略了模式实参，Python将以默认的只读模式打开文件。      
+如果你要写入的文件不存在，函数open()将自动创建它。然而，以写入('w')模式打开文件时千万要小心，因为如果指定的文件已经存在，Python将在返回文件对象前清空该文件。    
+注意　Python只能将字符串写入文本文件。要将数值数据存储到文本文件中，必须先使用函数str()将其转换为字符串格式。
+
+如果你要给文件添加内容，而不是覆盖原有的内容，可以附加模式打开文件。你以附加模式打开文件时，Python不会在返回文件对象前清空文件，而你写入到文件的行都将添加到文件末尾。如果指定的文件不存在，Python将为你创建一个空文件。   
+
+
+### 异常
+
+异常是使用try-except代码块处理的。try-except代码块让Python执行指定的操作，同时告诉Python发生异常时怎么办。使用了try-except代码块时，即便出现异常，程序也将继续运行：显示你编写的友好的错误消息，而不是令用户迷惑的traceback。
+
+
+### 分割字符串
+
+方法split()以空格为分隔符将字符串分拆成多个部分，并将这些部分都存储到一个列表中。
+
+```python
+title = "Alice in Wonderland"
+title.split()
+```
+
+['Alice','in','Wonderland']
+
+
+### pass
+
+Python有一个pass语句，可在代码块中使用它来让Python什么都不要做。    
+
+
+### json
+
+函数json.dump()接受两个实参：要存储的数据以及可用于存储数据的文件对象。下面演示了如何使用json.dump()来存储数字列表：
+
+```python
+import json
+numbers = [2,3,5,7,11,13]
+filename = 'numbers.json'
+with open(filename,'w') as f_obj:
+    json.dump(numbers,f_obj) 
+```
+
+使用json.load()将这个列表读取到内存中：
+```python
+import json
+filename = 'numbers.json'
+with open(filename) as f_obj:
+    numbers = json.load(f_obj) 
+print(numbers)
+```
+
+### 网络请求
+
+Web API是网站的一部分，用于与使用非常具体的URL请求特定信息的程序交互。这种请求称为API调用。请求的数据将以易于处理的格式（如JSON或CSV）返回。依赖于外部数据源的大多数应用程序都依赖于API调用，如集成社交媒体网站的应用程序。
+
+
+
+requests包让Python程序能够轻松地向网站请求信息以及检查返回的响应。要安装requests，请执行类似于下面的命令：
+
+$pip install --user requests
+或者直接在ide中点击修复安装就可以:  
+
+![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/python_install_requests.png)
+
+```python
+import requests
+# 执行API调用并存储响应
+url = 'https://api.github.com/search/repositories?q=language:python&sort=stars'
+r = requests.get(url)
+print("Status code:",r.status_code)
+# 将API响应存储在一个变量中
+response_dict = r.json()
+# 处理结果
+print(response_dict.keys())
+```
+
+执行结果为:    
+```
+Status code: 200
+dict_keys(['total_count', 'incomplete_results', 'items'])
+```
+
+这个API返回JSON格式的信息，因此我们使用方法json()将这些信息转换为一个Python字典。我们将转换得到的字典存储在response_dict中。
+最后，我们打印response_dict中的键。
+
+
+
+
+
