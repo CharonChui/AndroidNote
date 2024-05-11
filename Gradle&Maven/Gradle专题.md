@@ -1749,6 +1749,343 @@ pizzaPrices.pepperoni
 
 
 
+
+
+
+1.Groovy概述
+Groovy是Apache 旗下的一种基于JVM的面向对象编程语言，既可以用于面向对象编程，也可以用作纯粹的脚本语言。在语言的设计上它吸纳了Python、Ruby 和 Smalltalk 语言的优秀特性，比如动态类型转换、闭包和元编程支持。
+Groovy与 Java可以很好的互相调用并结合编程 ，比如在写 Groovy 的时候忘记了语法可以直接按Java的语法继续写，也可以在 Java 中调用 Groovy 脚本。比起Java，Groovy语法更加的灵活和简洁，可以用更少的代码来实现Java实现的同样功能。
+
+2.Groovy编写和调试
+Groovy的代码可以在Android Studio和IntelliJ IDEA等IDE中进行编写和调试，缺点是需要配置环境，这里推荐在文本中编写代码并结合命令行进行调试（文本推荐使用Sublime Text）。关于命令行请查看Gradle入门前奏这篇文章。
+具体的操作步骤就是：在一个目录中新建build.gradle文件，在build.gradle中新建一个task，在task中编写Groovy代码，用命令行进入这个build.gradle文件所在的目录，运行gradle task名称 等命令行对代码进行调试，本文中的例子都是这样编写和调试的。
+
+3.变量
+Groovy中用def关键字来定义变量，可以不指定变量的类型，默认访问修饰符是public。
+
+def a = 1;
+def int b = 1;
+def c = "hello world";
+4.方法
+方法使用返回类型或def关键字定义，方法可以接收任意数量的参数，这些参数可以不申明类型，如果不提供可见性修饰符，则该方法为public。
+用def关键字定义方法。
+
+task method <<{
+    add (1,2)
+    minus 1,2 //1
+}
+def add(int a,int b) { 
+ println a+b //3
+}  
+def minus(a,b) {//2 
+ println a-b
+}   
+如果指定了方法返回类型，可以不需要def关键字来定义方法。
+
+task method <<{
+    def number=minus 1,2
+    println number
+}
+int minus(a,b) { 
+  return a-b 
+}  
+如果不使用return ，方法的返回值为最后一行代码的执行结果。
+
+int minus(a,b) { 
+  a-b //4
+}  
+从上面两段代码中可以发现Groovy中有很多省略的地方：
+
+语句后面的分号可以省略。
+
+方法的括号可以省略，比如注释1和注释3处。
+
+参数类型可以省略，比如注释2处。
+
+return可以省略掉，比如注释4处。
+
+5.类
+Groovy类非常类似于Java类。
+
+task method <<{
+    def p = new Person()
+    p.increaseAge 5
+    println p.age
+}
+class Person {                       
+    String name                      
+    Integer age =10
+    def increaseAge(Integer years) { 
+        this.age += years
+    }
+}
+运行 gradle method打印结果为：
+15
+
+Groovy类与Java类有以下的区别：
+
+默认类的修饰符为public。
+
+没有可见性修饰符的字段会自动生成对应的setter和getter方法。
+
+类不需要与它的源文件有相同的名称，但还是建议采用相同的名称。
+
+6.语句
+6.1 断言
+Groovy断言和Java断言不同，它一直处于开启状态，是进行单元测试的首选方式。
+
+task method <<{
+  assert 1+2 == 6
+}
+输出结果为：
+
+Execution failed for task ':method'.
+> assert 1+2 == 6
+          |  |
+          3  false
+当断言的条件为false时，程序会抛出异常，不再执行下面的代码，从输出可以很清晰的看到发生错误的地方。
+
+6.2 for循环
+Groovy支持Java的for(int i=0;i<N;i++)和for(int i :array)形式的循环语句，另外还支持for in loop形式，支持遍历范围、列表、Map、数组和字符串等多种类型。
+
+//遍历范围
+def x = 0
+for ( i in 0..3 ) {
+    x += i
+}
+assert x == 6
+//遍历列表
+def x = 0
+for ( i in [0, 1, 2, 3] ) {
+    x += i
+}
+assert x == 6
+//遍历Map中的值
+def map = ['a':1, 'b':2, 'c':3]
+x = 0
+for ( v in map.values() ) {
+    x += v
+}
+assert x == 6
+6.3 switch语句
+Groovy中的Switch语句不仅兼容Java代码，还可以处理更多类型的case表达式。
+
+task method <<{
+def x = 16
+def result = ""
+
+switch ( x ) {
+    case "ok":
+        result = "found ok"
+    case [1, 2, 4, 'list']:
+        result = "list"
+        break
+    case 10..19:
+        result = "range"
+        break
+    case Integer:
+        result = "integer"
+        break
+    default:
+        result = "default"
+}
+assert result == "range"
+}
+case表达式可以是字符串、列表、范围、Integer等等，因为篇幅原因，这里只列出了一小部分。
+
+7. 数据类型
+Groovy中的数据类型主要有以下几种：
+
+Java中的基本数据类型
+
+Groovy中的容器类
+
+闭包
+
+7.1 字符串
+Groovy中的基本数据类型和Java大同小异，这里主要介绍下字符串类型。在Groovy种有两种字符串类型，普通字符串String（java.lang.String）和插值字符串GString（groovy.lang.GString）。
+
+单引号字符串
+在Groovy中单引号字符串和双引号字符串都可以定义一个字符串常量，只不过单引号字符串不支持插值。
+
+'Android进阶解密'
+双引号字符串
+要想插值可以使用双引号字符串，插值指的是替换字符串中的占位符，占位符表达式为${}或者以$为前缀。
+
+def name = 'Android进阶之光'
+println "hello ${name}"
+println "hello $name"
+三引号字符串
+三引号字符串可以保留文本的换行和缩进格式，不支持插值。
+
+task method <<{
+def name = '''Android进阶之光
+       Android进阶解密
+Android进阶？'''
+println name 
+}
+打印结果为：
+
+Android进阶之光
+       Android进阶解密
+Android进阶？
+GString
+String是不可变的，GString却是可变的，GString和String即使有相同的字面量，它们的hashCodes的值也可能不同，因此应该避免使用使用GString作为Map的key。
+
+assert "one: ${1}".hashCode() != "one: 1".hashCode()
+当双引号字符串中包含插值表达式时，字符串类型为GString，因此上面的断言为true。
+
+7.2  List
+Groovy没有定义自己的集合类，它在Java集合类的基础上进行了增强和简化。Groovy的List对应Java中的List接口，默认的实现类为Java中的ArrayList。
+
+def number = [1, 2, 3]         
+assert number instanceof List  
+def linkedList = [1, 2, 3] as LinkedList    
+assert linkedList instanceof java.util.LinkedList
+可以使用as操作符来显式指定List的实现类为java.util.LinkedList。
+获取元素同样要比Java要简洁些，使用[]来获取List中具有正索引或负索引的元素。
+
+task method <<{
+def number  = [1, 2, 3, 4]   
+assert number [1] == 2
+assert number [-1] == 4 //1  
+
+number << 5     //2             
+assert number [4] == 5
+assert number [-1] == 5
+}
+注释1处的索引-1是列表末尾的第一个元素。注释2处使用<<运算符在列表末尾追加一个元素。
+
+7.3  Map
+创建Map同样使用[]，需要同时指定键和值，默认的实现类为java.util.LinkedHashMap。
+
+def name = [one: '魏无羡', two: '杨影枫', three: '张无忌']   
+assert name['one']  == '魏无羡' 
+assert name.two  == '杨影枫'
+Map还有一个键关联的问题：
+
+def key = 'name'
+def person = [key: '魏无羡'] //1
+assert person.containsKey('key') 
+person = [(key): '魏无羡'] //2       
+assert person.containsKey('name') 
+注释1处魏无羡的键值是key这个字符串，而不是key变量的值 name。如果想要以key变量的值为键值，需要像注释2处一样使用(key)，用来告诉解析器我们传递的是一个变量，而不是定义一个字符串键值。
+
+7.4  闭包（Closure）
+Groovy中的闭包是一个开放的、匿名的、可以接受参数和返回值的代码块。
+定义闭包
+闭包的定义遵循以下语法：
+
+{ [closureParameters -> ] statements }
+闭包分为两个部分，分别是参数列表部分[closureParameters -> ]和语句部分 statements 。
+参数列表部分是可选的，如果闭包只有一个参数，参数名是可选的，Groovy会隐式指定it作为参数名，如下所示。
+
+{ println it }     //使用隐式参数it的闭包                                 
+当需要指定参数列表时，需要->将参数列表和闭包体相分离。
+
+{ it -> println it }   //it是一个显示参数 
+{ String a, String b ->                                
+    println "${a} is a ${b}"
+}   
+闭包是groovy.lang.Cloush类的一个实例，这使得闭包可以赋值给变量或字段，如下所示。
+
+//将闭包赋值给一个变量
+def println ={ it -> println it }     
+assert println instanceof Closure
+//将闭包赋值给Closure类型变量
+Closure do= { println 'do!' }                      
+调用闭包
+闭包既可以当做方法来调用，也可以显示调用call方法。
+
+def code = { 123 }
+assert code() == 123 //闭包当做方法调用
+assert code.call() == 123 //显示调用call方法
+def isOddNumber = { int i -> i%2 != 0 }                           
+assert isOddNumber(3) == true  //调用带参数的闭包
+8. I/O 操作
+Groovy的 I/O 操作要比Java的更为的简洁。
+
+8.1 文件读取
+我们可以在PC上新建一个name.txt，在里面输入一些内容，然后用Groovy来读取该文件的内容：
+
+def filePath = "D:/Android/name.txt"
+def file = new File(filePath) ;
+file.eachLine {
+    println it
+}
+可以看出Groovy的文件读取是很简洁的，还可以更简洁些：
+
+def filePath = "D:/Android/name.txt"
+def file = new File(filePath) ;
+println file.text
+8.2 文件写入
+文件写入同样十分简洁：
+
+def filePath = "D:/Android/name.txt"
+def file = new File(filePath);
+
+file.withPrintWriter {
+    it.println("三井寿")
+    it.println("仙道彰")
+}
+9. 其他
+9.1 asType
+asType可以用于数据类型转换：
+
+String a = '23'
+int b = a as int
+def c = a.asType(Integer)
+assert c instanceof java.lang.Integer
+9.2 判断是否为真
+if (name != null && name.length > 0) {}
+可以替换为
+
+if (name) {}
+9.3 安全取值
+在Java中，要安全获取某个对象的值可能需要大量的if语句来判空：
+
+if (school != null) {
+    if (school.getStudent() != null) {
+        if (school.getStudent().getName() != null) {
+            System.out.println(school.getStudent().getName());
+        }
+    }
+}
+Groovy中可以使用？.来安全的取值：
+
+println school?.student?.name
+9.4 with操作符
+对同一个对象的属性进行赋值时，可以这么做：
+
+task method <<{
+Person p = new Person()
+p.name = "杨影枫"
+p.age = 19
+p.sex = "男"
+println p.name
+}
+class Person {                       
+    String name                      
+    Integer age
+    String sex
+}
+使用with来进行简化：
+
+Person p = new Person()
+p.with {
+   name = "杨影枫"
+   age= 19
+   sex= "男"
+ }   
+println p.name
+
+
+
+
+
+
+
+
 [1]: https://github.com/CharonChui/AndroidNote/blob/master/AndroidStudioCourse/AndroidStudio%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B(%E7%AC%AC%E4%B8%83%E5%BC%B9).md       "AndroidStudio使用教程(第七弹)"
 
 
