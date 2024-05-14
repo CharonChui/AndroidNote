@@ -15,6 +15,12 @@ Gradle的版本在`gradle/wrapper/gradle-wrapper.properties`下:
 gradle-wrapper是对Gradle的一层包装，便于在团队开发过程中统一Gradle构建的版本号，这样大家都可以使用统一的Gradle版本进行构建。 
 里面的distributionUrl属性是用于配置Gradle发行版压缩包的下载地址。    
 
+Gradle 是一个 运行在 JVM 的通用构建工具,其核心模型是一个由 Task 组成的有向无环图(Directed Acyclic Graphs).
+
+
+![image](https://github.com/CharonChui/Pictures/blob/master/gradle_task_1.png?raw=true)
+
+
 简介
 ---
 
@@ -34,6 +40,27 @@ Java程序员可以无缝切换到使用Groovy开发程序。Groovy说白了就�
 
 
 ![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/android_build_process.png?raw=true)
+
+
+说起来我们一直在使用Gradle，但仔细想想我们在项目中其实没有用gradle命令，而一般是使用gradlew命令，同时如下图所示，找遍整个项目，与gradle有关的就这两个文件夹，却只发现gradle-wrapper.jar。
+
+
+那么问题来了，gradlew是什么，gradle-wrapper.jar又是什么?
+
+wrapper的意思：包装。
+
+那么可想而已，这是gradle的包装。其实是这样的，因为gradle处于快速迭代阶段，经常发布新版本，如果我们的项目直接去引用，那么更改版本等会变得无比麻烦。而且每个项目又有可能用不一样的gradle版本，这样去手动配置每一个项目对应的gradle版本就会变得麻烦，gradle的引入本来就是想让大家构建项目变得轻松，如果这样的话，岂不是又增加了新的麻烦？
+
+所以android想到了包装，引入gradle-wrapper，通过读取配置文件中gradle的版本，为每个项目自动的下载和配置gradle，就是这么简单。我们便不用关心如何去下载gradle,如何配置到项目中。
+
+至于gradlew也是一样的道理，它共有两个文件，gradlew是在linux,mac下使用的，gradlew.bat是在window下使用的，提供在命令行下执行gradle命令的功能
+
+至于为什么不直接执行Gradle，而是执行Gradlew命令呢?
+
+因为就像wrapper本身的意义，gradle命令行也是善变的，所以wrapper对命令行也进行了一层封装，使用同一的gradlew命令，wrapper会自动去执行具体版本对应的gradle命令。
+
+同时如果我们配置了全局的gradle命令，在项目中如果也用gradle容易造成混淆，而gradlew明确就是项目中指定的gradle版本，更加清晰与明确
+
 
 ### Gradle的生命周期
 
