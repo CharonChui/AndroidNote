@@ -9,8 +9,6 @@ print(message)
 
 ## 字符串
 
-
-
 字符串就是一系列字符。在Python中，用引号括起来的都是字符串，其中的引号可以是单引号，也可以是双引号。例如:     
 ```python
 message = 'Hello World'
@@ -20,11 +18,13 @@ print(message)
 ```
 
 ### 大小写
+
 修改单词中的大小写:     
 
-title()方法是以首字母大写的方式显示每个单词，即将每个单词的首字母都改为大写。   
-upper()方法将字符串改为全部大写。
-lower()方法将字符串改为全部小写。   
+- title()方法是以首字母大写的方式显示每个单词，即将每个单词的首字母都改为大写。   
+- upper()方法将字符串改为全部大写。
+- lower()方法将字符串改为全部小写。   
+
 ```python
 message = 'hello world'
 print(message.title())
@@ -46,7 +46,7 @@ print(full_name)
 
 ### 空格
 
-rstrip(): 去除字符串末尾空白。注意去除只是暂时的，等你再次访问该变量是，你会发现这个字符串仍然包含末尾空白。      
+rstrip(): 去除字符串末尾空白。注意去除只是暂时的，等你再次访问该变量时，你会发现这个字符串仍然包含末尾空白。      
 要永久删除这个字符串中的空白，必须将删除的结果存回到变量中:   
 
 
@@ -55,8 +55,8 @@ print(first_name)
 first_name = first_name.rstrip()
 print(first_name)
 
-lstrip(): 去除字符串开头空白       
-strip(): 同时去除字符串两端的空白      
+- lstrip(): 去除字符串开头空白       
+- strip(): 同时去除字符串两端的空白      
 
 
 ## 整数
@@ -179,7 +179,6 @@ print(size)
 - 没有缩进的是for循环之外的
 
 
-- 
 ```python
 bicycles = ['trek', 'cannondale', 'redline', 'specialized']
 for bcy in bicycles:
@@ -369,7 +368,7 @@ for language in set(favorite_languages.values()):❶
 
 函数input()让程序暂停运行，等待用户输入一些文本。     
 
-获取用户输入后，Python将其村村在一个变量中，以方便你使用。   
+获取用户输入后，Python将其存在一个变量中，以方便你使用。   
 ```python3
 age = input("How old are you?")
 print(age)
