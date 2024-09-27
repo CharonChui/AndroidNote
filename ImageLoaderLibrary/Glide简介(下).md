@@ -420,6 +420,33 @@ builder.setDiskCache(
 - `Disk cache needs to implement: DiskCache`
 
 
+
+
+Let's take Glide as an example. To optimize memory usage and use less memory, Glide does downsampling.
+
+Downsampling means scaling the bitmap(image) to a smaller size which is actually required by the view.
+
+Assume that we have an image of size 2000*2000, but the view size is 400*400. So why load an image of 2000*2000, Glide down-samples the bitmap to 400*400, and then show it into the view.
+
+We use Glide like this:
+```
+Glide.with(fragment)
+    .load(url)
+    .into(imageView);
+```
+As we are passing the imageView as a parameter to the Glide, it knows the dimension of the imageView.
+
+Glide down-samples the image without loading the whole image into the memory.
+
+This way, the bitmap takes less memory, and the out-of-memory error is solved. Similarly, other Image Loading libraries like Fresco also do it.
+
+This was all about how the Android Image Loading library optimizes memory usage.
+
+
+
+
+
+
 参考
 ===
 
