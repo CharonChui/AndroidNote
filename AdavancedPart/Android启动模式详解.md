@@ -33,7 +33,7 @@ Android启动模式详解
 顾名思义，是单一实例的意思，即任意时刻只允许存在唯一的`Activity`实例，而且该`Activity`所在的`task`不能容纳除该`Activity`之外的其他`Activity`实例！               
 它与`singleTask`有相同之处，也有不同之处。          
 相同之处：任意时刻，最多只允许存在一个实例。            
-不同之处：
+不同之处：       
     - `singleTask`受`android:taskAffinity`属性的影响，而`singleInstance`不受`android:taskAffinity`的影响。 
     - `singleTask`所在的`task`中能有其它的`Activity`，而`singleInstance`的`task`中不能有其他`Activity`。     
     - 当跳转到`singleTask`类型的`Activity`，并且该`Activity`实例已经存在时，会删除该`Activity`所在`task`中位于该`Activity`之上的全部`Activity`实例；而跳转到`singleInstance`类型的`Activity`，并且该`Activity`已经存在时，
