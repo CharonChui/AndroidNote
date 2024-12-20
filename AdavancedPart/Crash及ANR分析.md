@@ -4,9 +4,13 @@
 ## Java Crash流程
 
 1、首先发生crash所在进程，在创建之初便准备好了defaultUncaughtHandler，用来处理Uncaught Exception，并输出当前crash的基本信息；
+
 2、调用当前进程中的AMP.handleApplicationCrash；经过binder ipc机制，传递到system_server进程；
+
 3、接下来，进入system_server进程，调用binder服务端执行AMS.handleApplicationCrash；
+
 4、从mProcessNames查找到目标进程的ProcessRecord对象；并将进程crash信息输出到目录/data/system/dropbox；
+
 5、执行makeAppCrashingLocked：
 
 创建当前用户下的crash应用的error receiver，并忽略当前应用的广播；
@@ -19,8 +23,11 @@
 当1分钟内同一进程未发生连续crash两次时，则执行结束栈顶正在运行activity的流程。
 
 7、通过mUiHandler发送消息SHOW_ERROR_MSG，弹出crash对话框；
+
 8、到此，system_server进程执行完成。回到crash进程开始执行杀掉当前进程的操作；
+
 9、当crash进程被杀，通过binder死亡通知，告知system_server进程来执行appDiedLocked()；
+
 10、最后，执行清理应用相关的四大组件信息。
 
 
@@ -35,12 +42,15 @@
 
 
 
-Native Crash
+Native Crash:    
 
-    崩溃过程：native crash 时操作系统会向进程发送信号，崩溃信息会写入到 data/tombstones 下，并在 logcat 输出崩溃日志
-    定位：so 库剥离调试信息的话，只有相对位置没有具体行号，可以使用 NDK 提供的 addr2line 或 ndk-stack 来定位
-    addr2line：根据有调试信息的 so 和相对位置定位实际的代码处
-    ndk-stack：可以分析 tombstone 文件，得到实际的代码调用栈
+- 崩溃过程：native crash 时操作系统会向进程发送信号，崩溃信息会写入到 data/tombstones 下，并在 logcat 输出崩溃日志
+
+- 定位：so 库剥离调试信息的话，只有相对位置没有具体行号，可以使用 NDK 提供的 addr2line 或 ndk-stack 来定位
+
+- addr2line：根据有调试信息的 so 和相对位置定位实际的代码处
+
+- ndk-stack：可以分析 tombstone 文件，得到实际的代码调用栈
 
 
 
