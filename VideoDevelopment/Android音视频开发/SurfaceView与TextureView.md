@@ -2,13 +2,21 @@ SurfaceView与TextureView
 ===
 
 
-## SurfaceView
+Android系统中图形系统是相当复杂的，包括WindowManager、SurfaceFlinger、OpenGL等。     
 
-在说SurfaceView之前，需要先说一下几个相关的部分。
+其中SurfaceFlinger(表面合成器或表面渲染器)作为负责绘制应用UI的核心。
+
+但是不论使用什么渲染API，所有的东西最终都渲染到Surface上，Android平台所创建的Window都由Surface所支持，所有可见的Surface渲染到显示设备都是通过SurfaceFlinger来完成。    
+
+
+
+
 
 ### `Surface`简介
 
-- `Surface`就是“表面”的意思，可以简单理解为内存中的一段绘图缓冲区。在`SDK`的文档中，对`Surface`的描述是这样的：“`Handle onto a raw buffer that is being managed by the screen compositor`”，
+- `Surface`就是“表面”的意思，可以简单理解为内存中的一段绘图缓冲区。
+
+    在`SDK`的文档中，对`Surface`的描述是这样的：“`Handle onto a raw buffer that is being managed by the screen compositor`”，
     翻译成中文就是“由屏幕显示内容合成器`(screen compositor)`所管理的原生缓冲器的句柄”，   这句话包括下面两个意思:     
 
     - 通过`Surface`（因为`Surface`是句柄）就可以获得原生缓冲器以及其中的内容。就像在`C`语言中，可以通过一个文件的句柄，就可以获得文件的内容一样；
@@ -19,6 +27,9 @@ SurfaceView与TextureView
 - `Surface`是一个用来画图形的地方，但是我们知道画图都是在一个`Canvas`对象上面进行的，*`Surface`中的`Canvas`成员，是专门用于提供画图的地方，就像黑板一样，其中的原始缓冲区是用来保存数据的地方，
     `Surface`本身的作用类似一个句柄，得到了这个句柄就可以得到其中的`Canvas`、原始缓冲区以及其他方面的内容，所以简单的说`Surface`是用来管理数据的(句柄)*。
     
+
+Surface是一个绘制目标，可以被系统的SurfaceFlinger直接合成显示在屏幕上。    
+
 ### `SurfaceView`简介      
 
 - 简单的说`SurfaceView`就是一个有`Surface`的`View`里面内嵌了一个专门用于绘制的`Surface`,`SurfaceView`控制这个`Surface`的格式和尺寸以及绘制位置。
@@ -84,13 +95,37 @@ TextureView是一个可以把内容流作为外部纹理输出在上面的View, 
 
 ### SurfaceTexture
 
-SurfaceTexture是Surface和OpenGL ES(GLES)纹理的组合。SurfaceTexture用于提供输出到GLES 纹理的Surface。SurfaceTexture是从Android 3.0开始加入，与SurfaceView不同的是，它对图像流的处理并不直接显示，而是转为GL外部纹理，因此用于图像流数据的二次处理。比如Camera的预览数据，变成纹理后可以交给GLSurfaceView直接显示，也可以通过SurfaceTexture交给TextureView作为View heirachy中的一个硬件加速层来显示。首先，SurfaceTexture从图像流(来自Camera预览、视频解码、GL绘制场景等)中获得帧数据，当调用updateTexImage()时，根据内容流中最近的图像更新SurfaceTexture对应的GL纹理对象。
+SurfaceTexture 是一种 纹理对象，可以作为 OpenGL ES 纹理（OES 纹理）进行处理。它不会直接显示在屏幕上，而是可以将内容传递给 OpenGL 进行进一步处理或绘制。
+
+SurfaceTexture用于提供输出到GLES 纹理的Surface。SurfaceTexture是从Android 3.0开始加入，与SurfaceView不同的是，它对图像流的处理并不直接显示，而是转为GL外部纹理，因此用于图像流数据的二次处理。比如Camera的预览数据，变成纹理后可以交给GLSurfaceView直接显示，也可以通过SurfaceTexture交给TextureView作为View heirachy中的一个硬件加速层来显示。
+
+在Android系统重，SurfaceTexture是一个特殊的类，它将来自硬件纹理缓冲区(如相机预览流或视频解码输出)的图像数据转换为OpenGL ES可以直接使用的纹理。     
+
+updateTexImage()方法是SurfaceTexture类的核心方法之一，此方法的主要作用是从SurfaceTexture内部特有的图像缓冲区中取出最新一帧，
+并将其内容复制到与SurfaceTexture关联的OpenGL纹理上。    
+
+这对于实时图形渲染、视频播放以及从相机捕获并实时处理图像等场景至关重要。 
 
 
 
 SurfaceTexture 包含一个应用是其使用方的BufferQueue。当生产方将新的缓冲区排入队列时，onFrameAvailable() 回调会通知应用。然后，应用调用updateTexImage()，这会释放先前占有的缓冲区，从队列中获取新缓冲区并执行EGL调用，从而使GLES可将此缓冲区作为外部纹理使用。
 
+
+##### Surface与SurfaceTexture的关系
+
+- SurfaceTexture是一个OpenGL纹理对象，用于GPU处理视频流或相机数据，它不会直接显示在屏幕上，需要OpenGL渲染后才能看到。    
+- Surface是一个绘制目标，可以直接用于屏幕渲染，它可以基于SurfaceTexture创建，这样Surface就可以间接获取SurfaceTexture的数据。  
+
+例如相机使用OpenGL的渲染过程:   
+
+- 在相机预览时，Camera可以将相机数据输出到SurfaceTexture上，然后
+- SurfaceTexture采集相机数据，并将其存储到OpenGL纹理中(OES纹理)
+- SurfaceTexture触发onFrameAvailable()回调，通知OpenGL纹理更新。 
+- OpenGL使用该纹理进行渲染，最终显示在GLSurfaceView或TextureView上。    
+
+
 ## SurfaceView vs TextureView
+
 
 
 
@@ -124,3 +159,4 @@ SurfaceTexture 包含一个应用是其使用方的BufferQueue。当生产方将
 
 - 邮箱 ：charon.chui@gmail.com  
 - Good Luck! 
+

@@ -26,6 +26,8 @@ MediaMuxter通常与MediaExtractor一起使用，MediaExtractor用于从媒体�
 MediaCodec是Android提供的用于对音视频进行编码的类，是Android Media基础框架的一部分，一般和MediaExtractor、MediaMuxer、Surface和AudioTrack一起使用。 
 
 
+MediaCodec可以处理原始的音视频数据，包括编码(将原始数据转换为压缩格式)和解码(将压缩格式转换为原始数据)。    
+
 
 
 MediaExtractor仅仅是解封装数据，不会对数据进行解码。要对媒体数据进行解码，需要使用MediaCodec类。    
