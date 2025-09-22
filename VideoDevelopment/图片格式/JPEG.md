@@ -5,7 +5,9 @@ JPEG（Joint Photographic Experts Group)，全称为联合图像专家小组，�
 
 
 
-JPEG只描述一副图像如何转换成一组数据流，而不论这些字节存储在何种介质上。由独立JPEG组创立的另一个进阶标准，JFIF（JPEGFileInterchangeFormat，JPEG文件交换格式）则描述JPEG数据流如何生成适于电脑存储或传送的图像。在一般应用中，我们从数码相机等来源获得的“JPEG文件”，指的就是JFIF文件，有时是ExifJPEG文件。
+JPEG只描述一副图像如何转换成一组数据流，而不论这些字节存储在何种介质上。     
+
+由独立JPEG组创立的另一个进阶标准，JFIF（JPEG File Interchange Format，JPEG文件交换格式）则描述JPEG数据流如何生成适于电脑存储或传送的图像。在一般应用中，我们从数码相机等来源获得的“JPEG文件”，指的就是JFIF文件，有时是ExifJPEG文件。
 
 
 该格式采用有损压缩算法，通过牺牲部分画质换取较小文件体积，压缩过程包含色彩空间转换（RGB转YCbCr）、离散余弦变换（DCT）、量化和熵编码等步骤。

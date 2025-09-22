@@ -12,24 +12,27 @@ PNG图像格式文件（或者称为数据流）由一个8字节的PNG文件署�
 1. 文件署名域（Magic Number）​
 
 
-8字节的PNG文件署名域用来识别该文件是不是PNG文件。该域的值是：
+8字节的PNG文件署名域用来识别该文件是不是PNG文件。该域的值是:     
 
-十进制数137 80 78 71 13 10 26 10
-十六进制数 89 50 4e 47 0d 0a 1a 0a
+- 十进制数137 80 78 71 13 10 26 10
+- 十六进制数 89 50 4e 47 0d 0a 1a 0a
 
 
 
-​固定 8 字节：89 50 4E 47 0D 0A 1A 0A:       
+​固定8字节：89 50 4E 47 0D 0A 1A 0A:        
 - 89：高位设置，防止被误判为文本文件。
 - 50 4E 47：ASCII "PNG"。
 - 0D 0A：DOS 风格的换行符，用于换行符转换检测。
 - 1A：DOS 的 EOF（文件结束）字符。
 - 0A：Unix 风格的换行符。
 
-​任何 PNG 解析器首先都必须检查这 8 个字节。​​
+​任何PNG解析器首先都必须检查这8个字节。​​
 
 
-PNG定义了两种类型的数据块，一种是称为关键数据块（critical chunk），这是必需的数据块，另一种叫做辅助数据块（ancillary chunks），这是可选的数据块。
+PNG定义了两种类型的数据块:    
+
+- 一种是称为关键数据块（critical chunk），这是必需的数据块
+- 另一种叫做辅助数据块（ancillary chunks），这是可选的数据块。
 
 2. 数据块（Chunk）结构​
 
@@ -76,12 +79,14 @@ PNG定义了两种类型的数据块，一种是称为关键数据块（critical
 | ​IEND​ | 是 | 图像结束标记 | 无数据 |
 
 
-- IHDR：文件头数据块IHDR(header chunk)：它包含有PNG文件中存储的图像数据的基本信息，并要作为第一个数据块出现在PNG数据流中，而且一个PNG数据流中只能有一个文件头数据块。
+- IHDR：文件头数据块IHDR(header chunk):     
+
+它包含有PNG文件中存储的图像数据的基本信息，并要作为第一个数据块出现在PNG数据流中，而且一个PNG数据流中只能有一个文件头数据块。     
 文件头数据块由13字节组成，包含图像宽度(4字节)、图像高度(4字节)、图像深度(1字节)、颜色类型(1字节)、压缩方法(1字节)、滤波器方法(1字节)、隔行扫描方法(1字节)
 
-- PLTE：调色板数据块PLTE(palette chunk)包含有与索引彩色图像(indexed-color image)相关的彩色变换数据，它仅与索引彩色图像有关，而且要放在图像数据块(image data chunk)之前。PLTE数据块是定义图像的调色板信息，PLTE可以包含1~256个调色板信息，每一个调色板信息由3个字节组成。
-- IDAT：图像数据块IDAT(image data chunk)：它存储实际的数据，在数据流中可包含多个连续顺序的图像数据块。IDAT存放着图像真正的数据信息，因此，如果能够了解IDAT的结构，我们就可以很方便的生成PNG图像。
-- IEND：图像结束数据IEND(image trailer chunk)：它用来标记PNG文件或者数据流已经结束，并且必须要放在文件的尾部。如果我们仔细观察PNG文件，我们会发现，文件的结尾12个字符看起来总应该是这样的：
+- PLTE: 调色板数据块PLTE(palette chunk)包含有与索引彩色图像(indexed-color image)相关的彩色变换数据，它仅与索引彩色图像有关，而且要放在图像数据块(image data chunk)之前。PLTE数据块是定义图像的调色板信息，PLTE可以包含1~256个调色板信息，每一个调色板信息由3个字节组成。    
+- IDAT: 图像数据块IDAT(image data chunk)：它存储实际的数据，在数据流中可包含多个连续顺序的图像数据块。IDAT存放着图像真正的数据信息，因此，如果能够了解IDAT的结构，我们就可以很方便的生成PNG图像。
+- IEND: 图像结束数据IEND(image trailer chunk)：它用来标记PNG文件或者数据流已经结束，并且必须要放在文件的尾部。如果我们仔细观察PNG文件，我们会发现，文件的结尾12个字符看起来总应该是这样的：
 0000000049454E44AE426082，不难明白，由于数据块结构的定义，IEND数据块的长度总是0（00 00 00 00，除非人为加入信息），数据标识总是IEND（49 45 4E 44），因此，CRC码也总是AE 42 60 82。 
 
 除了表示数据块开始的IHDR必须放在最前面， 表示PNG文件结束的IEND数据块放在最后面之外，其他数据块的存放顺序没有限制。
@@ -89,7 +94,7 @@ PNG定义了两种类型的数据块，一种是称为关键数据块（critical
 
 4. 辅助数据块（Ancillary Chunks）​​
 
-常见的有：
+常见的有:      
 
 | 块类型 | 说明 |
 
@@ -159,6 +164,7 @@ Keywords SHOULD be .
 - chosen to minimize the chance that the same keyword is used for incompatible purposes by different applications.
 
 ## 所有块
+
 The constraints on the positioning of the individual chunks are listed in Table 7 and illustrated diagrammatically for static images in Figure 11 and Figure 12, for animated images where the static image forms the first frame in Figure 13 and Figure 14, and for animated images where the static image is not part of the animation in Figure 15 and Figure 16. These lattice diagrams represent the constraints on positioning imposed by this specification. The lines in the diagrams define partial ordering relationships. Chunks higher up shall appear before chunks lower down. Chunks which are horizontally aligned and appear between two other chunk types (higher and lower than the horizontally aligned chunks) may appear in any order between the two higher and lower chunk types to which they are connected. The superscript associated with the chunk type is defined in Table 8. It indicates whether the chunk is mandatory, optional, or may appear more than once. A vertical bar between two chunk types indicates alternatives.
 
 Table 7 Chunk ordering rules
@@ -206,42 +212,32 @@ The eXIf chunk contains metadata concerning the original image data. If the imag
 
 
 
-PNG 格式中的 ​eXIf 块​ 和 ​zTXt 块​ 虽然都是用于存储元数据，但其设计目的、内部结构和适用场景有本质区别。
+PNG格式中的eXIf块​和​zTXt块​虽然都是用于存储元数据，但其设计目的、内部结构和适用场景有本质区别。
 
 
-
-好的，这是一个非常核心的问题。PNG 格式中的 ​eXIf 块​ 和 ​zTXt 块​ 虽然都是用于存储元数据，但其设计目的、内部结构和适用场景有本质区别。
+PNG 格式中的eXIf块​和zTXt块​ 虽然都是用于存储元数据，但其设计目的、内部结构和适用场景有本质区别。
 
 为了更直观地理解它们的区别，我们可以通过以下流程图来快速判断哪种块更适合你的需求：
 ​eXIf 块 (Chunk Type: 65 58 49 66 -> ASCII "eXIf")​​
 
 ​1. 作用​
-•
-​唯一目的​：用于在 PNG 图像中嵌入 ​Exif（Exchangeable Image File Format）数据。
-•
-​内容​：Exif 数据是一套高度标准化的元数据规范，主要用于记录数码照片的拍摄参数和设备信息。例如：
-•
-​相机参数​：光圈、快门速度、ISO、焦距、镜头型号
-•
-​设备信息​：相机制造商、型号
-•
-​时间信息​：照片原始拍摄时间（DateTimeOriginal）
-•
-​位置信息​：GPS 坐标（经度、纬度、高度）
-•
-​版权信息​：作者、版权说明
-•
-​缩略图​：嵌入式的小尺寸预览图
+唯一目的​：用于在 PNG 图像中嵌入 ​Exif（Exchangeable Image File Format）数据。
+​内容​：Exif 数据是一套高度标准化的元数据规范，主要用于记录数码照片的拍摄参数和设备信息。例如:     
+​- 相机参数​：光圈、快门速度、ISO、焦距、镜头型号
+​- 设备信息​：相机制造商、型号
+​- 时间信息​：照片原始拍摄时间（DateTimeOriginal）
+​- 位置信息​：GPS 坐标（经度、纬度、高度）
+​- 版权信息​：作者、版权说明
+​- 缩略图​：嵌入式的小尺寸预览图
 
 
 
-你应该选择哪一个？​​
-•
+### 应该选择哪一个？​​
+
 ​要保存相机的拍摄信息（光圈、快门、GPS等）？​​
-•
 -> 使用 ​eXIf 块。（例如：用 exiftool -tagsFromFile source.jpg -all:all拷贝）
-•
+
 ​要写入自己定义的文字、配置或标识（如 aigc:{"model":"GPT-4"}）？​​
-•
 -> 使用 ​zTXt 块。（例如：用 exiftool -zTXt:YourKey="Your Value"写入）
+
 ​简单总结：eXIf 用于“相机说什么”，zTXt 用于“你想说什么”。​
