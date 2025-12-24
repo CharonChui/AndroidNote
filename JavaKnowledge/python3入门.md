@@ -7,6 +7,37 @@ message = "Hello World"
 print(message)
 ```
 
+常量: python中一版约定名字全为大写的就是常量。   
+
+## bool
+
+
+bool类型只有True和False，用于真假判断。   
+
+python3中,bool是int的子类，True和False可以和数字相加。  
+
+True == 1、False == 0 会返回True
+
+is运算符用于比较两个对象的身份(即它们是否是同一个对象，是否在内存中占据相同的问题)，而不是比较它们的值。  
+
+```python3
+print(True == 1) # True
+print(False == 0) # True
+
+print(True is 1) # False
+print(False is 0) # False
+
+```
+
+
+在python中，能够解释为假的值不只有False，还有:   
+
+- None
+- 0
+- 0.0
+- False
+- 所有的空容器(空列表、空元组、空字典、空集合、空字符串)     
+
 ## 字符串
 
 字符串就是一系列字符。在Python中，用引号括起来的都是字符串，其中的引号可以是单引号，也可以是双引号。例如:     
@@ -102,6 +133,33 @@ message = "Happy" + str(age) + "Birthday"
 print(message)
 ```
 
+### 自动类型转换(隐式转换)
+
+对两种不同类型的数据进行运算，较小的数据类型(整数)就会转换为较大的数据类型(浮点数)以免数据丢失，计算结果为浮点型:  
+
+```python3
+num1 = 2
+num2 = 3.0
+
+print(num1 + num2) # 5.0
+
+
+
+num1 = 9
+num2 = 1
+print(num1 / num2) #9.0
+```
+注意: 特别的，两个整形进行除法运算时结果也是浮点型。  
+
+
+
+
+
+
+
+
+
+
 
 ## 注释
 
@@ -187,6 +245,15 @@ for bcy in bicycles:
 print('end')
 ```
 
+#### 使用enumerate()可以同时获取列表的下标和元素。
+
+```python
+lst = [1, 2, 3]
+
+for i, value in enumerate(lst):
+    print(i, value)
+```
+
 
 ### 切片
 
@@ -253,6 +320,20 @@ else:
     print("cost $10")
 ```
 
+### match case语句
+
+```python3
+match x:
+    case a:
+        xxxx
+    case b:
+        xxxx
+    case _:
+        xxx
+```
+在python3.10版本新增了match case的条件判断方式，match后的对象会依次与case后的内容匹配，匹配成功则执行相应的语句，否则跳过，其中_可以匹配一切。  
+
+
 ### 相等判断
 ```python
 car = 'Audi'
@@ -302,6 +383,14 @@ alien['yPos'] = 20
 print(alien['xPos'])
 del alien['points']
 ```
+
+字典的其他写法:   
+
+```python3
+dict4 = dict(name="Bob", age=20, gender="female")
+dict5 = dict([("name", "Tom"), ("age", 22), ("gender", "male")])
+```
+
 
 ### 遍历字典
 
@@ -395,6 +484,10 @@ while current_number <= 5:
 
 同样while中也可以结合使用break、continue等，和Java基本一样。  
 
+## 缩进
+
+在python3中，代码块的结束不像其他一些编程语言(如c、java等)使用大括号{}来明确界定，而是通过缩进来表示。PEP8建议每级缩进都使用四个空格。
+
 
 ## 函数
 
@@ -414,6 +507,18 @@ print(greet_user(username='lili'))
 同样，在Python中函数也支持参数的默认值。   
 
 上面三个引号的部分是文档字符串格式，用于简要的阐述其功能的注释。     
+
+### 函数的参数传递
+
+- 不可变类型     
+    类似c++的值传递，如整数、字符串、元祖。如fun(a)，传递的只是a的值，没有影响a对象本身，比如在fun(a)内部修改a的值，只是修改了另一个复制的对象，不会影响a本身。 
+- 可变类型    
+    类似c++的引用传递，如列表、字典。如fun(la)，则是将la真正的传过去，修改后fun外部的la也会受影响  
+
+
+python中一切都是对象，严格意义上我们不能说值传递还是引用传递，我们应该说传可变对象和不可变对象。   
+
+
 
 ### 函数列表参数副本
 
@@ -459,6 +564,23 @@ make_pizza('mushrooms','green peppers','extra cheese')
 
 
 看起来，Python的参数传递方式是整齐划一的，但具体情况还得具体分析。在Python中，对象大致分为两类，即可变对象和不可变对象。可变对象包括字典、列表及集合等。不可变对象包括数值、字符串、不变集合等。如果参数传递的是可变对象，传递的就是地址，形参的地址就是实参的地址，如同“两套班子，一套人马”一样，修改了函数中的形参，就等同于修改了实参。如果参数传递的是不可变对象，为了维护它的“不可变”属性，函数内部不得不“重构”一个实参的副本。此时，实参的副本（即形参）和主调用函数提供的实参在内存中分处于不同的位置，因此对函数形参的修改，并不会对实参造成任何影响，在结果上看起来和传值一样。
+
+
+### 解包传参
+
+若函数的形参是定长参数，可以通过`*`和`**`对列表、元组、字典等解包传参。  
+
+```python3
+def func(a, b, c):
+    return a + b + c
+
+tuple1 = (1, 2, 3)
+
+print(func(*tuple))
+dict1 = {"a":1, "b":2, "c":3}
+
+print(func(**dict1))
+``` 
 
 
 
@@ -532,6 +654,70 @@ p.make_pizza(16,'pepperoni')
 p.make_pizza(12,'mushrooms','green peppers','extra cheese')
 ```
 
+### __name__
+
+在python中，__name__是一个特殊的内置变量:    
+
+- 当一个python文件被直接运行时，该文件的__name__属性为"__main__"
+- 当一个python文件作为模块被导入时，__name__属性会被设置为该模块的名称(即文件名，不包括.py后缀)
+
+例如有时我们在模块中写一些测试代码，当模块被其他文件导入时这些测试代码会被执行。
+例如我们在main.py中导入my_add.py中，会发现my_add中的测试代码被执行了。这个时候使用__name__ == "__main__"判断就能避免测试代码被执行。  
+
+
+
+
+
+
+### 全局变量和局部变量
+
+
+定义在函数内部的变量拥有一个局部作用域，定义在函数外的变量拥有全局作用域，局部变量只能在其被声明的函数内部访问，而全局变量可以在整个程序范围内访问。   
+
+#### global关键字
+
+使用global关键字修改全局变量
+```python
+def function_a():
+    global var1
+    var1 = 200
+    print("var1:", var1)
+
+var1 = 100
+
+```
+当全局变量为可变类型时，函数内部使用global声明，也可以对其进行修改。  
+```python
+def function_a():
+    list1[0] = 1000
+
+list1 = [1, 2, 3]
+```
+在函数中不使用global声明全局变量时不能修改全局变量的本质是不能修改全局变量的指向，即不能将全局变量指向新的数据。    
+
+- 不可变类型的全局变量其指向的数据不能修改，所以部使用global无法修改全局变量。
+- 可变类型的全局变量其指向的数据可以修改，所以不使用global也可修改全局变量。 
+
+#### nonlocal关键字
+
+nonlocal也用作内部作用域修改外部作用域的变量的场景，不过此时外部作用域不是全局作用域，而是嵌套作用域
+
+```python
+def function_outer():
+    var = 1
+    print(var)
+
+    def function_inner():
+        nonlocal var
+        var = 200
+    function_inner()
+    print(var)
+
+
+function_outer()
+```
+
+
 
 ## 类 
 
@@ -541,8 +727,10 @@ p.make_pizza(12,'mushrooms','green peppers','extra cheese')
 dog.py
 ```python
 class Dog:
+    home = "xx"    # 类属性
+
     def __init__(self, name, age):
-        self.name = name
+        self.name = name  # 实例属性
         self.age = age
 
     def sit(self):
@@ -552,11 +740,13 @@ class Dog:
         print(self.name + " Rolling")
 ```
 
-__init__()是一个特殊的方法，每当你根据Dog类创建新实例时，Python都会自动运行它。在这个方法中形参self必不可少，还必须位于其他形参的前面。        
+__init__()是一个特殊的方法(构造方法)，每当你根据Dog类创建新实例时，Python都会自动运行它(__init__()方法的调用时机在实例(通过__new__()被创建之后，返回调用者之前调用，一般用于初始化一些数据))。在这个方法中形参self必不可少，还必须位于其他形参的前面。        
 
 为什么必须在方法定义中包含形参self呢？因为Python调用这个__init__()方法来创建Dog实例时，将自动传入实参self。    
 
 每个与类相关联的方法调用都自动传入实参self，它是一个指向实例本身的引用，让实例能够访问类中的属性和方法。         
+
+
 
 ```python
 import dog
@@ -567,6 +757,103 @@ print(dog.name)
 # 方法
 dog.sit()
 ```
+
+类属性可以直接通过类名.类属性调用也可以通过实例对象.类属性调用，如`Dog.home或dog.home`
+
+```python
+class Person:
+    home = "class home"
+
+    def __init__(self, name) -> None:
+        self.name = name
+
+
+person = Person("name")
+print(person.name)
+print(person.home)
+person.home = "object home"
+print(person.home)
+print(Person.home)
+Person.home = "new class home"
+print(Person.home)
+
+# 结果
+name
+class home
+object home
+class home
+new class home
+
+```
+可以看到所有类的实力都会共享同一个类属性，如果通过对象实例.类属性调用则会直接创建一个实例属性(并不是修改了类属性的值)
+
+#### 动态添加属性和方法
+
+```python
+class Person:
+    def __init__(self, name: str) -> None:
+        self.name = name
+
+p = Person("John")
+p.age = 20
+print(p.name)
+print(p.age)
+
+```
+
+
+
+### 方法
+
+Python的类中有三种方法: 实例方法、静态方法、类方法。   
+
+- 实例方法在类中定义，第一个参数是self,代表实例本身
+- 实例方法只能被实例对象调用
+- 可以访问实例属性、类属性、类方法
+
+#### 类方法
+
+- 类方法通过@classmethod标注，方法的第一个参数是cls
+- 类方法可以通过类来调用也可以通过实例来调用
+- 可以访问类属性
+- 类方法可以在不创建实例的情况下调用，通过类名直接调用，非常方便，适合一些和类整体相关的操作
+
+
+```python
+class Dog:
+
+    @classmethod
+    def wangwang(cls):
+        print"wangwang"
+
+
+```
+
+#### 静态方法
+
+- 静态方法通过@staticmethod定义
+- 不访问实例属性或类属性，只依赖传入的参数
+- 可以通过类名或实例调用，但它不会访问类或实例的内部信息，更像一个工具函数
+
+
+#### 特殊方法
+
+
+方法名中有两个前缀下划线和两个后缀下划线的方法为特殊方法，也叫魔法方法。   
+上面的__init__()就是一个特殊方法，这些方法会在进行特定的操作时自动被调用。   
+
+几个常见的特殊方法:    
+
+- __new__(): 对象实例化时第一个调用的方法
+- __init__(): 类的初始化方法
+- __del__(): 对象的销毁器，定义了当对象被垃圾回收时的行为，使用del xxx时不会主动调用__del__()，除非此时引用计数=0
+- __str__(): 定义了对类的实例调用str()时的行为
+- __repr__(): 定义了对类的实例调用repr()时的行为，str()和repr()最主要的差别在于目标用户。repr()的作用是产生机器可读的输出，而str()则产生人类可读的输出。 
+- __getattribute__():属性访问拦截器，定义了属性被访问前的操作。  
+
+
+
+
 
 
 ### 继承
@@ -610,6 +897,69 @@ tesla.get_battery()
 - 方法__init__()接受创建子类实例所需的信息
 
 super()是一个特殊函数，帮助Python将父类和子类关联起来。这行代码让子类包含父类的所有属性。 
+
+
+多继承: 调用方法时先在子类中查找，若不存在则从左到右依次查找父类中是否包含方法。    
+
+#### 私有属性和方法
+
+有时为了限制属性和方法只能在类内访问，外部无法访问。或父类中某些属性和方法不希望被子类继承，可以将其私有化:    
+
+- 单下划线: 非公开API
+
+    大多数python代码都遵循这样一个约定，有一个前缀下划线的变量或方法应被视为非公开的API，例如_var1。但这种约定不具有强制力。    
+
+- 双下划线: 名称改写
+    有两个前缀下划线，并至多一个后缀下划线的标识符，例如__x，会被改写为_类名__x，只有在类内部可以通过__x访问，其他地方无法访问或只能通过_类名__x访问。    
+
+
+#### property装饰器
+
+可通过@property装饰器将一个方法转换为属性来调用。转换后可直接使用.方法名来使用，而无需使用.方法名()。  
+
+注意: @property修饰的方法不要和变量重名，否则可能导致无限递归
+#### 只读属性
+
+```python
+class Person:
+    def __init__(self, name: str) -> None:
+        self.__name = name
+
+    @property
+    def name(self):
+        return self.__name
+
+p = Person("zhangsan")
+print(p.name)
+
+.name = "lisi" # 报错
+```
+
+#### 读写属性
+
+使用属性名.setter装饰
+
+```python
+class Person:
+    def __init__(self, name: str) -> None:
+        self.__name = name
+
+    @property
+    def name(self):
+        return self.__name
+
+    @name.setter
+    def name(self, name: str) -> None:
+        self.__name = name
+        
+p = Person("zhangsan")
+print(p.name)
+
+p.name = "lisi"
+print(p.name)
+```
+
+
 
 
 ## 标准库
@@ -663,6 +1013,54 @@ with open(filename, 'w') as fo:
 ### 异常
 
 异常是使用try-except代码块处理的。try-except代码块让Python执行指定的操作，同时告诉Python发生异常时怎么办。使用了try-except代码块时，即便出现异常，程序也将继续运行：显示你编写的友好的错误消息，而不是令用户迷惑的traceback。
+
+```python
+try:
+    可能发生异常的代码
+except 异常类型1 as 变量名1:
+    异常1处理代码
+except 异常类型2 as 变量名2: 
+    异常2处理代码
+else: 
+    没有异常时执行的代码
+finally:
+    无论是否发生异常都会执行的代码 
+```
+
+#### 抛出异常
+
+当想在代码中明确表示发生了错误或异常时，可以使用raise来抛出异常。
+```python
+def int_add(a, b):
+    if isinstance(a, int) and isinstance(b, int):
+        return a + b
+    else:
+        raise TypeError("参数类型错误")
+```
+
+### with关键字
+
+
+python中的with语句用于异常处理，封装了try except finally编码范式，提供了一种简洁的方式来确保资源的正确获取和释放，同时处理可能发生的异常，提高了易用性，使代码更清晰、更具可读性，简化了文件流等公共资源的管理   
+
+```python
+with expression as variable:     
+    # 代码块
+```
+
+- expression: 通常是一个对象或函数调用，该对象需要一个上下文管理器，即实现了__enter__和__exit__方法
+
+- variable: 是可选的，用于存储expression的__enter__方法的返回值。     
+
+工作原理:   
+
+- 使用with关键字系统会自动调用f.close()方法，with的作用等效于try finally语句。 - 当执行with语句时，会调用expression对象的__enter__方法
+- __enter__方法的返回值可以被存储在variable中(如果有)，以供with代码块中使用  
+- 然后执行with语句内部的代码块
+- 无论在代码块中是否发生异常，都会调用expression对象的__exit__方法，以确保资源的释放或清理工作，这类似于try - except -finally中的finally语句。   
+
+
+
 
 
 ### 分割字符串
@@ -790,3 +1188,59 @@ some_kwargs(**kdic)
 
 
 在Python中，可以通过@property（装饰器）将一个方法转换为属性，从而实现用于计算的属性。将方法转换为属性后，可以直接通过方法名来访问方法，而不需要再添加一对小括号“()”，这样可以让代码更加简洁。
+
+
+#### lambda
+
+Python使用lambda来定义匿名函数，所谓匿名，指其不用def的标准形式定义函数。 
+
+
+Lambda 表达式的基本语法是：`lambda 参数列表: 表达式`。
+关键字与参数：以 lambda关键字开头，后跟参数列表（如 x或 x, y），参数之间用逗号分隔。这些参数是函数的输入。
+表达式与返回值：冒号后面是一个单一的表达式。这个表达式会被求值，其结果就是 lambda 函数的返回值。注意，lambda 函数体内只能有一个表达式，不能包含复杂的语句或多行代码块。
+Lambda 函数是匿名的，也就是说，它们没有像用 def定义的函数那样的名称。它们的优势在于简洁，特别适合定义那些逻辑简单、可能只使用一次的短小函数。
+
+
+### var1 *= 2与var1 = var1 * 2的区别
+
+
+- var1 *= 2使用原地址
+- var1 = var1 * 2开辟了新的空间
+- 同样的对于类似，var1 += 2和var1 = var1 + 2也是同理
+
+```python
+def test(var1): 
+    print("函数内var1 id:", id(var1))
+    var1 *= 2
+    print("var1 *= 2后函数内var1 id:", id(var1))
+    var1 = var1 * 2
+    print("var1 = var1 *  2后函数内var1 id:", id(var1))
+    
+函数内var1 id: 2302584035712
+var1 *= 2后，函数内var1 id: 2302584035712
+var1 = var1 * 2后，函数内var1 id: 2302584033664    
+```    
+    
+    
+    
+    
+
+----
+
+
+
+
+
+
+计算机高级运行方式:   
+
+- 编译型: c、c++
+- 解释型： python、JavaScript
+- 先编译再解释： java
+
+
+其实python也是先编译再解释，但是python的编译时机和java的不一样。 
+- java是在代码解释执行前，先进行预编译，编译后生成字节码文件存在硬盘中。
+- python是在对代码进行逐行解释执行的时候进行的编译操作，默认生成的字节码文件存在内存中。  
+
+

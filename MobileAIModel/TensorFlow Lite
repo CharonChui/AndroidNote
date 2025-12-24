@@ -1,10 +1,15 @@
 TensorFlow Lite
 ---
 
+
+
 [TensorFlow Lite](https://tensorflow.google.cn/lite?hl=zh-cn) 是一个移动端库，可用于在移动设备、微控制器和其他边缘设备上部署模型。
 
 
 [TensorFlow Lite](https://tensorflow.google.cn/lite?hl=zh-cn) 是一组工具，可帮助开发者在移动设备、嵌入式设备和 loT 设备上运行模型，以便实现设备端机器学习。
+
+
+TensorFlow模型通常不是为移动场景而设计的，在这些场景中，必须考虑大小、电池消耗以及可能影响移动用户体验的所有其他因素。为此，TensorFlow Lite的创建有两个主要目标。第一，它可用于将现有的TensorFlow模型转换为更小、更紧凑的格式，着眼于针对移动设备进行优化。第二则是为可用于模型推理的各种移动平台提供高效的运行环境。
 
 
 TensorFlow Lite是TensorFlow在手机和嵌入设备上的一个轻量级框架。      

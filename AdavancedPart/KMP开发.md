@@ -22,10 +22,6 @@ Kotlin 语言的编译，与向不同的平台转化，明显是不同的职责�
 Frontend 会将 AST 进一步转换为 Kotlin IR（Kotlin Intermediate Representation），是 Kotlin 源代码的中间表示形式，Kotlin IR 是编译器前端的输出，也是编译器后端的输入。
 Backend 则会吧 Kotlin IR 转换为不同平台的中间表示形式，最终生成目标代码。
 
-作者：A0微声z
-链接：https://juejin.cn/post/7507888457705275455
-来源：稀土掘金
-著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
 
     	
 ---

@@ -89,3 +89,13 @@ ar命令最开始是用于将文件写入磁带设备以作归档，但它也可
 // 该命令创建了一个名为test.tar的归档文件，包含目录test和test2的内容。
 tar -cvf test.tar test/ test2/
 
+
+### 切换到root用户
+
+
+`sudo su -`
+
+ - sudo : super user doing
+ - su : switch user
+ - `-` : root用户
+
