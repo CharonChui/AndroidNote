@@ -12,8 +12,6 @@ ConstraintLaayout简介
 implementation 'com.android.support.constraint:constraint-layout:1.1.0'
 ```
 
-<img src="https://raw.githubusercontent.com/CharonChui/Pictures/master/constraintlayout_convert.png?raw=true" width = "80%" />
-
 然后会提示添加`ConstraintLayout`支持库。   
 <img src="https://raw.githubusercontent.com/CharonChui/Pictures/master/constraintlayout_convert_tip.png?raw=true" width = "80%" />
 
@@ -95,7 +93,7 @@ implementation 'com.android.support.constraint:constraint-layout:1.1.0'
 		* layout_constraintVertical_bias
 		```
 
-		下面这段代码就是让左边占30%，右边占70%（默认两边各占50%），这样左边就会短一些，如图5所示，此时代码是这样的:    
+		下面这段代码就是让左边占30%，右边占70%（默认两边各占50%），这样左边就会短一些，此时代码是这样的:    
 		```xml		
 		<android.support.constraint.ConstraintLayout ...>
 		    <Button android:id="@+id/button" ...

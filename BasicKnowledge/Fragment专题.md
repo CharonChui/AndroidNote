@@ -21,10 +21,17 @@ If the no-argument constructor is not available, a runtime exception will occur 
 
 ## 生命周期
 
-`onAttach()`(`Fragment`被绑定到`Activity`时调用) ---> `onCreate()`(`Fragment`创建) --> 
-`onCreateView()`(创建和`Fragment`关联的`View Hierarchy`时调用) --> `onActivityCreated()`(`Activity`的`onCreate()`方法返回时调用) 
---> `onStart()` --> `onResume()` --> `onPause()` --> `onStop()` --> `onDestroyView()`当和`Fragment`关联的`view hierarchy`正在被移除时调用. 
---> `onDestroy()`(`Activity`的`onDestroy`执行后的回调), --> `onDetach()`(当`Fragment`从`Activity`解除关联时被调用)        
+- `onAttach()`(`Fragment`被绑定到`Activity`时调用) ---> 
+- `onCreate()`(`Fragment`创建) --> 
+- `onCreateView()`(创建和`Fragment`关联的`View Hierarchy`时调用) --> 
+- `onActivityCreated()`(`Activity`的`onCreate()`方法返回时调用) --> 
+- `onStart()` --> 
+- `onResume()` --> 
+- `onPause()` --> 
+- `onStop()` --> 
+- `onDestroyView()`当和`Fragment`关联的`view hierarchy`正在被移除时调用. --> 
+- `onDestroy()`(`Activity`的`onDestroy`执行后的回调), --> 
+- `onDetach()`(当`Fragment`从`Activity`解除关联时被调用)        
 	
 ![Image](https://raw.githubusercontent.com/CharonChui/Pictures/master/complete_android_fragment_lifecycle.png)    
 

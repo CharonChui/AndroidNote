@@ -114,7 +114,7 @@ mView.animate().translationX(150).withLayer().start();
     
     在手机开发者选项中的*显示硬件层更新（Show hardware layers updates）*功能是追踪这个问题的开发利器。当`View`渲染`Hardware Layer`的时候闪烁绿色，它应该在动画开始的时候闪烁一次（也就是`Layer`渲染初始化的时候），然而，如果你的`View`在整个动画期间都是绿色，那就是遇到失效的问题了。
 
-- 最后，`hardware layers`使用`GPU`内存，你当然不想出现内存泄漏的问题。所以你应该在必要的时候再去使用`hardware layers`，就想播放动画时。  
+- 最后，`hardware layers`使用`GPU`内存，你当然不想出现内存泄漏的问题。所以你应该在必要的时候再去使用`hardware layers`，就像播放动画时。  
 
 
 这里也没有硬性规则。`Android`渲染系统是非常复杂的。就像所有性能问题一样，测试才是关键。通过使用“显示硬件层更新”开发者选项来确定`layers`是在帮你还是害你。

@@ -180,7 +180,7 @@ animatorSet.start();
 ### `TypeEvalutors`
 
 
-根据属性的开始、结束值与`TimeInterpolation`计算出的比例值来计算当前时间对应的属性值，`Android`提供了一下几种`evalutor`:    
+根据属性的开始、结束值与`TimeInterpolation`计算出的比例值来计算当前时间对应的属性值，`Android`提供了以下几种`evalutor`:    
 
 - `IntEvalutor`:`int`类型的属性值
 - `FloatEvaluator`:

@@ -72,56 +72,58 @@ ANR信息输出到traces.txt文件中
 traces.txt文件是一个ANR记录文件，用于开发人员调试，目录位于/data/anr中，无需root权限即可通过pull命令获取，下面的命令可以将traces.txt文件拷贝到当前目录下
 adb pull /data/anr .
 
-ANR排查流程
-1、Log获取
-1、抓取bugreport
-adb shell bugreport > bugreport.txt
-2、直接导出/data/anr/traces.txt文件
-adb pull /data/anr/traces.txt trace.txt
-2、搜索“ANR in”处log关键点解读
+ANR排查流程:     
+1. log获取
+2. 抓取bugreport
+    adb shell bugreport > bugreport.txt
+3. 直接导出/data/anr/traces.txt文件
+    adb pull /data/anr/traces.txt trace.txt
+4. 搜索“ANR in”处log关键点解读
 
 
 发生时间（可能会延时10-20s）
 
 
-pid：当pid=0，说明在ANR之前，进程就被LMK杀死或出现了Crash，所以无法接受到系统的广播或者按键消息，因此会出现ANR
+pid：当pid=0，说明在ANR之前，进程就被LMK杀死或出现了Crash，所以无法接受到系统的广播或者按键消息，因此会出现ANR    
 
 
-cpu负载Load: 7.58 / 6.21 / 4.83
-代表此时一分钟有平均有7.58个进程在等待
-1、5、15分钟内系统的平均负荷
-当系统负荷持续大于1.0，必须将值降下来
-当系统负荷达到5.0，表面系统有很严重的问题
+cpu负载Load: 7.58 / 6.21 / 4.83     
+代表此时一分钟有平均有7.58个进程在等待    
+1、5、15分钟内系统的平均负荷     
+当系统负荷持续大于1.0，必须将值降下来     
+当系统负荷达到5.0，表面系统有很严重的问题    
 
 
-cpu使用率
-CPU usage from 18101ms to 0ms ago
-28% 2085/system_server: 18% user + 10% kernel / faults: 8689 minor 24 major
-11% 752/android.hardware.sensors@1.0-service: 4% user + 6.9% kernel / faults: 2 minor
-9.8% 780/surfaceflinger: 6.2% user + 3.5% kernel / faults: 143 minor 4 major
+cpu使用率     
+CPU usage from 18101ms to 0ms ago     
+28% 2085/system_server: 18% user + 10% kernel / faults: 8689 minor 24 major      
+11% 752/android.hardware.sensors@1.0-service: 4% user + 6.9% kernel / faults: 2 minor     
+9.8% 780/surfaceflinger: 6.2% user + 3.5% kernel / faults: 143 minor 4 major     
 
 
-上述表示Top进程的cpu占用情况。
-注意
-如果CPU使用量很少，说明主线程可能阻塞。
-3、在bugreport.txt中根据pid和发生时间搜索到阻塞的log处
+上述表示Top进程的cpu占用情况。       
+注意      
+如果CPU使用量很少，说明主线程可能阻塞。    
+
+在bugreport.txt中根据pid和发生时间搜索到阻塞的log处     
 ----- pid 10494 at 2019-11-18 15:28:29 -----
-4、往下翻找到“main”线程则可看到对应的阻塞log
+
+往下翻找到“main”线程则可看到对应的阻塞log     
 "main" prio=5 tid=1 Sleeping
 | group="main" sCount=1 dsCount=0 flags=1 obj=0x746bf7f0 self=0xe7c8f000
 | sysTid=10494 nice=-4 cgrp=default sched=0/0 handle=0xeb6784a4
 | state=S schedstat=( 5119636327 325064933 4204 ) utm=460 stm=51 core=4 HZ=100
 | stack=0xff575000-0xff577000 stackSize=8MB
 | held mutexes=
-上述关键字段的含义如下所示：
+上述关键字段的含义如下所示：      
 
-tid：线程号
-sysTid：主进程线程号和进程号相同
-Waiting/Sleeping：各种线程状态
-nice：nice值越小，则优先级越高，-17~16
-schedstat：Running、Runable时间(ns)与Switch次数
-utm：该线程在用户态的执行时间(jiffies)
-stm：该线程在内核态的执行时间(jiffies)
-sCount：该线程被挂起的次数
-dsCount：该线程被调试器挂起的次数
-self：线程本身的地址
+tid：线程号     
+sysTid：主进程线程号和进程号相同      
+Waiting/Sleeping：各种线程状态     
+nice：nice值越小，则优先级越高，-17~16    
+schedstat：Running、Runable时间(ns)与Switch次数     
+utm：该线程在用户态的执行时间(jiffies)     
+stm：该线程在内核态的执行时间(jiffies)     
+sCount：该线程被挂起的次数     
+dsCount：该线程被调试器挂起的次数     
+self：线程本身的地址     
