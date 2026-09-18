@@ -1,0 +1,212 @@
+{
+  "main": {
+    "id": "a5da6bcfcb0af1ca",
+    "type": "split",
+    "children": [
+      {
+        "id": "ad79ba9f9828c887",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "254b14114e772d27",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "新标签页"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "b1e36e39ec9605d5",
+    "type": "split",
+    "children": [
+      {
+        "id": "712fdd630cb2ea85",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "aaf8e9ab38d2abe5",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "搜索"
+            }
+          },
+          {
+            "id": "ef0971683bb20b22",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-bookmark",
+              "title": "书签"
+            }
+          }
+        ],
+        "currentTab": 1
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "3c92eec61038d451",
+    "type": "split",
+    "children": [
+      {
+        "id": "c22eaf68822f32b0",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "908ee6d47a2e5e08",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "MobileAIModel/1.大模型概念介绍.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "反向链接"
+            }
+          },
+          {
+            "id": "a9bfb95c279ae805",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "MobileAIModel/1.大模型概念介绍.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "出链"
+            }
+          },
+          {
+            "id": "043cad1f663ea5f2",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "标签"
+            }
+          },
+          {
+            "id": "631036c9a5ea9ea0",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "添加笔记属性"
+            }
+          },
+          {
+            "id": "a18ff13b074903da",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "MobileAIModel/1.大模型概念介绍.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "大纲"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:打开快速切换": false,
+      "graph:查看关系图谱": false,
+      "canvas:新建白板": false,
+      "daily-notes:打开/创建今天的日记": false,
+      "templates:插入模板": false,
+      "command-palette:打开命令面板": false,
+      "bases:新建数据库": false
+    }
+  },
+  "active": "254b14114e772d27",
+  "lastOpenFiles": [
+    "MobileAIModel/AIAgent/2. AI Agent介绍.md.sb-cd60c918-zQKB54",
+    "MobileAIModel/6.TensorFlow Lite.md.sb-cd60c918-KHFeDn",
+    "未命名 4.base",
+    "未命名 3.base",
+    "2026-09-06.md",
+    "未命名 2.canvas",
+    "未命名.md",
+    "MobileAIModel/1.大模型概念介绍.md",
+    "未命名",
+    "未命名 2.base",
+    "未命名 1.base",
+    "未命名 1.canvas",
+    "MobileAIModel/9.Transformer架构.md",
+    "MobileAIModel/8.NLP自然语言.md",
+    "MobileAIModel/AIAgent/docs/1/03-第三章-大语言模型基础.md",
+    "MobileAIModel/AIAgent/docs/1/02-第二章-智能体发展史.md",
+    "MobileAIModel/2.模型训练及微调.md",
+    "MobileAIModel/AIAgent/14.多Agent.md",
+    "MobileAIModel/AIAgent/13.上下文压缩.md",
+    "MobileAIModel/AIAgent/12.LangGraph.md",
+    "MobileAIModel/AIAgent/10.文本分类意图识别.md",
+    "MobileAIModel/AIAgent/8.上下文功能.md",
+    "MobileAIModel/AIAgent/7.向量数据库.md",
+    "MobileAIModel/AIAgent/6.LangChain.md",
+    "MobileAIModel/AIAgent/4.模型压缩.md",
+    "MobileAIModel/AIAgent/3.PyTorch.md",
+    "MobileAIModel/AIAgent/2. AI Agent介绍.md",
+    "MobileAIModel/AIAgent/1. Agent基础概念.md",
+    "MobileAIModel/AIAgent/5.MCP.md",
+    "MobileAIModel/AIAgent/3. 意图识别.md",
+    "MobileAIModel/AIAgent/docs/1/13-附录A-Python从零到能开发.md",
+    "MobileAIModel/AIAgent/docs/1/12-第十二章-智能体性能评估.md",
+    "MobileAIModel/AIAgent/docs/1/11-第十一章-Agentic-RL.md",
+    "MobileAIModel/AIAgent/11. LLM.md",
+    "未命名.canvas",
+    "未命名.base"
+  ]
+}

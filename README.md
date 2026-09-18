@@ -11,7 +11,8 @@ Android学习笔记
 目录
 ===  
 
-- [史上最适合Android开发者学习的Harmony OS Next语言教程](https://github.com/CharonChui/HarmonyOSNextStudyNote)
+- [AI相关学习知识总结](https://github.com/CharonChui/AIStudyNote)
+
 
 - [源码解析][43] 
     - [自定义View详解][1]
