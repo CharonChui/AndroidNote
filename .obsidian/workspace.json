@@ -11,10 +11,14 @@
             "id": "254b14114e772d27",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
+              "type": "markdown",
+              "state": {
+                "file": "Flutter/09-鸿蒙平台开发.md",
+                "mode": "source",
+                "source": false
+              },
               "icon": "lucide-file",
-              "title": "新标签页"
+              "title": "09-鸿蒙平台开发"
             }
           }
         ]
@@ -59,9 +63,24 @@
               "icon": "lucide-bookmark",
               "title": "书签"
             }
+          },
+          {
+            "id": "f9f4b1971bdb3865",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-folder-closed",
+              "title": "文件列表"
+            }
           }
         ],
-        "currentTab": 1
+        "currentTab": 2
       }
     ],
     "direction": "horizontal",
@@ -172,6 +191,17 @@
   },
   "active": "254b14114e772d27",
   "lastOpenFiles": [
+    "Flutter/10-多端适配问题与解决.md",
+    "Flutter/12-工程化测试与FAQ.md",
+    "Flutter/11-性能问题与优化.md",
+    "Flutter/08-iOS平台开发.md",
+    "Flutter/07-Android平台开发与混合集成.md",
+    "Flutter/06-Flutter实现原理.md",
+    "Flutter/05-路由网络存储与资源.md",
+    "Flutter/04-状态管理与架构.md",
+    "Flutter/03-Widget与布局.md",
+    "Flutter/02-Dart语言速成.md",
+    "Flutter/01-概览与环境搭建.md",
     "MobileAIModel/AIAgent/2. AI Agent介绍.md.sb-cd60c918-zQKB54",
     "MobileAIModel/6.TensorFlow Lite.md.sb-cd60c918-KHFeDn",
     "未命名 4.base",
@@ -196,16 +226,6 @@
     "MobileAIModel/AIAgent/8.上下文功能.md",
     "MobileAIModel/AIAgent/7.向量数据库.md",
     "MobileAIModel/AIAgent/6.LangChain.md",
-    "MobileAIModel/AIAgent/4.模型压缩.md",
-    "MobileAIModel/AIAgent/3.PyTorch.md",
-    "MobileAIModel/AIAgent/2. AI Agent介绍.md",
-    "MobileAIModel/AIAgent/1. Agent基础概念.md",
-    "MobileAIModel/AIAgent/5.MCP.md",
-    "MobileAIModel/AIAgent/3. 意图识别.md",
-    "MobileAIModel/AIAgent/docs/1/13-附录A-Python从零到能开发.md",
-    "MobileAIModel/AIAgent/docs/1/12-第十二章-智能体性能评估.md",
-    "MobileAIModel/AIAgent/docs/1/11-第十一章-Agentic-RL.md",
-    "MobileAIModel/AIAgent/11. LLM.md",
     "未命名.canvas",
     "未命名.base"
   ]
